@@ -1,0 +1,72 @@
+.form_container
+{
+	border-left: 1px solid #BCD4F4; 
+	padding: 5px 5px 5px 5px;
+	background: #EEEEEE url(/lib/j/ext/resources/images/default/box/tb.gif) repeat-x scroll 0pt -16px;
+}
+
+.form_caption
+{
+	padding-bottom: 5px;
+	font-family: Myriad Pro,Myriad Web,Tahoma,Helvetica,Arial,sans-serif;
+	font-size: 100%;
+	font-weight: bold;
+	color: #393939;
+}
+
+.form_fieldset
+{
+	padding-bottom: 5px;
+}
+
+.form_legend
+{
+	font-family:Arial;
+	font-size: 75%;
+	font-weight: bold;
+	color: #15428B;
+}
+
+.form_element_label
+{
+	font-family:Arial;
+	font-size: 75%;
+	font-weight: bold;
+	color: brown;
+	text-align: right;
+}
+
+.form_element_text_input, .form_element_select
+{
+	font-family:Arial;
+	font-size: 75%;
+	font-weight: normal;
+	color: black;
+	border: 1px solid brown;
+}
+
+.form_element_button
+{
+	font-family:Arial;
+	font-size: 75%;
+	font-weight: bold;
+	color: black;
+	border: 1px solid brown;
+	height: 22px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.form_note
+{
+	font-family:Arial;
+	font-size: 60%;
+	color: black;
+}
+
+.form_radio_label
+{
+	font-family:Arial;
+	font-size: 70%;
+	color: black;
+}
