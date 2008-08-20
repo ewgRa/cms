@@ -1,6 +1,0 @@
-div.table_container
-{
-	border: 1px solid #BCD4F4;
-	min-height: 198px;
-	min-height: expression( mw( 198 ) );
-}

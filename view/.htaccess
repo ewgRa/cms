@@ -1,3 +1,0 @@
-Allow from all
-ExpiresActive on
-ExpiresDefault "modification plus 1 days"
