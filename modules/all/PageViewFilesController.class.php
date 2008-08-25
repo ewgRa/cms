@@ -12,7 +12,7 @@
 		
 		public function getModel()
 		{
-			$viewFilesId = array();
+			$viewFilesId = array(Page::me()->getLayoutFileId());
 			
 			foreach(ControllerDispatcher::me()->getControllers() as $controller)
 				$viewFilesId[] = $controller->getViewFileId();
@@ -34,10 +34,11 @@
 				FROM ' . Database::me()->getTable('ViewFilesIncludes') . ' t1
 				INNER JOIN ' . Database::me()->getTable('ViewFiles') . ' t2
 					ON(t2.id = t1.include_file_id AND t1.file_id IN(?))
+				WHERE t1.page_id IS NULL or t1.page_id = ?
 				ORDER BY t1.position ASC
 			';
 			
-			$dbResult = Database::me()->query($dbQuery, array($filesId));
+			$dbResult = Database::me()->query($dbQuery, array($filesId, Page::me()->getId()));
 
 			$directFiles = array();
 			
@@ -53,6 +54,10 @@
 								Config::me()->replaceVariables($dbRow['path'])
 							)
 						);
+					break;
+					case MimeContentTypes::TEXT_CSS:
+						if(defined('MEDIA_HOST'))
+							$dbRow['path'] = MEDIA_HOST . $dbRow['path'];
 					break;
 				}
 				
