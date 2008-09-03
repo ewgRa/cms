@@ -41,7 +41,15 @@
 				array(Localizer::me()->getLanguageID(), $this->getUnits())
 			);
 
-			return Database::me()->resourceToArray($dbResult);
+			$result = Database::me()->resourceToArray($dbResult);
+			
+			if(defined('MEDIA_HOST'))
+			{
+				foreach($result as &$contentRow)
+				    $contentRow['text'] = str_replace('%MEDIA_HOST%', MEDIA_HOST, $contentRow['text']);
+			}    
+
+			return $result;
 		}
 	}
 ?>

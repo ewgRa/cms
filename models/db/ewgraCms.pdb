@@ -1461,7 +1461,7 @@ Shadow=0</a:DisplayPreferences>
 <o:ReferenceSymbol Id="o5">
 <a:CreationDate>1219460783</a:CreationDate>
 <a:ModificationDate>1219461611</a:ModificationDate>
-<a:CenterTextOffset>(0, 6)</a:CenterTextOffset>
+<a:CenterTextOffset>(0, 7)</a:CenterTextOffset>
 <a:SourceTextOffset>(-1952, 1392)</a:SourceTextOffset>
 <a:DestinationTextOffset>(1952, -1392)</a:DestinationTextOffset>
 <a:Rect>((-26185,-7913), (-12712,2352))</a:Rect>
@@ -1528,7 +1528,7 @@ CARD 0 Microsoft Sans Serif,8,N</a:FontList>
 <o:ReferenceSymbol Id="o16">
 <a:CreationDate>1219461484</a:CreationDate>
 <a:ModificationDate>1219511098</a:ModificationDate>
-<a:CenterTextOffset>(0, 6)</a:CenterTextOffset>
+<a:CenterTextOffset>(0, 7)</a:CenterTextOffset>
 <a:SourceTextOffset>(-152, 283)</a:SourceTextOffset>
 <a:DestinationTextOffset>(152, -283)</a:DestinationTextOffset>
 <a:Rect>((-11924,-8232), (1542,1531))</a:Rect>
@@ -2238,9 +2238,10 @@ TableComment 0 Microsoft Sans Serif,8,N</a:FontList>
 <a:Code>id</a:Code>
 <a:CreationDate>1219461463</a:CreationDate>
 <a:Creator>Администратор</a:Creator>
-<a:ModificationDate>1219511058</a:ModificationDate>
+<a:ModificationDate>1219641972</a:ModificationDate>
 <a:Modifier>Администратор</a:Modifier>
 <a:DataType>int</a:DataType>
+<a:Identity>1</a:Identity>
 <a:Mandatory>1</a:Mandatory>
 <a:ExtendedAttributesText>{F4F16ECD-F2F1-4006-AF6F-638D5C65F35E},MYSQL50,170={4A2BD2F3-4A8A-4421-8A48-A8029BDA28E8},Unsigned,4=true
 {4EC131E7-C7D4-4E04-B6F6-A6BF9CCF838C},ZeroFill,5=false

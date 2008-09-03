@@ -1461,11 +1461,11 @@ Shadow=0</a:DisplayPreferences>
 <o:ReferenceSymbol Id="o5">
 <a:CreationDate>1219460783</a:CreationDate>
 <a:ModificationDate>1219461611</a:ModificationDate>
-<a:CenterTextOffset>(0, 7)</a:CenterTextOffset>
-<a:SourceTextOffset>(-1952, 1392)</a:SourceTextOffset>
-<a:DestinationTextOffset>(1952, -1392)</a:DestinationTextOffset>
-<a:Rect>((-26185,-7913), (-12712,2352))</a:Rect>
-<a:ListOfPoints>((-26185,2352),(-12712,-7913))</a:ListOfPoints>
+<a:CenterTextOffset>(0, 9)</a:CenterTextOffset>
+<a:SourceTextOffset>(-1951, 1393)</a:SourceTextOffset>
+<a:DestinationTextOffset>(1951, -1393)</a:DestinationTextOffset>
+<a:Rect>((-26185,-7950), (-12712,2352))</a:Rect>
+<a:ListOfPoints>((-26185,2352),(-12712,-7950))</a:ListOfPoints>
 <a:ArrowStyle>1</a:ArrowStyle>
 <a:LineColor>16711680</a:LineColor>
 <a:ShadowColor>12632256</a:ShadowColor>
@@ -1528,11 +1528,11 @@ CARD 0 Microsoft Sans Serif,8,N</a:FontList>
 <o:ReferenceSymbol Id="o16">
 <a:CreationDate>1219461484</a:CreationDate>
 <a:ModificationDate>1219511098</a:ModificationDate>
-<a:CenterTextOffset>(0, 7)</a:CenterTextOffset>
-<a:SourceTextOffset>(-152, 283)</a:SourceTextOffset>
-<a:DestinationTextOffset>(152, -283)</a:DestinationTextOffset>
-<a:Rect>((-11924,-8232), (1542,1531))</a:Rect>
-<a:ListOfPoints>((1542,1531),(-11924,-8232))</a:ListOfPoints>
+<a:CenterTextOffset>(0, 9)</a:CenterTextOffset>
+<a:SourceTextOffset>(-158, 291)</a:SourceTextOffset>
+<a:DestinationTextOffset>(158, -291)</a:DestinationTextOffset>
+<a:Rect>((-11924,-8400), (1542,1531))</a:Rect>
+<a:ListOfPoints>((1542,1531),(-11924,-8400))</a:ListOfPoints>
 <a:ArrowStyle>1</a:ArrowStyle>
 <a:LineColor>16711680</a:LineColor>
 <a:ShadowColor>12632256</a:ShadowColor>
@@ -1553,7 +1553,7 @@ CARD 0 Microsoft Sans Serif,8,N</a:FontList>
 <a:ModificationDate>1219511049</a:ModificationDate>
 <a:SourceTextOffset>(4, -35)</a:SourceTextOffset>
 <a:DestinationTextOffset>(-4, 35)</a:DestinationTextOffset>
-<a:Rect>((-7299,11177), (9713,13425))</a:Rect>
+<a:Rect>((-7299,10301), (9713,14301))</a:Rect>
 <a:ListOfPoints>((-7299,11177),(9713,13425))</a:ListOfPoints>
 <a:ArrowStyle>1</a:ArrowStyle>
 <a:LineColor>16711680</a:LineColor>
@@ -1669,7 +1669,7 @@ TableComment 0 Microsoft Sans Serif,8,N</a:FontList>
 <o:TableSymbol Id="o7">
 <a:CreationDate>1219429190</a:CreationDate>
 <a:ModificationDate>1219461608</a:ModificationDate>
-<a:Rect>((-18560,-9911), (-6562,-5737))</a:Rect>
+<a:Rect>((-18560,-10773), (-6562,-4875))</a:Rect>
 <a:ShadowStyle>3</a:ShadowStyle>
 <a:LineColor>3046457</a:LineColor>
 <a:FillColor>14286814</a:FillColor>
