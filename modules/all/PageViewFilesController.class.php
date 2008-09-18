@@ -5,7 +5,10 @@
 	{
 		public function importSettings($settings)
 		{
-			$this->setCacheKey(Page::me()->getId());
+			$this->setCacheTicket(
+				Cache::me()->createTicket('pageViewFiles')->
+					setKey(Page::me()->getId())
+			);
 			
 			return $this;
 		}

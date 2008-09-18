@@ -20,7 +20,10 @@
 		{
 			$this->setUnits($settings['units']);
 
-			$this->setCacheKey($this->getUnits());
+			$this->setCacheTicket(
+				Cache::me()->createTicket('content')->
+					setKey($this->getUnits())
+			);
 			
 			return $this;
 		}
@@ -47,7 +50,7 @@
 			{
 				foreach($result as &$contentRow)
 				    $contentRow['text'] = str_replace('%MEDIA_HOST%', MEDIA_HOST, $contentRow['text']);
-			}    
+			}
 
 			return $result;
 		}
