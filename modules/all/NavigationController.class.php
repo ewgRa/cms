@@ -20,10 +20,13 @@
 		{
 			$this->setCategory($settings['category']);
 
-			$this->setCacheTicket(
-				Cache::me()->createTicket('navigation')->
-					setKey($this->getCategory())
-			);
+			if(Cache::me()->hasTicketParams('navigation'))
+			{
+				$this->setCacheTicket(
+					Cache::me()->createTicket('navigation')->
+						setKey($this->getCategory())
+				);
+			}
 			
 			return $this;
 		}

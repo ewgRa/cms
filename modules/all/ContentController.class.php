@@ -20,10 +20,13 @@
 		{
 			$this->setUnits($settings['units']);
 
-			$this->setCacheTicket(
-				Cache::me()->createTicket('content')->
-					setKey($this->getUnits())
-			);
+			if(Cache::me()->hasTicketParams('content'))
+			{
+				$this->setCacheTicket(
+					Cache::me()->createTicket('content')->
+						setKey($this->getUnits())
+				);
+			}
 			
 			return $this;
 		}
@@ -45,7 +48,8 @@
 			);
 
 			$result = Database::me()->resourceToArray($dbResult);
-			
+
+			// FIXME: move out from here
 			if(defined('MEDIA_HOST'))
 			{
 				foreach($result as &$contentRow)

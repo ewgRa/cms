@@ -5,10 +5,13 @@
 	{
 		public function importSettings($settings)
 		{
-			$this->setCacheTicket(
-				Cache::me()->createTicket('pageViewFiles')->
-					setKey(Page::me()->getId())
-			);
+			if(Cache::me()->hasTicketParams('pageViewFiles'))
+			{
+				$this->setCacheTicket(
+					Cache::me()->createTicket('pageViewFiles')->
+						setKey(Page::me()->getId())
+				);
+			}
 			
 			return $this;
 		}
