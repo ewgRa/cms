@@ -20,8 +20,16 @@
 		{
 			$viewFilesId = array(Page::me()->getLayoutFileId());
 			
-			foreach(ControllerDispatcher::me()->getControllers() as $controller)
-				$viewFilesId[] = $controller->getViewFileId();
+			$dbQuery = "
+				SELECT view_file_id
+				FROM " . Database::me()->getTable('PagesControllers_ref') . "
+				WHERE page_id = ?
+			";
+			
+			$dbResult = Database::me()->query($dbQuery, array(Page::me()->getId()));
+			
+			foreach(Database::me()->fetchArray($dbResult) as $dbRow)
+				$viewFilesId[] = $dbRow['view_file_id'];
 			
 			return $this->getPageViewFiles($viewFilesId);
 		}
