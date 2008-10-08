@@ -44,7 +44,10 @@
 			
 			$dbResult = Database::me()->query(
 				$dbQuery,
-				array(Localizer::me()->getLanguageID(), $this->getUnits())
+				array(
+					Localizer::me()->getRequestLanguage()->getId(),
+					$this->getUnits()
+				)
 			);
 
 			$result = Database::me()->resourceToArray($dbResult);

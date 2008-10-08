@@ -47,7 +47,10 @@
 			
 			$dbResult = Database::me()->query(
 				$dbQuery,
-				array(Localizer::me()->getLanguageID(), $this->getCategory())
+				array(
+					Localizer::me()->getRequestLanguage()->getId(),
+					$this->getCategory()
+				)
 			);
 
 			return Database::me()->resourceToArray($dbResult);

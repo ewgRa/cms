@@ -40,10 +40,6 @@
 			else
 				Singleton::setInstance('Page', $cacheTicket->getData());
 
-			Page::me()->
-				setRequestPath(UrlHelper::me()->getEnginePagePath())->
-				processPath();
-			
 			// FIXME: operation with user
 			Page::me()->checkAccessPage(User::me()->getRights());
 
