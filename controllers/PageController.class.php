@@ -16,6 +16,8 @@
 		{
 			$result = parent::handleRequest();
 			
+			$startTime = microtime(true);
+			
 			$pageId = $this->getPagePathMapper()->getPageId(
 				UrlHelper::me()->getEnginePagePath()
 			);
@@ -48,6 +50,9 @@
 				ViewFactory::createByFileId(Page::me()->getLayoutFileId())
 			);
 			
+			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+				$this->addDebug($startTime, microtime(true));
+			
 			return $result;
 		}
 
@@ -71,6 +76,22 @@
 				$result = $cacheTicket->getData();
 				
 			return $result;
+		}
+		
+		/**
+		 * @return PageController
+		 */
+		private function addDebug($startTime, $endTime)
+		{
+			$debugItem = DebugItem::create()->
+				setData(Page::me())->
+				setType(DebugItem::PAGE)->
+				setStartTime($startTime)->
+				setEndTime($endTime);
+			
+			Debug::me()->addItem($debugItem);
+			
+			return $this;
 		}
 	}
 ?>

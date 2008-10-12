@@ -5,8 +5,7 @@
 	{
 		public function getModel()
 		{
-			// FIXME: magic constant and http version
-			Page::me()->getHeader()->add('HTTP/1.1 404 Not Found');
+			Page::me()->getHeader()->add($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 			return null;
 		}
 	}
