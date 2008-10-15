@@ -30,14 +30,23 @@
 						setUrl(UrlHelper::me()->getEnginePagePath());
 			}
 			
-			$cacheTicket = Cache::me()->createTicket('page')->
-				setKey($pageId)->
-				restoreData();
+			try
+			{
+				$cacheTicket = Cache::me()->createTicket('page')->
+					setKey($pageId)->
+					restoreData();
+			}
+			catch(MissingArgumentException $e)
+			{
+				$cacheTicket = null;
+			}
 			
-			if($cacheTicket->isExpired())
+			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
 				Page::me()->load($pageId);
-				$cacheTicket->setData(Page::me())->storeData();
+				
+				if($cacheTicket)
+					$cacheTicket->setData(Page::me())->storeData();
 			}
 			else
 				Singleton::setInstance('Page', $cacheTicket->getData());
@@ -45,7 +54,6 @@
 			// FIXME: operation with user
 			Page::me()->checkAccessPage(User::me()->getRights());
 
-			
 			$result->setView(
 				ViewFactory::createByFileId(Page::me()->getLayoutFileId())
 			);
@@ -63,14 +71,22 @@
 		{
 			$result = null;
 			
-			$cacheTicket = Cache::me()->createTicket('pagePathMapper')->
-				restoreData();
+			try
+			{
+				$cacheTicket = Cache::me()->createTicket('pagePathMapper')->
+					restoreData();
+			}
+			catch(MissingArgumentException $e)
+			{
+				$cacheTicket = null;
+			}
 
-			if($cacheTicket->isExpired())
+			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
 				$result = PagePathMapper::create()->loadMap();
 
-				$cacheTicket->setData($result)->storeData();
+				if($cacheTicket)
+					$cacheTicket->setData($result)->storeData();
 			}
 			else
 				$result = $cacheTicket->getData();

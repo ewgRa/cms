@@ -52,7 +52,7 @@
 
 			$result = Database::me()->resourceToArray($dbResult);
 
-			// FIXME: move out from here
+			// FIXME: move out from here?
 			if(defined('MEDIA_HOST'))
 			{
 				foreach($result as &$contentRow)
