@@ -1,4 +1,9 @@
 $Id$
 
+2008-10-15
+	* 1.01 released
+	
+	* exception in create ticket - MissingArgumentException
+
 2008-10-14
 	* 1.0 released

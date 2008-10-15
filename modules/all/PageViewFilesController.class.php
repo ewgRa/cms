@@ -58,23 +58,12 @@
 			
 			while($dbRow = Database::me()->fetchArray($dbResult))
 			{
-				switch($dbRow['content-type'])
-				{
-					case MimeContentTypes::TEXT_XSLT:
-						$dbRow['path'] = str_replace(
-							'\\',
-							'/',
-							realpath(
-								Config::me()->replaceVariables($dbRow['path'])
-							)
-						);
-					break;
-					case MimeContentTypes::TEXT_CSS:
-						if(defined('MEDIA_HOST'))
-							$dbRow['path'] = MEDIA_HOST . $dbRow['path'];
-					break;
-				}
-				
+				$dbRow['path'] = str_replace(
+					'\\',
+					'/',
+					Config::me()->replaceVariables($dbRow['path'])
+				);
+
 				$viewFiles['includeFiles'][] = array(
 					'path' => $dbRow['path'],
 					'content-type' => $dbRow['content-type'],
@@ -82,9 +71,7 @@
 				);
 				
 				if($dbRow['is_can_splited'] == 'no')
-				{
 					$viewFiles['dontSplitFiles'][] = $dbRow['id'];
-				}
 
 				if($dbRow['recursive_include'] == 'yes')
 					$directFiles[] = $dbRow['id'];
@@ -95,9 +82,7 @@
 				$includeViewFiles = $this->getPageViewFiles($directFiles);
 				
 				foreach($viewFiles as $k => $v)
-				{
 					$viewFiles[$k] = array_merge($v, $includeViewFiles[$k]);
-				}
 			}
 		
 			return $viewFiles;

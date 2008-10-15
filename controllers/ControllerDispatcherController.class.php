@@ -16,14 +16,23 @@
 		{
 			$result = parent::handleRequest();
 			
-			$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
-				setKey(Page::me()->getId())->
-				restoreData();
+			try
+			{
+				$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
+					setKey(Page::me()->getId())->
+					restoreData();
+			}
+			catch(MissingArgumentException $e)
+			{
+				$cacheTicket = null;
+			}
 			
-			if($cacheTicket->isExpired())
+			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
 				ControllerDispatcher::me()->loadControllers(Page::me()->getId());
-				$cacheTicket->setData(ControllerDispatcher::me())->storeData();
+				
+				if($cacheTicket)
+					$cacheTicket->setData(ControllerDispatcher::me())->storeData();
 			}
 			else
 				Singleton::setInstance(
