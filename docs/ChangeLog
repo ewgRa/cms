@@ -4,6 +4,12 @@ $Id$
 	* 1.02 released
 	
 	* create DA layer
+
+	* set cookie for language
+
+	* fix media javascript files in page head
+
+	* multilang in navigation 
 	
 	* some changes in debug system
 
