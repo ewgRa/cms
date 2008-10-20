@@ -10,11 +10,12 @@
 		 */
 		private $da	= null;
 		
-		protected function beforeRenderModel()
+		public function da()
 		{
-			$this->da = ContentDA::create();
+			if(!$this->da)
+				$this->da = ContentDA::create();
 
-			return parent::beforeRenderModel();
+			return $this->da;
 		}
 		
 		public function importSettings($settings)
@@ -38,7 +39,7 @@
 		
 		public function getModel()
 		{
-			$result = $this->da->getUnitsContent(
+			$result = $this->da()->getUnitsContent(
 				$this->getUnits(),
 				Localizer::me()->getRequestLanguage()->getId()
 			);

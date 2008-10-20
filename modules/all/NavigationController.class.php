@@ -10,11 +10,12 @@
 		 */
 		private $da = null;
 		
-		protected function beforeRenderModel()
+		protected function da()
 		{
-			$this->da = NavigationDA::create();
+			if(!$this->da)
+				$this->da = NavigationDA::create();
 			
-			return parent::beforeRenderModel();
+			return $this->da;
 		}
 		
 		private function setCategory($category)
@@ -49,7 +50,7 @@
 		
 		public function getModel()
 		{
-			$result = $this->da->getByCategory(
+			$result = $this->da()->getByCategory(
 				$this->getCategory(),
 				Localizer::me()->getRequestLanguage()->getId()
 			);

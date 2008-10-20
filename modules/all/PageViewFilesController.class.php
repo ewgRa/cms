@@ -8,11 +8,12 @@
 		 */
 		private $da = null;
 		
-		protected function beforeRenderModel()
+		protected function da()
 		{
-			$this->da = PageViewFilesDA::create();
+			if(!$this->da)
+				$this->da = PageViewFilesDA::create();
 			
-			return parent::beforeRenderModel();
+			return $this->da;
 		}
 		
 		public function importSettings($settings)
@@ -32,7 +33,7 @@
 		{
 			$viewFilesId = array(Page::me()->getLayoutFileId());
 						
-			foreach($this->da->getPageViewFiles(Page::me()->getId()) as $file)
+			foreach($this->da()->getPageViewFiles(Page::me()->getId()) as $file)
 				$viewFilesId[] = $file['view_file_id'];
 			
 			return $this->getPageViewFiles($viewFilesId);
@@ -47,7 +48,7 @@
 			
 			$directFiles = array();
 			
-			foreach($this->da->getFiles(Page::me()->getId(), $fileIds) as $file)
+			foreach($this->da()->getFiles(Page::me()->getId(), $fileIds) as $file)
 			{
 				$file['path'] = str_replace(
 					'\\',

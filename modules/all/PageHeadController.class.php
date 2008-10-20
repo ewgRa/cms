@@ -8,11 +8,12 @@
 		 */
 		private $da = null;
 		
-		protected function beforeRenderModel()
+		protected function da()
 		{
-			$this->da = PageHeadDA::create();
+			if(!$this->da)
+				$this->da = PageHeadDA::create();
 			
-			return parent::beforeRenderModel();
+			return $this->da;
 		}
 		
 		public function importSettings($settings)
@@ -34,7 +35,7 @@
 		
 		public function getModel()
 		{
-			return $this->da->getPageHead(
+			return $this->da()->getPageHead(
 				Page::me()->getId(),
 				Localizer::me()->getRequestLanguage()->getId()
 			);
