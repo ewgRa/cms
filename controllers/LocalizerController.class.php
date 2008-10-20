@@ -16,7 +16,25 @@
 		{
 			$result = parent::handleRequest();
 			
+			if(Session::me()->getCookie('languageId'))
+			{
+				Localizer::me()->setCookieLanguage(
+					Language::create()->
+						setId(Session::me()->getCookie('languageId'))->
+						setAbbr(Session::me()->getCookie('languageAbbr'))
+				);
+			}
+			
 			Localizer::me()->defineLanguage();
+			
+			//try set cookie
+			Session::me()->
+				setCookie(
+					'languageId', Localizer::me()->getRequestLanguage()->getId()
+				)->
+				setCookie(
+					'languageAbbr', Localizer::me()->getRequestLanguage()->getAbbr()
+				);
 			
 			return $result;
 		}

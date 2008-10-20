@@ -5,6 +5,18 @@
 	{
 		private $category = null;
 		
+		/**
+		 * @var NavigationDA
+		 */
+		private $da = null;
+		
+		protected function beforeRenderModel()
+		{
+			$this->da = NavigationDA::create();
+			
+			return parent::beforeRenderModel();
+		}
+		
 		private function setCategory($category)
 		{
 			$this->category = $category;
@@ -24,7 +36,11 @@
 			{
 				$this->setCacheTicket(
 					Cache::me()->createTicket('navigation')->
-						setKey($this->getCategory())
+						setKey(
+							$this->getCategory(),
+							Localizer::me()->getRequestLanguage(),
+							Localizer::me()->getSource()
+						)
 				);
 			}
 			
@@ -33,27 +49,14 @@
 		
 		public function getModel()
 		{
-			$dbQuery = "
-				SELECT *
-				FROM " . Database::me()->getTable('Navigations') . " t1
-				INNER JOIN " . Database::me()->getTable('NavigationsData') . " t2
-					ON(t1.id = t2.navigation_id AND t2.language_id = ?)
-				WHERE
-					t1.category_id = (
-						SELECT id FROM " . Database::me()->getTable('Categories') . "
-						WHERE alias = ?
-					)
-			";
-			
-			$dbResult = Database::me()->query(
-				$dbQuery,
-				array(
-					Localizer::me()->getRequestLanguage()->getId(),
-					$this->getCategory()
-				)
+			$result = $this->da->getByCategory(
+				$this->getCategory(),
+				Localizer::me()->getRequestLanguage()->getId()
 			);
 
-			return Database::me()->resourceToArray($dbResult);
+			$result['localizerPath'] = UrlHelper::me()->getLocalizerPath();
+			
+			return $result;
 		}
 	}
 ?>

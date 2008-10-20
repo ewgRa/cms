@@ -5,6 +5,65 @@
 	{
 		private $units = null;
 		
+		/**
+		 * @var ContentDA
+		 */
+		private $da	= null;
+		
+		protected function beforeRenderModel()
+		{
+			$this->da = ContentDA::create();
+
+			return parent::beforeRenderModel();
+		}
+		
+		public function importSettings($settings)
+		{
+			$this->setUnits($settings['units']);
+
+			if(Cache::me()->hasTicketParams('content'))
+			{
+				$this->setCacheTicket(
+					Cache::me()->createTicket('content')->
+						setKey(
+							$this->getUnits(),
+							Localizer::me()->getRequestLanguage(),
+							Localizer::me()->getSource()
+						)
+				);
+			}
+			
+			return $this;
+		}
+		
+		public function getModel()
+		{
+			$result = $this->da->getUnitsContent(
+				$this->getUnits(),
+				Localizer::me()->getRequestLanguage()->getId()
+			);
+
+			$replace = array(
+				'pattern' => array('%localizerPath%'),
+				'replace' => array(UrlHelper::me()->getLocalizerPath())
+			);
+
+			if(defined('MEDIA_HOST'))
+			{
+				$replace['pattern'][] = '%MEDIA_HOST%';
+				$replace['replace'][] = MEDIA_HOST;
+			}
+
+			foreach($result as &$contentRow)
+				$contentRow['text'] = str_replace(
+					$replace['pattern'],
+					$replace['replace'],
+					$contentRow['text']
+				);
+		
+			return $result;
+		}
+
 		private function setUnits($units)
 		{
 			$this->units = $units;
@@ -16,50 +75,5 @@
 			return $this->units;
 		}
 		
-		public function importSettings($settings)
-		{
-			$this->setUnits($settings['units']);
-
-			if(Cache::me()->hasTicketParams('content'))
-			{
-				$this->setCacheTicket(
-					Cache::me()->createTicket('content')->
-						setKey($this->getUnits())
-				);
-			}
-			
-			return $this;
-		}
-		
-		public function getModel()
-		{
-			$dbQuery = "
-				SELECT *
-				FROM " . Database::me()->getTable('Contents') . " t1
-				INNER JOIN " . Database::me()->getTable('ContentsData') . " t2
-					ON( t1.id = t2.content_id AND t2.language_id = ? )
-				WHERE
-					t1.id IN (?)
-			";
-			
-			$dbResult = Database::me()->query(
-				$dbQuery,
-				array(
-					Localizer::me()->getRequestLanguage()->getId(),
-					$this->getUnits()
-				)
-			);
-
-			$result = Database::me()->resourceToArray($dbResult);
-
-			// FIXME: move out from here?
-			if(defined('MEDIA_HOST'))
-			{
-				foreach($result as &$contentRow)
-				    $contentRow['text'] = str_replace('%MEDIA_HOST%', MEDIA_HOST, $contentRow['text']);
-			}
-
-			return $result;
-		}
 	}
 ?>

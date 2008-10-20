@@ -3,6 +3,18 @@
 
 	class PageViewFilesController extends Controller
 	{
+		/**
+		 * @var PageViewFilesDA
+		 */
+		private $da = null;
+		
+		protected function beforeRenderModel()
+		{
+			$this->da = PageViewFilesDA::create();
+			
+			return parent::beforeRenderModel();
+		}
+		
 		public function importSettings($settings)
 		{
 			if(Cache::me()->hasTicketParams('pageViewFiles'))
@@ -19,67 +31,46 @@
 		public function getModel()
 		{
 			$viewFilesId = array(Page::me()->getLayoutFileId());
-			
-			$dbQuery = "
-				SELECT view_file_id
-				FROM " . Database::me()->getTable('PagesControllers_ref') . "
-				WHERE page_id = ?
-			";
-			
-			$dbResult = Database::me()->query($dbQuery, array(Page::me()->getId()));
-			
-			foreach(Database::me()->fetchArray($dbResult) as $dbRow)
-				$viewFilesId[] = $dbRow['view_file_id'];
+						
+			foreach($this->da->getPageViewFiles(Page::me()->getId()) as $file)
+				$viewFilesId[] = $file['view_file_id'];
 			
 			return $this->getPageViewFiles($viewFilesId);
 		}
 
-		private function getPageViewFiles($filesId)
+		private function getPageViewFiles($fileIds)
 		{
 			$viewFiles = array(
 				'includeFiles' => array(),
 				'dontSplitFiles' => array()
 			);
 			
-			$dbQuery = '
-				SELECT
-					t2.id, t2.path, t2.is_can_splited, t1.recursive_include,
-					t2.`content-type`
-				FROM ' . Database::me()->getTable('ViewFilesIncludes') . ' t1
-				INNER JOIN ' . Database::me()->getTable('ViewFiles') . ' t2
-					ON(t2.id = t1.include_file_id AND t1.file_id IN(?))
-				WHERE t1.page_id IS NULL or t1.page_id = ?
-				ORDER BY t1.position ASC
-			';
-			
-			$dbResult = Database::me()->query($dbQuery, array($filesId, Page::me()->getId()));
-
 			$directFiles = array();
 			
-			while($dbRow = Database::me()->fetchArray($dbResult))
+			foreach($this->da->getFiles(Page::me()->getId(), $fileIds) as $file)
 			{
-				$dbRow['path'] = str_replace(
+				$file['path'] = str_replace(
 					'\\',
 					'/',
-					Config::me()->replaceVariables($dbRow['path'])
+					Config::me()->replaceVariables($file['path'])
 				);
 
 				$viewFiles['includeFiles'][] = array(
-					'path' => $dbRow['path'],
-					'content-type' => $dbRow['content-type'],
-					'id' => $dbRow['id']
+					'path' => $file['path'],
+					'content-type' => $file['content-type'],
+					'id' => $file['id']
 				);
 				
-				if($dbRow['is_can_splited'] == 'no')
-					$viewFiles['dontSplitFiles'][] = $dbRow['id'];
+				if($file['is_can_splited'] == 'no')
+					$viewFiles['dontSplitFiles'][] = $file['id'];
 
-				if($dbRow['recursive_include'] == 'yes')
-					$directFiles[] = $dbRow['id'];
+				if($file['recursive_include'] == 'yes')
+					$directFiles[] = $file['id'];
 			}
 
 			if(count($directFiles))
 			{
-				$includeViewFiles = $this->getPageViewFiles($directFiles);
+				$includeViewFiles = $this->{__FUNCTION__}($directFiles);
 				
 				foreach($viewFiles as $k => $v)
 					$viewFiles[$k] = array_merge($v, $includeViewFiles[$k]);

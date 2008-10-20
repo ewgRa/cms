@@ -91,7 +91,7 @@
 			<div class="engineEcho">
 				<h2>Engine echo</h2>
 				<xsl:if test="string-length(item[type=1]/data) &gt; 0">
-					<div><xsl:value-of select="item[type=1]/data"/></div>
+					<div><xsl:value-of select="item[type=1]/data" disable-output-escaping="yes"/></div>
 					<br/>
 				</xsl:if>
 				All executed for <xsl:value-of select="format-number(item[type=1]/endTime - item[type=1]/startTime, '0.00')"/>
