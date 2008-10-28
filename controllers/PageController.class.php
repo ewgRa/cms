@@ -21,7 +21,7 @@
 			$pageId = $this->getPagePathMapper()->getPageId(
 				UrlHelper::me()->getEnginePagePath()
 			);
-			
+
 			if(!$pageId)
 			{
 				throw

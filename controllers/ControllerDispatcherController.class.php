@@ -16,10 +16,16 @@
 		{
 			$result = parent::handleRequest();
 			
+			if(!$result->getModel())
+				$result->setModel(array());
+			
 			ControllerDispatcher::me()->loadControllers(Page::me()->getId());
 
 			$result->setModel(
-				ControllerDispatcher::me()->getModel()
+				array_merge(
+					$result->getModel(),
+					ControllerDispatcher::me()->getModel()
+				)
 			);
 			
 			return $result;
