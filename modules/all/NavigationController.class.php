@@ -48,6 +48,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return Model
+		 */
 		public function getModel()
 		{
 			$result = $this->da()->getByCategory(
@@ -57,7 +60,7 @@
 
 			$result['localizerPath'] = UrlHelper::me()->getLocalizerPath();
 			
-			return $result;
+			return Model::create()->setData($result);
 		}
 	}
 ?>

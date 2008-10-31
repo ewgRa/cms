@@ -1,7 +1,7 @@
 <?php
-	if($model['includeFiles'])
+	if($model->has('includeFiles'))
 	{
-		foreach($model['includeFiles'] as $file)
+		foreach($model->get('includeFiles') as $file)
 		{
 			switch($file['content-type'])
 			{

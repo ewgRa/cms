@@ -25,7 +25,13 @@
 					$language
 				)
 			);
-						
+			
+			if(!$this->db()->recordCount($dbResult))
+				throw new NotFoundException(
+					'No page head for page "' . $pageId
+					. '" and language "' . $language . '"'
+				);
+									
 			return $this->db()->fetchArray($dbResult);
 		}
 	}

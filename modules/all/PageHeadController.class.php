@@ -33,12 +33,22 @@
 			return $this;
 		}
 		
+		/**
+		 * @return Model
+		 */
 		public function getModel()
 		{
-			return $this->da()->getPageHead(
-				Page::me()->getId(),
-				Localizer::me()->getRequestLanguage()->getId()
-			);
+			try {
+				$head =
+					$this->da()->getPageHead(
+						Page::me()->getId(),
+						Localizer::me()->getRequestLanguage()->getId()
+					);
+			} catch(NotFoundException $e) {
+				$head = array();
+			}
+				
+			return Model::create()->setData($head);
 		}
 	}
 ?>

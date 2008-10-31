@@ -1,22 +1,22 @@
 <?php
-    if(isset($model['title']))
+    if($model->has('title'))
     {
 ?>
-	<title><?php echo $model['title']?></title>
+	<title><?php echo $model->get('title')?></title>
 <?php
     }
 
-    if(isset($model['description']))
+    if($model->has('description'))
     {
 ?>
-	<meta name="description" content="<?php echo $model['description']?>"></meta>
+	<meta name="description" content="<?php echo $model->get('description')?>"></meta>
 <?php
     }
 
-    if(isset($model['keywords']))
+    if($model->has('keywords'))
     {
 ?>
-	<meta name="description" content="<?php echo $model['keywords']?>"></meta>
+	<meta name="description" content="<?php echo $model->get('keywords')?>"></meta>
 <?php
     }
 ?>

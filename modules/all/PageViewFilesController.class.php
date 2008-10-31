@@ -29,6 +29,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return Model
+		 */
 		public function getModel()
 		{
 			$viewFilesId = array(Page::me()->getLayoutFileId());
@@ -36,7 +39,7 @@
 			foreach($this->da()->getPageViewFiles(Page::me()->getId()) as $file)
 				$viewFilesId[] = $file['view_file_id'];
 			
-			return $this->getPageViewFiles($viewFilesId);
+			return Model::create()->setData($this->getPageViewFiles($viewFilesId));
 		}
 
 		private function getPageViewFiles($fileIds)

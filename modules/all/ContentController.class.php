@@ -37,6 +37,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return Model
+		 */
 		public function getModel()
 		{
 			$result = $this->da()->getUnitsContent(
@@ -62,7 +65,7 @@
 					$contentRow['text']
 				);
 		
-			return $result;
+			return Model::create()->setData($result);
 		}
 
 		private function setUnits($units)

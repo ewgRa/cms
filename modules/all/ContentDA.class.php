@@ -26,6 +26,12 @@
 					$units
 				)
 			);
+			
+			if($this->db()->recordCount($dbResult) != count($units))
+				throw new NotFoundException(
+					'No content for one or more units "' . join('" , "', $units)
+					. '" and language "' . $language . '"'
+				);
 
 			return $this->db()->resourceToArray($dbResult);
 		}
