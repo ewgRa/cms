@@ -20,10 +20,7 @@
 			
 			$dbResult = $this->db()->query(
 				$dbQuery,
-				array(
-					$pageId,
-					$language
-				)
+				array($pageId, $language)
 			);
 			
 			if(!$this->db()->recordCount($dbResult))
