@@ -1,8 +1,15 @@
 <?php
 	/* $Id: PageViewFilesController.class.php 58 2008-08-20 03:24:57Z ewgraf $ */
 
+	/**
+	 * @todo Split media files (*.js,*.css)
+	 */
 	class PageViewFilesController extends Controller
 	{
+		const MAX_SPLIT_FILENAME_LENGTH = 255;
+		
+		private $splitMimes = array();
+		
 		/**
 		 * @var PageViewFilesDA
 		 */
@@ -14,6 +21,20 @@
 				$this->da = PageViewFilesDA::create();
 			
 			return $this->da;
+		}
+		
+		/**
+		 * @return PageViewFilesController
+		 */
+		public function addSplitMime($contentType)
+		{
+			$this->splitMimes[$contentType] = 1;
+			return $this;
+		}
+		
+		public function getSplitMimes()
+		{
+			return $this->splitMimes;
 		}
 		
 		public function importSettings($settings)
@@ -34,12 +55,35 @@
 		 */
 		public function getModel()
 		{
+			$this->addSplitMime(MimeContentTypes::TEXT_CSS);
+			
 			$viewFilesId = array(Page::me()->getLayoutFileId());
 						
 			foreach($this->da()->getPageViewFiles(Page::me()->getId()) as $file)
 				$viewFilesId[] = $file['view_file_id'];
 			
-			return Model::create()->setData($this->getPageViewFiles($viewFilesId));
+			$viewFiles = $this->getPageViewFiles($viewFilesId);
+			
+			if($this->getSplitMimes())
+			{
+				$viewFiles = MediaFilesSplitter::create()->
+					setMaxFileNameLength(self::MAX_SPLIT_FILENAME_LENGTH)->
+					setBeginPartUrl(MEDIA_HOST_SPLIT_URL)->
+					setMimeTypes($this->getSplitMimes())->
+					splitFileNames($viewFiles);
+			}
+			
+			foreach($viewFiles['includeFiles'] as &$file)
+			{
+				if(
+					defined('MEDIA_HOST')
+					&& MimeContentTypes::isMediaFile($file['content-type'])
+				) {
+					$file['path'] = MEDIA_HOST . $file['path'];
+				}
+			}
+			
+			return Model::create()->setData($viewFiles);
 		}
 
 		private function getPageViewFiles($fileIds)
