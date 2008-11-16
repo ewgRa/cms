@@ -65,13 +65,7 @@
 			$viewFiles = $this->getPageViewFiles($viewFilesId);
 			
 			if($this->getSplitMimes())
-			{
-				$viewFiles = MediaFilesSplitter::create()->
-					setMaxFileNameLength(self::MAX_SPLIT_FILENAME_LENGTH)->
-					setBeginPartUrl(MEDIA_HOST_SPLIT_URL)->
-					setMimeTypes($this->getSplitMimes())->
-					splitFileNames($viewFiles);
-			}
+				$viewFiles = $this->splitFiles($viewFiles);
 			
 			foreach($viewFiles['includeFiles'] as &$file)
 			{
@@ -79,11 +73,23 @@
 					defined('MEDIA_HOST')
 					&& MimeContentTypes::isMediaFile($file['content-type'])
 				) {
-					$file['path'] = MEDIA_HOST . $file['path'];
+					$parsedUrl = parse_url($file['path']);
+					
+					if(!isset($parsedUrl['host']))
+						$file['path'] = MEDIA_HOST . $file['path'];
 				}
 			}
 			
 			return Model::create()->setData($viewFiles);
+		}
+		
+		private function splitFiles($viewFiles)
+		{
+			return MediaFilesSplitter::create()->
+				setMaxFileNameLength(self::MAX_SPLIT_FILENAME_LENGTH)->
+				setBeginPartUrl(MEDIA_HOST_SPLIT_URL)->
+				setMimeTypes($this->getSplitMimes())->
+				splitFileNames($viewFiles);
 		}
 
 		private function getPageViewFiles($fileIds)
