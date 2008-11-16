@@ -47,6 +47,8 @@
 				);
 			}
 			
+			//$this->addSplitMime(MimeContentTypes::TEXT_CSS);
+			
 			return $this;
 		}
 		
@@ -55,8 +57,6 @@
 		 */
 		public function getModel()
 		{
-			$this->addSplitMime(MimeContentTypes::TEXT_CSS);
-			
 			$viewFilesId = array(Page::me()->getLayoutFileId());
 						
 			foreach($this->da()->getPageViewFiles(Page::me()->getId()) as $file)
