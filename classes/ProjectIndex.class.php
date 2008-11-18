@@ -51,7 +51,7 @@
 			}
 		}
 		
-		public function catchException(Exception $e)
+		public function catchException(Exception $e, $storeDebug = true)
 		{
 			$fileName = LOG_DIR . '/errors.txt';
 			
@@ -59,19 +59,23 @@
 
 			$debugItemId = null;
 			
-			try
+			if($storeDebug)
 			{
-				if(Singleton::hasInstance('Debug'))
+				try
 				{
-					Debug::me()->addItem($this->createRequestDebugItem());
-					$debugItemId = Debug::me()->store();
+					if(Singleton::hasInstance('Debug'))
+					{
+						Debug::me()->addItem($this->createRequestDebugItem());
+						$debugItemId = Debug::me()->store();
+					}
+				}
+				catch(Exception $exception)
+				{
+					// very bad... even write debugItem failed
+					$this->catchException($exception, false);
 				}
 			}
-			catch(Exception $e)
-			{
-				// very bad... even write debugItem failed
-			}
-			
+						
 			$exceptionString = date('Y-m-d h:i:s  ') . $_SERVER['REQUEST_URI']
 				. ($debugItemId ? ' (debugItemId: ' . $debugItemId . ')' : null)
 				. PHP_EOL . $e . PHP_EOL . PHP_EOL;
