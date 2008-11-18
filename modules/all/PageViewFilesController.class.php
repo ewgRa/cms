@@ -1,9 +1,6 @@
 <?php
 	/* $Id: PageViewFilesController.class.php 58 2008-08-20 03:24:57Z ewgraf $ */
 
-	/**
-	 * @todo Split media files (*.js,*.css)
-	 */
 	class PageViewFilesController extends Controller
 	{
 		const MAX_SPLIT_FILENAME_LENGTH = 255;
@@ -14,7 +11,7 @@
 		 * @var PageViewFilesDA
 		 */
 		private $da = null;
-		
+
 		protected function da()
 		{
 			if(!$this->da)
@@ -43,11 +40,20 @@
 			{
 				$this->setCacheTicket(
 					Cache::me()->createTicket('pageViewFiles')->
-						setKey(Page::me()->getId())
+						setKey(Page::me()->getId(), $settings)
 				);
 			}
 			
-			//$this->addSplitMime(MimeContentTypes::TEXT_CSS);
+			if(isset($settings['splitMimes']) && is_array($settings['splitMimes']))
+			{
+				foreach($settings['splitMimes'] as $mime)
+				{
+					if(!MimeContentTypes::isMediaFile($mime))
+						throw new DefaultException('Don\'t know anything about mime ' . $mime);
+				
+					$this->addSplitMime($mime);
+				}
+			}
 			
 			return $this;
 		}
