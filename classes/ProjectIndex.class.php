@@ -53,6 +53,10 @@
 		
 		public function catchException(Exception $e, $storeDebug = true)
 		{
+			header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Temporarily Unavailable');
+			header('Status: 503 Service Temporarily Unavailable');
+			header('Retry-After: 3600');
+
 			$fileName = LOG_DIR . '/errors.txt';
 			
 			$logTime = file_exists($fileName) ? filemtime($fileName) : 0;
