@@ -1,6 +1,10 @@
 $Id$
 
 2008-11-18
+	* 1.05.1 released
+	
+	* 503 header when exception
+	
 	* 1.05 released
 	
 	* split mime files
