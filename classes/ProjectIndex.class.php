@@ -3,7 +3,7 @@
 
 	function exceptionHandler($data)
 	{
-	    return ProjectIndex::me()->exceptionHandler($data);
+		return ProjectIndex::me()->exceptionHandler($data);
 	}
 	
 	class ProjectIndex extends Singleton
@@ -187,7 +187,12 @@
 		{
 		    $error = error_get_last();
 
-		    if(in_array($error['type'], array(E_ERROR, E_PARSE)))
+		    if(
+		    	in_array(
+		    		$error['type'],
+		    		array(E_ERROR, E_PARSE, E_RECOVERABLE_ERROR)
+		    	)
+		    )
 		    	return $this->catchException(new DefaultException($data));
 		    
 		    return $data;
