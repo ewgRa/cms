@@ -56,12 +56,11 @@
 			header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Temporarily Unavailable');
 			header('Status: 503 Service Temporarily Unavailable');
 			header('Retry-After: 3600');
-
-			$fileName = LOG_DIR . '/errors.txt';
 			
+			$fileName = LOG_DIR . '/errors.txt';
 			$logTime = file_exists($fileName) ? filemtime($fileName) : 0;
-
 			$debugItemId = null;
+			
 			
 			if($storeDebug)
 			{
@@ -79,8 +78,9 @@
 					$this->catchException($exception, false);
 				}
 			}
-						
-			$exceptionString = date('Y-m-d h:i:s  ') . $_SERVER['REQUEST_URI']
+			
+			$exceptionString = date('Y-m-d h:i:s ') . $_SERVER['HTTP_HOST']
+				. $_SERVER['REQUEST_URI']
 				. ($debugItemId ? ' (debugItemId: ' . $debugItemId . ')' : null)
 				. PHP_EOL . $e . PHP_EOL . PHP_EOL;
 			
@@ -97,14 +97,14 @@
 					'Check log: ' . $fileName . PHP_EOL . PHP_EOL . 'Last exception:'
 						. PHP_EOL . $exceptionString
 				);
-			
+						
 			$result = null;
 			
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$result = ($e instanceof DefaultException) ? $e->toHtmlString() : $e;
 			else
 				$result = file_get_contents(SITE_DIR . '/view/html/haserror.html');
-			
+				
 			return $result;
 		}
 		
@@ -121,10 +121,7 @@
 				return $modelAndView->render();
 			}
 			else
-			{
-				echo ProjectIndex::catchException($e);
-				die;
-			}
+				throw $e;
 		}
 		
 		public function createRequestDebugItem()
