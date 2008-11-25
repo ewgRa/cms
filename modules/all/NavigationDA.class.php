@@ -31,10 +31,12 @@
 			);
 			
 			if(!$this->db()->recordCount($dbResult))
-				throw new NotFoundException(
-					'No navigation for category "' . $category
-					. '" and language "' . $language . '"'
-				);
+				throw
+					ExceptionsMapper::me()->createException('NotFound')->
+						setMessage(
+							'No navigation for category "' . $category
+							. '" and language "' . $language . '"'
+						);
 			
 			return $this->db()->resourceToArray($dbResult);
 		}

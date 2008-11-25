@@ -16,7 +16,7 @@
 				INNER JOIN " . $this->db()->getTable('ContentsData') . " t2
 					ON( t1.id = t2.content_id AND t2.language_id = ? )
 				WHERE
-					t1.id IN (?)
+					t1.id IN (?) AND t1.status = 'normal'
 			";
 			
 			$dbResult = $this->db()->query(
@@ -28,10 +28,12 @@
 			);
 			
 			if($this->db()->recordCount($dbResult) != count($units))
-				throw new NotFoundException(
-					'No content for one or more units "' . join('" , "', $units)
-					. '" and language "' . $language . '"'
-				);
+				throw
+					ExceptionsMapper::me()->createException('NotFound')->
+						setMessage(
+							'No content for one or more units "' . join('" , "', $units)
+							. '" and language "' . $language . '"'
+						);
 
 			return $this->db()->resourceToArray($dbResult);
 		}

@@ -24,11 +24,13 @@
 			);
 			
 			if(!$this->db()->recordCount($dbResult))
-				throw new NotFoundException(
-					'No page head for page "' . $pageId
-					. '" and language "' . $language . '"'
-				);
-									
+				throw
+					ExceptionsMapper::me()->createException('NotFound')->
+						setMessage(
+							'No page head for page "' . $pageId
+							. '" and language "' . $language . '"'
+						);
+
 			return $this->db()->fetchArray($dbResult);
 		}
 	}
