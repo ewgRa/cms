@@ -1,5 +1,14 @@
 $Id$
 
+2008-11-26
+	* 1.1 released
+	
+	* fix work with exceptions
+	
+	* fix catch E_RECOVABLE error
+	
+	* content status
+
 2008-11-19
 	* 1.05.3 released
 	
