@@ -12,16 +12,14 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest()
+		public function handleRequest(ModelAndView $mav)
 		{
-			$result = parent::handleRequest();
-			
 			Session::me()->relativeStart();
 			
 			if(Session::me()->isStarted())
 				User::me()->onSessionStarted();
 			
-			return $result;
+			return parent::handleRequest($mav);
 		}
 	}
 ?>

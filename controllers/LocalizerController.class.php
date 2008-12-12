@@ -12,10 +12,8 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest()
+		public function handleRequest(ModelAndView $mav)
 		{
-			$result = parent::handleRequest();
-			
 			if(Session::me()->getCookie('languageId'))
 			{
 				Localizer::me()->setCookieLanguage(
@@ -36,7 +34,7 @@
 					'languageAbbr', Localizer::me()->getRequestLanguage()->getAbbr()
 				);
 			
-			return $result;
+			return parent::handleRequest($mav);
 		}
 	}
 ?>

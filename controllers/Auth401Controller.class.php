@@ -14,10 +14,8 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest()
+		public function handleRequest(ModelAndView $mav)
 		{
-			$result = parent::handleRequest();
-
 			if(!User::me()->getId() && isset($_SERVER['PHP_AUTH_USER']))
 				User::me()->login($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 			
@@ -28,7 +26,7 @@
 					$this->requiredRights
 				) == $this->requiredRights
 			)
-				return $result;
+				return parent::handleRequest($mav);
 			
 			return $this->unAuthorized('Enter you auth data', 'Need auth');
 		}

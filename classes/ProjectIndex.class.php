@@ -114,9 +114,11 @@
 			{
 				Localizer::me()->setPath('/page-not-found.html');
 
-				$chainController = createBeginChain();
+				$chainController = createCommonChain();
 	
-				$modelAndView = $chainController->handleRequest();
+				$modelAndView = ModelAndView::create();
+				
+				$chainController->handleRequest($modelAndView);
 				
 				return $modelAndView->render();
 			}

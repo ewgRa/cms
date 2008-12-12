@@ -12,13 +12,11 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest()
+		public function handleRequest(ModelAndView $mav)
 		{
-			$result = parent::handleRequest();
-			
 			$this->fillMap();
 						
-			return $result;
+			return parent::handleRequest($mav);
 		}
 		
 		/**

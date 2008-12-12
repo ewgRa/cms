@@ -12,10 +12,8 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest()
+		public function handleRequest(ModelAndView $mav)
 		{
-			$result = parent::handleRequest();
-			
 			$startTime = microtime(true);
 			
 			$pageId = $this->getPagePathMapper()->getPageId(
@@ -54,14 +52,14 @@
 			// FIXME: operation with user
 			Page::me()->checkAccessPage(User::me()->getRights());
 
-			$result->setView(
+			$mav->setView(
 				ViewFactory::createByFileId(Page::me()->getLayoutFileId())
 			);
 			
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->addDebug($startTime, microtime(true));
 			
-			return $result;
+			return parent::handleRequest($mav);
 		}
 
 		/**
