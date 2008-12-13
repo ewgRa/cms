@@ -8,6 +8,9 @@
 	
 	class ProjectIndex extends Singleton
 	{
+		private $errorTemplate = null;
+		private $canShowDebug = true;
+		
 		/**
 		 * @return ProjectIndex
 		 */
@@ -15,7 +18,50 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-				
+			
+		public function __construct()
+		{
+			$this->errorTemplate = SITE_DIR . '/view/html/haserror.html';
+			return parent::__construct();
+		}
+		
+		/**
+		 * @return ProjectIndex
+		 */
+		public function showDebug()
+		{
+			$this->canShowDebug = true;
+			return $this;
+		}
+		
+		/**
+		 * @return ProjectIndex
+		 */
+		public function hideDebug()
+		{
+			$this->canShowDebug = false;
+			return $this;
+		}
+		
+		public function canShowDebug()
+		{
+			return $this->canShowDebug;
+		}
+		
+		/**
+		 * @return ProjectIndex
+		 */
+		public function setErrorTemplate($template)
+		{
+			$this->errorTemplate = $template;
+			return $this;
+		}
+		
+		public function getErrorTemplate()
+		{
+			return $this->errorTemplate;
+		}
+		
 		public function run()
 		{
 			$startTime = microtime(true);
@@ -100,10 +146,14 @@
 						
 			$result = null;
 			
-			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+			if(
+				Singleton::hasInstance('Debug')
+				&& Debug::me()->isEnabled()
+				&& $this->canShowDebug()
+			)
 				$result = ($e instanceof DefaultException) ? $e->toHtmlString() : $e;
 			else
-				$result = file_get_contents(SITE_DIR . '/view/html/haserror.html');
+				$result = file_get_contents($this->getErrorTemplate());
 				
 			return $result;
 		}
