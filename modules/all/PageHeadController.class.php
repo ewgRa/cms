@@ -36,7 +36,7 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel()
+		public function getModel(HttpRequest $request)
 		{
 			try {
 				$head =

@@ -12,15 +12,17 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest(ModelAndView $mav)
-		{
+		public function handleRequest(
+			HttpRequest $request,
+			ModelAndView $mav
+		) {
 			ControllerDispatcher::me()->loadControllers(Page::me()->getId());
 
 			$mav->getModel()->mergeModel(
-				ControllerDispatcher::me()->getModel()
+				ControllerDispatcher::me()->getModel($request)
 			);
 			
-			return parent::handleRequest($mav);
+			return parent::handleRequest($request, $mav);
 		}
 	}
 ?>

@@ -40,7 +40,7 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel()
+		public function getModel(HttpRequest $request)
 		{
 			$result = $this->da()->getUnitsContent(
 				$this->getUnits(),

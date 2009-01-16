@@ -158,8 +158,10 @@
 			return $result;
 		}
 		
-		public function catchPageNotFoundException(PageException $e)
-		{
+		public function catchPageNotFoundException(
+			HttpRequest $request,
+			PageException $e
+		) {
 			if($e->getCode() == PageException::PAGE_NOT_FOUND)
 			{
 				Localizer::me()->setPath('/page-not-found.html');
@@ -168,7 +170,7 @@
 	
 				$modelAndView = ModelAndView::create();
 				
-				$chainController->handleRequest($modelAndView);
+				$chainController->handleRequest($request, $modelAndView);
 				
 				return $modelAndView->render();
 			}

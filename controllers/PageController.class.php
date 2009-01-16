@@ -12,8 +12,10 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest(ModelAndView $mav)
-		{
+		public function handleRequest(
+			HttpRequest $request,
+			ModelAndView $mav
+		) {
 			$startTime = microtime(true);
 			
 			$pageId = $this->getPagePathMapper()->getPageId(
@@ -59,7 +61,7 @@
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->addDebug($startTime, microtime(true));
 			
-			return parent::handleRequest($mav);
+			return parent::handleRequest($request, $mav);
 		}
 
 		/**

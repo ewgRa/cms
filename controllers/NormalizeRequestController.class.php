@@ -12,11 +12,13 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest(ModelAndView $mav)
-		{
+		public function handleRequest(
+			HttpRequest $request,
+			ModelAndView $mav
+		) {
 			$this->normalizeRequest();
 			
-			return parent::handleRequest($mav);
+			return parent::handleRequest($request, $mav);
 		}
 		
 		/**

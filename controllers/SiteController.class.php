@@ -12,11 +12,13 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest(ModelAndView $mav)
-		{
-			Site::me()->setHost($_SERVER['HTTP_HOST'])->define();
+		public function handleRequest(
+			HttpRequest $request,
+			ModelAndView $mav
+		) {
+					Site::me()->setHost($_SERVER['HTTP_HOST'])->define();
 			
-			return parent::handleRequest($mav);
+			return parent::handleRequest($request, $mav);
 		}
 	}
 ?>

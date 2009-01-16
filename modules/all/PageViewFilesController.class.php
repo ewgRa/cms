@@ -63,7 +63,7 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel()
+		public function getModel(HttpRequest $request)
 		{
 			$viewFilesId = array(Page::me()->getLayoutFileId());
 						
