@@ -18,16 +18,18 @@
 		) {
 			$startTime = microtime(true);
 			
-			$pageId = $this->getPagePathMapper()->getPageId(
-				UrlHelper::me()->getEnginePagePath()
-			);
+			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			
+			$clearPath = $localizer->getClearRequestPath();
+			
+			$pageId = $this->getPagePathMapper()->getPageId($clearPath);
 
 			if(!$pageId)
 			{
 				throw
 					ExceptionsMapper::me()->createException('Page')->
 						setCode(PageException::PAGE_NOT_FOUND)->
-						setUrl(UrlHelper::me()->getEnginePagePath());
+						setUrl($clearPath);
 			}
 			
 			try
@@ -41,25 +43,30 @@
 				$cacheTicket = null;
 			}
 			
+			$page = null;
+			
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
-				Page::me()->load($pageId);
+				$page = Page::create();
+				$page->load($pageId);
 				
 				if($cacheTicket)
-					$cacheTicket->setData(Page::me())->storeData();
+					$cacheTicket->setData($page)->storeData();
 			}
 			else
-				Singleton::setInstance('Page', $cacheTicket->getData());
+				$page = $cacheTicket->getData();
 
 			// FIXME: operation with user
-			Page::me()->checkAccessPage(User::me()->getRights());
+			$page->checkAccessPage(User::me()->getRights());
 
 			$mav->setView(
-				ViewFactory::createByFileId(Page::me()->getLayoutFileId())
+				ViewFactory::createByFileId($page->getLayoutFileId())
 			);
 			
+			$request->setAttached(AttachedAliases::PAGE, $page);
+			
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
-				$this->addDebug($startTime, microtime(true));
+				$this->addDebug($startTime, microtime(true), $page);
 			
 			return parent::handleRequest($request, $mav);
 		}
@@ -97,10 +104,10 @@
 		/**
 		 * @return PageController
 		 */
-		private function addDebug($startTime, $endTime)
+		private function addDebug($startTime, $endTime, Page $page)
 		{
 			$debugItem = DebugItem::create()->
-				setData(Page::me())->
+				setData($page)->
 				setType(DebugItem::PAGE)->
 				setStartTime($startTime)->
 				setEndTime($endTime);

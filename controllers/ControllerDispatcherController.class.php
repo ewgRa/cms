@@ -16,7 +16,7 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			ControllerDispatcher::me()->loadControllers(Page::me()->getId());
+			ControllerDispatcher::me()->loadControllers($request);
 
 			$mav->getModel()->mergeModel(
 				ControllerDispatcher::me()->getModel($request)

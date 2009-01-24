@@ -1,6 +1,9 @@
 <?php
 	/* $Id$ */
 
+	if(!class_exists('Singleton', false))
+		require_once FRAMEWORK_DIR . '/patterns/Singleton.class.php';
+	
 	function exceptionHandler($data)
 	{
 		return ProjectIndex::me()->exceptionHandler($data);
@@ -72,8 +75,8 @@
 			
 			try
 			{
-				init();
-				$renderedOutput = run();
+				$request = init();
+				$renderedOutput = run($request);
 			}
 			catch(Exception $e)
 			{
@@ -162,9 +165,11 @@
 			HttpRequest $request,
 			PageException $e
 		) {
+			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			
 			if($e->getCode() == PageException::PAGE_NOT_FOUND)
 			{
-				Localizer::me()->setPath('/page-not-found.html');
+				$localizer->setPath('/page-not-found.html');
 
 				$chainController = createCommonChain();
 	

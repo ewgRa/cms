@@ -16,24 +16,26 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
+			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			
 			if(Session::me()->getCookie('languageId'))
 			{
-				Localizer::me()->setCookieLanguage(
+				$localizer->setCookieLanguage(
 					Language::create()->
 						setId(Session::me()->getCookie('languageId'))->
 						setAbbr(Session::me()->getCookie('languageAbbr'))
 				);
 			}
 			
-			Localizer::me()->defineLanguage();
+			$localizer->defineLanguage();
 			
 			//try set cookie
 			Session::me()->
 				setCookie(
-					'languageId', Localizer::me()->getRequestLanguage()->getId()
+					'languageId', $localizer->getRequestLanguage()->getId()
 				)->
 				setCookie(
-					'languageAbbr', Localizer::me()->getRequestLanguage()->getAbbr()
+					'languageAbbr', $localizer->getRequestLanguage()->getAbbr()
 				);
 			
 			return parent::handleRequest($request, $mav);

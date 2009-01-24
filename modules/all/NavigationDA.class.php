@@ -25,7 +25,7 @@
 			$dbResult = $this->db()->query(
 				$dbQuery,
 				array(
-					Localizer::me()->getRequestLanguage()->getId(),
+					$language,
 					$category
 				)
 			);

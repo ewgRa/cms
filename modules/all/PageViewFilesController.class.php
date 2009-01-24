@@ -34,13 +34,16 @@
 			return $this->splitMimes;
 		}
 		
-		public function importSettings($settings)
+		public function importSettings(HttpRequest $request, $settings)
 		{
 			if(Cache::me()->hasTicketParams('pageViewFiles'))
 			{
 				$this->setCacheTicket(
 					Cache::me()->createTicket('pageViewFiles')->
-						setKey(Page::me()->getId(), $settings)
+						setKey(
+							$request->getAttached(AttachedAliases::PAGE)->getId(),
+							$settings
+						)
 				);
 			}
 			
@@ -65,12 +68,16 @@
 		 */
 		public function getModel(HttpRequest $request)
 		{
-			$viewFilesId = array(Page::me()->getLayoutFileId());
-						
-			foreach($this->da()->getPageViewFiles(Page::me()->getId()) as $file)
+			$page = $request->getAttached(AttachedAliases::PAGE);
+			
+			$viewFilesId = array(
+				$page->getLayoutFileId()
+			);
+			
+			foreach($this->da()->getPageViewFiles($page) as $file)
 				$viewFilesId[] = $file['view_file_id'];
 			
-			$viewFiles = $this->getPageViewFiles($viewFilesId);
+			$viewFiles = $this->getPageViewFiles($page, $viewFilesId);
 			
 			if($this->getSplitMimes())
 				$viewFiles = $this->splitFiles($viewFiles);
@@ -100,7 +107,7 @@
 				splitFileNames($viewFiles);
 		}
 
-		private function getPageViewFiles($fileIds)
+		private function getPageViewFiles(Page $page, $fileIds)
 		{
 			$viewFiles = array(
 				'includeFiles' => array(),
@@ -109,7 +116,7 @@
 			
 			$directFiles = array();
 			
-			foreach($this->da()->getFiles(Page::me()->getId(), $fileIds) as $file)
+			foreach($this->da()->getFiles($page, $fileIds) as $file)
 			{
 				$file['path'] = str_replace(
 					'\\',
@@ -132,7 +139,7 @@
 
 			if(count($directFiles))
 			{
-				$includeViewFiles = $this->{__FUNCTION__}($directFiles);
+				$includeViewFiles = $this->{__FUNCTION__}($page, $directFiles);
 				
 				foreach($viewFiles as $k => $v)
 					$viewFiles[$k] = array_merge($v, $includeViewFiles[$k]);

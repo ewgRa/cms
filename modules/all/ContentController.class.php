@@ -18,18 +18,20 @@
 			return $this->da;
 		}
 		
-		public function importSettings($settings)
+		public function importSettings(HttpRequest $request, $settings)
 		{
 			$this->setUnits($settings['units']);
 
 			if(Cache::me()->hasTicketParams('content'))
 			{
+				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+				
 				$this->setCacheTicket(
 					Cache::me()->createTicket('content')->
 						setKey(
 							$this->getUnits(),
-							Localizer::me()->getRequestLanguage(),
-							Localizer::me()->getSource()
+							$localizer->getRequestLanguage(),
+							$localizer->getSource()
 						)
 				);
 			}
@@ -42,14 +44,16 @@
 		 */
 		public function getModel(HttpRequest $request)
 		{
+			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			
 			$result = $this->da()->getUnitsContent(
 				$this->getUnits(),
-				Localizer::me()->getRequestLanguage()->getId()
+				$localizer->getRequestLanguage()->getId()
 			);
 
 			$replace = array(
-				'pattern' => array('%localizerPath%'),
-				'replace' => array(UrlHelper::me()->getLocalizerPath())
+				'pattern' => array('%baseUrl%'),
+				'replace' => array($localizer->getBaseUrl())
 			);
 
 			if(defined('MEDIA_HOST'))

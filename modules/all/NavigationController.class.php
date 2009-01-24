@@ -29,18 +29,20 @@
 			return $this->category;
 		}
 		
-		public function importSettings($settings)
+		public function importSettings(HttpRequest $request, $settings)
 		{
 			$this->setCategory($settings['category']);
 
 			if(Cache::me()->hasTicketParams('navigation'))
 			{
+				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+				
 				$this->setCacheTicket(
 					Cache::me()->createTicket('navigation')->
 						setKey(
 							$this->getCategory(),
-							Localizer::me()->getRequestLanguage(),
-							Localizer::me()->getSource()
+							$localizer->getRequestLanguage(),
+							$localizer->getSource()
 						)
 				);
 			}
@@ -53,12 +55,14 @@
 		 */
 		public function getModel(HttpRequest $request)
 		{
+			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			
 			$result = $this->da()->getByCategory(
 				$this->getCategory(),
-				Localizer::me()->getRequestLanguage()->getId()
+				$localizer->getRequestLanguage()->getId()
 			);
 
-			$result['localizerPath'] = UrlHelper::me()->getLocalizerPath();
+			$result['baseUrl'] = $localizer->getBaseUrl();
 			
 			return Model::create()->setData($result);
 		}

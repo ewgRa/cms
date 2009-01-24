@@ -5,7 +5,7 @@
 <xsl:template match="/document">
 	<ul>
 	<xsl:for-each select="item">
-		<li><a href="{/document/localizerPath}{uri}"><xsl:value-of select="text" disable-output-escaping="yes"/></a></li>
+		<li><a href="{/document/baseUrl}{uri}"><xsl:value-of select="text" disable-output-escaping="yes"/></a></li>
 	</xsl:for-each>
 	</ul>
 </xsl:template>

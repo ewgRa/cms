@@ -8,7 +8,7 @@
 			return new self;
 		}
 		
-		public function getPageViewFiles($pageId)
+		public function getPageViewFiles(Page $page)
 		{
 			$dbQuery = "
 				SELECT view_file_id
@@ -16,12 +16,12 @@
 				WHERE page_id = ?
 			";
 			
-			$dbResult = $this->db()->query($dbQuery, array($pageId));
+			$dbResult = $this->db()->query($dbQuery, array($page->getId()));
 			
 			return $this->db()->resourceToArray($dbResult);
 		}
 		
-		public function getFiles($pageId, $fileIds)
+		public function getFiles(Page $page, $fileIds)
 		{
 			$dbQuery = '
 				SELECT
@@ -34,7 +34,11 @@
 				ORDER BY t1.position ASC
 			';
 			
-			$dbResult = $this->db()->query($dbQuery, array($fileIds, $pageId));
+			$dbResult =
+				$this->db()->query(
+					$dbQuery,
+					array($fileIds, $page->getId())
+				);
 						
 			return $this->db()->resourceToArray($dbResult);
 		}
