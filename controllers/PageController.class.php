@@ -20,7 +20,10 @@
 			
 			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
 			
-			$clearPath = $localizer->getClearRequestPath();
+			$clearPath =
+				$localizer->
+					removeLanguageFromUrl($request->getUrl())->
+					getPath();
 			
 			$pageId = $this->getPagePathMapper()->getPageId($clearPath);
 

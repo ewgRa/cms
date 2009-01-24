@@ -27,7 +27,7 @@
 				);
 			}
 			
-			$localizer->defineLanguage();
+			$localizer->defineLanguage($request->getUrl());
 			
 			//try set cookie
 			Session::me()->
