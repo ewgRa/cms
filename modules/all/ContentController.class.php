@@ -26,12 +26,15 @@
 			{
 				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
 				
+				$page = $request->getAttached(AttachedAliases::PAGE);
+			
 				$this->setCacheTicket(
 					Cache::me()->createTicket('content')->
 						setKey(
 							$this->getUnits(),
 							$localizer->getRequestLanguage(),
-							$localizer->getSource()
+							$localizer->getSource(),
+							$page->getBaseUrl()->getPath()
 						)
 				);
 			}
@@ -51,9 +54,11 @@
 				$localizer->getRequestLanguage()->getId()
 			);
 
+			$page = $request->getAttached(AttachedAliases::PAGE);
+			
 			$replace = array(
 				'pattern' => array('%baseUrl%'),
-				'replace' => array($localizer->getBaseUrl())
+				'replace' => array($page->getBaseUrl()->getPath())
 			);
 
 			if(defined('MEDIA_HOST'))

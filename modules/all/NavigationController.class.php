@@ -37,12 +37,15 @@
 			{
 				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
 				
+				$page = $request->getAttached(AttachedAliases::PAGE);
+			
 				$this->setCacheTicket(
 					Cache::me()->createTicket('navigation')->
 						setKey(
 							$this->getCategory(),
 							$localizer->getRequestLanguage(),
-							$localizer->getSource()
+							$localizer->getSource(),
+							$page->getBaseUrl()->getPath()
 						)
 				);
 			}
@@ -62,7 +65,9 @@
 				$localizer->getRequestLanguage()->getId()
 			);
 
-			$result['baseUrl'] = $localizer->getBaseUrl();
+			$page = $request->getAttached(AttachedAliases::PAGE);
+			
+			$result['baseUrl'] = $page->getBaseUrl()->getPath();
 			
 			return Model::create()->setData($result);
 		}

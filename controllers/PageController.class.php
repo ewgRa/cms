@@ -66,6 +66,21 @@
 				ViewFactory::createByFileId($page->getLayoutFileId())
 			);
 			
+			
+			$baseUrl = HttpUrl::create()->setPath('');
+			
+			if(
+				$localizer->isLanguageInUrl()
+				&& $localizer->getSource() != Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
+			) {
+				$baseUrl->setPath(
+					'/' . $localizer->getRequestLanguage()->getAbbr()
+					. $baseUrl->getPath()
+				);
+			}
+			
+			$page->setBaseUrl($baseUrl);
+			
 			$request->setAttached(AttachedAliases::PAGE, $page);
 			
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
