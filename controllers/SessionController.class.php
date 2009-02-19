@@ -18,9 +18,6 @@
 		) {
 			Session::me()->relativeStart();
 			
-			if(Session::me()->isStarted())
-				User::me()->onSessionStarted();
-			
 			return parent::handleRequest($request, $mav);
 		}
 	}

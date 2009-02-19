@@ -165,11 +165,9 @@
 			HttpRequest $request,
 			PageException $e
 		) {
-			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
-			
 			if($e->getCode() == PageException::PAGE_NOT_FOUND)
 			{
-				$localizer->setPath('/page-not-found.html');
+				$request->setUrl(HttpUrl::create()->parse('/page-not-found.html'));
 
 				$chainController = createCommonChain();
 	

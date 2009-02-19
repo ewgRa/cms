@@ -9,7 +9,15 @@
 		 * @var ContentDA
 		 */
 		private $da	= null;
+
+		/**
+		 * @var ContentCacheWorker
+		 */
+		private $cacheWorker = null;
 		
+		/**
+		 * @return ContentDA
+		 */
 		public function da()
 		{
 			if(!$this->da)
@@ -18,26 +26,30 @@
 			return $this->da;
 		}
 		
+		/**
+		 * @return ContentCacheWorker
+		 */
+		public function cacheWorker()
+		{
+			if(!$this->cacheWorker)
+				$this->cacheWorker = ContentCacheWorker::create();
+
+			return $this->cacheWorker;
+		}
+		
 		public function importSettings(HttpRequest $request, $settings)
 		{
+			// FIXME: check that units isset and its array
 			$this->setUnits($settings['units']);
 
-			if(Cache::me()->hasTicketParams('content'))
-			{
-				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
-				
-				$page = $request->getAttached(AttachedAliases::PAGE);
-			
-				$this->setCacheTicket(
-					Cache::me()->createTicket('content')->
-						setKey(
-							$this->getUnits(),
-							$localizer->getRequestLanguage(),
-							$localizer->getSource(),
-							$page->getBaseUrl()->getPath()
-						)
-				);
-			}
+			if(
+				$cacheTicket =
+					$this->cacheWorker()->createTicket(
+						$request,
+						array($this->getUnits())
+					)
+			)
+				$this->setCacheTicket($cacheTicket);
 			
 			return $this;
 		}

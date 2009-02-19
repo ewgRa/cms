@@ -18,13 +18,16 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			if(!User::me()->getId() && isset($_SERVER['PHP_AUTH_USER']))
-				User::me()->login($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+			$user = $request->getAttached(AttachedAliases::USER);
+			
+			if($user && !$user->getId() && isset($_SERVER['PHP_AUTH_USER']))
+				$user->login($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 			
 			if(
-				User::me()->getId()
-				&& 	array_intersect(
-					array_values(User::me()->getRights()),
+				$user
+				&& $user->getId()
+				&& array_intersect(
+					array_values($user->getRights()),
 					$this->requiredRights
 				) == $this->requiredRights
 			)

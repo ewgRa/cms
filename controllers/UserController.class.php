@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * //FIXME: tested?
 	*/
-	class ControllerDispatcherController extends ChainController
+	class UserController extends ChainController
 	{
 		/**
 		 * @return ModelAndView
@@ -16,12 +16,12 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$contrllerDispatcher = ControllerDispatcher::create();
-			$contrllerDispatcher->loadControllers($request);
-
-			$mav->getModel()->mergeModel(
-				$contrllerDispatcher->getModel($request)
-			);
+			$user = User::create();
+			
+			$request->setAttached(AttachedAliases::USER, $user);
+			
+			if(Session::me()->isStarted())
+				$user->onSessionStarted();
 			
 			return parent::handleRequest($request, $mav);
 		}

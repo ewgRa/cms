@@ -1,5 +1,5 @@
 <?php
-    if($model->has('title'))
+	if($model->has('title'))
     {
 ?>
 	<title><?php echo $model->get('title')?></title>

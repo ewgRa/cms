@@ -16,9 +16,36 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-					Site::me()->setHost($_SERVER['HTTP_HOST'])->define();
+			$request->setAttached(
+				AttachedAliases::SITE,
+				$this->getSite()
+			);
 			
 			return parent::handleRequest($request, $mav);
+		}
+		
+		private function getSite()
+		{
+			try {
+				$cacheTicket = Cache::me()->createTicket('site')->
+					setKey($_SERVER['HTTP_HOST'])->
+					restoreData();
+			} catch(MissingArgumentException $e) {
+				$cacheTicket = null;
+			}
+
+			if(!$cacheTicket || $cacheTicket->isExpired())
+			{
+				$site = Site::create();
+				$site->setHost($_SERVER['HTTP_HOST'])->define();
+
+				if($cacheTicket)
+					$cacheTicket->setData($site)->storeData();
+			}
+			else
+				$site = $cacheTicket->getData();
+				
+			return $site;
 		}
 	}
 ?>

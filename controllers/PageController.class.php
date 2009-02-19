@@ -59,8 +59,9 @@
 			else
 				$page = $cacheTicket->getData();
 
-			// FIXME: operation with user
-			$page->checkAccessPage(User::me()->getRights());
+			$page->checkAccessPage(
+				$request->getAttached(AttachedAliases::USER)
+			);
 
 			$mav->setView(
 				ViewFactory::createByFileId($page->getLayoutFileId())
