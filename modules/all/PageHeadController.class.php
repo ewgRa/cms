@@ -18,12 +18,12 @@
 		
 		public function importSettings(HttpRequest $request, $settings)
 		{
-			if(Cache::me()->hasTicketParams('page'))
+			if(Cache::me()->getPool()->hasTicketParams('page'))
 			{
 				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
 				
 				$this->setCacheTicket(
-					Cache::me()->createTicket('page')->
+					Cache::me()->getPool()->createTicket('page')->
 						setKey(
 							$request->getAttached(AttachedAliases::PAGE)->getId(),
 							$localizer->getRequestLanguage(),

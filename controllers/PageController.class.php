@@ -37,7 +37,7 @@
 			
 			try
 			{
-				$cacheTicket = Cache::me()->createTicket('page')->
+				$cacheTicket = Cache::me()->getPool()->createTicket('page')->
 					setKey($pageId)->
 					restoreData();
 			}
@@ -59,9 +59,12 @@
 			else
 				$page = $cacheTicket->getData();
 
-			$page->checkAccessPage(
-				$request->getAttached(AttachedAliases::USER)
-			);
+			$user = $request->getAttached(AttachedAliases::USER);
+			
+			if(!$user)
+				$user = User::create();
+			
+			$page->checkAccessPage($user);
 
 			$mav->setView(
 				ViewFactory::createByFileId($page->getLayoutFileId())
@@ -99,7 +102,7 @@
 			
 			try
 			{
-				$cacheTicket = Cache::me()->createTicket('pagePathMapper')->
+				$cacheTicket = Cache::me()->getPool()->createTicket('pagePathMapper')->
 					restoreData();
 			}
 			catch(MissingArgumentException $e)

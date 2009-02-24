@@ -33,14 +33,14 @@
 		{
 			$this->setCategory($settings['category']);
 
-			if(Cache::me()->hasTicketParams('navigation'))
+			if(Cache::me()->getPool()->hasTicketParams('navigation'))
 			{
 				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
 				
 				$page = $request->getAttached(AttachedAliases::PAGE);
 			
 				$this->setCacheTicket(
-					Cache::me()->createTicket('navigation')->
+					Cache::me()->getPool()->createTicket('navigation')->
 						setKey(
 							$this->getCategory(),
 							$localizer->getRequestLanguage(),

@@ -1,10 +1,10 @@
 <?php
 	/* $Id$ */
 
-	class ContentCache extends CacheWorker
+	class ContentCacheWorker extends CacheWorker
 	{
 		/**
-		 * @return ContentCache
+		 * @return ContentCacheWorker
 		 */
 		public static function create()
 		{
@@ -18,13 +18,13 @@
 		{
 			$result = null;
 			
-			if($this->cache()->hasTicketParams('content'))
+			if($this->cache()->getPool()->hasTicketParams('content'))
 			{
 				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
 				$page = $request->getAttached(AttachedAliases::PAGE);
 				
 				$result =
-					$this->cache()->createTicket('content')->
+					$this->cache()->getPool()->createTicket('content')->
 						setKey(
 							$units,
 							$localizer->getRequestLanguage(),
