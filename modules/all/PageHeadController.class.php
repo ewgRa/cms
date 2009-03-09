@@ -16,16 +16,16 @@
 			return $this->da;
 		}
 		
-		public function importSettings(HttpRequest $request, $settings)
+		public function importSettings($settings)
 		{
-			if(Cache::me()->getPool()->hasTicketParams('page'))
+			if(Cache::me()->hasTicketParams('page'))
 			{
-				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+				$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
 				
 				$this->setCacheTicket(
-					Cache::me()->getPool()->createTicket('page')->
+					Cache::me()->createTicket('page')->
 						setKey(
-							$request->getAttached(AttachedAliases::PAGE)->getId(),
+							$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
 							$localizer->getRequestLanguage(),
 							__CLASS__, __FUNCTION__
 						)
@@ -38,14 +38,14 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel(HttpRequest $request)
+		public function getModel()
 		{
-			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
 			
 			try {
 				$head =
 					$this->da()->getPageHead(
-						$request->getAttached(AttachedAliases::PAGE)->getId(),
+						$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
 						$localizer->getRequestLanguage()->getId()
 					);
 			} catch(NotFoundException $e) {

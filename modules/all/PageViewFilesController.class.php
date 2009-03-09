@@ -34,14 +34,14 @@
 			return $this->splitMimes;
 		}
 		
-		public function importSettings(HttpRequest $request, $settings)
+		public function importSettings($settings)
 		{
-			if(Cache::me()->getPool()->hasTicketParams('pageViewFiles'))
+			if(Cache::me()->hasTicketParams('pageViewFiles'))
 			{
 				$this->setCacheTicket(
-					Cache::me()->getPool()->createTicket('pageViewFiles')->
+					Cache::me()->createTicket('pageViewFiles')->
 						setKey(
-							$request->getAttached(AttachedAliases::PAGE)->getId(),
+							$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
 							$settings
 						)
 				);
@@ -66,9 +66,9 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel(HttpRequest $request)
+		public function getModel()
 		{
-			$page = $request->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
 			
 			$viewFilesId = array(
 				$page->getLayoutFileId()

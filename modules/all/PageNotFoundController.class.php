@@ -3,9 +3,9 @@
 
 	class PageNotFoundController extends Controller
 	{
-		public function getModel(HttpRequest $request)
+		public function getModel()
 		{
-			$request->getAttached(AttachedAliases::PAGE)->
+			$this->getRequest()->getAttached(AttachedAliases::PAGE)->
 				getHeader()->
 				add($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 			

@@ -37,7 +37,7 @@
 			
 			try
 			{
-				$cacheTicket = Cache::me()->getPool()->createTicket('page')->
+				$cacheTicket = Cache::me()->createTicket('page')->
 					setKey($pageId)->
 					restoreData();
 			}
@@ -102,7 +102,7 @@
 			
 			try
 			{
-				$cacheTicket = Cache::me()->getPool()->createTicket('pagePathMapper')->
+				$cacheTicket = Cache::me()->createTicket('pagePathMapper')->
 					restoreData();
 			}
 			catch(MissingArgumentException $e)

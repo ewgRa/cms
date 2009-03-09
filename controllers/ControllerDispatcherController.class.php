@@ -16,11 +16,14 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$contrllerDispatcher = ControllerDispatcher::create();
+			$contrllerDispatcher =
+				ControllerDispatcher::create()->
+					setRequest($request);
+			
 			$contrllerDispatcher->loadControllers($request);
 
 			$mav->getModel()->mergeModel(
-				$contrllerDispatcher->getModel($request)
+				$contrllerDispatcher->getModel()
 			);
 			
 			return parent::handleRequest($request, $mav);

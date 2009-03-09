@@ -32,23 +32,18 @@
 		public function cacheWorker()
 		{
 			if(!$this->cacheWorker)
-				$this->cacheWorker = ContentCacheWorker::create();
+				$this->cacheWorker = ContentCacheWorker::create()->
+					setController($this);
 
 			return $this->cacheWorker;
 		}
 		
-		public function importSettings(HttpRequest $request, $settings)
+		public function importSettings($settings)
 		{
 			// FIXME: check that units isset and its array
 			$this->setUnits($settings['units']);
 
-			if(
-				$cacheTicket =
-					$this->cacheWorker()->createTicket(
-						$request,
-						array($this->getUnits())
-					)
-			)
+			if($cacheTicket = $this->cacheWorker()->createTicket())
 				$this->setCacheTicket($cacheTicket);
 			
 			return $this;
@@ -57,16 +52,16 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel(HttpRequest $request)
+		public function getModel()
 		{
-			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
 			
 			$result = $this->da()->getUnitsContent(
 				$this->getUnits(),
 				$localizer->getRequestLanguage()->getId()
 			);
 
-			$page = $request->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
 			
 			$replace = array(
 				'pattern' => array('%baseUrl%'),
@@ -89,16 +84,15 @@
 			return Model::create()->setData($result);
 		}
 
+		public function getUnits()
+		{
+			return $this->units;
+		}
+		
 		private function setUnits($units)
 		{
 			$this->units = $units;
 			return $this;
 		}
-		
-		private function getUnits()
-		{
-			return $this->units;
-		}
-		
 	}
 ?>

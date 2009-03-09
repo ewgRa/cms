@@ -29,18 +29,18 @@
 			return $this->category;
 		}
 		
-		public function importSettings(HttpRequest $request, $settings)
+		public function importSettings($settings)
 		{
 			$this->setCategory($settings['category']);
 
-			if(Cache::me()->getPool()->hasTicketParams('navigation'))
+			if(Cache::me()->hasTicketParams('navigation'))
 			{
-				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+				$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
 				
-				$page = $request->getAttached(AttachedAliases::PAGE);
+				$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
 			
 				$this->setCacheTicket(
-					Cache::me()->getPool()->createTicket('navigation')->
+					Cache::me()->createTicket('navigation')->
 						setKey(
 							$this->getCategory(),
 							$localizer->getRequestLanguage(),
@@ -56,16 +56,16 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel(HttpRequest $request)
+		public function getModel()
 		{
-			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
 			
 			$result = $this->da()->getByCategory(
 				$this->getCategory(),
 				$localizer->getRequestLanguage()->getId()
 			);
 
-			$page = $request->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
 			
 			$result['baseUrl'] = $page->getBaseUrl()->getPath();
 			

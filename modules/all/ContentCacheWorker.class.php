@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class ContentCacheWorker extends CacheWorker
+	class ContentCacheWorker extends ControllerCacheWorker
 	{
 		/**
 		 * @return ContentCacheWorker
@@ -10,31 +10,33 @@
 		{
 			return new self;
 		}
-		
-		/**
-		 * @return CacheTicket
-		 */
-		public function createTicket(HttpRequest $request, array $units)
+
+		protected function getAlias()
 		{
-			$result = null;
-			
-			if($this->cache()->getPool()->hasTicketParams('content'))
-			{
-				$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
-				$page = $request->getAttached(AttachedAliases::PAGE);
+			return __CLASS__;
+		}
+		
+		protected function getKey()
+		{
+			$localizer =
+				$this->getController()->
+					getRequest()->
+					getAttached(AttachedAliases::LOCALIZER);
+
+			$page =
+				$this->getController()->
+					getRequest()->
+					getAttached(AttachedAliases::PAGE);
 				
-				$result =
-					$this->cache()->getPool()->createTicket('content')->
-						setKey(
-							$units,
-							$localizer->getRequestLanguage(),
-							$localizer->getSource(),
-							$page->getBaseUrl()->getPath(),
-							defined('MEDIA_HOST') ? MEDIA_HOST : null
-						);
-			}
-			
-			return $result;
+			return array(
+				$this->getController()
+					? $this->getController()->getUnits()
+					: null,
+				$localizer->getRequestLanguage(),
+				$localizer->getSource(),
+				$page->getBaseUrl()->getPath(),
+				defined('MEDIA_HOST') ? MEDIA_HOST : null
+			);
 		}
 	}
 ?>
