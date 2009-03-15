@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class NavigationController extends Controller
+	class NavigationModule extends Module
 	{
 		private $category = null;
 		

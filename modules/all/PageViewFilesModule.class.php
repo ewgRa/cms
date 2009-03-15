@@ -1,7 +1,7 @@
 <?php
 	/* $Id: PageViewFilesController.class.php 58 2008-08-20 03:24:57Z ewgraf $ */
 
-	class PageViewFilesController extends Controller
+	class PageViewFilesModule extends Module
 	{
 		const MAX_SPLIT_FILENAME_LENGTH = 255;
 		
@@ -21,7 +21,7 @@
 		}
 		
 		/**
-		 * @return PageViewFilesController
+		 * @return PageViewFilesModule
 		 */
 		public function addSplitMime($contentType)
 		{

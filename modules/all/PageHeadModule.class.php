@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class PageHeadController extends Controller
+	class PageHeadModule extends Module
 	{
 		/**
 		 * @var PageHeadDA

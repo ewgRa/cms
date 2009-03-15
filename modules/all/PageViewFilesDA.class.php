@@ -12,7 +12,7 @@
 		{
 			$dbQuery = "
 				SELECT view_file_id
-				FROM " . $this->db()->getTable('PagesControllers_ref') . "
+				FROM " . $this->db()->getTable('PagesModules_ref') . "
 				WHERE page_id = ?
 			";
 			

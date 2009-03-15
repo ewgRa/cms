@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class PageNotFoundController extends Controller
+	class PageNotFoundModule extends Module
 	{
 		public function getModel()
 		{

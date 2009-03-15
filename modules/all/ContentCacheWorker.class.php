@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class ContentCacheWorker extends ControllerCacheWorker
+	class ContentCacheWorker extends ModuleCacheWorker
 	{
 		/**
 		 * @return ContentCacheWorker
@@ -19,18 +19,18 @@
 		protected function getKey()
 		{
 			$localizer =
-				$this->getController()->
+				$this->getModule()->
 					getRequest()->
 					getAttached(AttachedAliases::LOCALIZER);
 
 			$page =
-				$this->getController()->
+				$this->getModule()->
 					getRequest()->
 					getAttached(AttachedAliases::PAGE);
 				
 			return array(
-				$this->getController()
-					? $this->getController()->getUnits()
+				$this->getModule()
+					? $this->getModule()->getUnits()
 					: null,
 				$localizer->getRequestLanguage(),
 				$localizer->getSource(),

@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * //FIXME: tested?
 	*/
-	class ControllerDispatcherController extends ChainController
+	class ModuleDispatcherController extends ChainController
 	{
 		/**
 		 * @return ModelAndView
@@ -16,14 +16,14 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$contrllerDispatcher =
-				ControllerDispatcher::create()->
+			$moduleDispatcher =
+				ModuleDispatcher::create()->
 					setRequest($request);
 			
-			$contrllerDispatcher->loadControllers($request);
+			$moduleDispatcher->loadModules($request);
 
 			$mav->getModel()->mergeModel(
-				$contrllerDispatcher->getModel()
+				$moduleDispatcher->getModel()
 			);
 			
 			return parent::handleRequest($request, $mav);
