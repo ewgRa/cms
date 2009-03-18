@@ -4,6 +4,9 @@
 	if(!class_exists('Singleton', false))
 		require_once FRAMEWORK_DIR . '/patterns/Singleton.class.php';
 	
+	if(!class_exists('DefaultException', false))
+		require_once FRAMEWORK_DIR . '/exceptions/DefaultException.class.php';
+		
 	function exceptionHandler($data)
 	{
 		return ProjectIndex::me()->exceptionHandler($data);
@@ -109,7 +112,6 @@
 			$fileName = LOG_DIR . '/errors.txt';
 			$logTime = file_exists($fileName) ? filemtime($fileName) : 0;
 			$debugItemId = null;
-			
 			
 			if($storeDebug)
 			{

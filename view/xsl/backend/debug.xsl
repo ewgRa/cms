@@ -116,6 +116,39 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
+			<hr/>
+			<div class="cacheTickets">
+				<h2>Cache tickets</h2>
+				<xsl:choose>
+					<xsl:when test="count(item[type=5]) = 0">
+						No tickets
+					</xsl:when>
+					<xsl:otherwise>
+						<table style="font-size: 80%" width="100%">
+							<tr>
+								<td valign="top" nowrap="true">#</td>
+								<td valign="top" nowrap="true">Prefix</td>
+								<td valign="top" nowrap="true">Key</td>
+								<td valign="top" nowrap="true">Cache instance</td>
+								<td valign="top" nowrap="true">Life time</td>
+								<td valign="top" nowrap="true">Actual time</td>
+								<td valign="top" nowrap="true">Status</td>
+							</tr>
+							<xsl:for-each select="item[type=5]">
+								<tr>
+									<td valign="top" nowrap="true"><xsl:value-of select="position()"/>.</td>
+									<td valign="top" nowrap="true"><xsl:value-of select="data/prefix"/></td>
+									<td valign="top" nowrap="true"><xsl:value-of select="data/key"/></td>
+									<td valign="top" nowrap="true"><xsl:value-of select="data/cacheInstance"/></td>
+									<td valign="top" nowrap="true"><xsl:value-of select="data/lifeTime"/></td>
+									<td valign="top" nowrap="true"><xsl:value-of select="data/actualTime"/></td>
+									<td valign="top" nowrap="true"><xsl:value-of select="data/status"/></td>
+								</tr>
+							</xsl:for-each>
+						</table>
+					</xsl:otherwise>
+				</xsl:choose>
+			</div>
 		</body>
 	</html>
 </xsl:template>
