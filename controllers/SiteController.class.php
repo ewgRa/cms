@@ -9,6 +9,22 @@
 	*/
 	class SiteController extends ChainController
 	{
+		private $siteAlias = null;
+
+		/**
+		 * @return SiteController
+		 */
+		public function setSiteAlias($alias)
+		{
+			$this->siteAlias = $alias;
+			return $this;
+		}
+
+		public function getSiteAlias()
+		{
+			return $this->siteAlias;
+		}
+		
 		/**
 		 * @return ModelAndView
 		 */
@@ -16,6 +32,8 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
+			Assert::notNull($this->getSiteAlias());
+			
 			$request->setAttached(
 				AttachedAliases::SITE,
 				$this->getSite()
@@ -28,7 +46,7 @@
 		{
 			try {
 				$cacheTicket = Cache::me()->createTicket('site')->
-					setKey($_SERVER['HTTP_HOST'])->
+					setKey($this->getSiteAlias())->
 					restoreData();
 			} catch(MissingArgumentException $e) {
 				$cacheTicket = null;
@@ -36,8 +54,7 @@
 
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
-				$site = Site::create();
-				$site->setHost($_SERVER['HTTP_HOST'])->define();
+				$site = Site::da()->getSiteByAlias($this->getSiteAlias());
 
 				if($cacheTicket)
 					$cacheTicket->setData($site)->storeData();
