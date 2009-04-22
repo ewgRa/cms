@@ -24,15 +24,13 @@
 				$localizer->
 					removeLanguageFromUrl($request->getUrl())->
 					getPath();
-			
+
 			$pageId = $this->getPagePathMapper()->getPageId($clearPath);
 
 			if(!$pageId)
 			{
-				throw
-					ExceptionsMapper::me()->createException('Page')->
-						setCode(PageException::PAGE_NOT_FOUND)->
-						setUrl($clearPath);
+				throw PageException::create(PageException::PAGE_NOT_FOUND)->
+					setUrl($clearPath);
 			}
 			
 			try
@@ -128,9 +126,9 @@
 		 */
 		private function addDebug($startTime, $endTime, Page $page)
 		{
-			$debugItem = DebugItem::create()->
+			$debugItem = CmsDebugItem::create()->
 				setData($page)->
-				setType(DebugItem::PAGE)->
+				setType(CmsDebugItem::PAGE)->
 				setStartTime($startTime)->
 				setEndTime($endTime);
 			

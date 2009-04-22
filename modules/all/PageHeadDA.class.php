@@ -25,7 +25,7 @@
 			
 			if(!$this->db()->recordCount($dbResult))
 				throw
-					ExceptionsMapper::me()->createException('NotFound')->
+					NotFoundException::create()->
 						setMessage(
 							'No page head for page "' . $pageId
 							. '" and language "' . $language . '"'

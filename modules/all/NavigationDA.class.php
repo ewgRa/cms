@@ -32,7 +32,7 @@
 			
 			if(!$this->db()->recordCount($dbResult))
 				throw
-					ExceptionsMapper::me()->createException('NotFound')->
+					NotFoundException::create()->
 						setMessage(
 							'No navigation for category "' . $category
 							. '" and language "' . $language . '"'

@@ -61,7 +61,7 @@
 			<div class="request">
 				<h2><a href="#" onclick="toggleBlock('request'); return false;">Request</a></h2>
 				<table id="request" class="table" border="0" cellspacing="0" cellpadding="0" style="display:none">
-				<xsl:for-each select="item[type=4]/data/*">
+				<xsl:for-each select="item[type=3]/data/*">
 					<xsl:if test="count(*)">
 						<tr>
 							<td colspan="2"><h3><xsl:value-of select="name()"/></h3></td>
@@ -79,11 +79,11 @@
 			<hr/>
 			<div class="page">
 				<h2>Page</h2>
-				<xsl:if test="count(item[type=3]/data) &gt; 0">
-					<div>Id: <xsl:value-of select="item[type=3]/data/id"/></div>
-					<div>Path: <xsl:value-of select="item[type=3]/data/path"/></div>
-					<div>Layout id: <xsl:value-of select="item[type=3]/data/layoutId"/></div>
-					<div>Created for <xsl:value-of select="format-number(item[type=3]/endTime - item[type=3]/startTime, '0.00')"/></div>
+				<xsl:if test="count(item[type=1001]/data) &gt; 0">
+					<div>Id: <xsl:value-of select="item[type=1001]/data/id"/></div>
+					<div>Path: <xsl:value-of select="item[type=1001]/data/path"/></div>
+					<div>Layout id: <xsl:value-of select="item[type=1001]/data/layoutId"/></div>
+					<div>Created for <xsl:value-of select="format-number(item[type=1001]/endTime - item[type=1001]/startTime, '0.00')"/></div>
 					<br/>
 				</xsl:if>
 			</div>
@@ -120,7 +120,7 @@
 			<div class="cacheTickets">
 				<h2>Cache tickets</h2>
 				<xsl:choose>
-					<xsl:when test="count(item[type=5]) = 0">
+					<xsl:when test="count(item[type=4]) = 0">
 						No tickets
 					</xsl:when>
 					<xsl:otherwise>
@@ -134,7 +134,7 @@
 								<td valign="top" nowrap="true">Actual time</td>
 								<td valign="top" nowrap="true">Status</td>
 							</tr>
-							<xsl:for-each select="item[type=5]">
+							<xsl:for-each select="item[type=4]">
 								<tr>
 									<td valign="top" nowrap="true"><xsl:value-of select="position()"/>.</td>
 									<td valign="top" nowrap="true"><xsl:value-of select="data/prefix"/></td>

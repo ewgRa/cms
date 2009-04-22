@@ -53,7 +53,7 @@
 				{
 					if(!MimeContentTypes::isMediaFile($mime))
 						throw
-							ExceptionsMapper::me()->createException('Default')->
+							DefaultException::create()->
 								setMessage('Don\'t know anything about mime ' . $mime);
 				
 					$this->addSplitMime($mime);

@@ -1,9 +1,16 @@
 $Id$
 
+2009-04-22
+	* 1.16 released
+	
+	* change work with Exceptions
+	
+	* receipt classes from framework
+	
 2009-03-15
 	* 1.15 released
 	
-	* change controlle rto module naming
+	* change controller to module naming
 
 2009-03-10
 	* 1.14 released

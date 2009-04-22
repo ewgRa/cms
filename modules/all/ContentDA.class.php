@@ -28,7 +28,7 @@
 			
 			if($this->db()->recordCount($dbResult) != count($units))
 				throw
-					ExceptionsMapper::me()->createException('NotFound')->
+					NotFoundException::create()->
 						setMessage(
 							'No content for one or more units "' . join('" , "', $units)
 							. '" and language "' . $language . '"'

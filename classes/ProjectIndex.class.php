@@ -185,8 +185,8 @@
 		
 		public function createRequestDebugItem()
 		{
-			return DebugItem::create()->
-				setType(DebugItem::REQUEST)->
+			return CmsDebugItem::create()->
+				setType(CmsDebugItem::REQUEST)->
 				setData(
 					array(
 						'get'	 	=> $_GET,
@@ -233,8 +233,8 @@
 		{
 			Debug::me()->addItem($this->createRequestDebugItem());
 				
-			$debugItem = DebugItem::create()->
-				setType(DebugItem::ENGINE_ECHO)->
+			$debugItem = CmsDebugItem::create()->
+				setType(CmsDebugItem::ENGINE_ECHO)->
 				setData($engineEcho)->
 				setStartTime($startTime)->
 				setEndTime(microtime(true));
