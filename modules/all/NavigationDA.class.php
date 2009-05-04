@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class NavigationDA extends DatabaseRequester
+	class NavigationDA extends CmsDatabaseRequester
 	{
 		public static function create()
 		{

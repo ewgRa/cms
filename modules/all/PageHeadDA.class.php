@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class PageHeadDA extends DatabaseRequester
+	class PageHeadDA extends CmsDatabaseRequester
 	{
 		public static function create()
 		{

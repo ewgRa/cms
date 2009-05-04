@@ -45,7 +45,9 @@
 		private function getSite()
 		{
 			try {
-				$cacheTicket = Cache::me()->createTicket('site')->
+				$cacheTicket = Cache::me()->getPool('cms')->createTicket('site');
+					
+				$cacheTicket->
 					setKey($this->getSiteAlias())->
 					restoreData();
 			} catch(MissingArgumentException $e) {

@@ -29,9 +29,7 @@
 					getAttached(AttachedAliases::PAGE);
 				
 			return array(
-				$this->getModule()
-					? $this->getModule()->getUnits()
-					: null,
+				$this->getModule()->getUnits(),
 				$localizer->getRequestLanguage(),
 				$localizer->getSource(),
 				$page->getBaseUrl()->getPath(),

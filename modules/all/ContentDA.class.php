@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class ContentDA extends DatabaseRequester
+	class ContentDA extends CmsDatabaseRequester
 	{
 		public static function create()
 		{

@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * // FIXME: tested?
 	*/
-	final class SiteDA extends DatabaseRequester
+	final class SiteDA extends CmsDatabaseRequester
 	{
 		/**
 		 * @return SiteDA

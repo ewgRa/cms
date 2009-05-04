@@ -36,10 +36,10 @@
 		
 		public function importSettings($settings)
 		{
-			if(Cache::me()->hasTicketParams('pageViewFiles'))
+			if(Cache::me()->getPool('cms')->hasTicketParams('pageViewFiles'))
 			{
 				$this->setCacheTicket(
-					Cache::me()->createTicket('pageViewFiles')->
+					Cache::me()->getPool('cms')->createTicket('pageViewFiles')->
 						setKey(
 							$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
 							$settings

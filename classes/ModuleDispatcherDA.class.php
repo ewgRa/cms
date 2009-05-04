@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * // FIXME: tested?
 	*/
-	final class ModuleDispatcherDA extends DatabaseRequester
+	final class ModuleDispatcherDA extends CmsDatabaseRequester
 	{
 		/**
 		 * @return ModuleDispatcherDA

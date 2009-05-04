@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class PageViewFilesDA extends DatabaseRequester
+	class PageViewFilesDA extends CmsDatabaseRequester
 	{
 		public static function create()
 		{

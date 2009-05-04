@@ -18,12 +18,12 @@
 		
 		public function importSettings($settings)
 		{
-			if(Cache::me()->hasTicketParams('page'))
+			if(Cache::me()->getPool('cms')->hasTicketParams('page'))
 			{
 				$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
 				
 				$this->setCacheTicket(
-					Cache::me()->createTicket('page')->
+					Cache::me()->getPool('cms')->createTicket('page')->
 						setKey(
 							$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
 							$localizer->getRequestLanguage(),

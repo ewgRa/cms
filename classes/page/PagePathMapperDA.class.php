@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PagePathMapperDA extends DatabaseRequester
+	final class PagePathMapperDA extends CmsDatabaseRequester
 	{
 		/**
 		 * @return PagePathMapperDA
