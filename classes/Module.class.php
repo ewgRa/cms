@@ -23,6 +23,11 @@
 		private $request	 = null;
 		
 		/**
+		 * @var ModuleDispatcher
+		 */
+		private $dispatcher  = null;
+		
+		/**
 		 * @return Model
 		 */
 		abstract public function getModel();
@@ -46,6 +51,23 @@
 		protected function setCacheTicket(CacheTicket $cacheTicket)
 		{
 			$this->cacheTicket = $cacheTicket;
+			return $this;
+		}
+		
+		/**
+		 * @return ModuleDispatcher
+		 */
+		public function getDispatcher()
+		{
+			return $this->dispatcher;
+		}
+		
+		/**
+		 * @return Module
+		 */
+		public function setDispatcher(ModuleDispatcher $dispatcher)
+		{
+			$this->dispatcher = $dispatcher;
 			return $this;
 		}
 		

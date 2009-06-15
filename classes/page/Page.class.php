@@ -17,6 +17,8 @@
 		
 		private $header			= null;
 		
+		private $modules		= null;
+		
 		/**
 		 * @var PageDA
 		 */
@@ -151,6 +153,30 @@
 		/**
 		 * @return Page
 		 */
+		public function setModules(array $modules)
+		{
+			$this->modules = $modules;
+			return $this;
+		}
+
+		public function getModules()
+		{
+			return $this->modules;
+		}
+		
+		/**
+		 * @return Page
+		 */
+		public function loadModules()
+		{
+			$this->modules = $this->da()->getModules($this->getId());
+
+			return $this;
+		}
+		
+		/**
+		 * @return Page
+		 */
 		public function checkAccessPage(User $user)
 		{
 			if($this->getRights())
@@ -199,7 +225,8 @@
 				setPath(
 					Config::me()->replaceVariables($page['path'])
 				)->
-				loadRights();
+				loadRights()->
+				loadModules();
 
 			return $this;
 		}

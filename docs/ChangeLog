@@ -1,5 +1,14 @@
 $Id$
 
+2009-06-15
+	* 1.17.1 released
+	
+	* add CacheWorker from framework
+	
+	* add ViewFactory from framework
+	
+	* move getPageModules from ModuleDispatcher to Page
+
 2009-05-04
 	* 1.17 released
 	

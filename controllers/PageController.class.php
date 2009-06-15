@@ -71,7 +71,6 @@
 				ViewFactory::createByFileId($page->getLayoutFileId())
 			);
 			
-			
 			$baseUrl = HttpUrl::create()->setPath('');
 			
 			if(

@@ -8,16 +8,6 @@
 	*/
 	final class ModuleDispatcher extends Module
 	{
-		/**
-		 * @var ModuleDispatcherDA
-		 */
-		private $da = null;
-		
-		/**
-		 * @var ModuleDispatcherCacheWorker
-		 */
-		private $cacheWorker = null;
-		
 		private $modules = array();
 		
 		/**
@@ -29,37 +19,9 @@
 		}
 		
 		/**
-		 * @return ModuleDispatcherDA
-		 */
-		public function da()
-		{
-			if(!$this->da)
-				$this->da = ModuleDispatcherDA::create();
-			
-			return $this->da;
-		}
-		
-		/**
-		 * @return ModuleDispatcherCacheWorker
-		 */
-		public function cacheWorker()
-		{
-			if(!$this->cacheWorker)
-				$this->cacheWorker = ModuleDispatcherCacheWorker::create()->
-					setModule($this);
-
-			return $this->cacheWorker;
-		}
-		
-		public function getModules()
-		{
-			return $this->modules;
-		}
-		
-		/**
 		 * @return ModuleDispatcher
 		 */
-		public function addModule($module, $section, $position)
+		public function addModule(Module $module, $section, $position)
 		{
 			$this->modules[] = array(
 				'instance'	=> $module,
@@ -70,19 +32,47 @@
 			return $this;
 		}
 		
+		public function getModules()
+		{
+			return $this->modules;
+		}
+		
+		public function getModulesByApply($applyFunction)
+		{
+			$result = array();
+			
+			foreach($this->getModules() as $module)
+			{
+				if(call_user_func($applyFunction, $module['instance']))
+					$result[] = $module['instance'];
+			}
+			
+			return $result;
+		}
+		
 		/**
 		 * @return ModuleDispatcher
 		 */
 		public function loadModules()
 		{
 			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
+			$pageModules = $page->getModules();
 			$this->modules = array();
-			$modules = $this->getPageModules($page);
 			
-			foreach($modules as $module)
+			foreach($pageModules as $index => $module)
 			{
 				$moduleInstance = new $module['name'];
-				$moduleInstance->setRequest($this->getRequest());
+
+				$moduleInstance->
+					setRequest($this->getRequest())->
+					setDispatcher($this);
+				
+				$pageModules[$index]['instance'] = $moduleInstance;
+			}
+
+			foreach($pageModules as $module)
+			{
+				$moduleInstance = $module['instance'];
 				
 				$module['module_settings'] =
 					is_null($module['module_settings'])
@@ -107,35 +97,15 @@
 							)
 							: null
 					);
-					
+				
 				$this->addModule(
 					$moduleInstance,
 					$module['section_id'],
 					$module['position_in_section']
 				);
 			}
-
+			
 			return $this;
-		}
-		
-		private function getPageModules(Page $page)
-		{
-			$result = null;
-			
-			if($cacheTicket = $this->cacheWorker()->createTicket())
-				$cacheTicket->restoreData();
-			
-			if(!$cacheTicket || $cacheTicket->isExpired())
-			{
-				$result = $this->da()->getPageModules($page->getId());
-				
-				if($cacheTicket)
-					$cacheTicket->setData($result)->storeData();
-			}
-			else
-				$result = $cacheTicket->getData();
-				
-			return $result;
 		}
 		
 		/**
