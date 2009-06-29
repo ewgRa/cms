@@ -3,10 +3,6 @@ ticketAliases:
     prefix: moduleDispatcher
     lifeTime: 86400
 
-  MediaFilesJoiner:
-    prefix: mediaFilesJoiner
-    lifeTime: 86400
-
   PageViewFilesCacheWorker:
     prefix: modules/pageViewFiles
     lifeTime: 86400
