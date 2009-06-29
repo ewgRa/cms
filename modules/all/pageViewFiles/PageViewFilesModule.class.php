@@ -3,15 +3,18 @@
 
 	class PageViewFilesModule extends Module
 	{
-		const MAX_SPLIT_FILENAME_LENGTH = 255;
-		
-		private $splitMimes = array();
+		private $joinMimes = array();
 		
 		/**
 		 * @var PageViewFilesDA
 		 */
 		private $da = null;
 
+		/**
+		 * @var PageViewFilesCacheWorker
+		 */
+		private $cacheWorker = null;
+		
 		protected function da()
 		{
 			if(!$this->da)
@@ -21,42 +24,49 @@
 		}
 		
 		/**
+		 * @return PageViewFilesCacheWorker
+		 */
+		public function cacheWorker()
+		{
+			if(!$this->cacheWorker)
+				$this->cacheWorker = PageViewFilesCacheWorker::create()->
+					setModule($this);
+
+			return $this->cacheWorker;
+		}
+		
+		/**
 		 * @return PageViewFilesModule
 		 */
-		public function addSplitMime($contentType)
+		public function addJoinMime($contentType)
 		{
-			$this->splitMimes[$contentType] = 1;
+			$this->joinMimes[$contentType] = 1;
 			return $this;
 		}
 		
-		public function getSplitMimes()
+		public function getJoinMimes()
 		{
-			return $this->splitMimes;
+			return $this->joinMimes;
 		}
 		
 		public function importSettings($settings)
 		{
-			if(Cache::me()->getPool('cms')->hasTicketParams('pageViewFiles'))
+			if($cacheTicket = $this->cacheWorker()->createTicket())
 			{
-				$this->setCacheTicket(
-					Cache::me()->getPool('cms')->createTicket('pageViewFiles')->
-						setKey(
-							$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
-							$settings
-						)
-				);
+				$cacheTicket->addKey($settings);
+				$this->setCacheTicket($cacheTicket);
 			}
-			
-			if(isset($settings['splitMimes']) && is_array($settings['splitMimes']))
+
+			if(isset($settings['joinMimes']) && is_array($settings['joinMimes']))
 			{
-				foreach($settings['splitMimes'] as $mime)
+				foreach($settings['joinMimes'] as $mime)
 				{
 					if(!MimeContentTypes::isMediaFile($mime))
 						throw
 							DefaultException::create()->
 								setMessage('Don\'t know anything about mime ' . $mime);
 				
-					$this->addSplitMime($mime);
+					$this->addJoinMime($mime);
 				}
 			}
 			
@@ -79,39 +89,50 @@
 			
 			$viewFiles = $this->getPageViewFiles($page, $viewFilesId);
 			
-			if($this->getSplitMimes())
-				$viewFiles = $this->splitFiles($viewFiles);
+			if($this->getJoinMimes())
+				$viewFiles = $this->joinFiles($viewFiles);
 			
 			foreach($viewFiles['includeFiles'] as &$file)
 			{
 				if(
-					defined('MEDIA_HOST')
+					defined('MEDIA_HOST_JOIN_URL')
 					&& MimeContentTypes::isMediaFile($file['content-type'])
 				) {
-					$parsedUrl = parse_url($file['path']);
-					
-					if(!isset($parsedUrl['host']))
-						$file['path'] = MEDIA_HOST . $file['path'];
+					if(isset($file['files']))
+						$file['path'] = MEDIA_HOST_JOIN_URL . '/' . $file['path'];
 				}
 			}
 			
 			return Model::create()->setData($viewFiles);
 		}
-		
-		private function splitFiles($viewFiles)
+
+		private function joinFiles($viewFiles)
 		{
-			return MediaFilesSplitter::create()->
-				setMaxFileNameLength(self::MAX_SPLIT_FILENAME_LENGTH)->
-				setBeginPartUrl(MEDIA_HOST_SPLIT_URL)->
-				setMimeTypes($this->getSplitMimes())->
-				splitFileNames($viewFiles);
+			$files =
+				MediaFilesJoiner::create()->
+				setMimeTypes($this->getJoinMimes())->
+				joinFileNames($viewFiles);
+				
+			if(!file_exists(JOIN_FILES_DIR))
+				mkdir(JOIN_FILES_DIR, FileBasedCache::DIR_PERMISSIONS, true);
+			
+			foreach($files['includeFiles'] as $file) {
+				if(isset($file['files'])) {
+					$targetFile =
+						JOIN_FILES_DIR . DIRECTORY_SEPARATOR . $file['path'] . '.fl';
+
+					file_put_contents($targetFile, serialize($file['files']));
+				}
+			}
+
+			return $files;
 		}
 
 		private function getPageViewFiles(Page $page, $fileIds)
 		{
 			$viewFiles = array(
 				'includeFiles' => array(),
-				'dontSplitFiles' => array()
+				'dontJoinFiles' => array()
 			);
 			
 			$directFiles = array();
@@ -130,8 +151,8 @@
 					'id' => $file['id']
 				);
 				
-				if($file['is_can_splited'] == 'no')
-					$viewFiles['dontSplitFiles'][] = $file['id'];
+				if($file['is_can_joined'] == 'no')
+					$viewFiles['dontJoinFiles'][] = $file['id'];
 
 				if($file['recursive_include'] == 'yes')
 					$directFiles[] = $file['id'];

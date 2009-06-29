@@ -25,7 +25,7 @@
 		{
 			$dbQuery = '
 				SELECT
-					t2.id, t2.path, t2.is_can_splited, t1.recursive_include,
+					t2.id, t2.path, t2.is_can_joined, t1.recursive_include,
 					t2.`content-type`
 				FROM ' . $this->db()->getTable('ViewFilesIncludes') . ' t1
 				INNER JOIN ' . $this->db()->getTable('ViewFiles') . ' t2
