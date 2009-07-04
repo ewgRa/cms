@@ -8,6 +8,11 @@
 	class ViewFactory
 	{
 		/**
+		 * @var ViewFactoryCacheWorker
+		 */
+		private static $cacheWorker = null;
+			
+		/**
 		 * @var ViewDA
 		 */
 		private static $da = null;
@@ -20,11 +25,44 @@
 			return self::$da;
 		}
 		
+		public static function cacheWorker()
+		{
+			if(!self::$cacheWorker)
+				self::$cacheWorker = ViewFactoryCacheWorker::create();
+				
+			return self::$cacheWorker;
+		}
+		
 		/**
 		 * @return BaseView
 		 * FIXME: cache!
 		 */
 		public static function createByFileId($fileId)
+		{
+			$cacheTicket = self::cacheWorker()->createTicket();
+			
+			if($cacheTicket)
+			{
+				$cacheTicket->addKey($fileId);
+				$cacheTicket->restoreData();
+			}
+			
+			$result = null;
+			
+			if(!$cacheTicket || $cacheTicket->isExpired())
+			{
+				$result = self::uncachedCreateByFileId($fileId);
+				
+				if($cacheTicket)
+					$cacheTicket->setData($result)->storeData();
+			}
+			else
+				$result = $cacheTicket->getData();
+			
+			return $result;
+		}
+		
+		private static function uncachedCreateByFileId($fileId)
 		{
 			$result = null;
 			
@@ -42,8 +80,7 @@
 						$projectConfig = Config::me()->getOption('project');
 						
 						if(isset($projectConfig['charset']))
-
-						$result->setCharset($projectConfig['charset']);
+							$result->setCharset($projectConfig['charset']);
 					break;
 					case MimeContentTypes::APPLICATION_PHP:
 						$result = PhpView::create()->loadLayout(
@@ -55,7 +92,7 @@
 			else
 				throw NotFoundException::create()->
 					setMessage('No layout file');
-
+			
 			return $result;
 		}
 	}

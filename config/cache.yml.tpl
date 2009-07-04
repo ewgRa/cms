@@ -29,4 +29,8 @@ ticketAliases:
     
   localizer:
     prefix: localizer
-    lifeTime: 86400        
+    lifeTime: 86400
+    
+  ViewFactoryCacheWorker:
+    prefix: viewfactory
+    lifeTime: 86400
