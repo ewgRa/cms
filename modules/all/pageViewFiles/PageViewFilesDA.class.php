@@ -18,7 +18,7 @@
 			
 			$dbResult = $this->db()->query($dbQuery, array($page->getId()));
 			
-			return $this->db()->resourceToArray($dbResult);
+			return $dbResult->fetchList();
 		}
 		
 		public function getFiles(Page $page, $fileIds)
@@ -40,7 +40,7 @@
 					array($fileIds, $page->getId())
 				);
 						
-			return $this->db()->resourceToArray($dbResult);
+			return $dbResult->fetchList();
 		}
 	}
 ?>

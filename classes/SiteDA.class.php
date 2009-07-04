@@ -28,8 +28,8 @@
 
 			$dbResult = $this->db()->query($dbQuery, array($alias));
 
-			if($this->db()->recordCount($dbResult))
-				$result = $this->db()->fetchArray($dbResult);
+			if($dbResult->recordCount())
+				$result = $dbResult->fetchArray();
 			else
 				throw NotFoundException::create();
 			

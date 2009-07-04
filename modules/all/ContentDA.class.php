@@ -26,7 +26,7 @@
 				)
 			);
 			
-			if($this->db()->recordCount($dbResult) != count($units))
+			if($dbResult->recordCount() != count($units))
 				throw
 					NotFoundException::create()->
 						setMessage(
@@ -34,7 +34,7 @@
 							. '" and language "' . $language . '"'
 						);
 
-			return $this->db()->resourceToArray($dbResult);
+			return $dbResult->fetchList();
 		}
 	}
 ?>

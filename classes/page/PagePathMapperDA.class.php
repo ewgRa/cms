@@ -25,7 +25,7 @@
 
 			$dbResult = $this->db()->query($dbQuery);
 			
-			return $this->db()->resourceToArray($dbResult);
+			return $dbResult->fetchList();
 		}
 	}
 ?>

@@ -28,8 +28,8 @@
 
 			$dbResult = $this->db()->query($dbQuery, array($password, $login));
 
-			if($this->db()->recordCount($dbResult))
-				$result = $this->db()->fetchArray($dbResult);
+			if($dbResult->recordCount())
+				$result = $dbResult->fetchArray();
 			
 			return $result;
 		}
@@ -46,8 +46,8 @@
 
 			$dbResult = $this->db()->query($dbQuery, array($userId));
 			
-			if($this->db()->recordCount($dbResult))
-				$result = $this->db()->resourceToArray($dbResult);
+			if($dbResult->recordCount())
+				$result = $dbResult->fetchList();
 			
 			return $result;
 		}
@@ -67,8 +67,8 @@
 				array($inheritanceId)
 			);
 			
-			if($this->db()->recordCount($dbResult))
-				$result = $this->db()->resourceToArray($dbResult);
+			if($dbResult->recordCount())
+				$result = $dbResult->fetchList();
 			
 			return $result;
 		}

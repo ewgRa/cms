@@ -29,7 +29,7 @@
 
 			$dbResult = $this->db()->query($dbQuery, array($pageId));
 
-			return $this->db()->resourceToArray($dbResult);
+			return $dbResult->fetchList();
 		}
 		
 		public function getPage($pageId)
@@ -48,7 +48,7 @@
 				array($pageId)
 			);
 			
-			return $this->db()->fetchArray($dbResult);
+			return $dbResult->fetchArray();
 		}
 		
 		public function getModules($pageId)
@@ -68,7 +68,7 @@
 			
 			$dbResult = $this->db()->query($dbQuery, array($pageId));
 
-			return $this->db()->resourceToArray($dbResult);
+			return $dbResult->fetchList();
 		}
 	}
 ?>
