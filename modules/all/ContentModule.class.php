@@ -40,7 +40,7 @@
 		
 		public function importSettings($settings)
 		{
-			// FIXME: check that units isset and its array
+			Assert::isArray($settings['units']);
 			$this->setUnits($settings['units']);
 
 			if($cacheTicket = $this->cacheWorker()->createTicket())

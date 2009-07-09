@@ -35,7 +35,6 @@
 		
 		/**
 		 * @return BaseView
-		 * FIXME: cache!
 		 */
 		public static function createByFileId($fileId)
 		{

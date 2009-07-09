@@ -254,7 +254,7 @@
 		    )
 		    	return $this->catchException(new DefaultException($data));
 		    
-		    return $data;
+		    return new DefaultException($data);
 		}
 	}
 ?>
