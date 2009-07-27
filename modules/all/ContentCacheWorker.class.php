@@ -21,12 +21,12 @@
 			$localizer =
 				$this->getModule()->
 					getRequest()->
-					getAttached(AttachedAliases::LOCALIZER);
+					getAttachedVar(AttachedAliases::LOCALIZER);
 
 			$page =
 				$this->getModule()->
 					getRequest()->
-					getAttached(AttachedAliases::PAGE);
+					getAttachedVar(AttachedAliases::PAGE);
 				
 			return array(
 				$this->getModule()->getUnits(),

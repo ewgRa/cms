@@ -18,7 +18,7 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$user = $request->getAttached(AttachedAliases::USER);
+			$user = $request->getAttachedVar(AttachedAliases::USER);
 			
 			if($user && !$user->getId() && isset($_SERVER['PHP_AUTH_USER']))
 				$user->login($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);

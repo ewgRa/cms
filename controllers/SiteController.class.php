@@ -34,7 +34,7 @@
 		) {
 			Assert::notNull($this->getSiteAlias());
 			
-			$request->setAttached(
+			$request->setAttachedVar(
 				AttachedAliases::SITE,
 				$this->getSite()
 			);

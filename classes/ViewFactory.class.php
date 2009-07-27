@@ -34,7 +34,7 @@
 		}
 		
 		/**
-		 * @return BaseView
+		 * @return ViewInterface
 		 */
 		public static function createByFileId($fileId)
 		{
@@ -58,6 +58,8 @@
 			else
 				$result = $cacheTicket->getData();
 			
+			Assert::notNull($result);
+			
 			return $result;
 		}
 		
@@ -69,28 +71,48 @@
 			{
 				$file['path'] = Config::me()->replaceVariables($file['path']);
 				
-				switch($file['content-type'])
+				$layout = File::create()->setPath($file['path']);
+				
+				$mimeType = MimeContentType::createByName($file['content-type']);
+
+				switch($mimeType->getId())
 				{
-					case MimeContentTypes::TEXT_XSLT:
-						$result = XsltView::create()->loadLayout(
-							$file['path'], $file['id']
-						);
+					case MimeContentType::TEXT_XSLT:
+						$result = XsltView::create();
 						
 						$projectConfig = Config::me()->getOption('project');
 						
 						if(isset($projectConfig['charset']))
 							$result->setCharset($projectConfig['charset']);
+						
+						$result->loadLayout($layout);
 					break;
-					case MimeContentTypes::APPLICATION_PHP:
-						$result = PhpView::create()->loadLayout(
-							$file['path'], $file['id']
-						);
+					case MimeContentType::APPLICATION_PHP:
+						$result = PhpView::create()->loadLayout($layout);
 					break;
 				}
 			}
 			else
 				throw NotFoundException::create()->
 					setMessage('No layout file');
+			
+			Assert::notNull($result);
+			
+			return $result;
+		}
+
+		private static function getLayoutIncludeFiles($fileId)
+		{
+			$result = array();
+				
+			foreach($this->da()->getLayoutIncludeFiles($fileId) as $file)
+			{
+				$result[] = str_replace(
+					'\\',
+					'/',
+					realpath(Config::me()->replaceVariables($file['path']))
+				);
+			}
 			
 			return $result;
 		}

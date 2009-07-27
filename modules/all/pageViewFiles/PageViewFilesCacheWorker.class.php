@@ -20,7 +20,7 @@
 		{
 			return array(
 				$this->getModule()->getRequest()->
-					getAttached(AttachedAliases::PAGE)->getId()
+					getAttachedVar(AttachedAliases::PAGE)->getId()
 			);
 		}
 		

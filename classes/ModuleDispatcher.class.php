@@ -55,7 +55,7 @@
 		 */
 		public function loadModules()
 		{
-			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 			$pageModules = $page->getModules();
 			$this->modules = array();
 			
@@ -88,15 +88,13 @@
 						);
 				}
 				
-				$moduleInstance->
-					importSettings($module['module_settings'])->
-					setView(
-						$module['view_file_id']
-							? ViewFactory::createByFileId(
-								$module['view_file_id']
-							)
-							: null
-					);
+				$moduleInstance->importSettings($module['module_settings']);
+				
+				if($module['view_file_id'])
+				{
+					$view = ViewFactory::createByFileId($module['view_file_id']);
+					$moduleInstance->setView($view);
+				}
 				
 				$this->addModule(
 					$moduleInstance,

@@ -35,9 +35,9 @@
 
 			if(Cache::me()->getPool('cms')->hasTicketParams('navigation'))
 			{
-				$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
+				$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 				
-				$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
+				$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 			
 				$this->setCacheTicket(
 					Cache::me()->getPool('cms')->createTicket('navigation')->
@@ -58,14 +58,14 @@
 		 */
 		public function getModel()
 		{
-			$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 			
 			$result = $this->da()->getByCategory(
 				$this->getCategory(),
 				$localizer->getRequestLanguage()->getId()
 			);
 
-			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 			
 			$result['baseUrl'] = $page->getBaseUrl()->getPath();
 			

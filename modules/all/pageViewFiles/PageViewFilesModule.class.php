@@ -38,9 +38,9 @@
 		/**
 		 * @return PageViewFilesModule
 		 */
-		public function addJoinMime($contentType)
+		public function addJoinMime(MimeContentType $contentType)
 		{
-			$this->joinMimes[$contentType] = 1;
+			$this->joinMimes[$contentType->getId()] = $contentType;
 			return $this;
 		}
 		
@@ -59,12 +59,14 @@
 
 			if(isset($settings['joinMimes']) && is_array($settings['joinMimes']))
 			{
-				foreach($settings['joinMimes'] as $mime)
+				foreach($settings['joinMimes'] as $mimeName)
 				{
-					if(!MimeContentTypes::isMediaFile($mime))
+					$mime = MimeContentType::createByName($mimeName);
+					
+					if(!$mime->canBeJoined())
 						throw
 							DefaultException::create()->
-								setMessage('Don\'t know anything about mime ' . $mime);
+								setMessage('Don\'t know how join mime ' . $mime);
 				
 					$this->addJoinMime($mime);
 				}
@@ -78,11 +80,9 @@
 		 */
 		public function getModel()
 		{
-			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 			
-			$viewFilesId = array(
-				$page->getLayoutFileId()
-			);
+			$viewFilesId = array($page->getLayoutFileId());
 			
 			foreach($this->da()->getPageViewFiles($page) as $file)
 				$viewFilesId[] = $file['view_file_id'];
@@ -96,7 +96,7 @@
 			{
 				if(
 					defined('MEDIA_HOST_JOIN_URL')
-					&& MimeContentTypes::isMediaFile($file['content-type'])
+					&& $file['content-type']->canBeJoined()
 				) {
 					if(isset($file['files']))
 						$file['path'] = MEDIA_HOST_JOIN_URL . '/' . $file['path'];
@@ -147,7 +147,8 @@
 
 				$viewFiles['includeFiles'][] = array(
 					'path' => $file['path'],
-					'content-type' => $file['content-type'],
+					'content-type' =>
+						MimeContentType::createByName($file['content-type']),
 					'id' => $file['id']
 				);
 				

@@ -54,14 +54,14 @@
 		 */
 		public function getModel()
 		{
-			$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 			
 			$result = $this->da()->getUnitsContent(
 				$this->getUnits(),
 				$localizer->getRequestLanguage()->getId()
 			);
 
-			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 			
 			$replace = array(
 				'pattern' => array('%baseUrl%'),

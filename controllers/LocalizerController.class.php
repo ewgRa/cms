@@ -16,7 +16,7 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
 			if(Session::me()->getCookie('languageId'))
 			{

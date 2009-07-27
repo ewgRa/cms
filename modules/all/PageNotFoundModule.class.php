@@ -5,7 +5,7 @@
 	{
 		public function getModel()
 		{
-			$this->getRequest()->getAttached(AttachedAliases::PAGE)->
+			$this->getRequest()->getAttachedVar(AttachedAliases::PAGE)->
 				getHeader()->
 				add($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 			

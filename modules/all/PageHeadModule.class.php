@@ -20,12 +20,12 @@
 		{
 			if(Cache::me()->getPool('cms')->hasTicketParams('page'))
 			{
-				$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
+				$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 				
 				$this->setCacheTicket(
 					Cache::me()->getPool('cms')->createTicket('page')->
 						setKey(
-							$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
+							$this->getRequest()->getAttachedVar(AttachedAliases::PAGE)->getId(),
 							$localizer->getRequestLanguage(),
 							__CLASS__, __FUNCTION__
 						)
@@ -40,12 +40,12 @@
 		 */
 		public function getModel()
 		{
-			$localizer = $this->getRequest()->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 			
 			try {
 				$head =
 					$this->da()->getPageHead(
-						$this->getRequest()->getAttached(AttachedAliases::PAGE)->getId(),
+						$this->getRequest()->getAttachedVar(AttachedAliases::PAGE)->getId(),
 						$localizer->getRequestLanguage()->getId()
 					);
 			} catch(NotFoundException $e) {

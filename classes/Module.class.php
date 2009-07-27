@@ -13,7 +13,7 @@
 		private $cacheTicket = null;
 		
 		/**
-		 * @var BaseView
+		 * @var ViewInterface
 		 */
 		private $view		 = null;
 		
@@ -91,14 +91,15 @@
 		/**
 		 * @return Module
 		 */
-		public function setView(BaseView $view = null)
+		public function setView($view)
 		{
+			Assert::isImplement($view, 'ViewInterface');
 			$this->view = $view;
 			return $this;
 		}
 		
 		/**
-		 * @return BaseView
+		 * @return ViewInterface
 		 */
 		public function getView()
 		{

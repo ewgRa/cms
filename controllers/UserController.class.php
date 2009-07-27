@@ -18,7 +18,7 @@
 		) {
 			$user = User::create();
 			
-			$request->setAttached(AttachedAliases::USER, $user);
+			$request->setAttachedVar(AttachedAliases::USER, $user);
 			
 			if(Session::me()->isStarted())
 				$user->onSessionStarted();

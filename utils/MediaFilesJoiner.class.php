@@ -36,13 +36,13 @@
 			foreach($files['includeFiles'] as $file)
 			{
 				if(
-					in_array($file['content-type'], array_keys($this->getMimeTypes()))
+					in_array($file['content-type']->getId(), array_keys($this->getMimeTypes()))
 					&& !in_array($file['id'], $files['dontJoinFiles'])
 				) {
-					if(!isset($bufferJoinFiles[$file['content-type']]))
-						$bufferJoinFiles[$file['content-type']] = array();
+					if(!isset($bufferJoinFiles[$file['content-type']->getId()]))
+						$bufferJoinFiles[$file['content-type']->getId()] = array();
 					
-					$bufferJoinFiles[$file['content-type']][] = $file['path'];
+					$bufferJoinFiles[$file['content-type']->getId()][] = $file['path'];
 				}
 				else
 					$joinFiles[] = $file;
@@ -50,15 +50,17 @@
 			
 			foreach($bufferJoinFiles as $contentType => $files)
 			{
+				$mime = MimeContentType::create($contentType);
+				
 				$fileName = $this->compileFileName($files);
 				
-				$extension = MimeContentTypes::getFileExtension($contentType);
+				$extension = $mime->getFileExtension();
 				
 				$fileName = $fileName . '.' . $extension;
 
 				$joinFiles[] = array(
 					'path' => $fileName,
-					'content-type' => $contentType,
+					'content-type' => $mime,
 					'files' => $files
 				);
 			}

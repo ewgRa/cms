@@ -18,7 +18,7 @@
 		) {
 			$startTime = microtime(true);
 			
-			$localizer = $request->getAttached(AttachedAliases::LOCALIZER);
+			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
 			$clearPath =
 				$localizer->
@@ -60,7 +60,7 @@
 			else
 				$page = $cacheTicket->getData();
 
-			$user = $request->getAttached(AttachedAliases::USER);
+			$user = $request->getAttachedVar(AttachedAliases::USER);
 			
 			if(!$user)
 				$user = User::create();
@@ -85,7 +85,7 @@
 			
 			$page->setBaseUrl($baseUrl);
 			
-			$request->setAttached(AttachedAliases::PAGE, $page);
+			$request->setAttachedVar(AttachedAliases::PAGE, $page);
 			
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->addDebug($startTime, microtime(true), $page);
