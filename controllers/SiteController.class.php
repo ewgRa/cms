@@ -32,7 +32,7 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			Assert::notNull($this->getSiteAlias());
+			Assert::isNotNull($this->getSiteAlias());
 			
 			$request->setAttachedVar(
 				AttachedAliases::SITE,

@@ -58,7 +58,7 @@
 			else
 				$result = $cacheTicket->getData();
 			
-			Assert::notNull($result);
+			Assert::isNotNull($result);
 			
 			return $result;
 		}
@@ -95,7 +95,7 @@
 			else
 				throw NotFoundException::create('No layout file');
 			
-			Assert::notNull($result);
+			Assert::isNotNull($result);
 			
 			return $result;
 		}
