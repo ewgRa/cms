@@ -93,8 +93,7 @@
 				}
 			}
 			else
-				throw NotFoundException::create()->
-					setMessage('No layout file');
+				throw NotFoundException::create('No layout file');
 			
 			Assert::notNull($result);
 			

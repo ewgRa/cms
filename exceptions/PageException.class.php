@@ -17,9 +17,25 @@
 		/**
 		 * @return PageException
 		 */
-		public static function create($code = null, $message = null)
+		public static function create($message = null, $code = null)
 		{
 			return new self($message, $code);
+		}
+		
+		/**
+		 * @return PageException
+		 */
+		public static function pageNotFound($message = null)
+		{
+			return self::create($message, self::PAGE_NOT_FOUND);
+		}
+		
+		/**
+		 * @return PageException
+		 */
+		public static function noRightsToAccess($message = null)
+		{
+			return self::create($message, self::NO_RIGHTS_TO_ACCESS);
 		}
 		
 		/**

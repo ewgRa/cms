@@ -30,13 +30,13 @@
 				)
 			);
 			
-			if(!$dbResult->recordCount())
+			if(!$dbResult->recordCount()) {
 				throw
-					NotFoundException::create()->
-						setMessage(
-							'No navigation for category "' . $category
-							. '" and language "' . $language . '"'
-						);
+					NotFoundException::create(
+						'No navigation for category "' . $category
+						. '" and language "' . $language . '"'
+					);
+			}
 			
 			return $dbResult->fetchList();
 		}

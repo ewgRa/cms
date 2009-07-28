@@ -28,10 +28,7 @@
 			$pageId = $this->getPagePathMapper()->getPageId($clearPath);
 
 			if(!$pageId)
-			{
-				throw PageException::create(PageException::PAGE_NOT_FOUND)->
-					setUrl($clearPath);
-			}
+				throw PageException::pageNotFound()->setUrl($clearPath);
 			
 			try
 			{

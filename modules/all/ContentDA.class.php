@@ -26,13 +26,13 @@
 				)
 			);
 			
-			if($dbResult->recordCount() != count($units))
+			if($dbResult->recordCount() != count($units)) {
 				throw
-					NotFoundException::create()->
-						setMessage(
-							'No content for one or more units "' . join('" , "', $units)
-							. '" and language "' . $language . '"'
-						);
+					NotFoundException::create(
+						'No content for one or more units "' . join('" , "', $units)
+						. '" and language "' . $language . '"'
+					);
+			}
 
 			return $dbResult->fetchList();
 		}

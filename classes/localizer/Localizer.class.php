@@ -162,11 +162,10 @@
 			}
 			else
 			{
-				throw DefaultException::create()->
-					setMessage(
-						'Known nothing about default language '
-						. '"' . $languageAbbr . '"'
-					);
+				throw DefaultException::create(
+					'Known nothing about default language '
+					. '"' . $languageAbbr . '"'
+				);
 			}
 			
 			return $this;

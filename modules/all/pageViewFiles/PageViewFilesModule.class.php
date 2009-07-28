@@ -63,10 +63,11 @@
 				{
 					$mime = MimeContentType::createByName($mimeName);
 					
-					if(!$mime->canBeJoined())
-						throw
-							DefaultException::create()->
-								setMessage('Don\'t know how join mime ' . $mime);
+					if(!$mime->canBeJoined()) {
+						throw DefaultException::create(
+							'Don\'t know how join mime ' . $mime
+						);
+					}
 				
 					$this->addJoinMime($mime);
 				}

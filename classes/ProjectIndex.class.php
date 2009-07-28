@@ -252,7 +252,7 @@
 		    		array(E_ERROR, E_PARSE, E_RECOVERABLE_ERROR)
 		    	)
 		    )
-		    	return $this->catchException(new DefaultException($data));
+		    	return $this->catchException(DefaultException::create($data));
 		    
 		    return new DefaultException($data);
 		}

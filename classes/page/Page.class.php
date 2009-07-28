@@ -192,7 +192,7 @@
 					);
 					
 					throw
-						PageException::create(PageException::NO_RIGHTS_TO_ACCESS)->
+						PageException::noRightsToAccess()->
 							setNoRights($noRights)->
 							setPageRights($this->getRights());
 					}

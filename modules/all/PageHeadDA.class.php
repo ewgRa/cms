@@ -23,13 +23,13 @@
 				array($pageId, $language)
 			);
 			
-			if(!$dbResult->recordCount())
+			if(!$dbResult->recordCount()) {
 				throw
-					NotFoundException::create()->
-						setMessage(
-							'No page head for page "' . $pageId
-							. '" and language "' . $language . '"'
-						);
+					NotFoundException::create(
+						'No page head for page "' . $pageId
+						. '" and language "' . $language . '"'
+					);
+			}
 
 			return $dbResult->fetchArray();
 		}
