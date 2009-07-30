@@ -68,7 +68,7 @@
 				
 				foreach(array_unique($matches[1]) as $match)
 				{
-					$matchVarValue = Variables::getValueByString($match);
+					$matchVarValue = VariableUtils::getValueByString($match);
 					
 					if($matchVarValue)
 					{

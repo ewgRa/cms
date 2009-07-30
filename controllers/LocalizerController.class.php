@@ -30,7 +30,7 @@
 			$localizer->defineLanguage($request->getUrl());
 			
 			//try set cookie
-			Session::me()->
+			CookieManager::me()->
 				setCookie(
 					'languageId', $localizer->getRequestLanguage()->getId()
 				)->
