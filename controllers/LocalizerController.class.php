@@ -18,12 +18,12 @@
 		) {
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
-			if(Session::me()->getCookie('languageId'))
+			if($request->getCookieVar('languageId'))
 			{
 				$localizer->setCookieLanguage(
 					Language::create()->
-						setId(Session::me()->getCookie('languageId'))->
-						setAbbr(Session::me()->getCookie('languageAbbr'))
+						setId($request->getCookieVar('languageId'))->
+						setAbbr($request->getCookieVar('languageAbbr'))
 				);
 			}
 			
