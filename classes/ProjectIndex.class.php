@@ -77,7 +77,18 @@
 			}
 			catch(Exception $e)
 			{
-				echo $this->catchException($e);
+				$engineEcho = ob_get_clean();
+
+				error_log($e);
+				
+				if(strlen($engineEcho)) {
+					$this->catchEngineEcho(
+						$engineEcho,
+						$this->catchException($e)
+					);
+				} else
+					echo $this->catchException($e);
+				
 				die;
 			}
 			

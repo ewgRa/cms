@@ -114,8 +114,11 @@
 				setMimeTypes($this->getJoinMimes())->
 				joinFileNames($viewFiles);
 				
-			if(!file_exists(JOIN_FILES_DIR))
+			if(!file_exists(JOIN_FILES_DIR)) {
+				$umask = umask(0);
 				mkdir(JOIN_FILES_DIR, FileBasedCache::DIR_PERMISSIONS, true);
+				umask($umask);
+			}
 			
 			foreach($files['includeFiles'] as $file) {
 				if(isset($file['files'])) {
