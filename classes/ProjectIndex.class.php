@@ -1,12 +1,6 @@
 <?php
 	/* $Id$ */
 
-	if(!class_exists('Singleton', false))
-		require_once FRAMEWORK_DIR . '/patterns/Singleton.class.php';
-	
-	if(!class_exists('DefaultException', false))
-		require_once FRAMEWORK_DIR . '/exceptions/DefaultException.class.php';
-		
 	function exceptionHandler($data)
 	{
 		return ProjectIndex::me()->exceptionHandler($data);
@@ -150,7 +144,7 @@
 				);
 						
 			$result = null;
-			
+
 			if(
 				Singleton::hasInstance('Debug')
 				&& Debug::me()->isEnabled()
