@@ -1,15 +1,10 @@
 <?php
 	/* $Id$ */
 
-	function exceptionHandler($data)
-	{
-		return ProjectIndex::me()->exceptionHandler($data);
-	}
-	
 	class ProjectIndex extends Singleton
 	{
-		private $errorTemplate = null;
-		private $canShowDebug = true;
+		private $errorTemplate 	= null;
+		private $canShowDebug 	= true;
 		
 		/**
 		 * @return ProjectIndex
@@ -64,44 +59,28 @@
 		
 		public function run()
 		{
-			$startTime = microtime(true);
-		
-			ob_start('exceptionHandler');
+			$startTime 	= microtime(true);
+			$output 	= null;
 			
-			$renderedOutput = null;
+			ob_start('outputHandler');
 			
 			try
 			{
 				$request = init();
-				$renderedOutput = run($request);
+				$output = run($request);
 			}
 			catch(Exception $e)
 			{
-				$engineEcho = ob_get_clean();
-
 				error_log($e);
-				
-				if(strlen($engineEcho)) {
-					$this->catchEngineEcho(
-						$engineEcho,
-						$this->catchException($e)
-					);
-				} else
-					echo $this->catchException($e);
-				
+				$this->obEnd($this->catchException($e));
 				die;
 			}
 			
-			$engineEcho = ob_get_clean();
-		
-			if(strlen($engineEcho))
-				$this->catchEngineEcho($engineEcho, $renderedOutput);
-			else
-				echo $renderedOutput;
-			
+			$echo = $this->obEnd($output);
+
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 			{
-				$this->buildDebug($startTime, $engineEcho);
+				$this->buildDebug($startTime, $echo);
 				
 				if(Session::me()->isStarted())
 					Debug::me()->store();
@@ -203,15 +182,15 @@
 				);
 		}
 		
-		public function catchEngineEcho($engineEcho, $renderedOutput)
+		public function catchEcho($echo, $output)
 		{
-			$fileName = LOG_DIR . '/engineEcho.txt';
+			$fileName = LOG_DIR . '/echo.txt';
 			
 			$logTime = file_exists($fileName) ? filemtime($fileName) : 0;
 			
 			file_put_contents(
 				$fileName,
-				date('Y-m-d h:i:s  ') . $_SERVER['REQUEST_URI'] . PHP_EOL . $engineEcho
+				date('Y-m-d h:i:s  ') . $_SERVER['REQUEST_URI'] . PHP_EOL . $echo
 					. PHP_EOL . PHP_EOL,
 				FILE_APPEND
 			);
@@ -219,35 +198,22 @@
 			if(time() - $logTime > 180)
 				mail(
 					ADMIN_EMAIL,
-					'Engine echo is not empty on host ' . $_SERVER['HTTP_HOST'],
+					'Echo is not empty on host ' . $_SERVER['HTTP_HOST'],
 					'Check log ' . $fileName . PHP_EOL . PHP_EOL
-					. 'Last engine echo:' . PHP_EOL . $engineEcho
+					. 'Last echo:' . PHP_EOL . $echo
 				);
 			
-			$hasBody = preg_match('/<body.*?>.*?<\/body>/is', $renderedOutput);
+			$hasBody = preg_match('/<body.*?>.*?<\/body>/is', $output);
 			
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				echo $hasBody
-					? preg_replace('/(<body.*?>)/', '$1' . $engineEcho, $renderedOutput, 1)
-					: $engineEcho . $renderedOutput;
+					? preg_replace('/(<body.*?>)/', '$1' . $echo, $output, 1)
+					: $echo . $output;
 			else
-				echo $renderedOutput;
+				echo $output;
 		}
 		
-		public function buildDebug($startTime, $engineEcho)
-		{
-			Debug::me()->addItem($this->createRequestDebugItem());
-				
-			$debugItem = CmsDebugItem::create()->
-				setType(CmsDebugItem::ENGINE_ECHO)->
-				setData($engineEcho)->
-				setStartTime($startTime)->
-				setEndTime(microtime(true));
-		
-			Debug::me()->addItem($debugItem);
-		}
-
-		public function exceptionHandler($data)
+		public function handleOutput($data)
 		{
 		    $error = error_get_last();
 
@@ -259,7 +225,32 @@
 		    )
 		    	return $this->catchException(DefaultException::create($data));
 		    
-		    return new DefaultException($data);
+		    return $data;
+		}
+		
+		private function obEnd($output)
+		{
+			$echo = ob_get_clean();
+
+			if(strlen($echo))
+				$this->catchEcho($echo, $output);
+			else
+				echo $output;
+				
+			return $echo;
+		}
+
+		private function buildDebug($startTime, $echo)
+		{
+			Debug::me()->addItem($this->createRequestDebugItem());
+				
+			$debugItem = CmsDebugItem::create()->
+				setType(CmsDebugItem::ENGINE_ECHO)->
+				setData($echo)->
+				setStartTime($startTime)->
+				setEndTime(microtime(true));
+		
+			Debug::me()->addItem($debugItem);
 		}
 	}
 ?>
