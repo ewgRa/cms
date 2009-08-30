@@ -3,9 +3,6 @@
 
 	class ProjectIndex extends Singleton
 	{
-		private $errorTemplate 	= null;
-		private $canShowDebug 	= true;
-		
 		/**
 		 * @return ProjectIndex
 		 */
@@ -14,85 +11,28 @@
 			return parent::getInstance(__CLASS__);
 		}
 			
-		public function __construct()
-		{
-			$this->errorTemplate = SITE_DIR . '/view/html/haserror.html';
-			return parent::__construct();
-		}
-		
-		/**
-		 * @return ProjectIndex
-		 */
-		public function showDebug()
-		{
-			$this->canShowDebug = true;
-			return $this;
-		}
-		
-		/**
-		 * @return ProjectIndex
-		 */
-		public function hideDebug()
-		{
-			$this->canShowDebug = false;
-			return $this;
-		}
-		
-		public function canShowDebug()
-		{
-			return $this->canShowDebug;
-		}
-		
-		/**
-		 * @return ProjectIndex
-		 */
-		public function setErrorTemplate($template)
-		{
-			$this->errorTemplate = $template;
-			return $this;
-		}
-		
-		public function getErrorTemplate()
-		{
-			return $this->errorTemplate;
-		}
-		
 		public function run()
 		{
-			$startTime 	= microtime(true);
-			$output 	= null;
-			
-			ob_start('outputHandler');
-			
-			try
-			{
-				$request = init();
-				$output = run($request);
-			}
-			catch(Exception $e)
-			{
-				error_log($e);
-				$this->obEnd($this->catchException($e));
-				die;
-			}
-			
-			$echo = $this->obEnd($output);
+			$request 	= init();
+			$output		= run($request);
 
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
-			{
-				$this->buildDebug($startTime, $echo);
-				
-				if(Session::me()->isStarted())
-					Debug::me()->store();
-			}
+				Debug::me()->addItem($this->createRequestDebugItem());
+			
+			return $output;
 		}
 		
-		public function catchException(Exception $e, $storeDebug = true)
+		public function sendUnavailableHeaders()
 		{
 			header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Temporarily Unavailable');
 			header('Status: 503 Service Temporarily Unavailable');
 			header('Retry-After: 3600');
 			
+			return $this;
+		}
+
+		public function catchException(Exception $e, $storeDebug = true)
+		{
 			$fileName = LOG_DIR . '/errors.txt';
 			$logTime = file_exists($fileName) ? filemtime($fileName) : 0;
 			$debugItemId = null;
@@ -117,7 +57,7 @@
 			$exceptionString = date('Y-m-d h:i:s ') . $_SERVER['HTTP_HOST']
 				. $_SERVER['REQUEST_URI']
 				. ($debugItemId ? ' (debugItemId: ' . $debugItemId . ')' : null)
-				. PHP_EOL . $e . PHP_EOL . PHP_EOL;
+				. PHP_EOL . $e . PHP_EOL . PHP_EOL . PHP_EOL;
 			
 			file_put_contents(
 				$fileName,
@@ -133,18 +73,7 @@
 						. PHP_EOL . $exceptionString
 				);
 						
-			$result = null;
-
-			if(
-				Singleton::hasInstance('Debug')
-				&& Debug::me()->isEnabled()
-				&& $this->canShowDebug()
-			)
-				$result = ($e instanceof DefaultException) ? $e->toHtmlString() : $e;
-			else
-				$result = file_get_contents($this->getErrorTemplate());
-				
-			return $result;
+			return $this;
 		}
 		
 		public function catchPageNotFoundException(
@@ -155,10 +84,9 @@
 			{
 				$request->setUrl(HttpUrl::create()->parse('/page-not-found.html'));
 
-				$chainController = createCommonChain();
-	
 				$modelAndView = ModelAndView::create();
 				
+				$chainController = createCommonChain();
 				$chainController->handleRequest($request, $modelAndView);
 				
 				return $modelAndView->render();
@@ -167,22 +95,7 @@
 				throw $e;
 		}
 		
-		public function createRequestDebugItem()
-		{
-			return CmsDebugItem::create()->
-				setType(CmsDebugItem::REQUEST)->
-				setData(
-					array(
-						'get'	 	=> $_GET,
-						'post'	 	=> $_POST,
-						'server' 	=> $_SERVER,
-						'cookie' 	=> $_COOKIE,
-						'session'	=> isset($_SESSION) ? $_SESSION : array()
-					)
-				);
-		}
-		
-		public function catchEcho($echo, $output)
+		public function catchEcho($echo)
 		{
 			$fileName = LOG_DIR . '/echo.txt';
 			
@@ -190,8 +103,8 @@
 			
 			file_put_contents(
 				$fileName,
-				date('Y-m-d h:i:s  ') . $_SERVER['REQUEST_URI'] . PHP_EOL . $echo
-					. PHP_EOL . PHP_EOL,
+				date('Y-m-d h:i:s ') . $_SERVER['REQUEST_URI'] . PHP_EOL . $echo
+					. PHP_EOL . PHP_EOL . PHP_EOL,
 				FILE_APPEND
 			);
 			
@@ -203,54 +116,39 @@
 					. 'Last echo:' . PHP_EOL . $echo
 				);
 			
+			return $this;
+		}
+		
+		public function getOutput($output, $echo)
+		{
+			$result = $output;
+			
 			$hasBody = preg_match('/<body.*?>.*?<\/body>/is', $output);
 			
-			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
-				echo $hasBody
-					? preg_replace('/(<body.*?>)/', '$1' . $echo, $output, 1)
-					: $echo . $output;
-			else
-				echo $output;
+			if($echo && ini_get('display_errors')) {
+				$result =
+					$hasBody
+						? preg_replace('/(<body.*?>)/', '$1' . $echo, $result, 1)
+						: $echo . $result;
+			}
+
+			return $result;
 		}
 		
-		public function handleOutput($data)
+		private function createRequestDebugItem()
 		{
-		    $error = error_get_last();
-
-		    if(
-		    	in_array(
-		    		$error['type'],
-		    		array(E_ERROR, E_PARSE, E_RECOVERABLE_ERROR)
-		    	)
-		    )
-		    	return $this->catchException(DefaultException::create($data));
-		    
-		    return $data;
-		}
-		
-		private function obEnd($output)
-		{
-			$echo = ob_get_clean();
-
-			if(strlen($echo))
-				$this->catchEcho($echo, $output);
-			else
-				echo $output;
-				
-			return $echo;
-		}
-
-		private function buildDebug($startTime, $echo)
-		{
-			Debug::me()->addItem($this->createRequestDebugItem());
-				
-			$debugItem = CmsDebugItem::create()->
-				setType(CmsDebugItem::ENGINE_ECHO)->
-				setData($echo)->
-				setStartTime($startTime)->
-				setEndTime(microtime(true));
-		
-			Debug::me()->addItem($debugItem);
+			return
+				CmsDebugItem::create()->
+				setType(CmsDebugItem::REQUEST)->
+				setData(
+					array(
+						'get'	 	=> $_GET,
+						'post'	 	=> $_POST,
+						'server' 	=> $_SERVER,
+						'cookie' 	=> $_COOKIE,
+						'session'	=> isset($_SESSION) ? $_SESSION : array()
+					)
+				);
 		}
 	}
 ?>
