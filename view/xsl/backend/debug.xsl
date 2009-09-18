@@ -140,7 +140,7 @@
 									<td valign="top" nowrap="true"><xsl:value-of select="data/prefix"/></td>
 									<td valign="top" nowrap="true"><xsl:value-of select="data/key"/></td>
 									<td valign="top" nowrap="true"><xsl:value-of select="data/cacheInstance"/></td>
-									<td valign="top" nowrap="true"><xsl:value-of select="data/lifeTime"/></td>
+									<td valign="top" nowrap="true"><xsl:value-of select="data/expiredTime"/></td>
 									<td valign="top" nowrap="true"><xsl:value-of select="data/actualTime"/></td>
 									<td valign="top" nowrap="true"><xsl:value-of select="data/status"/></td>
 								</tr>
