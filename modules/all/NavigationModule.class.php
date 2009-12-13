@@ -5,22 +5,40 @@
 	{
 		private $categoryAlias = null;
 		
+		/**
+		 * @var NavigationCacheWorker
+		 */
+		private $cacheWorker = null;
+		
+		public function getCategoryAlias()
+		{
+			return $this->categoryAlias;
+		}
+		
+		public function setCategoryAlias($categoryAlias)
+		{
+			$this->categoryAlias = $categoryAlias;
+			return $this;
+		}
+		
+		/**
+		 * @return NavigationCacheWorker
+		 */
+		public function cacheWorker()
+		{
+			if(!$this->cacheWorker)
+				$this->cacheWorker = NavigationCacheWorker::create()->
+					setModule($this);
+
+			return $this->cacheWorker;
+		}
+		
 		public function importSettings($settings)
 		{
 			$this->setCategoryAlias($settings['category']);
 
-			if(Cache::me()->getPool('cms')->hasTicketParams('navigation'))
-			{
-				$this->setCacheTicket(
-					Cache::me()->getPool('cms')->createTicket('navigation')->
-						setKey(
-							$this->getCategoryAlias(),
-							$this->getLocalizer()->getRequestLanguage(),
-							$this->getLocalizer()->getSource(),
-							$this->getPage()->getBaseUrl()->getPath()
-						)
-				);
-			}
+			if($cacheTicket = $this->cacheWorker()->createTicket())
+				$this->setCacheTicket($cacheTicket);
 			
 			return $this;
 		}
@@ -55,17 +73,6 @@
 			return Model::create()->setData($result);
 		}
 
-		private function setCategoryAlias($categoryAlias)
-		{
-			$this->categoryAlias = $categoryAlias;
-			return $this;
-		}
-		
-		private function getCategoryAlias()
-		{
-			return $this->categoryAlias;
-		}
-		
 		private function getLocalizer()
 		{
 			return

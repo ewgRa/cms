@@ -11,7 +11,7 @@ ticketAliases:
     prefix: modules/content
     lifeTime: 86400
 
-  navigation:
+  NavigationCacheWorker:
     prefix: modules/navigation
     lifeTime: 86400
 
