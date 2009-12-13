@@ -10,10 +10,7 @@
 		
 		protected function da()
 		{
-			if(!$this->da)
-				$this->da = PageHeadDA::create();
-			
-			return $this->da;
+			return PageHeadDA::me();
 		}
 		
 		public function importSettings($settings)

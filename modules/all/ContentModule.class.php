@@ -6,11 +6,6 @@
 		private $units = null;
 		
 		/**
-		 * @var ContentDA
-		 */
-		private $da	= null;
-
-		/**
 		 * @var ContentCacheWorker
 		 */
 		private $cacheWorker = null;
@@ -20,10 +15,7 @@
 		 */
 		public function da()
 		{
-			if(!$this->da)
-				$this->da = ContentDA::create();
-
-			return $this->da;
+			return ContentDA::me();
 		}
 		
 		/**

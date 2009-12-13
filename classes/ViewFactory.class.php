@@ -12,17 +12,9 @@
 		 */
 		private static $cacheWorker = null;
 			
-		/**
-		 * @var ViewDA
-		 */
-		private static $da = null;
-		
 		public static function da()
 		{
-			if(!self::$da)
-				self::$da = ViewDA::create();
-				
-			return self::$da;
+			return ViewDA::me();
 		}
 		
 		public static function cacheWorker()

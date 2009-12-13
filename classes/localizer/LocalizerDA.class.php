@@ -10,14 +10,14 @@
 		/**
 		 * @return LocalizerDA
 		 */
-		public static function create()
+		public static function me()
 		{
-			return new self;
+			return parent::getInstance(__CLASS__);
 		}
-		
+				
 		public function loadLanguages()
 		{
-			$dbQuery = "SELECT * FROM " . $this->db()->getTable('Languages');
+			$dbQuery = "SELECT * FROM " . $this->db()->getTable('Language');
 			
 			$dbResult = $this->db()->query($dbQuery);
 			

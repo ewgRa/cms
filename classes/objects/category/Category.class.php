@@ -1,17 +1,17 @@
 <?php
 	/* $Id$ */
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class Site
+	final class Category
 	{
-		private $id = null;
-		private $alias = null;
+		private $id		= null;
+		private $alias 	= null;
 		
 		/**
-		 * @return Site
+		 * @return Category
 		 */
 		public static function create()
 		{
@@ -19,36 +19,36 @@
 		}
 		
 		/**
-		 * @return SiteDA
+		 * @return CategoryDA
 		 */
 		public static function da()
 		{
-			return SiteDA::me();
+			return CategoryDA::me();
 		}
 		
 		/**
-		 * @return Site
+		 * @return Category
 		 */
 		public function setId($id)
 		{
 			$this->id = $id;
 			return $this;
 		}
-		
+
 		public function getId()
 		{
 			return $this->id;
 		}
 		
 		/**
-		 * @return Site
+		 * @return Category
 		 */
 		public function setAlias($alias)
 		{
 			$this->alias = $alias;
 			return $this;
 		}
-		
+
 		public function getAlias()
 		{
 			return $this->alias;

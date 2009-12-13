@@ -10,15 +10,15 @@
 		/**
 		 * @return ViewDA
 		 */
-		public static function create()
+		public static function me()
 		{
-			return new self;
+			return parent::getInstance(__CLASS__);
 		}
-		
+				
 		public function getFile($fileId)
 		{
 			$dbQuery = '
-				SELECT * FROM ' . $this->db()->getTable('ViewFiles') . '
+				SELECT * FROM ' . $this->db()->getTable('ViewFile') . '
 				WHERE id = ?
 			';
 			

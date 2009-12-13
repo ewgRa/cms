@@ -8,11 +8,6 @@
 	final class DatabaseBasedDebug extends BaseDebug
 	{
 		/**
-		 * @var DatabaseBasedDebugDA
-		 */
-		private $da = null;
-		
-		/**
 		 * @return DatabaseBasedDebug
 		 */
 		public static function create()
@@ -25,10 +20,7 @@
 		 */
 		public function da()
 		{
-			if(!$this->da)
-				$this->da = DatabaseBasedDebugDA::create();
-			
-			return $this->da;
+			return DatabaseBasedDebugDA::me();
 		}
 		
 		public function store()

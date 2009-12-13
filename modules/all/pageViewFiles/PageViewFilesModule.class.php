@@ -6,21 +6,13 @@
 		private $joinMimes = array();
 		
 		/**
-		 * @var PageViewFilesDA
-		 */
-		private $da = null;
-
-		/**
 		 * @var PageViewFilesCacheWorker
 		 */
 		private $cacheWorker = null;
 		
 		protected function da()
 		{
-			if(!$this->da)
-				$this->da = PageViewFilesDA::create();
-			
-			return $this->da;
+			return PageViewFilesDA::me();
 		}
 		
 		/**

@@ -10,11 +10,6 @@
 		const NON_PREG	= 'no';
 		const PREG		= 'yes';
 
-		/**
-		 * @var PagePathMapperDA
-		 */
-		private $da = null;
-		
 		private $map = null;
 
 		/**
@@ -30,10 +25,7 @@
 		 */
 		public function da()
 		{
-			if(!$this->da)
-				$this->da = PagePathMapperDA::create();
-			
-			return $this->da;
+			return PagePathMapperDA::me();
 		}
 
 		/**

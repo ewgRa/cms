@@ -22,11 +22,6 @@
 		
 		protected $type = null;
 
-		/**
-		 * @var LocalizerDA
-		 */
-		private $da = null;
-
 		abstract protected function getLanguageAbbr(HttpUrl $url);
 				
 		/**
@@ -34,10 +29,7 @@
 		 */
 		public function da()
 		{
-			if(!$this->da)
-				$this->da = LocalizerDA::create();
-
-			return $this->da;
+			return LocalizerDA::me();
 		}
 		
 		public function getType()

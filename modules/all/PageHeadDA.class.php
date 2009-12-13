@@ -3,16 +3,16 @@
 
 	class PageHeadDA extends CmsDatabaseRequester
 	{
-		public static function create()
+		public static function me()
 		{
-			return new self;
+			return parent::getInstance(__CLASS__);
 		}
-		
+				
 		public function getPageHead(Page $page, Language $language)
 		{
 			$dbQuery = "
 				SELECT title, description, keywords
-				FROM " . $this->db()->getTable('PagesData') . "
+				FROM " . $this->db()->getTable('PageData') . "
 				WHERE
 					page_id = ?
 					AND language_id = ?

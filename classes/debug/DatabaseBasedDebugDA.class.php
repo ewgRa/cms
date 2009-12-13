@@ -10,11 +10,11 @@
 		/**
 		 * @return DatabaseBasedDebugDA
 		 */
-		public static function create()
+		public static function me()
 		{
-			return new self;
+			return parent::getInstance(__CLASS__);
 		}
-		
+				
 		public function insertItem($sessionId, $data)
 		{
 			$dbQuery = "INSERT INTO " . $this->db()->getTable('DebugData')

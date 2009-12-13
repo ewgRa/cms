@@ -20,11 +20,6 @@
 		private $modules		= null;
 		
 		/**
-		 * @var PageDA
-		 */
-		private $da				= null;
-		
-		/**
 		 * @return Page
 		 */
 		public static function create()
@@ -42,10 +37,7 @@
 		 */
 		public function da()
 		{
-			if(!$this->da)
-				$this->da = PageDA::create();
-				
-			return $this->da;
+			return PageDA::me();
 		}
 		
 		/**

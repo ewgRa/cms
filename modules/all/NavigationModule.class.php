@@ -3,23 +3,18 @@
 
 	class NavigationModule extends Module
 	{
-		private $category = null;
-		
-		/**
-		 * @var NavigationDA
-		 */
-		private $da = null;
+		private $categoryAlias = null;
 		
 		public function importSettings($settings)
 		{
-			$this->setCategory($settings['category']);
+			$this->setCategoryAlias($settings['category']);
 
 			if(Cache::me()->getPool('cms')->hasTicketParams('navigation'))
 			{
 				$this->setCacheTicket(
 					Cache::me()->getPool('cms')->createTicket('navigation')->
 						setKey(
-							$this->getCategory(),
+							$this->getCategoryAlias(),
 							$this->getLocalizer()->getRequestLanguage(),
 							$this->getLocalizer()->getSource(),
 							$this->getPage()->getBaseUrl()->getPath()
@@ -35,33 +30,40 @@
 		 */
 		public function getModel()
 		{
-			$result = $this->da()->getByCategory(
-				$this->getCategory(),
-				$this->getLocalizer()->getRequestLanguage()
-			);
+			$result = array();
+			
+			$result['navigationList'] =
+				Navigation::da()->getByCategory(
+					Category::da()->getByAlias($this->getCategoryAlias())
+				);
 
+			$result['navigationDataList'] = array();
+			
+			$navigationDataList =
+				NavigationData::da()->getList(
+					$result['navigationList'],
+					$this->getLocalizer()->getRequestLanguage()
+				);
+				
+			foreach ($navigationDataList as $navigationData) {
+				$result['navigationDataList'][$navigationData->getNavigationId()] =
+					$navigationData;
+			}
+			
 			$result['baseUrl'] = $this->getPage()->getBaseUrl()->getPath();
 			
 			return Model::create()->setData($result);
 		}
 
-		protected function da()
+		private function setCategoryAlias($categoryAlias)
 		{
-			if(!$this->da)
-				$this->da = NavigationDA::create();
-			
-			return $this->da;
-		}
-		
-		private function setCategory($category)
-		{
-			$this->category = $category;
+			$this->categoryAlias = $categoryAlias;
 			return $this;
 		}
 		
-		private function getCategory()
+		private function getCategoryAlias()
 		{
-			return $this->category;
+			return $this->categoryAlias;
 		}
 		
 		private function getLocalizer()
