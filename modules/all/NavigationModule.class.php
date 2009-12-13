@@ -10,6 +10,41 @@
 		 */
 		private $da = null;
 		
+		public function importSettings($settings)
+		{
+			$this->setCategory($settings['category']);
+
+			if(Cache::me()->getPool('cms')->hasTicketParams('navigation'))
+			{
+				$this->setCacheTicket(
+					Cache::me()->getPool('cms')->createTicket('navigation')->
+						setKey(
+							$this->getCategory(),
+							$this->getLocalizer()->getRequestLanguage(),
+							$this->getLocalizer()->getSource(),
+							$this->getPage()->getBaseUrl()->getPath()
+						)
+				);
+			}
+			
+			return $this;
+		}
+		
+		/**
+		 * @return Model
+		 */
+		public function getModel()
+		{
+			$result = $this->da()->getByCategory(
+				$this->getCategory(),
+				$this->getLocalizer()->getRequestLanguage()
+			);
+
+			$result['baseUrl'] = $this->getPage()->getBaseUrl()->getPath();
+			
+			return Model::create()->setData($result);
+		}
+
 		protected function da()
 		{
 			if(!$this->da)
@@ -29,47 +64,16 @@
 			return $this->category;
 		}
 		
-		public function importSettings($settings)
+		private function getLocalizer()
 		{
-			$this->setCategory($settings['category']);
-
-			if(Cache::me()->getPool('cms')->hasTicketParams('navigation'))
-			{
-				$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
-				
-				$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
-			
-				$this->setCacheTicket(
-					Cache::me()->getPool('cms')->createTicket('navigation')->
-						setKey(
-							$this->getCategory(),
-							$localizer->getRequestLanguage(),
-							$localizer->getSource(),
-							$page->getBaseUrl()->getPath()
-						)
-				);
-			}
-			
-			return $this;
+			return
+				$this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 		}
-		
-		/**
-		 * @return Model
-		 */
-		public function getModel()
-		{
-			$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
-			
-			$result = $this->da()->getByCategory(
-				$this->getCategory(),
-				$localizer->getRequestLanguage()->getId()
-			);
 
-			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
-			
-			$result['baseUrl'] = $page->getBaseUrl()->getPath();
-			
-			return Model::create()->setData($result);
+		private function getPage()
+		{
+			return
+				$this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 		}
 	}
 ?>

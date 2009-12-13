@@ -8,7 +8,7 @@
 			return new self;
 		}
 		
-		public function getByCategory($category, $language)
+		public function getByCategory($category, Language $language)
 		{
 			$dbQuery = "
 				SELECT *
@@ -25,7 +25,7 @@
 			$dbResult = $this->db()->query(
 				$dbQuery,
 				array(
-					$language,
+					$language->getId(),
 					$category
 				)
 			);
@@ -34,7 +34,7 @@
 				throw
 					NotFoundException::create(
 						'No navigation for category "' . $category
-						. '" and language "' . $language . '"'
+						. '" and language "' . $language->getId() . '"'
 					);
 			}
 			
