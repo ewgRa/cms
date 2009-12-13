@@ -72,17 +72,5 @@
 			
 			return Model::create()->setData($result);
 		}
-
-		private function getLocalizer()
-		{
-			return
-				$this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
-		}
-
-		private function getPage()
-		{
-			return
-				$this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
-		}
 	}
 ?>

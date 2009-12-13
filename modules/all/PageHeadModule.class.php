@@ -47,20 +47,5 @@
 				
 			return Model::create()->setData($head);
 		}
-		
-		private function getRequestLanguage()
-		{
-			return
-				$this->getRequest()->
-				getAttachedVar(AttachedAliases::LOCALIZER)->
-				getRequestLanguage();
-		}
-
-		private function getPage()
-		{
-			return
-				$this->getRequest()->
-				getAttachedVar(AttachedAliases::PAGE);
-		}
 	}
 ?>

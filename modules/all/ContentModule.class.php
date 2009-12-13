@@ -11,14 +11,6 @@
 		private $cacheWorker = null;
 		
 		/**
-		 * @return ContentDA
-		 */
-		public function da()
-		{
-			return ContentDA::me();
-		}
-		
-		/**
 		 * @return ContentCacheWorker
 		 */
 		public function cacheWorker()
@@ -48,30 +40,22 @@
 		{
 			$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 			
-			$result = $this->da()->getUnitsContent(
-				$this->getUnits(),
-				$localizer->getRequestLanguage()->getId()
-			);
-
-			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
+			$result['contentList'] = Content::da()->getByIds($this->getUnits());
 			
-			$replace = array(
-				'pattern' => array('%baseUrl%'),
-				'replace' => array($page->getBaseUrl()->getPath())
-			);
-
-			if(defined('MEDIA_HOST'))
-			{
-				$replace['pattern'][] = '%MEDIA_HOST%';
-				$replace['replace'][] = MEDIA_HOST;
-			}
-
-			foreach($result as &$contentRow)
-				$contentRow['text'] = str_replace(
-					$replace['pattern'],
-					$replace['replace'],
-					$contentRow['text']
+			$result['contentDataList'] = array();
+			
+			$contentDataList =
+				ContentData::da()->getList(
+					$result['contentList'],
+					$this->getLocalizer()->getRequestLanguage()
 				);
+			
+			foreach ($contentDataList as $contentData) {
+				$result['contentDataList'][$contentData->getContentId()] =
+					$contentData;
+			}
+			
+			$result['replaceFilter'] = $this->getReplaceFilter();
 		
 			return Model::create()->setData($result);
 		}
@@ -85,6 +69,31 @@
 		{
 			$this->units = $units;
 			return $this;
+		}
+		
+		/**
+		 * @return StringReplaceImportFilter
+		 */
+		private function getReplaceFilter()
+		{
+			$result = StringReplaceFilter::create();
+			
+			$params = array(
+				'search' => array('%baseUrl%'),
+				'replace' => array($this->getPage()->getBaseUrl()->getPath())
+			);
+
+			if(defined('MEDIA_HOST'))
+			{
+				$params['search'][] = '%MEDIA_HOST%';
+				$params['replace'][] = MEDIA_HOST;
+			}
+			
+			$result->
+				setSearch($params['search'])->
+				setReplace($params['replace']);
+			
+			return $result;
 		}
 	}
 ?>

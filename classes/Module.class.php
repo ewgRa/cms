@@ -140,6 +140,23 @@
 			return $renderedModel;
 		}
 		
+
+		protected function getLocalizer()
+		{
+			return
+				$this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
+		}
+
+		protected function getRequestLanguage()
+		{
+			return $this->getLocalizer()->getRequestLanguage();
+		}
+
+		protected function getPage()
+		{
+			return $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
+		}
+		
 		private function renderModel()
 		{
 			$view	= $this->getView();

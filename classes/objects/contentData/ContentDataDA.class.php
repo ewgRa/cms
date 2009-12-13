@@ -1,12 +1,12 @@
 <?php
 	/* $Id$ */
 
-	final class NavigationDataDA extends CmsDatabaseRequester
+	final class ContentDataDA extends CmsDatabaseRequester
 	{
-		protected $tableAlias = 'NavigationData';
+		protected $tableAlias = 'ContentData';
 		
 		/**
-		 * @return NavigationDataDA
+		 * @return ContentDataDA
 		 */
 		public static function me()
 		{
@@ -14,18 +14,18 @@
 		}
 
 		/**
-		 * @return NavigationData
+		 * @return ContentData
 		 */
-		public function get(Navigation $navigation, Language $language)
+		public function get(Content $content, Language $language)
 		{
 			$dbQuery = "
 				SELECT * FROM " . $this->getTable() . "
-				WHERE navigation_id = ? AND language_id = ?
+				WHERE content_id = ? AND language_id = ?
 			";
 			
 			$dbResult = $this->db()->query(
 				$dbQuery,
-				array($navigation->getId(), $language->getId())
+				array($content->getId(), $language->getId())
 			);
 			
 			if(!$dbResult->recordCount())
@@ -35,12 +35,12 @@
 		}
 		
 		public function getList(
-			$navigationList = null,
+			$contentList = null,
 			$languageList = null
 		) {
-			if (!is_array($navigationList) && $navigationList) {
-				$navigationList = array(
-					$navigationList->getId() => $navigationList
+			if (!is_array($contentList) && $contentList) {
+				$contentList = array(
+					$contentList->getId() => $contentList
 				);
 			}
 			
@@ -55,10 +55,10 @@
 			$queryParts = array('1');
 			$params = array();
 			
-			if ($navigationList) {
-				$params[] = array_keys($navigationList);
+			if ($contentList) {
+				$params[] = array_keys($contentList);
 				
-				$queryParts[] = 'navigation_id IN(?)';
+				$queryParts[] = 'content_id IN(?)';
 			}
 			
 			if ($languageList) {
@@ -93,8 +93,8 @@
 		
 		private function build(array $array) {
 			return
-				NavigationData::create()->
-					setNavigationId($array['navigation_id'])->
+				ContentData::create()->
+					setContentId($array['content_id'])->
 					setLanguageId($array['language_id'])->
 					setText($array['text']);
 		}
