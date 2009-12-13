@@ -8,7 +8,7 @@
 			return new self;
 		}
 		
-		public function getPageHead($pageId, $language)
+		public function getPageHead(Page $page, Language $language)
 		{
 			$dbQuery = "
 				SELECT title, description, keywords
@@ -20,14 +20,14 @@
 			
 			$dbResult = $this->db()->query(
 				$dbQuery,
-				array($pageId, $language)
+				array($page->getId(), $language->getId())
 			);
 			
 			if(!$dbResult->recordCount()) {
 				throw
 					NotFoundException::create(
-						'No page head for page "' . $pageId
-						. '" and language "' . $language . '"'
+						'No page head for page "' . $page->getId()
+						. '" and language "' . $language->getId() . '"'
 					);
 			}
 

@@ -20,13 +20,11 @@
 		{
 			if(Cache::me()->getPool('cms')->hasTicketParams('page'))
 			{
-				$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
-				
 				$this->setCacheTicket(
 					Cache::me()->getPool('cms')->createTicket('page')->
 						setKey(
-							$this->getRequest()->getAttachedVar(AttachedAliases::PAGE)->getId(),
-							$localizer->getRequestLanguage(),
+							$this->getPage()->getId(),
+							$this->getRequestLanguage(),
 							__CLASS__, __FUNCTION__
 						)
 				);
@@ -40,19 +38,32 @@
 		 */
 		public function getModel()
 		{
-			$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
-			
 			try {
 				$head =
 					$this->da()->getPageHead(
-						$this->getRequest()->getAttachedVar(AttachedAliases::PAGE)->getId(),
-						$localizer->getRequestLanguage()->getId()
+						$this->getPage(),
+						$this->getRequestLanguage()
 					);
 			} catch(NotFoundException $e) {
 				$head = array();
 			}
 				
 			return Model::create()->setData($head);
+		}
+		
+		private function getRequestLanguage()
+		{
+			return
+				$this->getRequest()->
+				getAttachedVar(AttachedAliases::LOCALIZER)->
+				getRequestLanguage();
+		}
+
+		private function getPage()
+		{
+			return
+				$this->getRequest()->
+				getAttachedVar(AttachedAliases::PAGE);
 		}
 	}
 ?>
