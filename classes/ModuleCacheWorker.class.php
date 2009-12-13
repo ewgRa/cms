@@ -25,5 +25,35 @@
 		{
 			return $this->module;
 		}
+		
+		/**
+		 * @return Page
+		 */
+		protected function getPage()
+		{
+			return
+				$this->getModule()->
+					getRequest()->
+					getAttachedVar(AttachedAliases::PAGE);
+		}
+
+		/**
+		 * @return Localizer
+		 */
+		protected function getLocalizer()
+		{
+			return
+				$this->getModule()->
+					getRequest()->
+					getAttachedVar(AttachedAliases::LOCALIZER);
+		}
+
+		/**
+		 * @return Language
+		 */
+		protected function getRequestLanguage()
+		{
+			return $this->getLocalizer()->getRequestLanguage();
+		}
 	}
 ?>

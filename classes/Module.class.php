@@ -140,18 +140,26 @@
 			return $renderedModel;
 		}
 		
-
+		/**
+		 * @return Localizer
+		 */
 		protected function getLocalizer()
 		{
 			return
 				$this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
 		}
 
+		/**
+		 * @return Language
+		 */
 		protected function getRequestLanguage()
 		{
 			return $this->getLocalizer()->getRequestLanguage();
 		}
 
+		/**
+		 * @return Page
+		 */
 		protected function getPage()
 		{
 			return $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
