@@ -3,7 +3,7 @@
 
 	class MediaFilesJoiner
 	{
-		private $mimeTypes = array();
+		private $contentTypes = array();
 		
 		/**
 		 * @return MediaFilesJoiner
@@ -16,15 +16,15 @@
 		/**
 		 * @return MediaFilesJoiner
 		 */
-		public function setMimeTypes($mimeTypes)
+		public function setContentTypes($contentTypes)
 		{
-			$this->mimeTypes = $mimeTypes;
+			$this->contentTypes = $contentTypes;
 			return $this;
 		}
 		
-		public function getMimeTypes()
+		public function getContentTypes()
 		{
-			return $this->mimeTypes;
+			return $this->contentTypes;
 		}
 		
 		public function joinFileNames($files)
@@ -36,7 +36,7 @@
 			foreach($files['includeFiles'] as $file)
 			{
 				if(
-					in_array($file['content-type']->getId(), array_keys($this->getMimeTypes()))
+					in_array($file['content-type']->getId(), array_keys($this->getContentTypes()))
 					&& !in_array($file['id'], $files['dontJoinFiles'])
 				) {
 					if(!isset($bufferJoinFiles[$file['content-type']->getId()]))
@@ -48,19 +48,19 @@
 					$joinFiles[] = $file;
 			}
 			
-			foreach($bufferJoinFiles as $contentType => $files)
+			foreach($bufferJoinFiles as $contentTypeName => $files)
 			{
-				$mime = MimeContentType::create($contentType);
+				$contentType = ContentType::create($contentTypeName);
 				
 				$fileName = $this->compileFileName($files);
 				
-				$extension = $mime->getFileExtension();
+				$extension = $contentType->getFileExtension();
 				
 				$fileName = $fileName . '.' . $extension;
 
 				$joinFiles[] = array(
 					'path' => $fileName,
-					'content-type' => $mime,
+					'content-type' => $contentType,
 					'files' => $files
 				);
 			}

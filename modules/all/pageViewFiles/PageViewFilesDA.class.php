@@ -26,7 +26,7 @@
 			$dbQuery = '
 				SELECT
 					t2.id, t2.path, t2.is_can_joined, t1.recursive_include,
-					t2.`content-type`
+					t2.`content_type`
 				FROM ' . $this->db()->getTable('ViewFileInclude') . ' t1
 				INNER JOIN ' . $this->db()->getTable('ViewFile') . ' t2
 					ON(t2.id = t1.include_file_id AND t1.file_id IN(?))

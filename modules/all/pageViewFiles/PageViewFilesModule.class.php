@@ -3,7 +3,7 @@
 
 	class PageViewFilesModule extends Module
 	{
-		private $joinMimes = array();
+		private $joinContentTypes = array();
 		
 		/**
 		 * @var PageViewFilesCacheWorker
@@ -30,15 +30,15 @@
 		/**
 		 * @return PageViewFilesModule
 		 */
-		public function addJoinMime(MimeContentType $contentType)
+		public function addJoinContentType(ContentType $contentType)
 		{
-			$this->joinMimes[$contentType->getId()] = $contentType;
+			$this->joinContentTypes[$contentType->getId()] = $contentType;
 			return $this;
 		}
 		
-		public function getJoinMimes()
+		public function getJoinContentTypes()
 		{
-			return $this->joinMimes;
+			return $this->joinContentTypes;
 		}
 		
 		public function importSettings($settings)
@@ -49,19 +49,19 @@
 				$this->setCacheTicket($cacheTicket);
 			}
 
-			if(isset($settings['joinMimes']) && is_array($settings['joinMimes']))
+			if(isset($settings['joinContentTypes']) && is_array($settings['joinContentTypes']))
 			{
-				foreach($settings['joinMimes'] as $mimeName)
+				foreach($settings['joinContentTypes'] as $contentTypeName)
 				{
-					$mime = MimeContentType::createByName($mimeName);
+					$contentType = ContentType::createByName($contentTypeName);
 					
-					if(!$mime->canBeJoined()) {
+					if(!$contentType->canBeJoined()) {
 						throw DefaultException::create(
-							'Don\'t know how join mime ' . $mime
+							'Don\'t know how join content-type ' . $contentType
 						);
 					}
 				
-					$this->addJoinMime($mime);
+					$this->addJoinContentType($contentType);
 				}
 			}
 			
@@ -82,7 +82,7 @@
 			
 			$viewFiles = $this->getPageViewFiles($page, $viewFilesId);
 			
-			if($this->getJoinMimes())
+			if($this->getJoinContentTypes())
 				$viewFiles = $this->joinFiles($viewFiles);
 			
 			foreach($viewFiles['includeFiles'] as &$file)
@@ -103,7 +103,7 @@
 		{
 			$files =
 				MediaFilesJoiner::create()->
-				setMimeTypes($this->getJoinMimes())->
+				setContentTypes($this->getJoinContentTypes())->
 				joinFileNames($viewFiles);
 				
 			if(!file_exists(JOIN_FILES_DIR)) {
@@ -144,7 +144,7 @@
 				$viewFiles['includeFiles'][] = array(
 					'path' => $file['path'],
 					'content-type' =>
-						MimeContentType::createByName($file['content-type']),
+						ContentType::createByName($file['content_type']),
 					'id' => $file['id']
 				);
 				

@@ -65,11 +65,11 @@
 				
 				$layout = File::create()->setPath($file['path']);
 				
-				$mimeType = MimeContentType::createByName($file['content-type']);
+				$contentType = ContentType::createByName($file['content_type']);
 
-				switch($mimeType->getId())
+				switch($contentType->getId())
 				{
-					case MimeContentType::TEXT_XSLT:
+					case ContentType::TEXT_XSLT:
 						$result = XsltView::create();
 						
 						$projectConfig = Config::me()->getOption('project');
@@ -79,7 +79,7 @@
 						
 						$result->loadLayout($layout);
 					break;
-					case MimeContentType::APPLICATION_PHP:
+					case ContentType::APPLICATION_PHP:
 						$result = PhpView::create()->loadLayout($layout);
 					break;
 				}

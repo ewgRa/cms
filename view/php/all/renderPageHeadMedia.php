@@ -5,7 +5,7 @@
 		{
 			switch($file['content-type']->getId())
 			{
-				case MimeContentType::TEXT_JAVASCRIPT:
+				case ContentType::TEXT_JAVASCRIPT:
 ?>
 	<script type="<?php echo $file['content-type']?>" src="<?php echo $file['path']?>"></script>
 <?php
