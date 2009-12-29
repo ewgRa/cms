@@ -20,29 +20,10 @@
 				WHERE category_id = ?
 			";
 			
-			$dbResult = $this->db()->query($dbQuery, array($category->getId()));
-			
-			if(!$dbResult->recordCount()) {
-				throw
-					NotFoundException::create(
-						'No navigation for category "' . $category->getId() . '"'
-					);
-			}
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery, array($category->getId()));
 		}
 		
-		private function buildList(array $arrayList)
-		{
-			$result = array();
-			
-			foreach ($arrayList as $array)
-				$result[$array['id']] = $this->build($array);
-			
-			return $result;
-		}
-		
-		private function build(array $array)
+		protected function build(array $array)
 		{
 			return
 				Navigation::create()->

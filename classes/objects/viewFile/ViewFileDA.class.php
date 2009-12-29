@@ -29,9 +29,7 @@
 				WHERE t1.id = ?
 			";
 			
-			$dbResult = $this->db()->query($dbQuery, array($page->getId(), $page->getId()));
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery, array($page->getId(), $page->getId()));
 		}
 		
 		public function getInheritanceByIds(array $ids)
@@ -44,31 +42,17 @@
 				ORDER BY position
 			";
 			
-			$dbResult = $this->db()->query($dbQuery, array($ids));
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery, array($ids));
 		}
 
 		public function getById($id)
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
 			
-			$dbResult = $this->db()->query($dbQuery, array($id));
-			
-			return $this->build($dbResult->fetchArray());
+			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 
-		private function buildList(array $arrayList)
-		{
-			$result = array();
-			
-			foreach ($arrayList as $array)
-				$result[$array['id']] = $this->build($array);
-			
-			return $result;
-		}
-		
-		private function build(array $array)
+		protected function build(array $array)
 		{
 			return
 				ViewFile::create()->

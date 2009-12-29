@@ -24,22 +24,13 @@
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE alias = ?";
 			
-			$dbResult = $this->db()->query($dbQuery, array($alias));
-			
-			if(!$dbResult->recordCount()) {
-				throw
-					NotFoundException::create(
-						'No category with alias "'.$alias.'"'
-					);
-			}
-			
-			return $this->build($dbResult->fetchArray());
+			return $this->getCachedByQuery($dbQuery, array($alias));
 		}
 		
 		/**
 		 * @return Category
 		 */
-		private function build(array $array)
+		protected function build(array $array)
 		{
 			return
 				Category::create()->

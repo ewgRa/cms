@@ -21,27 +21,17 @@
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE login = ?';
 
-			$dbResult = $this->db()->query($dbQuery, array($login));
-
-			if(!$dbResult->recordCount())
-				throw new NotFoundException();
-			
-			return $this->build($dbResult->fetchArray());
+			return $this->getCachedByQuery($dbQuery, array($login));
 		}
 
 		public function getById($id)
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE id = ?';
 
-			$dbResult = $this->db()->query($dbQuery, array($id));
-
-			if(!$dbResult->recordCount())
-				throw new NotFoundException();
-			
-			return $this->build($dbResult->fetchArray());
+			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 		
-		private function build(array $array) {
+		protected function build(array $array) {
 			return
 				User::create()->
 					setId($array['id'])->

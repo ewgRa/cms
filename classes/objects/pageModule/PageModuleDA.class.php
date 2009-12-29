@@ -24,23 +24,10 @@
 				ORDER BY priority, priority IS NULL
 			";
 			
-			$dbResult = $this->db()->query($dbQuery, array($page->getId()));
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery, array($page->getId()));
 		}
 		
-		private function buildList(array $arrayList) {
-			$result = array();
-			
-			foreach ($arrayList as $array) {
-				$object = $this->build($array);
-				$result[$object->getId()] = $object;
-			}
-			
-			return $result;
-		}
-		
-		private function build(array $array) {
+		protected function build(array $array) {
 			$settings =
 				$array['settings']
 					? unserialize($array['settings'])

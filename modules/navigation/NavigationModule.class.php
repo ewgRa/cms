@@ -9,11 +9,6 @@
 	{
 		private $categoryAlias = null;
 		
-		/**
-		 * @var NavigationCacheWorker
-		 */
-		private $cacheWorker = null;
-		
 		public function getCategoryAlias()
 		{
 			return $this->categoryAlias;
@@ -26,28 +21,12 @@
 		}
 		
 		/**
-		 * @return NavigationCacheWorker
-		 */
-		public function cacheWorker()
-		{
-			if (!$this->cacheWorker) {
-				$this->cacheWorker = NavigationCacheWorker::create()->
-					setModule($this);
-			}
-
-			return $this->cacheWorker;
-		}
-		
-		/**
 		 * @return NavigationModule
 		 */
 		public function importSettings(array $settings = null)
 		{
 			$this->setCategoryAlias($settings['category']);
 
-			if ($cacheTicket = $this->cacheWorker()->createTicket())
-				$this->setCacheTicket($cacheTicket);
-			
 			return $this;
 		}
 		

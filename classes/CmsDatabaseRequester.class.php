@@ -10,6 +10,8 @@
 		protected $poolAlias	= 'cms';
 		protected $tableAlias	= null;
 		
+		abstract protected function build(array $array);
+		
 		public function getTable()
 		{
 			Assert::isNotNull($this->tableAlias);
@@ -45,6 +47,87 @@
 		public function db()
 		{
 			return $this->getPool();
+		}
+		
+		public function getCacheTicket()
+		{
+			try {
+				$cacheTicket =
+					Cache::me()->getPool('cms')->createTicket(get_class($this));
+
+			} catch(MissingArgumentException $e) {
+				$cacheTicket = null;
+			}
+			
+			return $cacheTicket;
+		}
+		
+		protected function buildList(array $arrayList)
+		{
+			$result = array();
+			
+			foreach ($arrayList as $array) {
+				$object = $this->build($array);
+				
+				$result[$object->getId()] = $object;
+			}
+			
+			return $result;
+		}
+		
+		public function getCachedByQuery($dbQuery, array $params = array())
+		{
+			$result = null;
+			
+			$cacheTicket = $this->getCacheTicket();
+			
+			if ($cacheTicket) {
+				$cacheTicket->
+					setKey(get_class($this), $dbQuery, $params)->
+					restoreData();
+			}
+				
+			if (!$cacheTicket || $cacheTicket->isExpired()) {
+				$dbResult = $this->db()->query($dbQuery, $params);
+	
+				if(!$dbResult->recordCount())
+					throw NotFoundException::create();
+				
+				$result = $this->build($dbResult->fetchArray());
+
+				if($cacheTicket)
+					$cacheTicket->setData($result)->storeData();
+			}
+			else
+				$result = $cacheTicket->getData();
+			
+			return $result;
+		}
+
+		public function getListCachedByQuery($dbQuery, array $params = array())
+		{
+			$result = null;
+			
+			$cacheTicket = $this->getCacheTicket();
+			
+			if ($cacheTicket) {
+				$cacheTicket->
+					setKey(get_class($this), $dbQuery, $params)->
+					restoreData();
+			}
+				
+			if (!$cacheTicket || $cacheTicket->isExpired()) {
+				$dbResult = $this->db()->query($dbQuery, $params);
+	
+				$result = $this->buildList($dbResult->fetchList());
+
+				if($cacheTicket)
+					$cacheTicket->setData($result)->storeData();
+			}
+			else
+				$result = $cacheTicket->getData();
+			
+			return $result;
 		}
 	}
 ?>

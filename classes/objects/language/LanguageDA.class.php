@@ -21,31 +21,17 @@
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id=?";
 			
-			$dbResult = $this->db()->query($dbQuery, array($id));
-			
-			return $this->build($dbResult->fetchArray());
+			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 		
 		public function getList()
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable();
 			
-			$dbResult = $this->db()->query($dbQuery);
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery);
 		}
 		
-		private function buildList(array $arrayList)
-		{
-			$result = array();
-			
-			foreach ($arrayList as $array)
-				$result[$array['id']] = $this->build($array);
-			
-			return $result;
-		}
-		
-		private function build(array $array)
+		protected function build(array $array)
 		{
 			return
 				Language::create()->

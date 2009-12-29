@@ -17,25 +17,10 @@
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
 			
-			$dbResult = $this->db()->query($dbQuery, array($id));
-			
-			if(!$dbResult->recordCount())
-				throw new NotFoundException();
-
-			return $this->build($dbResult->fetchArray());
-		}
-				
-		private function buildList(array $arrayList)
-		{
-			$result = array();
-			
-			foreach ($arrayList as $array)
-				$result[$array['id']] = $this->build($array);
-			
-			return $result;
+			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 		
-		private function build(array $array)
+		protected function build(array $array)
 		{
 			$settings =
 				$array['settings']

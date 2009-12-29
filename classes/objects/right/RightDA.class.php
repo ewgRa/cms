@@ -21,9 +21,7 @@
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
 			
-			$dbResult = $this->db()->query($dbQuery, array($id));
-			
-			return $this->build($dbResult->fetchArray());
+			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 
 		public function getByInheritanceIds(array $ids)
@@ -35,23 +33,10 @@
 				WHERE t2.child_right_id IN (?)
 			";
 			
-			$dbResult = $this->db()->query($dbQuery, array($ids));
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery, array($ids));
 		}
 
-		private function buildList(array $arrayList) {
-			$result = array();
-			
-			foreach ($arrayList as $array) {
-				$object = $this->build($array);
-				$result[$object->getId()] = $object;
-			}
-			
-			return $result;
-		}
-		
-		private function build(array $array) {
+		protected function build(array $array) {
 			return
 				Right::create()->
 					setId($array['id'])->

@@ -18,23 +18,19 @@
 			return parent::getInstance(__CLASS__);
 		}
 				
-		public function getSiteByAlias($alias)
+		public function getByAlias($alias)
 		{
-			$result = null;
-			
-			$dbQuery = 'SELECT id FROM '.$this->getTable().' WHERE alias = ?';
+			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE alias = ?';
 
-			$dbResult = $this->db()->query($dbQuery, array($alias));
-
-			if(!$dbResult->recordCount())
-				throw NotFoundException::create();
-			
-			$result = $dbResult->fetchArray();
-				
+			return $this->getCachedByQuery($dbQuery, array($alias));
+		}
+		
+		protected function build(array $array)
+		{
 			return
 				Site::create()->
-					setAlias($alias)->
-					setId($result['id']);
+					setId($array['id'])->
+					setAlias($array['alias']);
 		}
 	}
 ?>

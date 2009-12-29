@@ -9,32 +9,11 @@
 	{
 		private $units = null;
 		
-		/**
-		 * @var ContentCacheWorker
-		 */
-		private $cacheWorker = null;
-		
-		/**
-		 * @return ContentCacheWorker
-		 */
-		public function cacheWorker()
-		{
-			if (!$this->cacheWorker) {
-				$this->cacheWorker = ContentCacheWorker::create()->
-					setModule($this);
-			}
-
-			return $this->cacheWorker;
-		}
-		
 		public function importSettings(array $settings = null)
 		{
 			Assert::isArray($settings['units']);
 			$this->setUnits($settings['units']);
 
-			if ($cacheTicket = $this->cacheWorker()->createTicket())
-				$this->setCacheTicket($cacheTicket);
-			
 			return $this;
 		}
 		

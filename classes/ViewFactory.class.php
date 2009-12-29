@@ -8,49 +8,9 @@
 	class ViewFactory
 	{
 		/**
-		 * @var ViewFactoryCacheWorker
-		 */
-		private static $cacheWorker = null;
-			
-		public static function cacheWorker()
-		{
-			if(!self::$cacheWorker)
-				self::$cacheWorker = ViewFactoryCacheWorker::create();
-				
-			return self::$cacheWorker;
-		}
-		
-		/**
 		 * @return ViewInterface
 		 */
 		public static function createByViewFile(ViewFile $viewFile)
-		{
-			$cacheTicket = self::cacheWorker()->createTicket();
-			
-			if($cacheTicket)
-			{
-				$cacheTicket->addKey($viewFile->getId());
-				$cacheTicket->restoreData();
-			}
-			
-			$result = null;
-			
-			if(!$cacheTicket || $cacheTicket->isExpired())
-			{
-				$result = self::uncachedCreateByViewFile($viewFile);
-				
-				if($cacheTicket)
-					$cacheTicket->setData($result)->storeData();
-			}
-			else
-				$result = $cacheTicket->getData();
-			
-			Assert::isNotNull($result);
-			
-			return $result;
-		}
-		
-		private static function uncachedCreateByViewFile($viewFile)
 		{
 			$result = null;
 			

@@ -23,15 +23,10 @@
 				WHERE navigation_id = ? AND language_id = ?
 			";
 			
-			$dbResult = $this->db()->query(
+			return $this->getCachedByQuery(
 				$dbQuery,
 				array($navigation->getId(), $language->getId())
 			);
-			
-			if(!$dbResult->recordCount())
-				throw NotFoundException::create();
-			
-			return $this->build($dbResult->fetchArray());
 		}
 		
 		public function getList(
@@ -69,29 +64,13 @@
 			
 			$dbQuery .= ' WHERE '.join(' AND ', $queryParts);
 			
-			$dbResult = $this->db()->query(
+			return $this->getListCachedByQuery(
 				$dbQuery,
 				$params
 			);
-			
-			if(!$dbResult->recordCount())
-				throw NotFoundException::create();
-			
-			return $this->buildList($dbResult->fetchList());
 		}
 		
-		private function buildList(array $arrayList) {
-			$result = array();
-			
-			foreach ($arrayList as $array) {
-				$object = $this->build($array);
-				$result[$object->getId()] = $object;
-			}
-			
-			return $result;
-		}
-		
-		private function build(array $array) {
+		protected function build(array $array) {
 			return
 				NavigationData::create()->
 					setNavigationId($array['navigation_id'])->

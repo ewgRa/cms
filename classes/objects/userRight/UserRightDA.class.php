@@ -21,23 +21,10 @@
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE user_id = ?";
 			
-			$dbResult = $this->db()->query($dbQuery, array($user->getId()));
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery, array($user->getId()));
 		}
 		
-		private function buildList(array $arrayList) {
-			$result = array();
-			
-			foreach ($arrayList as $array) {
-				$object = $this->build($array);
-				$result[$object->getId()] = $object;
-			}
-			
-			return $result;
-		}
-		
-		private function build(array $array) {
+		protected function build(array $array) {
 			return
 				UserRight::create()->
 					setUserId($array['user_id'])->

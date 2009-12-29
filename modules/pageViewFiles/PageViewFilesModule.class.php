@@ -10,24 +10,6 @@
 		private $joinContentTypes = array();
 		
 		/**
-		 * @var PageViewFilesCacheWorker
-		 */
-		private $cacheWorker = null;
-		
-		/**
-		 * @return PageViewFilesCacheWorker
-		 */
-		public function cacheWorker()
-		{
-			if (!$this->cacheWorker) {
-				$this->cacheWorker =
-					PageViewFilesCacheWorker::create()->setModule($this);
-			}
-
-			return $this->cacheWorker;
-		}
-		
-		/**
 		 * @return PageViewFilesModule
 		 */
 		public function addJoinContentType(ContentType $contentType)
@@ -43,11 +25,6 @@
 		
 		public function importSettings(array $settings = null)
 		{
-			if ($cacheTicket = $this->cacheWorker()->createTicket()) {
-				$cacheTicket->addKey($settings);
-				$this->setCacheTicket($cacheTicket);
-			}
-
 			if(
 				isset($settings['joinContentTypes'])
 				&& is_array($settings['joinContentTypes'])

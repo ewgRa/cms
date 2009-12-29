@@ -1,40 +1,68 @@
 ticketAliases:
-  ModuleDispatcherCacheWorker:
-    prefix: moduleDispatcher
+  PageDataDA:
+    prefix: object/pageData
     lifeTime: 86400
 
-  PageViewFilesCacheWorker:
-    prefix: modules/pageViewFiles
+  NavigationDataDA:
+    prefix: object/navigationData
     lifeTime: 86400
 
-  ContentCacheWorker:
-    prefix: modules/content
+  NavigationDA:
+    prefix: object/navigation
     lifeTime: 86400
 
-  NavigationCacheWorker:
-    prefix: modules/navigation
+  CategoryDA:
+    prefix: object/category
     lifeTime: 86400
 
-  PageHeadCacheWorker:
-    prefix: modules/pageHead
+  ContentDataDA:
+    prefix: object/contentData
     lifeTime: 86400
 
-  page:
-    prefix: page
+  ContentDA:
+    prefix: object/content
+    lifeTime: 86400
+
+  PageModuleDA:
+    prefix: object/pageModule
+    lifeTime: 86400
+
+  LayoutDA:
+    prefix: object/layout
+    lifeTime: 86400
+
+  ViewFileDA:
+    prefix: object/viewFile
+    lifeTime: 86400
+
+  UserRightDA:
+    prefix: object/userRight
+    lifeTime: 86400
+
+  RightDA:
+    prefix: object/right
+    lifeTime: 86400
+
+  PageRightDA:
+    prefix: object/pageRight
+    lifeTime: 86400
+
+  LanguageDA:
+    prefix: object/language
+    lifeTime: 86400
+
+  PageDA:
+    prefix: object/page
     lifeTime: 86400
     
-  site:
-    prefix: site
+  ModuleDA:
+    prefix: object/module
     lifeTime: 86400
     
-  pagePathMapper:
-    prefix: pagepathmapper
+  SiteDA:
+    prefix: object/site
     lifeTime: 86400
-    
-  localizer:
-    prefix: localizer
-    lifeTime: 86400
-    
-  ViewFactoryCacheWorker:
-    prefix: viewfactory
+
+  UserDA:
+    prefix: object/user
     lifeTime: 86400

@@ -21,35 +21,17 @@
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE status = \'normal\'';
 
-			$dbResult = $this->db()->query($dbQuery);
-			
-			return $this->buildList($dbResult->fetchList());
+			return $this->getListCachedByQuery($dbQuery);
 		}
 
 		public function getById($id)
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE status = \'normal\' AND id=?';
 
-			$dbResult = $this->db()->query($dbQuery, array($id));
-			
-			if (!$dbResult->recordCount())
-				throw new NotFoundException();
-				
-			return $this->build($dbResult->fetchArray());
+			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 
-		private function buildList(array $arrayList) {
-			$result = array();
-			
-			foreach ($arrayList as $array) {
-				$object = $this->build($array);
-				$result[$object->getId()] = $object;
-			}
-			
-			return $result;
-		}
-		
-		private function build(array $array) {
+		protected function build(array $array) {
 			return
 				Page::create()->
 					setId($array['id'])->

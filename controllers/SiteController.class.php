@@ -34,34 +34,10 @@
 			
 			$request->setAttachedVar(
 				AttachedAliases::SITE,
-				$this->getSite()
+				Site::da()->getByAlias($this->getSiteAlias())
 			);
 			
 			return parent::handleRequest($request, $mav);
-		}
-		
-		private function getSite()
-		{
-			try {
-				$cacheTicket = Cache::me()->getPool('cms')->createTicket('site');
-					
-				$cacheTicket->
-					setKey($this->getSiteAlias())->
-					restoreData();
-			} catch(MissingArgumentException $e) {
-				$cacheTicket = null;
-			}
-
-			if (!$cacheTicket || $cacheTicket->isExpired()) {
-				$site = Site::da()->getSiteByAlias($this->getSiteAlias());
-
-				if($cacheTicket)
-					$cacheTicket->setData($site)->storeData();
-			}
-			else
-				$site = $cacheTicket->getData();
-				
-			return $site;
 		}
 	}
 ?>

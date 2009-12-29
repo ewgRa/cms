@@ -30,7 +30,7 @@
 					removeLanguageFromUrl($request->getUrl())->
 					getPath();
 
-			$page = $this->getPagePathMapper()->getPageByPath($clearPath);
+			$page = PagePathMapper::create()->loadMap()->getPageByPath($clearPath);
 
 			if (!$page)
 				throw PageException::pageNotFound()->setUrl($clearPath);
@@ -70,33 +70,6 @@
 			return parent::handleRequest($request, $mav);
 		}
 
-		/**
-		 * @return PagePathMapper
-		 */
-		private function getPagePathMapper()
-		{
-			$result = null;
-			
-			try {
-				$cacheTicket = Cache::me()->getPool('cms')->
-					createTicket('pagePathMapper');
-				
-				$cacheTicket->restoreData();
-			} catch(MissingArgumentException $e) {
-				$cacheTicket = null;
-			}
-
-			if (!$cacheTicket || $cacheTicket->isExpired()) {
-				$result = PagePathMapper::create()->loadMap();
-
-				if ($cacheTicket)
-					$cacheTicket->setData($result)->storeData();
-			} else
-				$result = $cacheTicket->getData();
-				
-			return $result;
-		}
-		
 		/**
 		 * @return PageController
 		 */
