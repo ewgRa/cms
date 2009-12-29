@@ -62,7 +62,7 @@
 			if(!$user)
 				$user = User::create();
 			
-			$page->checkAccessPage($user);
+			$this->checkAccessPage($page, $user);
 
 			$mav->setView(
 				ViewFactory::createByFileId($page->getLayoutFileId())
@@ -135,6 +135,30 @@
 			
 			Debug::me()->addItem($debugItem);
 			
+			return $this;
+		}
+
+		private function checkAccessPage(Page $page, User $user)
+		{
+			if($page->getRights())
+			{
+				$intersectRights = array_intersect(
+					$page->getRightIds(), array_keys($user->getRights())
+				);
+
+				if(!count($intersectRights))
+				{
+					$noRights = array_diff(
+						array_keys($page->getRights()), $intersectRights
+					);
+					
+					throw
+						PageException::noRightsToAccess()->
+							setNoRights($noRights)->
+							setPageRights($page->getRights());
+					}
+			}
+
 			return $this;
 		}
 	}

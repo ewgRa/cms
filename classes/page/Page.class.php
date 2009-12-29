@@ -168,33 +168,6 @@
 
 			return $this;
 		}
-		
-		/**
-		 * @return Page
-		 */
-		public function checkAccessPage(User $user)
-		{
-			if($this->getRights())
-			{
-				$intersectRights = array_intersect(
-					$this->getRightIds(), array_keys($user->getRights())
-				);
-
-				if(!count($intersectRights))
-				{
-					$noRights = array_diff(
-						array_keys($this->getRights()), $intersectRights
-					);
-					
-					throw
-						PageException::noRightsToAccess()->
-							setNoRights($noRights)->
-							setPageRights($this->getRights());
-					}
-			}
-
-			return $this;
-		}
 
 		/**
 		 * @return PageHeader
