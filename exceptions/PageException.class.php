@@ -69,11 +69,10 @@
 		{
 			$resultString = array(parent::__toString());
 			
-			switch($this->code)
-			{
+			switch ($this->code) {
 				case self::PAGE_NOT_FOUND:
 
-					if(!$this->message)
+					if (!$this->message)
 						$this->setMessage('Page not found!');
 					
 					$resultString = array(
@@ -85,7 +84,7 @@
 
 				case self::NO_RIGHTS_TO_ACCESS:
 
-					if(!$this->message)
+					if (!$this->message)
 						$this->setMessage('No rights for access to page');
 					
 					$resultString = array(

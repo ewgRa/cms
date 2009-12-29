@@ -17,6 +17,15 @@
 			return parent::getInstance(__CLASS__);
 		}
 				
+		public function getById($id)
+		{
+			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id=?";
+			
+			$dbResult = $this->db()->query($dbQuery, array($id));
+			
+			return $this->build($dbResult->fetchArray());
+		}
+		
 		public function getList()
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable();

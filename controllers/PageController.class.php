@@ -1,13 +1,11 @@
 <?php
 	/* $Id$ */
-	
+
 	/**
-	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
-	 * //FIXME: tested?
 	*/
-	class PageController extends ChainController
+	final class PageController extends ChainController
 	{
 		/**
 		 * @return ModelAndView
@@ -25,43 +23,14 @@
 					removeLanguageFromUrl($request->getUrl())->
 					getPath();
 
-			$pageId = $this->getPagePathMapper()->getPageId($clearPath);
+			$page = $this->getPagePathMapper()->getPage($clearPath);
 
-			if(!$pageId)
+			if (!$page)
 				throw PageException::pageNotFound()->setUrl($clearPath);
-			
-			try
-			{
-				$cacheTicket = Cache::me()->getPool('cms')->
-					createTicket('page');
-				
-				$cacheTicket->
-					setKey($pageId)->
-					restoreData();
-			}
-			catch(MissingArgumentException $e)
-			{
-				$cacheTicket = null;
-			}
-			
-			$page = null;
-			
-			if(!$cacheTicket || $cacheTicket->isExpired())
-			{
-				$page =
-					Page::da()->
-					getById($pageId)->
-					loadModules();
-				
-				if($cacheTicket)
-					$cacheTicket->setData($page)->storeData();
-			}
-			else
-				$page = $cacheTicket->getData();
 
 			$user = $request->getAttachedVar(AttachedAliases::USER);
 			
-			if(!$user)
+			if (!$user)
 				$user = User::create();
 			
 			$this->checkAccessPage($page, $user);
@@ -72,7 +41,7 @@
 			
 			$baseUrl = HttpUrl::create()->setPath('');
 			
-			if(
+			if (
 				$localizer->isLanguageInUrl()
 				&& $localizer->getSource() != Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
 			) {
@@ -86,7 +55,7 @@
 			
 			$request->setAttachedVar(AttachedAliases::PAGE, $page);
 			
-			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->addDebug($startTime, microtime(true), $page);
 			
 			return parent::handleRequest($request, $mav);
@@ -99,26 +68,21 @@
 		{
 			$result = null;
 			
-			try
-			{
+			try {
 				$cacheTicket = Cache::me()->getPool('cms')->
 					createTicket('pagePathMapper');
 				
 				$cacheTicket->restoreData();
-			}
-			catch(MissingArgumentException $e)
-			{
+			} catch(MissingArgumentException $e) {
 				$cacheTicket = null;
 			}
 
-			if(!$cacheTicket || $cacheTicket->isExpired())
-			{
+			if (!$cacheTicket || $cacheTicket->isExpired()) {
 				$result = PagePathMapper::create()->loadMap();
 
-				if($cacheTicket)
+				if ($cacheTicket)
 					$cacheTicket->setData($result)->storeData();
-			}
-			else
+			} else
 				$result = $cacheTicket->getData();
 				
 			return $result;
@@ -142,15 +106,13 @@
 
 		private function checkAccessPage(Page $page, User $user)
 		{
-			if($page->getRights())
-			{
+			if ($page->getRights()) {
 				$intersectRights = array_intersect(
 					array_merge($page->getRightIds(), $page->getInheritanceRightIds()),
 					$user->getRightIds()
 				);
 
-				if(!count($intersectRights))
-				{
+				if (!count($intersectRights)) {
 					$noRights = array_diff(
 						array_keys($page->getRights()), $intersectRights
 					);
@@ -159,7 +121,7 @@
 						PageException::noRightsToAccess()->
 							setNoRights($noRights)->
 							setPageRights($page->getRights());
-					}
+				}
 			}
 
 			return $this;

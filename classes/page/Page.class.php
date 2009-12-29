@@ -18,8 +18,6 @@
 		
 		private $header			= null;
 		
-		private $modules		= null;
-		
 		/**
 		 * @return Page
 		 */
@@ -220,30 +218,6 @@
 			return $this;
 		}
 		
-		/**
-		 * @return Page
-		 */
-		public function setModules(array $modules)
-		{
-			$this->modules = $modules;
-			return $this;
-		}
-
-		public function getModules()
-		{
-			return $this->modules;
-		}
-		
-		/**
-		 * @return Page
-		 */
-		public function loadModules()
-		{
-			$this->modules = PageModule::da()->getByPage($this);
-
-			return $this;
-		}
-
 		/**
 		 * @return PageHeader
 		 */

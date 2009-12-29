@@ -32,27 +32,27 @@
 			
 			foreach(Page::da()->getList() as $page)
 			{
-				$this->map[$page->getPreg()][$page->getId()] = $page->getPath();
+				$this->map[$page->getPreg()][$page->getId()] = $page;
 			}
-			
-			$this->map[self::NON_PREG] = array_flip($this->map[self::NON_PREG]);
 			
 			return $this;
 		}
 		
-		public function getPageId($path)
+		public function getPage($path)
 		{
 			$result = null;
 
-			if(isset($this->map[self::NON_PREG][$path]))
-				$result = $this->map[self::NON_PREG][$path];
-			else
-			{
-				foreach($this->map[self::PREG] as $pageId => $pagePattern)
-				{
-					if(preg_match('@' . $pagePattern . '@', $path))
-					{
-						$result = $pageId;
+			foreach ($this->map[self::NON_PREG] as $page) {
+				if ($page->getPath() == $path) {
+					$result = $page;
+					break;
+				}
+			}
+			
+			if (!$result) {
+				foreach ($this->map[self::PREG] as $page) {
+					if (preg_match('@' . $page->getPath() . '@', $path)) {
+						$result = $page;
 						break;
 					}
 				}

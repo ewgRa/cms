@@ -1,9 +1,13 @@
 <?php
 	/* $Id$ */
 
-	class MediaFilesJoiner
+	/**
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	*/
+	final class MediaFilesJoiner
 	{
-		private $contentTypes = array();
+		private $contentTypes = null;
 		
 		/**
 		 * @return MediaFilesJoiner
@@ -16,7 +20,7 @@
 		/**
 		 * @return MediaFilesJoiner
 		 */
-		public function setContentTypes($contentTypes)
+		public function setContentTypes(array $contentTypes)
 		{
 			$this->contentTypes = $contentTypes;
 			return $this;
@@ -27,19 +31,23 @@
 			return $this->contentTypes;
 		}
 		
-		public function joinFileNames($files)
+		public function joinFileNames(array $files)
 		{
+			Assert::isNotNull($this->getContentTypes());
+			
 			$bufferJoinFiles = array();
 			
 			$joinFiles = array();
 			
-			foreach($files as $file)
-			{
+			foreach ($files as $file) {
 				if(
-					in_array($file->getContentType()->getId(), array_keys($this->getContentTypes()))
+					in_array(
+						$file->getContentType()->getId(),
+						array_keys($this->getContentTypes())
+					)
 					&& $file->isJoinable()
 				) {
-					if(!isset($bufferJoinFiles[$file->getContentType()->getId()]))
+					if (!isset($bufferJoinFiles[$file->getContentType()->getId()]))
 						$bufferJoinFiles[$file->getContentType()->getId()] = array();
 					
 					$bufferJoinFiles[$file->getContentType()->getId()][] = $file;
@@ -48,9 +56,8 @@
 					$joinFiles[] = $file;
 			}
 			
-			foreach($bufferJoinFiles as $contentTypeName => $files)
-			{
-				$contentType = ContentType::create($contentTypeName);
+			foreach ($bufferJoinFiles as $contentTypeId => $files) {
+				$contentType = ContentType::create($contentTypeId);
 				
 				$joinFiles[] =
 					JoinedViewFile::create()->

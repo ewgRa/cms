@@ -1,13 +1,11 @@
 <?php
 	/* $Id$ */
-	
+
 	/**
-	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
-	 * //FIXME: tested?
 	*/
-	class LocalizerController extends ChainController
+	final class LocalizerController extends ChainController
 	{
 		/**
 		 * @return ModelAndView
@@ -18,24 +16,17 @@
 		) {
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
-			if($request->getCookieVar('languageId'))
-			{
+			if ($cookieLanguageId = $request->getCookieVar('languageId')) {
 				$localizer->setCookieLanguage(
-					Language::create()->
-						setId($request->getCookieVar('languageId'))->
-						setAbbr($request->getCookieVar('languageAbbr'))
+					Language::da()->getById($cookieLanguageId)
 				);
 			}
 			
 			$localizer->defineLanguage($request->getUrl());
 			
-			//try set cookie
 			CookieManager::me()->
 				setCookie(
 					'languageId', $localizer->getRequestLanguage()->getId()
-				)->
-				setCookie(
-					'languageAbbr', $localizer->getRequestLanguage()->getAbbr()
 				);
 			
 			return parent::handleRequest($request, $mav);

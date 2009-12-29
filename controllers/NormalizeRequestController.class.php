@@ -1,12 +1,11 @@
 <?php
 	/* $Id$ */
-	
+
 	/**
-	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class NormalizeRequestController extends ChainController
+	final class NormalizeRequestController extends ChainController
 	{
 		/**
 		 * @return ModelAndView
@@ -32,12 +31,9 @@
 			{
 				$arrays = array('Get', 'Post', 'Cookie');
 				
-				foreach ($arrays as $arrayName)
-				{
+				foreach ($arrays as $arrayName) {
 					$request->{'set'.$arrayName}(
-						$this->strips(
-							$request->{'get'.$arrayName}()
-						)
+						$this->strips($request->{'get'.$arrayName}())
 					);
 				}
 			}
@@ -47,12 +43,10 @@
 
 		private function strips($el)
 		{
-			if(is_array($el))
-			{
+			if (is_array($el)) {
 				foreach($el as &$v)
 					$v = $this->strips($v);
-			}
-			else
+			} else
 				$el = stripslashes($el);
 				
 			return $el;
