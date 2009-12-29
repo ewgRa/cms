@@ -19,14 +19,12 @@
 		) {
 			$user = $request->getAttachedVar(AttachedAliases::USER);
 			
-			$userRights = $request->getAttachedVar(AttachedAliases::USER_RIGHTS);
+			$userRightIds = UserRight::da()->getRightIdsByUser($user);
 			
 			if (
 				$user && $user->getId()
-				&& array_intersect(
-					array_keys($userRights->getList()),
-					$this->requiredRights
-				) == $this->requiredRights
+				&& array_intersect($userRightIds, $this->requiredRights)
+						== $this->requiredRights
 			)
 				return parent::handleRequest($request, $mav);
 			

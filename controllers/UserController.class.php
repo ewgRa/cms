@@ -23,14 +23,8 @@
 				$user = User::da()->getById($userId);
 			}
 			
-			if ($user) {
+			if ($user)
 				$request->setAttachedVar(AttachedAliases::USER, $user);
-			
-				$request->setAttachedVar(
-					AttachedAliases::USER_RIGHTS,
-					UserRights::create()->setUser($user)
-				);
-			}
 			
 			return parent::handleRequest($request, $mav);
 		}

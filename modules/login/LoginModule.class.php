@@ -62,11 +62,6 @@
 			if ($loginResult == self::SUCCESS_LOGIN) {
 				$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
 
-				$this->getRequest()->setAttachedVar(
-					AttachedAliases::USER_RIGHTS,
-					UserRights::create()->setUser($user)
-				);
-				
 				Session::me()->set('userId', $user->getId());
 				Session::me()->save();
 			}

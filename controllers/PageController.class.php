@@ -116,11 +116,11 @@
 				$intersectRights = array();
 				
 				if ($user) {
-					$userRights = $this->request->getAttachedVar(AttachedAliases::USER_RIGHTS);
-				
+					$userRightIds = UserRight::da()->getRightIdsByUser($user);
+
 					$intersectRights = array_intersect(
 						array_merge($rightIds, array_keys($inheritanceRights)),
-						array_keys($userRights->getList())
+						$userRightIds
 					);
 				}
 

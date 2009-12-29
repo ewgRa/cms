@@ -17,6 +17,18 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		public function getRightIdsByUser(User $user)
+		{
+			$userRights = $this->getByUser($user);
+			
+			$rightIds = array();
+			
+			foreach ($userRights as $userRight)
+				$rightIds[] = $userRight->getRightId();
+			
+			return $rightIds;
+		}
+		
 		public function getByUser(User $user)
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE user_id = ?";
