@@ -41,6 +41,7 @@
 
 		public function getId()
 		{
+			Assert::isNotNull($this->id);
 			return $this->id;
 		}
 
