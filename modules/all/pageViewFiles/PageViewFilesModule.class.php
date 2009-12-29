@@ -1,7 +1,7 @@
 <?php
 	/* $Id: PageViewFilesController.class.php 58 2008-08-20 03:24:57Z ewgraf $ */
 
-	class PageViewFilesModule extends Module
+	class PageViewFilesModule extends CmsModule
 	{
 		private $joinContentTypes = array();
 		

@@ -12,14 +12,14 @@
 		/**
 		 * @return Module
 		 */
-		public function setModule(Module $module)
+		public function setModule(CmsModule $module)
 		{
 			$this->module = $module;
 			return $this;
 		}
 		
 		/**
-		 * @return Module
+		 * @return CmsModule
 		 */
 		public function getModule()
 		{

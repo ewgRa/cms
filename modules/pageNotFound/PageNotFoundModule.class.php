@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	final class PageNotFoundModule extends Module
+	final class PageNotFoundModule extends CmsModule
 	{
 		public function getModel()
 		{

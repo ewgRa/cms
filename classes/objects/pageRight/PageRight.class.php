@@ -83,6 +83,12 @@
 		 */
 		public function getRight()
 		{
+			if (!$this->right && $this->getRightId()) {
+				$this->setRight(
+					Right::da()->getById($this->getRightId())
+				);
+			}
+			
 			return $this->right;
 		}
 

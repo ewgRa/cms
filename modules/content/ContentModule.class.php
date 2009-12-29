@@ -1,7 +1,7 @@
 <?php
 	/* $Id: ContentController.class.php 56 2008-08-17 17:31:53Z ewgraf $ */
 
-	class ContentModule extends Module
+	class ContentModule extends CmsModule
 	{
 		private $units = null;
 		

@@ -239,7 +239,7 @@
 		 */
 		public function loadModules()
 		{
-			$this->modules = $this->da()->getModules($this->getId());
+			$this->modules = PageModule::da()->getByPage($this);
 
 			return $this;
 		}

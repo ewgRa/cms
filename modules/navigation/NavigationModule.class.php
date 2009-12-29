@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class NavigationModule extends Module
+	class NavigationModule extends CmsModule
 	{
 		private $categoryAlias = null;
 		

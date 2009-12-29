@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	final class PageHeadModule extends Module
+	final class PageHeadModule extends CmsModule
 	{
 		public function importSettings($settings)
 		{

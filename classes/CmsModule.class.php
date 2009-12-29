@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class Module
+	abstract class CmsModule
 	{
 		/**
 		 * @var CacheTicket
@@ -46,7 +46,7 @@
 		}
 		
 		/**
-		 * @return Module
+		 * @return CmsModule
 		 */
 		protected function setCacheTicket(CacheTicket $cacheTicket)
 		{
@@ -63,7 +63,7 @@
 		}
 		
 		/**
-		 * @return Module
+		 * @return CmsModule
 		 */
 		public function setDispatcher(ModuleDispatcher $dispatcher)
 		{
@@ -80,7 +80,7 @@
 		}
 		
 		/**
-		 * @return Module
+		 * @return CmsModule
 		 */
 		public function setRequest(HttpRequest $request)
 		{
@@ -89,7 +89,7 @@
 		}
 		
 		/**
-		 * @return Module
+		 * @return CmsModule
 		 */
 		public function setView($view)
 		{
@@ -107,7 +107,7 @@
 		}
 		
 		/**
-		 * @return Module
+		 * @return CmsModule
 		 */
 		public function importSettings($settings)
 		{

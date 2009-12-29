@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * // FIXME: tested?
 	*/
-	final class ModuleDispatcher extends Module
+	final class ModuleDispatcher extends CmsModule
 	{
 		private $modules = array();
 		
@@ -21,7 +21,7 @@
 		/**
 		 * @return ModuleDispatcher
 		 */
-		public function addModule(Module $module, $section, $position)
+		public function addModule(CmsModule $module, $section, $position)
 		{
 			$this->modules[] = array(
 				'instance'	=> $module,
@@ -59,47 +59,43 @@
 			$pageModules = $page->getModules();
 			$this->modules = array();
 			
-			foreach($pageModules as $index => $module)
+			foreach($pageModules as $index => $pageModule)
 			{
-				$moduleInstance = new $module['name'];
+				$module = $pageModule->getModule();
+				
+				$moduleName = $module->getName();
+				
+				$moduleInstance = new $moduleName;
+
+				$settings = $module->getSettings();
+				
+				if ($pageModule->getSettings()) {
+					if ($settings) {
+						$settings = array_merge(
+							$settings,
+							$pageModule->getSettings()
+						);
+					} else {
+						$settings = $pageModule->getSettings();
+					}
+				}
 
 				$moduleInstance->
 					setRequest($this->getRequest())->
-					setDispatcher($this);
-				
-				$pageModules[$index]['instance'] = $moduleInstance;
-			}
+					setDispatcher($this)->
+					importSettings($settings);
 
-			foreach($pageModules as $module)
-			{
-				$moduleInstance = $module['instance'];
-				
-				$module['module_settings'] =
-					is_null($module['module_settings'])
-						? array()
-						: unserialize($module['module_settings']);
 
-				if(!is_null($module['settings']))
+				if($pageModule->getViewFileId())
 				{
-					$module['module_settings'] =
-						array_merge(
-							$module['module_settings'],
-							unserialize($module['settings'])
-						);
-				}
-				
-				$moduleInstance->importSettings($module['module_settings']);
-				
-				if($module['view_file_id'])
-				{
-					$view = ViewFactory::createByFileId($module['view_file_id']);
+					$view = ViewFactory::createByFileId($pageModule->getViewFileId());
 					$moduleInstance->setView($view);
 				}
 				
 				$this->addModule(
 					$moduleInstance,
-					$module['section_id'],
-					$module['position_in_section']
+					$pageModule->getSection(),
+					$pageModule->getPosition()
 				);
 			}
 			
