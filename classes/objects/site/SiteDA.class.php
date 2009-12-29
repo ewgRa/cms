@@ -8,6 +8,8 @@
 	*/
 	final class SiteDA extends CmsDatabaseRequester
 	{
+		private $tableAlias = 'Site';
+		
 		/**
 		 * @return SiteDA
 		 */
@@ -20,19 +22,15 @@
 		{
 			$result = null;
 			
-			$dbQuery = '
-				SELECT id
-				FROM ' . $this->db()->getTable('Site') . '
-				WHERE alias = ?
-			';
+			$dbQuery = 'SELECT id FROM '.$this->getTable().' WHERE alias = ?';
 
 			$dbResult = $this->db()->query($dbQuery, array($alias));
 
-			if($dbResult->recordCount())
-				$result = $dbResult->fetchArray();
-			else
+			if(!$dbResult->recordCount())
 				throw NotFoundException::create();
 			
+			$result = $dbResult->fetchArray();
+				
 			return
 				Site::create()->
 					setAlias($alias)->
