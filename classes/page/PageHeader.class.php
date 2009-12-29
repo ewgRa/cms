@@ -36,8 +36,8 @@
 		 */
 		public function output()
 		{
-			foreach($this->getHeaders() as $alias => $value)
-				header($alias . ($value ? $value : ''));
+			foreach ($this->getHeaders() as $alias => $value)
+				header($alias.($value ? $value : null));
 			
 			return $this;
 		}

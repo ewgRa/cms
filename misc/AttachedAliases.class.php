@@ -11,6 +11,7 @@
 		const PAGE_HEADER 	= 'pageHeader';
 		const BASE_URL		= 'baseUrl';
 		const USER 			= 'user';
+		// FIXME XXX: dot not attach this!
 		const USER_RIGHTS	= 'userRights';
 		const LOCALIZER		= 'localizer';
 		const SITE 			= 'site';

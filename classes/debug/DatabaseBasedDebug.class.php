@@ -17,9 +17,8 @@
 		
 		public function store()
 		{
-			foreach($this->getItems() as $item) {
+			foreach ($this->getItems() as $item)
 				$item->dropTrace();
-			}
 			
 			$itemId =
 				DebugData::da()->insert(

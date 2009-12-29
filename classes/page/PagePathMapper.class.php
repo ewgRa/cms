@@ -30,10 +30,8 @@
 				self::PREG => array()
 			);
 			
-			foreach(Page::da()->getList() as $page)
-			{
+			foreach (Page::da()->getList() as $page)
 				$this->map[$page->getPreg()][$page->getId()] = $page;
-			}
 			
 			return $this;
 		}

@@ -7,10 +7,13 @@
 	*/
 	abstract class ModuleCacheWorker extends CacheWorker
 	{
+		/**
+		 * @var CmsModule
+		 */
 		private $module  = null;
 
 		/**
-		 * @return Module
+		 * @return ModuleCacheWorker
 		 */
 		public function setModule(CmsModule $module)
 		{

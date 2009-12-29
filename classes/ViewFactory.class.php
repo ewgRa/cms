@@ -4,8 +4,9 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * // FIXME: move to View
 	*/
-	class ViewFactory
+	final class ViewFactory
 	{
 		/**
 		 * @return ViewInterface
@@ -16,21 +17,22 @@
 			
 			$layout = File::create()->setPath($viewFile->getPath());
 				
-			switch($viewFile->getContentType()->getId())
-			{
+			switch ($viewFile->getContentType()->getId()) {
 				case ContentType::TEXT_XSLT:
 					$result = XsltView::create();
 					
 					$projectConfig = Config::me()->getOption('project');
 					
-					if(isset($projectConfig['charset']))
+					if (isset($projectConfig['charset']))
 						$result->setCharset($projectConfig['charset']);
 					
 					$result->loadLayout($layout);
-				break;
+					
+					break;
 				case ContentType::APPLICATION_PHP:
 					$result = PhpView::create()->loadLayout($layout);
-				break;
+					
+					break;
 			}
 			
 			Assert::isNotNull($result);

@@ -4,7 +4,6 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * // FIXME: tested?
 	*/
 	final class ModuleDispatcher extends CmsModule
 	{
@@ -21,12 +20,11 @@
 		/**
 		 * @return ModuleDispatcher
 		 */
-		public function addModule(CmsModule $module, $section, $position)
+		public function addModule(CmsModule $module, PageModule $pageModule)
 		{
 			$this->modules[] = array(
-				'instance'	=> $module,
-				'section'	=> $section,
-				'position'	=> $position
+				'instance'		=> $module,
+				'pageModule'	=> $pageModule
 			);
 			
 			return $this;
@@ -37,13 +35,12 @@
 			return $this->modules;
 		}
 		
-		public function getModulesByApply($applyFunction)
+		public function getModulesByFilterFunction($filterFunction)
 		{
 			$result = array();
 			
-			foreach($this->getModules() as $module)
-			{
-				if(call_user_func($applyFunction, $module['instance']))
+			foreach ($this->getModules() as $module) {
+				if (call_user_func($filterFunction, $module['instance']))
 					$result[] = $module['instance'];
 			}
 			
@@ -57,8 +54,7 @@
 		{
 			$this->modules = array();
 			
-			foreach($pageModules as $index => $pageModule)
-			{
+			foreach ($pageModules as $index => $pageModule) {
 				$module = $pageModule->getModule();
 				
 				$moduleName = $module->getName();
@@ -84,17 +80,13 @@
 					importSettings($settings);
 
 
-				if($pageModule->getViewFileId())
-				{
-					$view = ViewFactory::createByViewFile($pageModule->getViewFile());
-					$moduleInstance->setView($view);
+				if ($pageModule->getViewFileId()) {
+					$moduleInstance->setView(
+						ViewFactory::createByViewFile($pageModule->getViewFile())
+					);
 				}
 				
-				$this->addModule(
-					$moduleInstance,
-					$pageModule->getSection(),
-					$pageModule->getPosition()
-				);
+				$this->addModule($moduleInstance, $pageModule);
 			}
 			
 			return $this;
@@ -107,14 +99,13 @@
 		{
 			$result = Model::create();
 			
-			foreach($this->getModules() as $module)
-			{
+			foreach ($this->getModules() as $module) {
 				$result->append(
 					array(
 						'data' =>
 							$module['instance']->getRenderedModel(),
-						'section' => $module['section'],
-						'position' => $module['position']
+						'section' => $module['pageModule']->getSection(),
+						'position' => $module['pageModule']->getPosition()
 					)
 				);
 			}

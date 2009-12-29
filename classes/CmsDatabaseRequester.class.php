@@ -49,11 +49,16 @@
 			return $this->getPool();
 		}
 		
+		/**
+		 * @return CacheTicket
+		 */
 		public function getCacheTicket()
 		{
 			try {
 				$cacheTicket =
-					Cache::me()->getPool($this->getPoolAlias())->createTicket(get_class($this));
+					Cache::me()->
+						getPool($this->getPoolAlias())->
+						createTicket(get_class($this));
 
 			} catch(MissingArgumentException $e) {
 				$cacheTicket = null;
@@ -90,15 +95,14 @@
 			if (!$cacheTicket || $cacheTicket->isExpired()) {
 				$dbResult = $this->db()->query($dbQuery, $params);
 	
-				if(!$dbResult->recordCount())
+				if (!$dbResult->recordCount())
 					throw NotFoundException::create();
 				
 				$result = $this->build($dbResult->fetchArray());
 
-				if($cacheTicket)
+				if ($cacheTicket)
 					$cacheTicket->setData($result)->storeData();
-			}
-			else
+			} else
 				$result = $cacheTicket->getData();
 			
 			return $result;
@@ -121,10 +125,9 @@
 	
 				$result = $this->buildList($dbResult->fetchList());
 
-				if($cacheTicket)
+				if ($cacheTicket)
 					$cacheTicket->setData($result)->storeData();
-			}
-			else
+			} else
 				$result = $cacheTicket->getData();
 			
 			return $result;

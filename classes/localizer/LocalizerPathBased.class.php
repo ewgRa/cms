@@ -23,7 +23,7 @@
 			
 			$parts = explode('/', $url->getPath());
 
-			if(count($parts) > 2)
+			if (count($parts) > 2)
 				$result = $parts[1];
 			
 			return $result;
@@ -45,14 +45,14 @@
 		 */
 		private function cutLanguageAbbr(HttpUrl $url)
 		{
-			if(
+			if (
 				$this->getLanguageAbbr($url)
 					== $this->getRequestLanguage()->getAbbr()
 			) {
 				$url->setPath(
 					substr(
 						$url->getPath(),
-						strlen($this->getRequestLanguage()->getAbbr()) + 1
+						strlen($this->getRequestLanguage()->getAbbr())+1
 					)
 				);
 			}
