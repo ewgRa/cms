@@ -28,7 +28,7 @@
 					$request->getServerVar('PHP_AUTH_PW')
 				);
 			}
-			
+
 			if (
 				$user && $user->getId()
 				&& array_intersect(

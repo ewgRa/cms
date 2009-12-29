@@ -23,21 +23,20 @@
 					removeLanguageFromUrl($request->getUrl())->
 					getPath();
 
-			$page = $this->getPagePathMapper()->getPage($clearPath);
+			$page = $this->getPagePathMapper()->getPageByPath($clearPath);
 
 			if (!$page)
 				throw PageException::pageNotFound()->setUrl($clearPath);
 
 			$user = $request->getAttachedVar(AttachedAliases::USER);
 			
-			if (!$user)
-				$user = User::create();
-			
 			$this->checkAccessPage($page, $user);
 
 			$mav->setView(
-				ViewFactory::createByFileId($page->getLayoutFileId())
+				ViewFactory::createByViewFile($page->getLayout()->getViewFile())
 			);
+			
+			$request->setAttachedVar(AttachedAliases::PAGE, $page);
 			
 			$baseUrl = HttpUrl::create()->setPath('');
 			
@@ -51,9 +50,7 @@
 				);
 			}
 			
-			$page->setBaseUrl($baseUrl);
-			
-			$request->setAttachedVar(AttachedAliases::PAGE, $page);
+			$request->setAttachedVar(AttachedAliases::BASE_URL, $baseUrl);
 			
 			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->addDebug($startTime, microtime(true), $page);
@@ -106,21 +103,46 @@
 
 		private function checkAccessPage(Page $page, User $user)
 		{
-			if ($page->getRights()) {
+			$rights = PageRight::da()->getByPage($page);
+			
+			$rightIds = array();
+			
+			foreach ($rights as $right) {
+				$rightIds[] = $right->getRightId();
+			}
+			
+			$inheritanceRights = Right::da()->getByInheritanceIds($rightIds);
+			
+			$nextInheritanceRights = $inheritanceRights;
+			
+			while ($nextInheritanceRights) {
+				$inheritanceIds = array();
+				
+				foreach ($inheritanceRights as $right) {
+					if (!isset($this->inheritanceRights[$right->getId()])) {
+						$inheritanceRights[$right->getId()] = $right;
+						$inheritanceIds[] = $right->getId();
+					}
+				}
+
+				$nextInheritanceRights = Right::da()->getByInheritanceIds($inheritanceIds);
+			}
+			
+			if ($rights) {
 				$intersectRights = array_intersect(
-					array_merge($page->getRightIds(), $page->getInheritanceRightIds()),
+					array_merge($rightIds, array_keys($inheritanceRights)),
 					$user->getRightIds()
 				);
 
 				if (!count($intersectRights)) {
 					$noRights = array_diff(
-						array_keys($page->getRights()), $intersectRights
+						array_keys($rights), $intersectRights
 					);
 					
 					throw
 						PageException::noRightsToAccess()->
 							setNoRights($noRights)->
-							setPageRights($page->getRights());
+							setPageRights($rights);
 				}
 			}
 

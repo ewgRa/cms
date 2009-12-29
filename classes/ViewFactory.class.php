@@ -23,13 +23,13 @@
 		/**
 		 * @return ViewInterface
 		 */
-		public static function createByFileId($fileId)
+		public static function createByViewFile(ViewFile $viewFile)
 		{
 			$cacheTicket = self::cacheWorker()->createTicket();
 			
 			if($cacheTicket)
 			{
-				$cacheTicket->addKey($fileId);
+				$cacheTicket->addKey($viewFile->getId());
 				$cacheTicket->restoreData();
 			}
 			
@@ -37,7 +37,7 @@
 			
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
-				$result = self::uncachedCreateByFileId($fileId);
+				$result = self::uncachedCreateByViewFile($viewFile);
 				
 				if($cacheTicket)
 					$cacheTicket->setData($result)->storeData();
@@ -50,33 +50,28 @@
 			return $result;
 		}
 		
-		private static function uncachedCreateByFileId($fileId)
+		private static function uncachedCreateByViewFile($viewFile)
 		{
 			$result = null;
 			
-			if($file = ViewFile::da()->getById($fileId))
-			{
-				$layout = File::create()->setPath($file->getPath());
+			$layout = File::create()->setPath($viewFile->getPath());
 				
-				switch($file->getContentType()->getId())
-				{
-					case ContentType::TEXT_XSLT:
-						$result = XsltView::create();
-						
-						$projectConfig = Config::me()->getOption('project');
-						
-						if(isset($projectConfig['charset']))
-							$result->setCharset($projectConfig['charset']);
-						
-						$result->loadLayout($layout);
-					break;
-					case ContentType::APPLICATION_PHP:
-						$result = PhpView::create()->loadLayout($layout);
-					break;
-				}
+			switch($viewFile->getContentType()->getId())
+			{
+				case ContentType::TEXT_XSLT:
+					$result = XsltView::create();
+					
+					$projectConfig = Config::me()->getOption('project');
+					
+					if(isset($projectConfig['charset']))
+						$result->setCharset($projectConfig['charset']);
+					
+					$result->loadLayout($layout);
+				break;
+				case ContentType::APPLICATION_PHP:
+					$result = PhpView::create()->loadLayout($layout);
+				break;
 			}
-			else
-				throw NotFoundException::create('No layout file');
 			
 			Assert::isNotNull($result);
 			

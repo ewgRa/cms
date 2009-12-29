@@ -38,7 +38,7 @@
 			return $this;
 		}
 		
-		public function getPage($path)
+		public function getPageByPath($path)
 		{
 			$result = null;
 

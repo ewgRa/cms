@@ -7,14 +7,20 @@
 	*/
 	final class Page
 	{
-		private $id				= null;
-		private $layoutFileId	= null;
-		private $preg			= null;
-		private $rights				= null;
-		private $inheritanceRights	= null;
-		private $path			= null;
+		private $id			= null;
+		private $path		= null;
+		private $preg		= null;
+		private $layoutId	= null;
+
+		/**
+		 * @var Layout
+		 */
+		private $layout		= null;
 		
-		private $baseUrl		= null;
+		private $status		= null;
+		private $modified	= null;
+
+
 		
 		private $header			= null;
 		
@@ -56,29 +62,40 @@
 		/**
 		 * @return Page
 		 */
-		public function setLayoutFileId($fileId)
-		{
-			$this->layoutFileId = $fileId;
-			return $this;
-		}
-
-		public function getLayoutFileId()
-		{
-			return $this->layoutFileId;
-		}
-
-		/**
-		 * @return Page
-		 */
 		public function setLayoutId($fileId)
 		{
-			$this->layoutFileId = $fileId;
+			$this->layoutId = $fileId;
+			$this->layout = null;
 			return $this;
 		}
 
 		public function getLayoutId()
 		{
-			return $this->layoutFileId;
+			return $this->layoutId;
+		}
+		
+		/**
+		 * @return Page
+		 */
+		public function setLayout(Layout $layout)
+		{
+			$this->layoutId = $layout->getId();
+			$this->layout = $layout;
+			return $this;
+		}
+
+		/**
+		 * @return Layout
+		 */
+		public function getLayout()
+		{
+			if (!$this->layout && $this->getLayoutId()) {
+				$this->setLayout(
+					Layout::da()->getById($this->getLayoutId())
+				);
+			}
+			
+			return $this->layout;
 		}
 		
 		/**
@@ -109,19 +126,9 @@
 			return $this->modified;
 		}
 		
-		/**
-		 * @return Page
-		 */
-		public function setBaseUrl(HttpUrl $url)
-		{
-			$this->baseUrl = $url;
-			return $this;
-		}
 
-		public function getBaseUrl()
-		{
-			return $this->baseUrl;
-		}
+		
+		
 		
 		/**
 		 * @return Page
@@ -157,65 +164,6 @@
 		public function isPreg()
 		{
 			return $this->preg == true;
-		}
-		
-		/**
-		 * @return Page
-		 */
-		public function setRights(array $rights)
-		{
-			$this->rights = $rights;
-			return $this;
-		}
-
-		public function getRights()
-		{
-			return $this->rights;
-		}
-
-		public function getRightIds()
-		{
-			$result = array();
-			
-			foreach ($this->getRights() as $pageRight) {
-				$result[] = $pageRight->getRightId();
-			}
-			
-			return $result;
-		}
-		
-		public function getInheritanceRightIds()
-		{
-			return
-				$this->inheritanceRights
-					? array_keys($this->inheritanceRights)
-					: null;
-		}
-		
-		/**
-		 * @return Page
-		 */
-		public function loadRights()
-		{
-			$this->rights = PageRight::da()->getByPage($this);
-			$this->inheritanceRights = array();
-			
-			$inheritanceRights = Right::da()->getByInheritanceIds($this->getRightIds());
-			
-			while ($inheritanceRights) {
-				$inheritanceIds = array();
-				
-				foreach ($inheritanceRights as $right) {
-					if (!isset($this->inheritanceRights[$right->getId()])) {
-						$this->inheritanceRights[$right->getId()] = $right;
-						$inheritanceIds[] = $right->getId();
-					}
-				}
-
-				$inheritanceRights = Right::da()->getByInheritanceIds($inheritanceIds);
-			}
-			
-			return $this;
 		}
 		
 		/**

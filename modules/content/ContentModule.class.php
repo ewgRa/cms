@@ -86,7 +86,7 @@
 			
 			$params = array(
 				'search' => array('%baseUrl%'),
-				'replace' => array($this->getPage()->getBaseUrl()->getPath())
+				'replace' => array($this->getBaseUrl()->getPath())
 			);
 
 			if (defined('MEDIA_HOST')) {

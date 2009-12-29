@@ -18,7 +18,11 @@
 				ModuleDispatcher::create()->
 					setRequest($request);
 			
-			$moduleDispatcher->loadModules($request);
+			$page = $request->getAttachedVar(AttachedAliases::PAGE);
+					
+			$moduleDispatcher->loadModules(
+				PageModule::da()->getByPage($page)
+			);
 
 			$mav->getModel()->mergeModel(
 				$moduleDispatcher->getModel()

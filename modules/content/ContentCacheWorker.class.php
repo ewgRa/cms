@@ -21,7 +21,7 @@
 				$this->getModule()->getUnits(),
 				$this->getRequestLanguage()->getId(),
 				$this->getLocalizer()->getSource(),
-				$this->getPage()->getBaseUrl()->getPath(),
+				$this->getBaseUrl()->getPath(),
 				defined('MEDIA_HOST') ? MEDIA_HOST : null
 			);
 		}

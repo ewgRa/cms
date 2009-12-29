@@ -183,6 +183,7 @@
 		public function setViewFileId($id)
 		{
 			$this->viewFileId = $id;
+			$this->viewFile = null;
 			return $this;
 		}
 		
@@ -197,6 +198,7 @@
 		public function setViewFile(ViewFile $viewFile)
 		{
 			$this->viewFile = $viewFile;
+			$this->viewFileId = $viewFile->getId();
 			return $this;
 		}
 		
@@ -205,6 +207,12 @@
 		 */
 		public function getViewFile()
 		{
+			if (!$this->viewFile && $this->getViewFileId()) {
+				$this->setViewFile(
+					ViewFile::da()->getById($this->getViewFileId())
+				);
+			}
+			
 			return $this->viewFile;
 		}
 	}

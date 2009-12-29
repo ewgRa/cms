@@ -76,7 +76,7 @@
 					$navigationData;
 			}
 			
-			$result['baseUrl'] = $this->getPage()->getBaseUrl()->getPath();
+			$result['baseUrl'] = $this->getBaseUrl()->getPath();
 			
 			return Model::create()->setData($result);
 		}

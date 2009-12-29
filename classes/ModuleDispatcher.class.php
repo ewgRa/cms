@@ -53,10 +53,8 @@
 		/**
 		 * @return ModuleDispatcher
 		 */
-		public function loadModules()
+		public function loadModules(array $pageModules)
 		{
-			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
-			$pageModules = $page->getModules();
 			$this->modules = array();
 			
 			foreach($pageModules as $index => $pageModule)
@@ -88,7 +86,7 @@
 
 				if($pageModule->getViewFileId())
 				{
-					$view = ViewFactory::createByFileId($pageModule->getViewFileId());
+					$view = ViewFactory::createByViewFile($pageModule->getViewFile());
 					$moduleInstance->setView($view);
 				}
 				

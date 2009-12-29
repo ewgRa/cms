@@ -21,7 +21,7 @@
 				$this->getModule()->getCategoryAlias(),
 				$this->getRequestLanguage()->getid(),
 				$this->getLocalizer()->getSource(),
-				$this->getPage()->getBaseUrl()->getPath()
+				$this->getBaseUrl()->getPath()
 			);
 		}
 	}

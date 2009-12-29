@@ -35,6 +35,14 @@
 		}
 
 		/**
+		 * @return HttpUrl
+		 */
+		protected function getBaseUrl()
+		{
+			return $this->getModule()->getBaseUrl();
+		}
+		
+		/**
 		 * @return Localizer
 		 */
 		protected function getLocalizer()
