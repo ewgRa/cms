@@ -19,10 +19,6 @@
 		
 		private $status		= null;
 		private $modified	= null;
-
-
-		
-		private $header			= null;
 		
 		/**
 		 * @return Page
@@ -32,11 +28,6 @@
 			return new self;
 		}
 		
-		public function __construct()
-		{
-			$this->header = PageHeader::create();
-		}
-
 		/**
 		 * @return PageDA
 		 */
@@ -59,6 +50,42 @@
 			return $this->id;
 		}
 
+		/**
+		 * @return Page
+		 */
+		public function setPath($path)
+		{
+			$this->path = $path;
+			return $this;
+		}
+
+		public function getPath()
+		{
+			return $this->path;
+		}
+		
+		/**
+		 * @return Page
+		 */
+		public function setPreg($preg)
+		{
+			$this->preg = $preg;
+			return $this;
+		}
+
+		/**
+		 * @return Page
+		 */
+		public function getPreg()
+		{
+			return $this->preg;
+		}
+		
+		public function isPreg()
+		{
+			return $this->preg == true;
+		}
+		
 		/**
 		 * @return Page
 		 */
@@ -124,54 +151,6 @@
 		public function getModified()
 		{
 			return $this->modified;
-		}
-		
-
-		
-		
-		
-		/**
-		 * @return Page
-		 */
-		public function setPath($path)
-		{
-			$this->path = $path;
-			return $this;
-		}
-
-		public function getPath()
-		{
-			return $this->path;
-		}
-		
-		/**
-		 * @return Page
-		 */
-		public function setPreg($preg)
-		{
-			$this->preg = $preg;
-			return $this;
-		}
-
-		/**
-		 * @return Page
-		 */
-		public function getPreg()
-		{
-			return $this->preg;
-		}
-		
-		public function isPreg()
-		{
-			return $this->preg == true;
-		}
-		
-		/**
-		 * @return PageHeader
-		 */
-		public function getHeader()
-		{
-			return $this->header;
 		}
 	}
 ?>

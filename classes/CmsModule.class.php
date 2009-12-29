@@ -169,6 +169,14 @@
 			return $this->getRequest()->getAttachedVar(AttachedAliases::BASE_URL);
 		}
 		
+		/**
+		 * @return PageHeader
+		 */
+		public function getPageHeader()
+		{
+			return $this->getRequest()->getAttachedVar(AttachedAliases::PAGE_HEADER);
+		}
+		
 		private function renderModel()
 		{
 			return

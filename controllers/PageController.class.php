@@ -52,6 +52,11 @@
 			
 			$request->setAttachedVar(AttachedAliases::BASE_URL, $baseUrl);
 			
+			$request->setAttachedVar(
+				AttachedAliases::PAGE_HEADER,
+				PageHeader::create()
+			);
+			
 			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->addDebug($startTime, microtime(true), $page);
 			

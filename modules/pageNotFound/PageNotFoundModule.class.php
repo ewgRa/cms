@@ -9,8 +9,7 @@
 	{
 		public function getModel()
 		{
-			$this->getPage()->
-				getHeader()->
+			$this->getPageHeader()->
 				add(
 					$this->getRequest()->getServerVar('SERVER_PROTOCOL')
 					.' 404 Not Found'

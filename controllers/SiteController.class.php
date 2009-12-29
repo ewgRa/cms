@@ -1,13 +1,11 @@
 <?php
 	/* $Id$ */
-	
+
 	/**
-	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
-	 * //FIXME: tested?
 	*/
-	class SiteController extends ChainController
+	final class SiteController extends ChainController
 	{
 		private $siteAlias = null;
 
@@ -54,8 +52,7 @@
 				$cacheTicket = null;
 			}
 
-			if(!$cacheTicket || $cacheTicket->isExpired())
-			{
+			if (!$cacheTicket || $cacheTicket->isExpired()) {
 				$site = Site::da()->getSiteByAlias($this->getSiteAlias());
 
 				if($cacheTicket)
