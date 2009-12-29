@@ -1,7 +1,11 @@
 <?php
 	/* $Id$ */
 
-	class ContentCacheWorker extends ModuleCacheWorker
+	/**
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	*/
+	final class ContentCacheWorker extends ModuleCacheWorker
 	{
 		/**
 		 * @return ContentCacheWorker
@@ -10,17 +14,12 @@
 		{
 			return new self;
 		}
-
-		protected function getAlias()
-		{
-			return __CLASS__;
-		}
 		
 		protected function getKey()
 		{
 			return array(
 				$this->getModule()->getUnits(),
-				$this->getRequestLanguage(),
+				$this->getRequestLanguage()->getId(),
 				$this->getLocalizer()->getSource(),
 				$this->getPage()->getBaseUrl()->getPath(),
 				defined('MEDIA_HOST') ? MEDIA_HOST : null

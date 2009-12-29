@@ -17,16 +17,17 @@
 		 */
 		public function cacheWorker()
 		{
-			if(!$this->cacheWorker)
+			if (!$this->cacheWorker) {
 				$this->cacheWorker = PageHeadCacheWorker::create()->
 					setModule($this);
+			}
 
 			return $this->cacheWorker;
 		}
 		
 		public function importSettings(array $settings = null)
 		{
-			if($cacheTicket = $this->cacheWorker()->createTicket())
+			if ($cacheTicket = $this->cacheWorker()->createTicket())
 				$this->setCacheTicket($cacheTicket);
 						
 			return $this;

@@ -1,7 +1,11 @@
 <?php
-	/* $Id: ContentController.class.php 56 2008-08-17 17:31:53Z ewgraf $ */
+	/* $Id$ */
 
-	class ContentModule extends CmsModule
+	/**
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	*/
+	final class ContentModule extends CmsModule
 	{
 		private $units = null;
 		
@@ -15,9 +19,10 @@
 		 */
 		public function cacheWorker()
 		{
-			if(!$this->cacheWorker)
+			if (!$this->cacheWorker) {
 				$this->cacheWorker = ContentCacheWorker::create()->
 					setModule($this);
+			}
 
 			return $this->cacheWorker;
 		}
@@ -27,7 +32,7 @@
 			Assert::isArray($settings['units']);
 			$this->setUnits($settings['units']);
 
-			if($cacheTicket = $this->cacheWorker()->createTicket())
+			if ($cacheTicket = $this->cacheWorker()->createTicket())
 				$this->setCacheTicket($cacheTicket);
 			
 			return $this;
@@ -38,8 +43,6 @@
 		 */
 		public function getModel()
 		{
-			$localizer = $this->getRequest()->getAttachedVar(AttachedAliases::LOCALIZER);
-			
 			$result['contentList'] = Content::da()->getByIds($this->getUnits());
 			
 			$result['contentDataList'] = array();
@@ -65,6 +68,9 @@
 			return $this->units;
 		}
 		
+		/**
+		 * @return ContentModule
+		 */
 		private function setUnits($units)
 		{
 			$this->units = $units;
@@ -83,8 +89,7 @@
 				'replace' => array($this->getPage()->getBaseUrl()->getPath())
 			);
 
-			if(defined('MEDIA_HOST'))
-			{
+			if (defined('MEDIA_HOST')) {
 				$params['search'][] = '%MEDIA_HOST%';
 				$params['replace'][] = MEDIA_HOST;
 			}

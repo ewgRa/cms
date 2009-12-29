@@ -1,7 +1,11 @@
 <?php
 	/* $Id$ */
 
-	class NavigationModule extends CmsModule
+	/**
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	*/
+	final class NavigationModule extends CmsModule
 	{
 		private $categoryAlias = null;
 		
@@ -26,18 +30,22 @@
 		 */
 		public function cacheWorker()
 		{
-			if(!$this->cacheWorker)
+			if (!$this->cacheWorker) {
 				$this->cacheWorker = NavigationCacheWorker::create()->
 					setModule($this);
+			}
 
 			return $this->cacheWorker;
 		}
 		
+		/**
+		 * @return NavigationModule
+		 */
 		public function importSettings(array $settings = null)
 		{
 			$this->setCategoryAlias($settings['category']);
 
-			if($cacheTicket = $this->cacheWorker()->createTicket())
+			if ($cacheTicket = $this->cacheWorker()->createTicket())
 				$this->setCacheTicket($cacheTicket);
 			
 			return $this;
