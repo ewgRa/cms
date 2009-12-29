@@ -1,12 +1,13 @@
 <?php
 	/* $Id$ */
 
-	class PageNotFoundModule extends Module
+	final class PageNotFoundModule extends Module
 	{
 		public function getModel()
 		{
-			$this->getRequest()->getAttachedVar(AttachedAliases::PAGE)->
+			$this->getPage()->
 				getHeader()->
+				// FIXME: user getRequest()->getServerVar
 				add($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 			
 			return null;
