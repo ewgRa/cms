@@ -10,11 +10,6 @@
 		 */
 		private $cacheWorker = null;
 		
-		protected function da()
-		{
-			return PageViewFilesDA::me();
-		}
-		
 		/**
 		 * @return PageViewFilesCacheWorker
 		 */

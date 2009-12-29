@@ -49,6 +49,15 @@
 			return $this->buildList($dbResult->fetchList());
 		}
 
+		public function getById($id)
+		{
+			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
+			
+			$dbResult = $this->db()->query($dbQuery, array($id));
+			
+			return $this->build($dbResult->fetchArray());
+		}
+
 		private function buildList(array $arrayList)
 		{
 			$result = array();

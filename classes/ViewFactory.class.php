@@ -12,11 +12,6 @@
 		 */
 		private static $cacheWorker = null;
 			
-		public static function da()
-		{
-			return ViewDA::me();
-		}
-		
 		public static function cacheWorker()
 		{
 			if(!self::$cacheWorker)
@@ -59,15 +54,11 @@
 		{
 			$result = null;
 			
-			if($file = self::da()->getFile($fileId))
+			if($file = ViewFile::da()->getById($fileId))
 			{
-				$file['path'] = Config::me()->replaceVariables($file['path']);
+				$layout = File::create()->setPath($file->getPath());
 				
-				$layout = File::create()->setPath($file['path']);
-				
-				$contentType = ContentType::createByName($file['content_type']);
-
-				switch($contentType->getId())
+				switch($file->getContentType()->getId())
 				{
 					case ContentType::TEXT_XSLT:
 						$result = XsltView::create();
@@ -88,22 +79,6 @@
 				throw NotFoundException::create('No layout file');
 			
 			Assert::isNotNull($result);
-			
-			return $result;
-		}
-
-		private static function getLayoutIncludeFiles($fileId)
-		{
-			$result = array();
-				
-			foreach($this->da()->getLayoutIncludeFiles($fileId) as $file)
-			{
-				$result[] = str_replace(
-					'\\',
-					'/',
-					realpath(Config::me()->replaceVariables($file['path']))
-				);
-			}
 			
 			return $result;
 		}
