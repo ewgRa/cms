@@ -7,14 +7,9 @@
 	*/
 	final class User
 	{
-		const WRONG_PASSWORD	= 1;
-		const WRONG_LOGIN		= 2;
-		const SUCCESS_LOGIN		= 3;
-		
 		private $id		= null;
 		private $login	= null;
 		private $rights	= array();
-		private $session = null;
 
 		/**
 		 * @return User
@@ -27,7 +22,7 @@
 		/**
 		 * @return UserDA
 		 */
-		public function da()
+		public static function da()
 		{
 			return UserDA::me();
 		}
@@ -71,20 +66,6 @@
 		public function setPassword($password)
 		{
 			$this->password = $password;
-			return $this;
-		}
-		
-		public function getSession()
-		{
-			return $this->session;
-		}
-		
-		/**
-		 * @return BaseSession
-		 */
-		private function setSession(BaseSession $session)
-		{
-			$this->session = $session;
 			return $this;
 		}
 		
@@ -136,62 +117,10 @@
 			return $result;
 		}
 		
-		public function login($login, $password)
-		{
-			Session::me()->start();
-			Session::me()->drop('user');
-			Session::me()->save();
-			
-			try {
-				$user = $this->da()->getByLogin($login);
-			} catch(NotFoundException $exception) {
-				return self::WRONG_LOGIN;
-			}
-			
-			if ($user->getPassword() != md5($password))
-				return self::WRONG_PASSWORD;
-			
-				
-			$this->setId($user->getId());
-			$this->setLogin($user->getLogin());
-			$this->setPassword($user->getPassword());
-			$this->loadRights();
-					
-			Session::me()->set(
-				'user',
-				array(
-					'id' => $this->getId(),
-					'login' => $this->getLogin(),
-					'rights' => $this->getRights()
-				)
-			);
-			
-			Session::me()->save();
-
-			return self::SUCCESS_LOGIN;
-		}
-
-		
-		// FIXME: move this method to anywhere :)
-		public function onSessionStarted()
-		{
-			if(Session::me()->has('user'))
-			{
-				$user = Session::me()->get('user');
-
-				$this->
-					setId($user['id'])->
-					setLogin($user['login'])->
-					setRights($user['rights']);
-			}
-			
-			return $this;
-		}
-
 		/**
 		 * @return User
 		 */
-		protected function loadRights()
+		public function loadRights()
 		{
 			$this->dropRights();
 			

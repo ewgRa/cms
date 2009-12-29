@@ -16,10 +16,14 @@
 		) {
 			$user = User::create();
 			
-			$request->setAttachedVar(AttachedAliases::USER, $user);
+			if (
+				Session::me()->isStarted()
+				&& $userId = Session::me()->has('userId')) {
+				
+				$user = User::da()->getById($userId)->loadRights();
+			}
 			
-			if(Session::me()->isStarted())
-				$user->onSessionStarted();
+			$request->setAttachedVar(AttachedAliases::USER, $user);
 			
 			return parent::handleRequest($request, $mav);
 		}
