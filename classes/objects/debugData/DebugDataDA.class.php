@@ -33,7 +33,7 @@
 		/**
 		 * @return DebugData
 		 */
-		private function build(array $array)
+		protected function build(array $array)
 		{
 			return
 				DebugData::create()->
