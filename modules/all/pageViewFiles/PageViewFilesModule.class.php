@@ -75,24 +75,37 @@
 		{
 			$page = $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 			
-			$viewFilesId = array($page->getLayoutFileId());
+			$viewFiles = ViewFile::da()->getByPage($page);
 			
-			foreach($this->da()->getPageViewFiles($page) as $file)
-				$viewFilesId[] = $file['view_file_id'];
+			$inheritanceFiles =
+				array_diff_assoc(
+					ViewFile::da()->getInheritanceByIds(array_keys($viewFiles)),
+					$viewFiles
+				);
+				
+			$viewFiles = $inheritanceFiles;
 			
-			$viewFiles = $this->getPageViewFiles($page, $viewFilesId);
+			while($inheritanceFiles) {
+				$viewFiles = $viewFiles+$inheritanceFiles;
+				
+				$inheritanceFiles =
+					array_diff_assoc(
+						ViewFile::da()->getInheritanceByIds(array_keys($inheritanceFiles)),
+						$viewFiles
+					);
+			}
 			
 			if($this->getJoinContentTypes())
 				$viewFiles = $this->joinFiles($viewFiles);
 			
-			foreach($viewFiles['includeFiles'] as &$file)
+			foreach($viewFiles as $file)
 			{
 				if(
 					defined('MEDIA_HOST_JOIN_URL')
-					&& $file['content-type']->canBeJoined()
+					&& $file->getContentType()->canBeJoined()
+					&& $file instanceof JoinedViewFile
 				) {
-					if(isset($file['files']))
-						$file['path'] = MEDIA_HOST_JOIN_URL . '/' . $file['path'];
+					$file->setPath(MEDIA_HOST_JOIN_URL . '/' . $file->getPath());
 				}
 			}
 			
@@ -112,58 +125,12 @@
 				umask($umask);
 			}
 			
-			foreach($files['includeFiles'] as $file) {
-				if(isset($file['files'])) {
-					$targetFile =
-						JOIN_FILES_DIR . DIRECTORY_SEPARATOR . $file['path'] . '.fl';
-
-					file_put_contents($targetFile, serialize($file['files']));
-				}
+			foreach($files as $file) {
+				if($file instanceof JoinedViewFile)
+					$file->saveFileList();
 			}
 
 			return $files;
-		}
-
-		private function getPageViewFiles(Page $page, $fileIds)
-		{
-			$viewFiles = array(
-				'includeFiles' => array(),
-				'dontJoinFiles' => array()
-			);
-			
-			$directFiles = array();
-			
-			foreach($this->da()->getFiles($page, $fileIds) as $file)
-			{
-				$file['path'] = str_replace(
-					'\\',
-					'/',
-					Config::me()->replaceVariables($file['path'])
-				);
-
-				$viewFiles['includeFiles'][] = array(
-					'path' => $file['path'],
-					'content-type' =>
-						ContentType::createByName($file['content_type']),
-					'id' => $file['id']
-				);
-				
-				if($file['is_can_joined'] == 'no')
-					$viewFiles['dontJoinFiles'][] = $file['id'];
-
-				if($file['recursive_include'] == 'yes')
-					$directFiles[] = $file['id'];
-			}
-
-			if(count($directFiles))
-			{
-				$includeViewFiles = $this->{__FUNCTION__}($page, $directFiles);
-				
-				foreach($viewFiles as $k => $v)
-					$viewFiles[$k] = array_merge($v, $includeViewFiles[$k]);
-			}
-		
-			return $viewFiles;
 		}
 	}
 ?>

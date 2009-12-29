@@ -1,18 +1,18 @@
 <?php
-	if($model->has('includeFiles'))
+	if($model->getData())
 	{
-		foreach($model->get('includeFiles') as $file)
+		foreach($model->getData() as $file)
 		{
-			switch($file['content-type']->getId())
+			switch($file->getContentType()->getId())
 			{
 				case ContentType::TEXT_JAVASCRIPT:
 ?>
-	<script type="<?php echo $file['content-type']?>" src="<?php echo $file['path']?>"></script>
+	<script type="<?php echo $file->getContentType()?>" src="<?php echo $file->getPath()?>"></script>
 <?php
 				break;
 				default:
 ?>
-	<link rel="stylesheet" type="<?php echo $file['content-type']->getName()?>" href="<?php echo $file['path']?>" />
+	<link rel="stylesheet" type="<?php echo $file->getContentType()?>" href="<?php echo $file->getPath()?>" />
 <?php
 				break;
 			}

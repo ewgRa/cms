@@ -33,16 +33,16 @@
 			
 			$joinFiles = array();
 			
-			foreach($files['includeFiles'] as $file)
+			foreach($files as $file)
 			{
 				if(
-					in_array($file['content-type']->getId(), array_keys($this->getContentTypes()))
-					&& !in_array($file['id'], $files['dontJoinFiles'])
+					in_array($file->getContentType()->getId(), array_keys($this->getContentTypes()))
+					&& $file->isJoinable()
 				) {
-					if(!isset($bufferJoinFiles[$file['content-type']->getId()]))
-						$bufferJoinFiles[$file['content-type']->getId()] = array();
+					if(!isset($bufferJoinFiles[$file->getContentType()->getId()]))
+						$bufferJoinFiles[$file->getContentType()->getId()] = array();
 					
-					$bufferJoinFiles[$file['content-type']->getId()][] = $file['path'];
+					$bufferJoinFiles[$file->getContentType()->getId()][] = $file;
 				}
 				else
 					$joinFiles[] = $file;
@@ -52,25 +52,13 @@
 			{
 				$contentType = ContentType::create($contentTypeName);
 				
-				$fileName = $this->compileFileName($files);
-				
-				$extension = $contentType->getFileExtension();
-				
-				$fileName = $fileName . '.' . $extension;
-
-				$joinFiles[] = array(
-					'path' => $fileName,
-					'content-type' => $contentType,
-					'files' => $files
-				);
+				$joinFiles[] =
+					JoinedViewFile::create()->
+					setFiles($files)->
+					setContentType($contentType);
 			}
 			
-			return array('includeFiles' => $joinFiles);
-		}
-		
-		private function compileFileName($filePathes)
-		{
-			return md5(serialize($filePathes));
+			return $joinFiles;
 		}
 	}
 ?>
