@@ -3,5 +3,5 @@
 	$replaceFilter 		= $model->get('replaceFilter');
 	
 	foreach ($model->get('contentList') as $content)
-		echo $contentDataList[$content->getId()]->getText();
+		echo $replaceFilter->apply($contentDataList[$content->getId()]->getText());
 ?>
