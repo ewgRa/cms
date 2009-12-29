@@ -15,23 +15,17 @@
 			return new self;
 		}
 		
-		/**
-		 * @return DatabaseBasedDebugDA
-		 */
-		public function da()
-		{
-			return DatabaseBasedDebugDA::me();
-		}
-		
 		public function store()
 		{
-			foreach($this->getItems() as $item)
+			foreach($this->getItems() as $item) {
 				$item->dropTrace();
+			}
 			
 			$itemId =
-				$this->da()->insertItem(
-					Session::me()->getId(),
-					serialize($this->getItems())
+				DebugData::da()->insert(
+					DebugData::create()->
+						setSession(Session::me()->getId())->
+						setData($this->getItems())
 				);
 			
 			return $itemId;
