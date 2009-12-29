@@ -11,6 +11,14 @@
 		private $id   = null;
 
 		/**
+		 * @return LanguageDA
+		 */
+		public static function da()
+		{
+			return LanguageDA::me();
+		}
+		
+		/**
 		 * @return Language
 		 */
 		public static function create()
@@ -18,9 +26,18 @@
 			return new self;
 		}
 		
-		public function getAbbr()
+		/**
+		 * @return Language
+		 */
+		public function setId($id)
 		{
-			return $this->abbr;
+			$this->id = (int)$id;
+			return $this;
+		}
+		
+		public function getId()
+		{
+			return $this->id;
 		}
 		
 		/**
@@ -31,19 +48,10 @@
 			$this->abbr = $abbr;
 			return $this;
 		}
-
-		public function getId()
-		{
-			return $this->id;
-		}
 		
-		/**
-		 * @return Language
-		 */
-		public function setId($id)
+		public function getAbbr()
 		{
-			$this->id = (int)$id;
-			return $this;
+			return $this->abbr;
 		}
 	}
 ?>

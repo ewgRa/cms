@@ -24,14 +24,6 @@
 
 		abstract protected function getLanguageAbbr(HttpUrl $url);
 				
-		/**
-		 * @return LocalizerDA
-		 */
-		public function da()
-		{
-			return LocalizerDA::me();
-		}
-		
 		public function getType()
 		{
 			return $this->type;
@@ -99,36 +91,22 @@
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}
 
-			$probableLanguageAbbr = $this->getLanguageAbbr($url);
+			if ($this->getLanguages()) {
+				$probableLanguageAbbr = $this->getLanguageAbbr($url);
 
-			if($this->languages && in_array($probableLanguageAbbr, $this->languages))
-			{
-				$flipLanguages = array_flip($this->languages);
-				
-				$this->setRequestLanguage(
-					Language::create()->
-						setAbbr($probableLanguageAbbr)->
-						setId($flipLanguages[$probableLanguageAbbr])
-				);
+				foreach ($this->getLanguages() as $language) {
+					if ($probableLanguageAbbr == $language->getAbbr()) {
+						$this->setRequestLanguage($language);
 
-				$this->setSource(
-					$this->getSource() == self::SOURCE_LANGUAGE_COOKIE
-						? self::SOURCE_LANGUAGE_URL_AND_COOKIE
-						: self::SOURCE_LANGUAGE_URL
-				);
+						$this->setSource(
+							$this->getSource() == self::SOURCE_LANGUAGE_COOKIE
+								? self::SOURCE_LANGUAGE_URL_AND_COOKIE
+								: self::SOURCE_LANGUAGE_URL
+						);
+					}
+				}
 			}
 
-			return $this;
-		}
-
-		/**
-		 * @return Localizer
-		 */
-		public function loadLanguages()
-		{
-			foreach($this->da()->loadLanguages() as $language)
-				$this->languages[$language['id']] = $language['abbr'];
-			
 			return $this;
 		}
 
@@ -137,23 +115,23 @@
 		 */
 		public function selectDefaultLanguage($languageAbbr)
 		{
-			$language = Language::create()->setAbbr($languageAbbr);
+			$language = null;
 			
 			if($this->getLanguages())
 			{
-				$flipLang = array_flip($this->getLanguages());
-
-				if(isset($flipLang[$languageAbbr]))
-					$language->setId($flipLang[$languageAbbr]);
+				foreach ($this->getLanguages() as $oneLanguage) {
+					if ($oneLanguage->getAbbr() == $languageAbbr) {
+						$language = $oneLanguage;
+						break;
+					}
+				}
 			}
 
-			if($language->getId())
+			if ($language)
 			{
 				$this->setRequestLanguage($language);
 				$this->setSource(self::SOURCE_LANGUAGE_DEFAULT);
-			}
-			else
-			{
+			} else {
 				throw DefaultException::create(
 					'Known nothing about default language '
 					. '"' . $languageAbbr . '"'
