@@ -8,7 +8,7 @@
 	final class Auth401Controller extends ChainController
 	{
 		// FIXME: remove direct id
-		private $requiredRights = array(1);
+		private $requiredRights = array('root');
 		
 		/**
 		 * @return ModelAndView
@@ -19,13 +19,16 @@
 		) {
 			$user = $request->getAttachedVar(AttachedAliases::USER);
 			
+			$requiredRights =
+				array_keys(Right::da()->getByAliases($this->requiredRights));
+			
 			if (
 				$user && $user->getId()
 				&& array_intersect(
 					UserRight::da()->getRightIdsByUser($user),
-					$this->requiredRights
+					$requiredRights
 				)
-					== $this->requiredRights
+					== $requiredRights
 			)
 				return parent::handleRequest($request, $mav);
 			
