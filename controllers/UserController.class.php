@@ -20,10 +20,19 @@
 				Session::me()->isStarted()
 				&& $userId = Session::me()->has('userId')) {
 				
-				$user = User::da()->getById($userId)->loadRights();
+				$user = User::da()->getById($userId);
 			}
 			
 			$request->setAttachedVar(AttachedAliases::USER, $user);
+			
+			$userRights = UserRight::da()->getByUser($user);
+			
+			$rights = array();
+			
+			foreach ($userRights as $userRight)
+				$rights[$userRight->getRightId()] = $userRight->getRight();
+			
+			$request->setAttachedVar(AttachedAliases::USER_RIGHTS, $rights);
 			
 			return parent::handleRequest($request, $mav);
 		}

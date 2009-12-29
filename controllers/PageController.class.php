@@ -8,12 +8,19 @@
 	final class PageController extends ChainController
 	{
 		/**
+		 * @var HttpRequest
+		 */
+		private $request = null;
+		
+		/**
 		 * @return ModelAndView
 		 */
 		public function handleRequest(
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
+			$this->request = $request;
+			
 			$startTime = microtime(true);
 			
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
@@ -134,9 +141,11 @@
 			}
 			
 			if ($rights) {
+				$userRights = $this->request->getAttachedVar(AttachedAliases::USER_RIGHTS);
+			
 				$intersectRights = array_intersect(
 					array_merge($rightIds, array_keys($inheritanceRights)),
-					$user->getRightIds()
+					array_keys($userRights)
 				);
 
 				if (!count($intersectRights)) {

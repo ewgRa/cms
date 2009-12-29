@@ -38,8 +38,6 @@
 			
 			$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
 			
-			$user->loadRights();
-					
 			Session::me()->set('userId', $user->getId());
 			Session::me()->save();
 

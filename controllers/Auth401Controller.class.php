@@ -29,10 +29,12 @@
 				);
 			}
 
+			$userRights = $request->getAttachedVar(AttachedAliases::USER_RIGHTS);
+			
 			if (
 				$user && $user->getId()
 				&& array_intersect(
-					$user->getRightIds(),
+					array_keys($userRights),
 					$this->requiredRights
 				) == $this->requiredRights
 			)
