@@ -41,8 +41,7 @@
 			return
 				Page::create()->
 					setId($array['id'])->
-					// FIXME: realy needed?
-					setPath(Config::me()->replaceVariables($array['path']))->
+					setPath($array['path'])->
 					setPreg($array['preg'])->
 					setLayoutId($array['layout_id'])->
 					setStatus($array['status'])->

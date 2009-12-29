@@ -70,7 +70,6 @@
 					setContentType(
 						ContentType::createByName($array['content_type'])
 					)->
-					// FIXME: really needed?
 					setPath(Config::me()->replaceVariables($array['path']))->
 					setJoinable($array['joinable']);
 		}
