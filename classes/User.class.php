@@ -40,7 +40,7 @@
 		/**
 		 * @return User
 		 */
-		protected function setId($id)
+		public function setId($id)
 		{
 			$this->id = $id;
 			return $this;
@@ -54,9 +54,23 @@
 		/**
 		 * @return User
 		 */
-		private function setLogin($login)
+		public function setLogin($login)
 		{
 			$this->login = $login;
+			return $this;
+		}
+		
+		public function getPassword()
+		{
+			return $this->password;
+		}
+		
+		/**
+		 * @return User
+		 */
+		public function setPassword($password)
+		{
+			$this->password = $password;
 			return $this;
 		}
 		
@@ -128,31 +142,33 @@
 			Session::me()->drop('user');
 			Session::me()->save();
 			
-			$checkPassword = $this->da()->checkLogin($login, $password);
-
-			if($checkPassword)
-			{
-				if($checkPassword['verify_password'])
-				{
-					$this->setId($checkPassword['id']);
-					$this->setLogin($checkPassword['login']);
-					$this->loadRights();
-					
-					Session::me()->set(
-						'user',
-						array(
-							'id' => $this->getId(),
-							'login' => $this->getLogin(),
-							'rights' => $this->getRights()
-						)
-					);
-					
-					Session::me()->save();
-					return self::SUCCESS_LOGIN;
-				}
-				else return self::WRONG_PASSWORD;
+			try {
+				$user = $this->da()->getByLogin($login);
+			} catch(NotFoundException $exception) {
+				return self::WRONG_LOGIN;
 			}
-			else return self::WRONG_LOGIN;
+			
+			if ($user->getPassword() != md5($password))
+				return self::WRONG_PASSWORD;
+			
+				
+			$this->setId($user->getId());
+			$this->setLogin($user->getLogin());
+			$this->setPassword($user->getPassword());
+			$this->loadRights();
+					
+			Session::me()->set(
+				'user',
+				array(
+					'id' => $this->getId(),
+					'login' => $this->getLogin(),
+					'rights' => $this->getRights()
+				)
+			);
+			
+			Session::me()->save();
+
+			return self::SUCCESS_LOGIN;
 		}
 
 		
