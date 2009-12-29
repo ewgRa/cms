@@ -43,12 +43,12 @@
 			$params = array();
 			
 			if ($navigationList) {
-				$params[] = array_keys($navigationList);
+				$params[] = ArrayUtils::getObjectIds($navigationList);
 				$queryParts[] = 'navigation_id IN(?)';
 			}
 			
 			if ($languageList) {
-				$params[] = array_keys($languageList);
+				$params[] = ArrayUtils::getObjectIds($languageList);
 				$queryParts[] = 'language_id IN(?)';
 			}
 			

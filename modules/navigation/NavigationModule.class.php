@@ -50,7 +50,7 @@
 			$navigationDataList =
 				NavigationData::da()->getList(
 					$result['navigationList'],
-					$this->getLocalizer()->getRequestLanguage()
+					array($this->getLocalizer()->getRequestLanguage())
 				);
 				
 			foreach ($navigationDataList as $navigationData) {
@@ -59,7 +59,7 @@
 			}
 			
 			$result['baseUrl'] = $this->getBaseUrl();
-			
+
 			return Model::create()->setData($result);
 		}
 	}

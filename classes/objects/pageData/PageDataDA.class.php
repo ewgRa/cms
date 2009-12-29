@@ -43,12 +43,12 @@
 			$params = array();
 			
 			if ($pageList) {
-				$params[] = array_keys($pageList);
+				$params[] = ArrayUtils::getObjectIds($pageList);
 				$queryParts[] = 'page_id IN(?)';
 			}
 			
 			if ($languageList) {
-				$params[] = array_keys($languageList);
+				$params[] = ArrayUtils::getObjectIds($languageList);
 				$queryParts[] = 'language_id IN(?)';
 			}
 			
