@@ -7,8 +7,6 @@
 	*/
 	final class LocalizerPathBased extends Localizer
 	{
-		protected $type = self::DETERMINANT_PATH_BASED;
-		
 		/**
 		 * @return LocalizerPathBased
 		 */
@@ -35,7 +33,7 @@
 		public function removeLanguageFromUrl(HttpUrl $url)
 		{
 			return
-				$this->isLanguageInUrl()
+				$this->getSource()->isLanguageInUrl()
 					? $this->cutLanguageAbbr($url)
 					: $url;
 		}

@@ -7,15 +7,6 @@
 	*/
 	abstract class Localizer implements LocalizerInterface
 	{
-		// FIXME: languageSource extends Enumeration
-		const SOURCE_LANGUAGE_DEFAULT 		 = 1;
-		const SOURCE_LANGUAGE_COOKIE  		 = 2;
-		const SOURCE_LANGUAGE_URL 	  		 = 3;
-		const SOURCE_LANGUAGE_URL_AND_COOKIE = 4;
-		
-		const DETERMINANT_PATH_BASED = 5;
-		const DETERMINANT_HOST_BASED = 6;
-		
 		/**
 		 * @var Language
 		 */
@@ -28,19 +19,13 @@
 		 */
 		private $cookieLanguage  = null;
 		
-		// FIXME: languageSource extends Enumeration
-		private $source 		 = null;
+		/**
+		 * @return LocalizerLanguageSource
+		 */
+		private $source = null;
 		
-		// FIXME: LocalizerType extends Enumeration
-		protected $type = null;
-
 		abstract protected function getLanguageAbbr(HttpUrl $url);
 				
-		public function getType()
-		{
-			return $this->type;
-		}
-		
 		/**
 		 * @return Language
 		 */
@@ -58,6 +43,9 @@
 			return $this;
 		}
 
+		/**
+		 * @return LocalizerLanguageSource
+		 */
 		public function getSource()
 		{
 			return $this->source;
@@ -66,7 +54,7 @@
 		/**
 		 * @return Localizer
 		 */
-		public function setSource($source)
+		public function setSource(LocalizerLanguageSource $source)
 		{
 			$this->source = $source;
 			return $this;
@@ -102,7 +90,7 @@
 		{
 			if ($this->cookieLanguage) {
 				$this->setRequestLanguage($this->cookieLanguage);
-				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
+				$this->setSource(LocalizerLanguageSource::cookie());
 			}
 
 			if ($this->getLanguages()) {
@@ -113,9 +101,10 @@
 						$this->setRequestLanguage($language);
 
 						$this->setSource(
-							$this->getSource() == self::SOURCE_LANGUAGE_COOKIE
-								? self::SOURCE_LANGUAGE_URL_AND_COOKIE
-								: self::SOURCE_LANGUAGE_URL
+							$this->getSource()->getId()
+								== LocalizerLanguageSource::COOKIE
+								? LocalizerLanguageSource::urlAndCookie()
+								: LocalizerLanguageSource::url()
 						);
 					}
 				}
@@ -142,7 +131,7 @@
 
 			if ($language) {
 				$this->setRequestLanguage($language);
-				$this->setSource(self::SOURCE_LANGUAGE_DEFAULT);
+				$this->setSource(LocalizerLanguageSource::defaultSource());
 			} else {
 				throw DefaultException::create(
 					'Known nothing about default language '
@@ -151,18 +140,6 @@
 			}
 			
 			return $this;
-		}
-
-		public function isLanguageInUrl()
-		{
-			return
-				in_array(
-					$this->getSource(),
-					array(
-						Localizer::SOURCE_LANGUAGE_URL,
-						Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
-					)
-				);
 		}
 	}
 ?>
