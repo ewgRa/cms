@@ -1,18 +1,8 @@
 <?php
 	/* $Id$ */
 
-	class PageHeadModule extends Module
+	final class PageHeadModule extends Module
 	{
-		/**
-		 * @var PageHeadDA
-		 */
-		private $da = null;
-		
-		protected function da()
-		{
-			return PageHeadDA::me();
-		}
-		
 		public function importSettings($settings)
 		{
 			if(Cache::me()->getPool('cms')->hasTicketParams('page'))
@@ -36,16 +26,18 @@
 		public function getModel()
 		{
 			try {
-				$head =
-					$this->da()->getPageHead(
+				$pageData =
+					PageData::da()->get(
 						$this->getPage(),
 						$this->getRequestLanguage()
 					);
 			} catch(NotFoundException $e) {
-				$head = array();
+				$pageData = PageData::create();
 			}
 				
-			return Model::create()->setData($head);
+			return Model::create()->setData(
+				array('pageData' => $pageData)
+			);
 		}
 	}
 ?>
