@@ -11,7 +11,10 @@
 		{
 			$this->getPage()->
 				getHeader()->
-				add($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');
+				add(
+					$this->getRequest()->getServerVar('SERVER_PROTOCOL')
+					.' 404 Not Found'
+				);
 			
 			return null;
 		}

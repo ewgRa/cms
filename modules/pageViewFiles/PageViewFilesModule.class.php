@@ -117,10 +117,7 @@
 				if($file instanceof JoinedViewFile) {
 					$file->saveFileList($dir);
 					
-					if (
-						defined('MEDIA_HOST_JOIN_URL')
-						&& $file->getContentType()->canBeJoined()
-					)
+					if (defined('MEDIA_HOST_JOIN_URL'))
 						$file->setPath(MEDIA_HOST_JOIN_URL.'/'.$file->getPath());
 				}
 			}
