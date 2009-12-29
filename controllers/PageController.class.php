@@ -143,7 +143,8 @@
 			if($page->getRights())
 			{
 				$intersectRights = array_intersect(
-					$page->getRightIds(), array_keys($user->getRights())
+					array_merge($page->getRightIds(), $page->getInheritanceRightIds()),
+					$user->getRightIds()
 				);
 
 				if(!count($intersectRights))

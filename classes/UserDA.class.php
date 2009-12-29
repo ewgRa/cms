@@ -33,44 +33,5 @@
 			
 			return $result;
 		}
-
-		public function loadRights($userId)
-		{
-			$result = null;
-			
-			$dbQuery = '
-				SELECT t1.* FROM ' . $this->db()->getTable('Right') . ' t1
-				INNER JOIN ' . $this->db()->getTable('UserRight_ref') . ' t2
-					ON ( t1.id = t2.right_id AND t2.user_id = ? )
-			';
-
-			$dbResult = $this->db()->query($dbQuery, array($userId));
-			
-			if($dbResult->recordCount())
-				$result = $dbResult->fetchList();
-			
-			return $result;
-		}
-		
-		public function loadInheritanceRights($inheritanceId)
-		{
-			$result = null;
-			
-			$dbQuery = '
-				SELECT t1.* FROM ' . $this->db()->getTable('Right') . ' t1
-				INNER JOIN ' . $this->db()->getTable('Right_inheritance') . ' t2
-					ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )
-			';
-
-			$dbResult = $this->db()->query(
-				$dbQuery,
-				array($inheritanceId)
-			);
-			
-			if($dbResult->recordCount())
-				$result = $dbResult->fetchList();
-			
-			return $result;
-		}
 	}
 ?>

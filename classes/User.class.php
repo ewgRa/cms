@@ -74,9 +74,9 @@
 			return $this;
 		}
 		
-		public function hasRight($alias)
+		public function hasRight(UserRight $userRight)
 		{
-			return isset($this->rights[$alias]);
+			return isset($this->rights[$userRight->getId()]);
 		}
 		
 		public function getRights()
@@ -96,7 +96,7 @@
 		/**
 		 * @return User
 		 */
-		public function setRights($rights)
+		public function setRights(array $rights)
 		{
 			$this->rights = $rights;
 			return $this;
@@ -105,10 +105,21 @@
 		/**
 		 * @return User
 		 */
-		public function addRight($rightId, $rightAlias)
+		public function addRight(UserRight $userRight)
 		{
-			$this->rights[$rightId] = $rightAlias;
+			$this->rights[$userRight->getId()] = $userRight;
 			return $this;
+		}
+		
+		public function getRightIds()
+		{
+			$result = array();
+			
+			foreach ($this->getRights() as $userRight) {
+				$result[] = $userRight->getRightId();
+			}
+			
+			return $result;
 		}
 		
 		public function login($login, $password)
@@ -170,22 +181,12 @@
 			
 			if($this->getId())
 			{
-				$rights = $this->da()->loadRights($this->getId());
-				
-				while($rights)
+				foreach(UserRight::da()->getByUser($this) as $right)
 				{
-					$inheritanceId = array();
+					if($this->hasRight($right))
+						continue;
 
-					foreach($rights as $right)
-					{
-						if($this->hasRight($right['alias']))
-							continue;
-
-						$inheritanceId[] = $right['id'];
-						$this->addRight($right['id'], $right['alias']);
-					}
-
-					$rights = $this->da()->loadInheritanceRights($inheritanceId);
+					$this->addRight($right);
 				}
 			}
 			

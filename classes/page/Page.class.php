@@ -10,7 +10,8 @@
 		private $id				= null;
 		private $layoutFileId	= null;
 		private $preg			= null;
-		private $rights			= null;
+		private $rights				= null;
+		private $inheritanceRights	= null;
 		private $path			= null;
 		
 		private $baseUrl		= null;
@@ -135,13 +136,37 @@
 			return $result;
 		}
 		
+		public function getInheritanceRightIds()
+		{
+			return
+				$this->inheritanceRights
+					? array_keys($this->inheritanceRights)
+					: null;
+		}
+		
 		/**
 		 * @return Page
 		 */
 		public function loadRights()
 		{
 			$this->rights = PageRight::da()->getByPage($this);
+			$this->inheritanceRights = array();
+			
+			$inheritanceRights = Right::da()->getByInheritanceIds($this->getRightIds());
+			
+			while ($inheritanceRights) {
+				$inheritanceIds = array();
+				
+				foreach ($inheritanceRights as $right) {
+					if (!isset($this->inheritanceRights[$right->getId()])) {
+						$this->inheritanceRights[$right->getId()] = $right;
+						$inheritanceIds[] = $right->getId();
+					}
+				}
 
+				$inheritanceRights = Right::da()->getByInheritanceIds($inheritanceIds);
+			}
+			
 			return $this;
 		}
 		

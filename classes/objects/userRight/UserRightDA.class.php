@@ -5,9 +5,9 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class RightDA extends CmsDatabaseRequester
+	final class UserRightDA extends CmsDatabaseRequester
 	{
-		protected $tableAlias = 'Right';
+		protected $tableAlias = 'UserRight';
 		
 		/**
 		 * @return RightDA
@@ -17,20 +17,15 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
-		public function getByInheritanceIds(array $ids)
+		public function getByUser(User $user)
 		{
-			$dbQuery = "
-				SELECT t1.* FROM ".$this->getTable()." t1
-				INNER JOIN ".$this->db()->getTable('Right_inheritance')." t2
-					ON(t2.right_id = t1.id)
-				WHERE t2.child_right_id IN (?)
-			";
+			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE user_id = ?";
 			
-			$dbResult = $this->db()->query($dbQuery, array($ids));
+			$dbResult = $this->db()->query($dbQuery, array($user->getId()));
 			
 			return $this->buildList($dbResult->fetchList());
 		}
-
+		
 		private function buildList(array $arrayList) {
 			$result = array();
 			
@@ -44,11 +39,9 @@
 		
 		private function build(array $array) {
 			return
-				Right::create()->
-					setId($array['id'])->
-					setAlias($array['alias'])->
-					setName($array['name'])->
-					setRole($array['role']);
+				UserRight::create()->
+					setUserId($array['user_id'])->
+					setRightId($array['right_id']);
 		}
 	}
 ?>

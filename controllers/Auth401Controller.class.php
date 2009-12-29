@@ -5,11 +5,10 @@
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
-	 * //FIXME: tested?
 	*/
 	class Auth401Controller extends ChainController
 	{
-		private $requiredRights = array('root');
+		private $requiredRights = array(1);
 		
 		/**
 		 * @return ModelAndView
@@ -27,7 +26,7 @@
 				$user
 				&& $user->getId()
 				&& array_intersect(
-					array_values($user->getRights()),
+					$user->getRightIds(),
 					$this->requiredRights
 				) == $this->requiredRights
 			)
