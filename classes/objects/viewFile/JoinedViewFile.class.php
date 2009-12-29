@@ -75,10 +75,10 @@
 			return $this->path;
 		}
 		
-		public function saveFileList()
+		public function saveFileList(Dir $dir)
 		{
 			file_put_contents(
-				JOIN_FILES_DIR.DIRECTORY_SEPARATOR.$this->getPath().'.fl',
+				$dir->getPath().DIRECTORY_SEPARATOR.$this->getPath().'.fl',
 				serialize($this->getFiles())
 			);
 			

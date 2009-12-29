@@ -32,8 +32,7 @@
 		{
 			$result = null;
 			
-			if($this->cache()->hasTicketParams($this->getAlias()))
-			{
+			if ($this->cache()->hasTicketParams($this->getAlias())) {
 				$result =
 					$this->cache()->
 						createTicket($this->getAlias())->

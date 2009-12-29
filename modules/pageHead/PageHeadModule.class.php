@@ -3,7 +3,7 @@
 
 	class PageHeadModule extends CmsModule
 	{
-		public function importSettings($settings)
+		public function importSettings(array $settings = null)
 		{
 			if(Cache::me()->getPool('cms')->hasTicketParams('page'))
 			{

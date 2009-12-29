@@ -22,7 +22,7 @@
 			return $this->cacheWorker;
 		}
 		
-		public function importSettings($settings)
+		public function importSettings(array $settings = null)
 		{
 			Assert::isArray($settings['units']);
 			$this->setUnits($settings['units']);

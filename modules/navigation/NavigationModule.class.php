@@ -33,7 +33,7 @@
 			return $this->cacheWorker;
 		}
 		
-		public function importSettings($settings)
+		public function importSettings(array $settings = null)
 		{
 			$this->setCategoryAlias($settings['category']);
 

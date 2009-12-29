@@ -91,9 +91,8 @@
 		/**
 		 * @return CmsModule
 		 */
-		public function setView($view)
+		public function setView(ViewInterface $view)
 		{
-			Assert::isImplement($view, 'ViewInterface');
 			$this->view = $view;
 			return $this;
 		}
@@ -109,7 +108,7 @@
 		/**
 		 * @return CmsModule
 		 */
-		public function importSettings($settings)
+		public function importSettings(array $settings = null)
 		{
 			return $this;
 		}
@@ -118,23 +117,20 @@
 		{
 			$renderedModel = null;
 			
-			if($this->hasCacheTicket())
-			{
+			if ($this->hasCacheTicket()) {
 				$this->getCacheTicket()->restoreData();
 				
-				if($this->getCacheTicket()->isExpired())
-				{
+				if ($this->getCacheTicket()->isExpired()) {
 					$renderedModel = $this->renderModel();
 					
 					$this->getCacheTicket()->
 						setData($renderedModel)->
 						storeData();
-				}
-				else
+				} else
 					$renderedModel = $this->getCacheTicket()->getData();
 			}
 
-			if(is_null($renderedModel))
+			if (is_null($renderedModel))
 				$renderedModel = $this->renderModel();
 			
 			return $renderedModel;
@@ -167,15 +163,13 @@
 		
 		private function renderModel()
 		{
-			$view	= $this->getView();
-			$model	= $this->getModel();
-			
-			return $view
-				? ModelAndView::create()->
-					setModel($model)->
-					setView($view)->
-					render()
-				: null;
+			return
+				$this->getView()
+					? ModelAndView::create()->
+						setModel($this->getModel())->
+						setView($this->getView())->
+						render()
+					: null;
 		}
 	}
 ?>
