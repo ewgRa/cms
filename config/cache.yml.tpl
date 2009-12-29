@@ -15,6 +15,10 @@ ticketAliases:
     prefix: modules/navigation
     lifeTime: 86400
 
+  PageHeadCacheWorker:
+    prefix: modules/pageHead
+    lifeTime: 86400
+
   page:
     prefix: page
     lifeTime: 86400

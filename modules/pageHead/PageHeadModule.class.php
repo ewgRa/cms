@@ -1,22 +1,34 @@
 <?php
 	/* $Id$ */
 
-	class PageHeadModule extends CmsModule
+	/**
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	*/
+	final class PageHeadModule extends CmsModule
 	{
+		/**
+		 * @var ContentCacheWorker
+		 */
+		private $cacheWorker = null;
+		
+		/**
+		 * @return ContentCacheWorker
+		 */
+		public function cacheWorker()
+		{
+			if(!$this->cacheWorker)
+				$this->cacheWorker = PageHeadCacheWorker::create()->
+					setModule($this);
+
+			return $this->cacheWorker;
+		}
+		
 		public function importSettings(array $settings = null)
 		{
-			if(Cache::me()->getPool('cms')->hasTicketParams('page'))
-			{
-				$this->setCacheTicket(
-					Cache::me()->getPool('cms')->createTicket('page')->
-						setKey(
-							$this->getPage()->getId(),
-							$this->getRequestLanguage(),
-							__CLASS__, __FUNCTION__
-						)
-				);
-			}
-			
+			if($cacheTicket = $this->cacheWorker()->createTicket())
+				$this->setCacheTicket($cacheTicket);
+						
 			return $this;
 		}
 		
@@ -25,6 +37,8 @@
 		 */
 		public function getModel()
 		{
+			$pageData = null;
+			
 			try {
 				$pageData =
 					PageData::da()->get(
@@ -35,9 +49,10 @@
 				$pageData = PageData::create();
 			}
 				
-			return Model::create()->setData(
-				array('pageData' => $pageData)
-			);
+			return
+				Model::create()->setData(
+					array('pageData' => $pageData)
+				);
 		}
 	}
 ?>
