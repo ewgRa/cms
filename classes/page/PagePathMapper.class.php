@@ -19,14 +19,6 @@
 		{
 			return new self;
 		}
-		
-		/**
-		 * @return PagePathMapperDA
-		 */
-		public function da()
-		{
-			return PagePathMapperDA::me();
-		}
 
 		/**
 		 * @return PagePathMapper
@@ -38,10 +30,9 @@
 				self::PREG => array()
 			);
 			
-			foreach($this->da()->getMap() as $map)
+			foreach(Page::da()->getList() as $page)
 			{
-				$preg = $map['preg'] == self::NON_PREG ? self::NON_PREG : self::PREG;
-				$this->map[$preg][$map['id']] = $map['path'];
+				$this->map[$page->getPreg()][$page->getId()] = $page->getPath();
 			}
 			
 			$this->map[self::NON_PREG] = array_flip($this->map[self::NON_PREG]);

@@ -36,7 +36,7 @@
 		/**
 		 * @return PageDA
 		 */
-		public function da()
+		public static function da()
 		{
 			return PageDA::me();
 		}
@@ -72,6 +72,48 @@
 		/**
 		 * @return Page
 		 */
+		public function setLayoutId($fileId)
+		{
+			$this->layoutFileId = $fileId;
+			return $this;
+		}
+
+		public function getLayoutId()
+		{
+			return $this->layoutFileId;
+		}
+		
+		/**
+		 * @return Page
+		 */
+		public function setStatus($status)
+		{
+			$this->status = $status;
+			return $this;
+		}
+
+		public function getStatus()
+		{
+			return $this->status;
+		}
+		
+		/**
+		 * @return Page
+		 */
+		public function setModified($modified)
+		{
+			$this->modified = $modified;
+			return $this;
+		}
+
+		public function getModified()
+		{
+			return $this->modified;
+		}
+		
+		/**
+		 * @return Page
+		 */
 		public function setBaseUrl(HttpUrl $url)
 		{
 			$this->baseUrl = $url;
@@ -100,12 +142,20 @@
 		/**
 		 * @return Page
 		 */
-		public function setPreg()
+		public function setPreg($preg)
 		{
-			$this->preg = true;
+			$this->preg = $preg;
 			return $this;
 		}
 
+		/**
+		 * @return Page
+		 */
+		public function getPreg()
+		{
+			return $this->preg;
+		}
+		
 		public function isPreg()
 		{
 			return $this->preg == true;
@@ -200,28 +250,6 @@
 		public function getHeader()
 		{
 			return $this->header;
-		}
-		
-		/**
-		 * @return Page
-		 */
-		public function load($pageId)
-		{
-			$page = $this->da()->getPage($pageId);
-			
-			if($page['preg'])
-				$this->setPreg();
-						
-			$this->
-				setId($page['id'])->
-				setLayoutFileId($page['layout_file_id'])->
-				setPath(
-					Config::me()->replaceVariables($page['path'])
-				)->
-				loadRights()->
-				loadModules();
-
-			return $this;
 		}
 	}
 ?>

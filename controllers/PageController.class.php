@@ -48,8 +48,10 @@
 			
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
-				$page = Page::create();
-				$page->load($pageId);
+				$page =
+					Page::da()->
+					getById($pageId)->
+					loadModules();
 				
 				if($cacheTicket)
 					$cacheTicket->setData($page)->storeData();

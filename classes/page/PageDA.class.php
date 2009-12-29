@@ -7,31 +7,14 @@
 	*/
 	final class PageDA extends CmsDatabaseRequester
 	{
+		protected $tableAlias = 'Page';
+		
 		/**
 		 * @return PageDA
 		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
-		}
-				
-		public function getPage($pageId)
-		{
-			$dbQuery = "
-				SELECT
-					t1.*, t2.file_id as layout_file_id
-				FROM " . $this->db()->getTable('Page') . " t1
-				LEFT JOIN " . $this->db()->getTable('Layout') . " t2
-					ON( t2.id =	t1.layout_id)
-				WHERE t1.id = ?
-			";
-
-			$dbResult = $this->db()->query(
-				$dbQuery,
-				array($pageId)
-			);
-			
-			return $dbResult->fetchArray();
 		}
 		
 		public function getModules($pageId)
@@ -52,6 +35,50 @@
 			$dbResult = $this->db()->query($dbQuery, array($pageId));
 
 			return $dbResult->fetchList();
+		}
+		
+		public function getList()
+		{
+			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE status = \'normal\'';
+
+			$dbResult = $this->db()->query($dbQuery);
+			
+			return $this->buildList($dbResult->fetchList());
+		}
+
+		public function getById($id)
+		{
+			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE status = \'normal\' AND id=?';
+
+			$dbResult = $this->db()->query($dbQuery, array($id));
+			
+			if (!$dbResult->recordCount())
+				throw new NotFoundException();
+				
+			return $this->build($dbResult->fetchArray());
+		}
+
+		private function buildList(array $arrayList) {
+			$result = array();
+			
+			foreach ($arrayList as $array) {
+				$object = $this->build($array);
+				$result[$object->getId()] = $object;
+			}
+			
+			return $result;
+		}
+		
+		private function build(array $array) {
+			return
+				Page::create()->
+					setId($array['id'])->
+					// FIXME: realy needed?
+					setPath(Config::me()->replaceVariables($array['path']))->
+					setPreg($array['preg'])->
+					setLayoutId($array['layout_id'])->
+					setStatus($array['status'])->
+					setModified($array['modified']);
 		}
 	}
 ?>
