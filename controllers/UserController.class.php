@@ -25,14 +25,10 @@
 			
 			$request->setAttachedVar(AttachedAliases::USER, $user);
 			
-			$userRights = UserRight::da()->getByUser($user);
-			
-			$rights = array();
-			
-			foreach ($userRights as $userRight)
-				$rights[$userRight->getRightId()] = $userRight->getRight();
-			
-			$request->setAttachedVar(AttachedAliases::USER_RIGHTS, $rights);
+			$request->setAttachedVar(
+				AttachedAliases::USER_RIGHTS,
+				UserRights::create()->setUser($user)
+			);
 			
 			return parent::handleRequest($request, $mav);
 		}

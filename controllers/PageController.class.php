@@ -145,7 +145,7 @@
 			
 				$intersectRights = array_intersect(
 					array_merge($rightIds, array_keys($inheritanceRights)),
-					array_keys($userRights)
+					array_keys($userRights->getList())
 				);
 
 				if (!count($intersectRights)) {

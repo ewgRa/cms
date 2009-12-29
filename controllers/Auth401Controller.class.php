@@ -34,7 +34,7 @@
 			if (
 				$user && $user->getId()
 				&& array_intersect(
-					array_keys($userRights),
+					array_keys($userRights->getList()),
 					$this->requiredRights
 				) == $this->requiredRights
 			)
