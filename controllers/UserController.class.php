@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class UserController extends ChainController
+	final class UserController extends ChainController
 	{
 		/**
 		 * @return ModelAndView
@@ -14,7 +14,7 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$user = User::create();
+			$user = null;
 			
 			if (
 				Session::me()->isStarted()
@@ -23,12 +23,14 @@
 				$user = User::da()->getById($userId);
 			}
 			
-			$request->setAttachedVar(AttachedAliases::USER, $user);
+			if ($user) {
+				$request->setAttachedVar(AttachedAliases::USER, $user);
 			
-			$request->setAttachedVar(
-				AttachedAliases::USER_RIGHTS,
-				UserRights::create()->setUser($user)
-			);
+				$request->setAttachedVar(
+					AttachedAliases::USER_RIGHTS,
+					UserRights::create()->setUser($user)
+				);
+			}
 			
 			return parent::handleRequest($request, $mav);
 		}

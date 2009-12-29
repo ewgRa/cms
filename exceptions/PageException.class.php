@@ -80,7 +80,8 @@
 						$this->message,
 						"Url: {$this->url}"
 					);
-				break;
+
+					break;
 
 				case self::NO_RIGHTS_TO_ACCESS:
 
@@ -93,7 +94,8 @@
 						"No rights: " . serialize($this->noRights),
 						"Page rights: " . serialize($this->pageRights)
 					);
-				break;
+					
+					break;
 			}
 			
 			$resultString[] = '';

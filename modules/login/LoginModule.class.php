@@ -7,8 +7,29 @@
 	*/
 	final class LoginModule extends CmsModule
 	{
+		const SUCCESS_LOGIN		= 1;
+		const WRONG_LOGIN		= 2;
+		const WRONG_PASSWORD	= 3;
+		
 		private $source = null;
 		
+		/**
+		 * @return LoginModule
+		 */
+		public function setSource($source)
+		{
+			$this->source = $source;
+			return $this;
+		}
+		
+		public function getSource()
+		{
+			return $this->source;
+		}
+		
+		/**
+		 * @return LoginModule
+		 */
 		public function importSettings(array $settings = null)
 		{
 			$this->setSource($settings['source']);
@@ -27,37 +48,38 @@
 
 			$requestModel = $this->getRequestModel();
 			
+			$loginResult = self::SUCCESS_LOGIN;
+			
 			try {
 				$user = User::da()->getByLogin($requestModel->get('login'));
 			} catch(NotFoundException $exception) {
-				return self::WRONG_LOGIN;
+				$loginResult = self::WRONG_LOGIN;
 			}
 			
 			if ($user->getPassword() != md5($requestModel->get('password')))
-				return self::WRONG_PASSWORD;
+				$loginResult = self::WRONG_PASSWORD;
 			
-			$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
-			
-			Session::me()->set('userId', $user->getId());
-			Session::me()->save();
+			if ($loginResult == self::SUCCESS_LOGIN) {
+				$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
 
-			return Model::create();
+				$this->getRequest()->setAttachedVar(
+					AttachedAliases::USER_RIGHTS,
+					UserRights::create()->setUser($user)
+				);
+				
+				Session::me()->set('userId', $user->getId());
+				Session::me()->save();
+			}
+
+			return
+				Model::create()->
+					set('user', $user)->
+					set('loginResult', $loginResult);
 		}
 
-		private function getSource()
-		{
-			return $this->source;
-		}
-		
 		/**
-		 * @return LoginModule
+		 * @return Model
 		 */
-		private function setSource($source)
-		{
-			$this->source = $source;
-			return $this;
-		}
-		
 		private function getRequestModel()
 		{
 			$result = Model::create();
@@ -87,9 +109,8 @@
 					break;
 			}
 			
-			foreach ($keys as $key => $varKey) {
+			foreach ($keys as $key => $varKey)
 				$result->set($key, $this->getRequest()->{$function}($varKey));
-			}
 			
 			return $result;
 		}

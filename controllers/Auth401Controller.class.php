@@ -19,16 +19,6 @@
 		) {
 			$user = $request->getAttachedVar(AttachedAliases::USER);
 			
-			if (
-				$user && !$user->getId()
-				&& $request->hasServerVar('PHP_AUTH_USER')
-			) {
-				$user->login(
-					$request->getServerVar('PHP_AUTH_USER'),
-					$request->getServerVar('PHP_AUTH_PW')
-				);
-			}
-
 			$userRights = $request->getAttachedVar(AttachedAliases::USER_RIGHTS);
 			
 			if (

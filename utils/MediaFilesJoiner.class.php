@@ -31,7 +31,7 @@
 			return $this->contentTypes;
 		}
 		
-		public function joinFileNames(array $files)
+		public function joinFiles(array $files)
 		{
 			Assert::isNotNull($this->getContentTypes());
 			

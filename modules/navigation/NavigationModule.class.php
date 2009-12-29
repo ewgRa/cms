@@ -9,15 +9,18 @@
 	{
 		private $categoryAlias = null;
 		
-		public function getCategoryAlias()
-		{
-			return $this->categoryAlias;
-		}
-		
+		/**
+		 * @return NavigationModule
+		 */
 		public function setCategoryAlias($categoryAlias)
 		{
 			$this->categoryAlias = $categoryAlias;
 			return $this;
+		}
+		
+		public function getCategoryAlias()
+		{
+			return $this->categoryAlias;
 		}
 		
 		/**
@@ -55,7 +58,7 @@
 					$navigationData;
 			}
 			
-			$result['baseUrl'] = $this->getBaseUrl()->getPath();
+			$result['baseUrl'] = $this->getBaseUrl();
 			
 			return Model::create()->setData($result);
 		}

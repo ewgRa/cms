@@ -53,7 +53,7 @@
 		{
 			try {
 				$cacheTicket =
-					Cache::me()->getPool('cms')->createTicket(get_class($this));
+					Cache::me()->getPool($this->getPoolAlias())->createTicket(get_class($this));
 
 			} catch(MissingArgumentException $e) {
 				$cacheTicket = null;

@@ -86,15 +86,14 @@
 			return $this;
 		}
 
-		private function checkAccessPage(Page $page, User $user)
+		private function checkAccessPage(Page $page, User $user = null)
 		{
 			$rights = PageRight::da()->getByPage($page);
 			
 			$rightIds = array();
 			
-			foreach ($rights as $right) {
+			foreach ($rights as $right)
 				$rightIds[] = $right->getRightId();
-			}
 			
 			$inheritanceRights = Right::da()->getByInheritanceIds($rightIds);
 			
@@ -114,12 +113,16 @@
 			}
 			
 			if ($rights) {
-				$userRights = $this->request->getAttachedVar(AttachedAliases::USER_RIGHTS);
-			
-				$intersectRights = array_intersect(
-					array_merge($rightIds, array_keys($inheritanceRights)),
-					array_keys($userRights->getList())
-				);
+				$intersectRights = array();
+				
+				if ($user) {
+					$userRights = $this->request->getAttachedVar(AttachedAliases::USER_RIGHTS);
+				
+					$intersectRights = array_intersect(
+						array_merge($rightIds, array_keys($inheritanceRights)),
+						array_keys($userRights->getList())
+					);
+				}
 
 				if (!count($intersectRights)) {
 					$noRights = array_diff(

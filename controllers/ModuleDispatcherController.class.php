@@ -14,19 +14,13 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$moduleDispatcher =
-				ModuleDispatcher::create()->
-					setRequest($request);
+			$moduleDispatcher = ModuleDispatcher::create()->setRequest($request);
 			
 			$page = $request->getAttachedVar(AttachedAliases::PAGE);
 					
-			$moduleDispatcher->loadModules(
-				PageModule::da()->getByPage($page)
-			);
+			$moduleDispatcher->loadModules(PageModule::da()->getByPage($page));
 
-			$mav->getModel()->mergeModel(
-				$moduleDispatcher->getModel()
-			);
+			$mav->getModel()->mergeModel($moduleDispatcher->getModel());
 			
 			return parent::handleRequest($request, $mav);
 		}

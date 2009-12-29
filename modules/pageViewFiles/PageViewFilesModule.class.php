@@ -23,12 +23,14 @@
 			return $this->joinContentTypes;
 		}
 		
+		/**
+		 * @return PageViewFilesModule
+		 */
 		public function importSettings(array $settings = null)
 		{
-			if(
-				isset($settings['joinContentTypes'])
-				&& is_array($settings['joinContentTypes'])
-			) {
+			if(isset($settings['joinContentTypes'])) {
+				Assert::isArray($settings['joinContentTypes']);
+				
 				foreach ($settings['joinContentTypes'] as $contentTypeName) {
 					$contentType = ContentType::createByName($contentTypeName);
 					
@@ -83,7 +85,7 @@
 			$files =
 				MediaFilesJoiner::create()->
 				setContentTypes($this->getJoinContentTypes())->
-				joinFileNames($viewFiles);
+				joinFiles($viewFiles);
 
 			$dir = Dir::create()->setPath(JOIN_FILES_DIR);
 			

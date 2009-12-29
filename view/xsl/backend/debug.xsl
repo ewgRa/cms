@@ -8,22 +8,20 @@
 	<html>
 		<head>
 			<style>
-				h2
-				{
+				h2 {
 					margin: 0;
 				}
 				
-				.table
-				{
+				table td {
+					vertical-align: top;
+					white-space: no-wrap;
 				}
 				
-				.table .name
-				{
+				.table .name {
 					padding-right: 10px;
 				}
 				
-				.table td h3
-				{
+				.table td h3 {
 					padding: 0;
 					margin: 0;
 					padding-top: 4px;
@@ -34,7 +32,8 @@
 				function toggleBlock(id)
 				{
 					var elem = document.getElementById(id);
-					if(elem.style.display == 'none')
+					
+					if (elem.style.display == 'none')
 						elem.style.display = '';
 					else
 						elem.style.display = 'none';
@@ -107,9 +106,9 @@
 						<table>
 							<xsl:for-each select="item[type=2]">
 								<tr>
-									<td valign="top"><xsl:value-of select="position()"/>.</td>
-									<td valign="top"><xsl:value-of select="data"/></td>
-									<td valign="top"><xsl:value-of select="format-number(endTime - startTime, '0.00')"/></td>
+									<td><xsl:value-of select="position()"/>.</td>
+									<td><xsl:value-of select="data"/></td>
+									<td><xsl:value-of select="format-number(endTime - startTime, '0.00')"/></td>
 								</tr>
 							</xsl:for-each>
 						</table>
@@ -126,23 +125,23 @@
 					<xsl:otherwise>
 						<table style="font-size: 80%" width="100%">
 							<tr>
-								<td valign="top" nowrap="true">#</td>
-								<td valign="top" nowrap="true">Prefix</td>
-								<td valign="top" nowrap="true">Key</td>
-								<td valign="top" nowrap="true">Cache instance</td>
-								<td valign="top" nowrap="true">Life time</td>
-								<td valign="top" nowrap="true">Actual time</td>
-								<td valign="top" nowrap="true">Status</td>
+								<td>#</td>
+								<td>Prefix</td>
+								<td>Key</td>
+								<td>Cache instance</td>
+								<td>Life time</td>
+								<td>Actual time</td>
+								<td>Status</td>
 							</tr>
 							<xsl:for-each select="item[type=4]">
 								<tr>
-									<td valign="top" nowrap="true"><xsl:value-of select="position()"/>.</td>
-									<td valign="top" nowrap="true"><xsl:value-of select="data/prefix"/></td>
-									<td valign="top" nowrap="true"><xsl:value-of select="data/key"/></td>
-									<td valign="top" nowrap="true"><xsl:value-of select="data/cacheInstance"/></td>
-									<td valign="top" nowrap="true"><xsl:value-of select="data/expiredTime"/></td>
-									<td valign="top" nowrap="true"><xsl:value-of select="data/actualTime"/></td>
-									<td valign="top" nowrap="true"><xsl:value-of select="data/status"/></td>
+									<td><xsl:value-of select="position()"/>.</td>
+									<td><xsl:value-of select="data/prefix"/></td>
+									<td><xsl:value-of select="data/key"/></td>
+									<td><xsl:value-of select="data/cacheInstance"/></td>
+									<td><xsl:value-of select="data/expiredTime"/></td>
+									<td><xsl:value-of select="data/actualTime"/></td>
+									<td><xsl:value-of select="data/status"/></td>
 								</tr>
 							</xsl:for-each>
 						</table>

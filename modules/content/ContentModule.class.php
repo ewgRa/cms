@@ -9,6 +9,20 @@
 	{
 		private $units = null;
 		
+		/**
+		 * @return ContentModule
+		 */
+		public function setUnits($units)
+		{
+			$this->units = $units;
+			return $this;
+		}
+		
+		public function getUnits()
+		{
+			return $this->units;
+		}
+		
 		public function importSettings(array $settings = null)
 		{
 			Assert::isArray($settings['units']);
@@ -42,20 +56,6 @@
 			return Model::create()->setData($result);
 		}
 
-		public function getUnits()
-		{
-			return $this->units;
-		}
-		
-		/**
-		 * @return ContentModule
-		 */
-		private function setUnits($units)
-		{
-			$this->units = $units;
-			return $this;
-		}
-		
 		/**
 		 * @return StringReplaceImportFilter
 		 */
