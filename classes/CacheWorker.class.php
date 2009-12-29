@@ -5,14 +5,11 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class CacheWorker
+	abstract class CacheWorker
 	{
 		protected $poolAlias = 'cms';
 
-		public static function create()
-		{
-			return new self;
-		}
+		abstract protected function getKey();
 		
 		/**
 		 * @return CacheWorker
@@ -26,22 +23,6 @@
 		public function getPoolAlias()
 		{
 			return $this->poolAlias;
-		}
-		
-		/**
-		 * @return BaseCache
-		 */
-		public function getPool()
-		{
-			return Cache::me()->getPool($this->getPoolAlias());
-		}
-
-		/**
-		 * @return BaseCache
-		 */
-		public function cache()
-		{
-			return $this->getPool();
 		}
 		
 		/**
@@ -62,11 +43,14 @@
 			return $result;
 		}
 		
-		protected function getKey()
+		/**
+		 * @return BaseCache
+		 */
+		protected function cache()
 		{
-			return null;
+			return Cache::me()->getPool($this->getPoolAlias());
 		}
-		
+
 		protected function getAlias()
 		{
 			return get_class($this);

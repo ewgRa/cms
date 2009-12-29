@@ -1,7 +1,11 @@
 <?php
 	/* $Id$ */
 
-	class PageViewFilesCacheWorker extends ModuleCacheWorker
+	/**
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	*/
+	final class PageViewFilesCacheWorker extends ModuleCacheWorker
 	{
 		/**
 		 * @return PageViewFilesCacheWorker
@@ -10,18 +14,10 @@
 		{
 			return new self;
 		}
-
-		protected function getAlias()
-		{
-			return __CLASS__;
-		}
 		
 		protected function getKey()
 		{
-			return array(
-				$this->getModule()->getRequest()->
-					getAttachedVar(AttachedAliases::PAGE)->getId()
-			);
+			return array($this->getPage()->getId());
 		}
 		
 	}

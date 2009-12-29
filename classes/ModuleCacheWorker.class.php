@@ -31,10 +31,7 @@
 		 */
 		protected function getPage()
 		{
-			return
-				$this->getModule()->
-					getRequest()->
-					getAttachedVar(AttachedAliases::PAGE);
+			return $this->getModule()->getPage();
 		}
 
 		/**
@@ -42,10 +39,7 @@
 		 */
 		protected function getLocalizer()
 		{
-			return
-				$this->getModule()->
-					getRequest()->
-					getAttachedVar(AttachedAliases::LOCALIZER);
+			return $this->getModule()->getLocalizer();
 		}
 
 		/**
