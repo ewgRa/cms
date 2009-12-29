@@ -43,7 +43,7 @@
 			$contentDataList =
 				ContentData::da()->getList(
 					$result['contentList'],
-					$this->getLocalizer()->getRequestLanguage()
+					array($this->getLocalizer()->getRequestLanguage())
 				);
 			
 			foreach ($contentDataList as $contentData) {
