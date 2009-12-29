@@ -15,23 +15,6 @@
 			return parent::getInstance(__CLASS__);
 		}
 				
-		public function getRights($pageId)
-		{
-			$dbQuery = '
-				SELECT
-					t1.right_id, t2.path as redirect_page, t3.alias as right_alias
-				FROM ' . $this->db()->getTable('PageRight_ref') . ' t1
-				LEFT JOIN ' . $this->db()->getTable('Page') . ' t2
-					ON( t1.redirect_page_id = t2.id )
-				LEFT JOIN ' . $this->db()->getTable('Right') . ' t3
-					ON( t3.id = t1.right_id )
-				WHERE t1.page_id = ?';
-
-			$dbResult = $this->db()->query($dbQuery, array($pageId));
-
-			return $dbResult->fetchList();
-		}
-		
 		public function getPage($pageId)
 		{
 			$dbQuery = "

@@ -124,20 +124,23 @@
 			return $this->rights;
 		}
 
+		public function getRightIds()
+		{
+			$result = array();
+			
+			foreach ($this->getRights() as $pageRight) {
+				$result[] = $pageRight->getRightId();
+			}
+			
+			return $result;
+		}
+		
 		/**
 		 * @return Page
 		 */
 		public function loadRights()
 		{
-			$this->rights = array();
-
-			foreach($this->da()->getRights($this->getId()) as $right)
-			{
-				$this->rights[$right['right_id']] = array(
-					'redirectPage' => $right['redirect_page'],
-					'rightAlias' => $right['right_alias']
-				);
-			}
+			$this->rights = PageRight::da()->getByPage($this);
 
 			return $this;
 		}
@@ -174,7 +177,7 @@
 			if($this->getRights())
 			{
 				$intersectRights = array_intersect(
-					array_keys($this->getRights()), array_keys($user->getRights())
+					$this->getRightIds(), array_keys($user->getRights())
 				);
 
 				if(!count($intersectRights))

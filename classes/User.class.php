@@ -11,11 +11,6 @@
 		const WRONG_LOGIN		= 2;
 		const SUCCESS_LOGIN		= 3;
 		
-		/**
-		 * @var UserDA
-		 */
-		private $da = null;
-		
 		private $id		= null;
 		private $login	= null;
 		private $rights	= array();
@@ -34,10 +29,7 @@
 		 */
 		public function da()
 		{
-			if(!$this->da)
-				$this->da = UserDA::create();
-				
-			return $this->da;
+			return UserDA::me();
 		}
 		
 		public function getId()
@@ -156,10 +148,10 @@
 		// FIXME: move this method to anywhere :)
 		public function onSessionStarted()
 		{
-			$user = Session::me()->get('user');
-
-			if($user)
+			if(Session::me()->has('user'))
 			{
+				$user = Session::me()->get('user');
+
 				$this->
 					setId($user['id'])->
 					setLogin($user['login'])->

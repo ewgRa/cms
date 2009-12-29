@@ -8,7 +8,7 @@
 	*/
 	final class SiteDA extends CmsDatabaseRequester
 	{
-		private $tableAlias = 'Site';
+		protected $tableAlias = 'Site';
 		
 		/**
 		 * @return SiteDA

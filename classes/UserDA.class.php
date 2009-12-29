@@ -11,18 +11,18 @@
 		/**
 		 * @return UserDA
 		 */
-		public static function create()
+		public static function me()
 		{
-			return new self;
+			return parent::getInstance(__CLASS__);
 		}
-		
+				
 		public function checkLogin($login, $password)
 		{
 			$result = null;
 			
 			$dbQuery = '
 				SELECT *, password = MD5( ? ) as verify_password
-					FROM ' . $this->db()->getTable('Users') . '
+					FROM ' . $this->db()->getTable('User') . '
 				WHERE login = ?
 			';
 
@@ -39,8 +39,8 @@
 			$result = null;
 			
 			$dbQuery = '
-				SELECT t1.* FROM ' . $this->db()->getTable('Rights') . ' t1
-				INNER JOIN ' . $this->db()->getTable('UsersRights_ref') . ' t2
+				SELECT t1.* FROM ' . $this->db()->getTable('Right') . ' t1
+				INNER JOIN ' . $this->db()->getTable('UserRight_ref') . ' t2
 					ON ( t1.id = t2.right_id AND t2.user_id = ? )
 			';
 
@@ -57,8 +57,8 @@
 			$result = null;
 			
 			$dbQuery = '
-				SELECT t1.* FROM ' . $this->db()->getTable('Rights') . ' t1
-				INNER JOIN ' . $this->db()->getTable('Rights_inheritance') . ' t2
+				SELECT t1.* FROM ' . $this->db()->getTable('Right') . ' t1
+				INNER JOIN ' . $this->db()->getTable('Right_inheritance') . ' t2
 					ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )
 			';
 

@@ -7,9 +7,9 @@
 	*/
 	final class AttachedAliases
 	{
-		const PAGE 		= 'page';
-		const USER 		= 'user';
-		const LOCALIZER = 'localizer';
-		const SITE 		= 'site';
+		const PAGE 			= 'page';
+		const USER 			= 'user';
+		const LOCALIZER		= 'localizer';
+		const SITE 			= 'site';
 	}
 ?>
