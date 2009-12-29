@@ -26,7 +26,10 @@
 			
 			return $this->getListCachedByQuery($dbQuery, array($page->getId()));
 		}
-		
+
+		/**
+		 * @return PageModule
+		 */
 		protected function build(array $array) {
 			$settings =
 				$array['settings']

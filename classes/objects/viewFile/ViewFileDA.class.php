@@ -49,6 +49,9 @@
 			return $this->getListCachedByQuery($dbQuery, array($ids));
 		}
 
+		/**
+		 * @return ViewFile
+		 */
 		public function getById($id)
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
@@ -56,6 +59,9 @@
 			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 
+		/**
+		 * @return ViewFile
+		 */
 		protected function build(array $array)
 		{
 			return

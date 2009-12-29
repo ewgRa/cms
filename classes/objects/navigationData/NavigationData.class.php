@@ -7,17 +7,7 @@
 	*/
 	final class NavigationData
 	{
-		/**
-		 * @var Navigation
-		 */
-		private $navigation 	= null;
-		
 		private $navigationId	= null;
-		
-		/**
-		 * @var Language
-		 */
-		private $language		= null;
 		
 		private $languageId		= null;
 		
@@ -41,31 +31,10 @@
 		
 		public function getId()
 		{
-			return $this->navigationId.'_'.$this->languageId;
-		}
-		
-		/**
-		 * @return NavigationData
-		 */
-		public function setNavigation(Navigation $navigation)
-		{
-			$this->navigation = $navigation;
-			$this->navigationId = $navigation->getId();
-			return $this;
-		}
-		
-		/**
-		 * @return Navigation
-		 */
-		public function getNavigation()
-		{
-			if (!$this->navigation && $this->getNavigationId()) {
-				$this->setNavigation(
-					Navigation::da()->getById($this->getNavigationId())
-				);
-			}
+			Assert::isNotNull($this->getNavigationId());
+			Assert::isNotNull($this->getLanguageId());
 			
-			return $this->navigation;
+			return $this->getNavigationId().'_'.$this->getLanguageId();
 		}
 		
 		/**
@@ -73,7 +42,6 @@
 		 */
 		public function setNavigationId($navigationId)
 		{
-			$this->navigation = null;
 			$this->navigationId = $navigationId;
 			
 			return $this;
@@ -85,27 +53,11 @@
 		}
 		
 		/**
-		 * @return NavigationData
+		 * @return Navigation
 		 */
-		public function setLanguage(Language $language)
+		public function getNavigation()
 		{
-			$this->language = $language;
-			$this->languageId = $language->getId();
-			return $this;
-		}
-		
-		/**
-		 * @return Language
-		 */
-		public function getLanguage()
-		{
-			if (!$this->language && $this->getLanguageId()) {
-				$this->setLanguage(
-					Language::da()->getById($this->getLanguageId())
-				);
-			}
-			
-			return $this->language;
+			return Navigation::da()->getById($this->getNavigationId());
 		}
 		
 		/**
@@ -113,7 +65,6 @@
 		 */
 		public function setLanguageId($languageId)
 		{
-			$this->language = null;
 			$this->languageId = $languageId;
 			
 			return $this;
@@ -122,6 +73,14 @@
 		public function getLanguageId()
 		{
 			return $this->languageId;
+		}
+		
+		/**
+		 * @return Language
+		 */
+		public function getLanguage()
+		{
+			return Language::da()->getById($this->getLanguageId());
 		}
 		
 		/**

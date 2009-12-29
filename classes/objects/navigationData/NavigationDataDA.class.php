@@ -34,21 +34,9 @@
 		}
 		
 		public function getList(
-			$navigationList = null,
-			$languageList = null
+			array $navigationList = null,
+			array $languageList = null
 		) {
-			if (!is_array($navigationList) && $navigationList) {
-				$navigationList = array(
-					$navigationList->getId() => $navigationList
-				);
-			}
-			
-			if (!is_array($languageList) && $languageList) {
-				$languageList = array(
-					$languageList->getId() => $languageList
-				);
-			}
-			
 			$dbQuery = "SELECT * FROM " . $this->getTable();
 
 			$queryParts = array('1');
@@ -56,13 +44,11 @@
 			
 			if ($navigationList) {
 				$params[] = array_keys($navigationList);
-				
 				$queryParts[] = 'navigation_id IN(?)';
 			}
 			
 			if ($languageList) {
 				$params[] = array_keys($languageList);
-				
 				$queryParts[] = 'language_id IN(?)';
 			}
 			

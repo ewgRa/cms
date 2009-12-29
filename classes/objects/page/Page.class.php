@@ -11,12 +11,6 @@
 		private $path		= null;
 		private $preg		= null;
 		private $layoutId	= null;
-
-		/**
-		 * @var Layout
-		 */
-		private $layout		= null;
-		
 		private $status		= null;
 		private $modified	= null;
 		
@@ -92,7 +86,6 @@
 		public function setLayoutId($fileId)
 		{
 			$this->layoutId = $fileId;
-			$this->layout = null;
 			return $this;
 		}
 
@@ -102,27 +95,11 @@
 		}
 		
 		/**
-		 * @return Page
-		 */
-		public function setLayout(Layout $layout)
-		{
-			$this->layoutId = $layout->getId();
-			$this->layout = $layout;
-			return $this;
-		}
-
-		/**
 		 * @return Layout
 		 */
 		public function getLayout()
 		{
-			if (!$this->layout && $this->getLayoutId()) {
-				$this->setLayout(
-					Layout::da()->getById($this->getLayoutId())
-				);
-			}
-			
-			return $this->layout;
+			return Layout::da()->getById($this->getLayoutId());
 		}
 		
 		/**

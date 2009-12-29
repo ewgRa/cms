@@ -82,6 +82,11 @@
 			return $this;
 		}
 		
+		public function getRole()
+		{
+			return $this->role;
+		}
+		
 		public function isRole()
 		{
 			return ($this->role === true);

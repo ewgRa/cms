@@ -17,6 +17,9 @@
 			return parent::getInstance(__CLASS__);
 		}
 				
+		/**
+		 * @return User
+		 */
 		public function getByLogin($login)
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE login = ?';
@@ -24,6 +27,9 @@
 			return $this->getCachedByQuery($dbQuery, array($login));
 		}
 
+		/**
+		 * @return User
+		 */
 		public function getById($id)
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE id = ?';
@@ -31,6 +37,9 @@
 			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 		
+		/**
+		 * @return User
+		 */
 		protected function build(array $array) {
 			return
 				User::create()->

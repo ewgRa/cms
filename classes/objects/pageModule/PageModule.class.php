@@ -8,24 +8,12 @@
 	final class PageModule
 	{
 		private $pageId = null;
-		
-		private $page = null;
-		
 		private $moduleId = null;
-		
-		private $module = null;
-		
 		private $section = null;
-		
 		private $position = null;
-		
 		private $priority = null;
-		
 		private $settings = null;
-		
 		private $viewFileId = null;
-		
-		private $viewFile = null;
 		
 		/**
 		 * @return PageModule
@@ -45,6 +33,11 @@
 
 		public function getId()
 		{
+			Assert::isNotNull($this->getPageId());
+			Assert::isNotNull($this->getModuleId());
+			Assert::isNotNull($this->getSection());
+			Assert::isNotNull($this->getPosition());
+			
 			return
 				$this->getPageId().'_'.$this->getModuleId()
 				.'_'.$this->getSection().'_'.$this->getPosition();
@@ -65,21 +58,11 @@
 		}
 
 		/**
-		 * @return PageModule
-		 */
-		public function setPage(Page $page)
-		{
-			$this->page 	= $mage;
-			$this->pageId	= $page->getId();
-			return $this;
-		}
-		
-		/**
 		 * @return Page
 		 */
 		public function getPage()
 		{
-			return $this->page;
+			return Page::da()->getById($this->getPageId);
 		}
 		
 		/**
@@ -88,7 +71,6 @@
 		public function setModuleId($moduleId)
 		{
 			$this->moduleId = $moduleId;
-			$this->module	= null;
 			return $this;
 		}
 		
@@ -98,27 +80,11 @@
 		}
 
 		/**
-		 * @return PageModule
-		 */
-		public function setModule(Module $module)
-		{
-			$this->module 	= $module;
-			$this->moduleId = $module->getId();
-			return $this;
-		}
-		
-		/**
 		 * @return Module
 		 */
 		public function getModule()
 		{
-			if (!$this->module && $this->getModuleId()) {
-				$this->setModule(
-					Module::da()->getById($this->getModuleId())
-				);
-			}
-			
-			return $this->module;
+			return Module::da()->getById($this->getModuleId());
 		}
 
 		/**
@@ -193,27 +159,11 @@
 		}
 
 		/**
-		 * @return PageModule
-		 */
-		public function setViewFile(ViewFile $viewFile)
-		{
-			$this->viewFile = $viewFile;
-			$this->viewFileId = $viewFile->getId();
-			return $this;
-		}
-		
-		/**
 		 * @return ViewFile
 		 */
 		public function getViewFile()
 		{
-			if (!$this->viewFile && $this->getViewFileId()) {
-				$this->setViewFile(
-					ViewFile::da()->getById($this->getViewFileId())
-				);
-			}
-			
-			return $this->viewFile;
+			return ViewFile::da()->getById($this->getViewFileId());
 		}
 	}
 ?>

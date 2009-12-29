@@ -7,12 +7,12 @@
 	*/
 	final class Content
 	{
-		private $id			= null;
+		private $id	= null;
 		
 		/**
 		 * @var ContentStatus
 		 */
-		private $status 	= null;
+		private $status = null;
 		
 		/**
 		 * @return Content

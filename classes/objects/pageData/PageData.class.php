@@ -7,20 +7,8 @@
 	*/
 	final class PageData
 	{
-		/**
-		 * @var Page
-		 */
-		private $page 	= null;
-		
 		private $pageId	= null;
-		
-		/**
-		 * @var Language
-		 */
-		private $language		= null;
-		
 		private $languageId		= null;
-		
 		private $title			= null;
 		private $description	= null;
 		private $keywords		= null;
@@ -43,31 +31,10 @@
 		
 		public function getId()
 		{
-			return $this->pageId.'_'.$this->languageId;
-		}
-		
-		/**
-		 * @return PageData
-		 */
-		public function setPage(Page $page)
-		{
-			$this->page = $page;
-			$this->pageId = $page->getId();
-			return $this;
-		}
-		
-		/**
-		 * @return Page
-		 */
-		public function getPage()
-		{
-			if (!$this->page && $this->getPageId()) {
-				$this->setPage(
-					Page::da()->getById($this->getPageId())
-				);
-			}
+			Assert::isNotNull($this->getPageId());
+			Assert::isNotNull($this->getLanguageId());
 			
-			return $this->page;
+			return $this->getPageId().'_'.$this->getLanguageId();
 		}
 		
 		/**
@@ -75,7 +42,6 @@
 		 */
 		public function setPageId($pageId)
 		{
-			$this->page = null;
 			$this->pageId = $pageId;
 			
 			return $this;
@@ -87,27 +53,11 @@
 		}
 		
 		/**
-		 * @return PageData
+		 * @return Page
 		 */
-		public function setLanguage(Language $language)
+		public function getPage()
 		{
-			$this->language = $language;
-			$this->languageId = $language->getId();
-			return $this;
-		}
-		
-		/**
-		 * @return Language
-		 */
-		public function getLanguage()
-		{
-			if (!$this->language && $this->getLanguageId()) {
-				$this->setLanguage(
-					Language::da()->getById($this->getLanguageId())
-				);
-			}
-			
-			return $this->language;
+			return Page::da()->getById($this->getPageId());
 		}
 		
 		/**
@@ -124,6 +74,14 @@
 		public function getLanguageId()
 		{
 			return $this->languageId;
+		}
+		
+		/**
+		 * @return Language
+		 */
+		public function getLanguage()
+		{
+			return Language::da()->getById($this->getLanguageId());
 		}
 		
 		/**

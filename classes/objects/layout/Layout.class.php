@@ -12,11 +12,6 @@
 		private $viewFileId	= null;
 
 		/**
-		 * @var ViewFile
-		 */
-		private $viewFile	= null;
-		
-		/**
 		 * @return Layout
 		 */
 		public static function create()
@@ -47,35 +42,10 @@
 		}
 		
 		/**
-		 * @return ViewFile
-		 */
-		public function setViewFile(ViewFile $viewFile)
-		{
-			$this->viewFile		= $viewFile;
-			$this->viewFileId	= $viewFile->getId();
-			return $this;
-		}
-		
-		/**
-		 * @return ViewFile
-		 */
-		public function getViewFile()
-		{
-			if (!$this->viewFile && $this->getViewFileId()) {
-				$this->setViewFile(
-					ViewFile::da()->getById($this->getViewFileId())
-				);
-			}
-			
-			return $this->viewFile;
-		}
-		
-		/**
 		 * @return Layout
 		 */
 		public function setViewFileId($viewFileId)
 		{
-			$this->viewFile = null;
 			$this->viewFileId = $viewFileId;
 			
 			return $this;
@@ -84,6 +54,14 @@
 		public function getViewFileId()
 		{
 			return $this->viewFileId;
+		}
+
+		/**
+		 * @return ViewFile
+		 */
+		public function getViewFile()
+		{
+			return ViewFile::da()->getById($this->getViewFileId());
 		}
 	}
 ?>

@@ -34,21 +34,9 @@
 		}
 		
 		public function getList(
-			$pageList = null,
-			$languageList = null
+			array $pageList = null,
+			array $languageList = null
 		) {
-			if (!is_array($pageList) && $pageList) {
-				$pageList = array(
-					$pageList->getId() => $pageList
-				);
-			}
-			
-			if (!is_array($languageList) && $languageList) {
-				$languageList = array(
-					$languageList->getId() => $languageList
-				);
-			}
-			
 			$dbQuery = "SELECT * FROM " . $this->getTable();
 
 			$queryParts = array('1');
@@ -56,13 +44,11 @@
 			
 			if ($pageList) {
 				$params[] = array_keys($pageList);
-				
 				$queryParts[] = 'page_id IN(?)';
 			}
 			
 			if ($languageList) {
 				$params[] = array_keys($languageList);
-				
 				$queryParts[] = 'language_id IN(?)';
 			}
 			
@@ -74,6 +60,9 @@
 			);
 		}
 		
+		/**
+		 * @return PageData
+		 */
 		protected function build(array $array) {
 			return
 				PageData::create()->

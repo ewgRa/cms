@@ -24,6 +24,9 @@
 			return $this->getListCachedByQuery($dbQuery, array($user->getId()));
 		}
 		
+		/**
+		 * @return UserRight
+		 */
 		protected function build(array $array) {
 			return
 				UserRight::create()->

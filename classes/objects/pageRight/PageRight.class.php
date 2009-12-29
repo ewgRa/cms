@@ -11,11 +11,6 @@
 		
 		private $rightId = null;
 		
-		/**
-		 * @var Right
-		 */
-		private $right = null;
-
 		private $redirectPageId = null;
 				
 		/**
@@ -36,6 +31,9 @@
 
 		public function getId()
 		{
+			Assert::isNotNull($this->getPageId());
+			Assert::isNotNull($this->getRightId());
+
 			return $this->getPageId().'_'.$this->getRightId();
 		}
 		
@@ -52,6 +50,14 @@
 		{
 			return $this->pageId;
 		}
+		
+		/**
+		 * @return Page
+		 */
+		public function getPage()
+		{
+			return Page::da()->getById($this->getPageId());
+		}
 
 		/**
 		 * @return PageRight
@@ -59,7 +65,6 @@
 		public function setRightId($rightId)
 		{
 			$this->rightId 	= $rightId;
-			$this->right 	= null;
 			return $this;
 		}
 		
@@ -69,27 +74,11 @@
 		}
 
 		/**
-		 * @return PageRight
-		 */
-		public function setRight(Right $right)
-		{
-			$this->right 	= $right;
-			$this->rightId 	= $right->getId();
-			return $this;
-		}
-		
-		/**
 		 * @return Right
 		 */
 		public function getRight()
 		{
-			if (!$this->right && $this->getRightId()) {
-				$this->setRight(
-					Right::da()->getById($this->getRightId())
-				);
-			}
-			
-			return $this->right;
+			return Right::da()->getById($this->getRightId());
 		}
 
 		/**
@@ -104,6 +93,14 @@
 		public function getRedirectPageId()
 		{
 			return $this->redirectPageId;
+		}
+
+		/**
+		 * @return Page
+		 */
+		public function getRedirectPage()
+		{
+			return Page::da()->getById($this->getRedirectPageId());
 		}
 	}
 ?>

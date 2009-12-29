@@ -27,28 +27,16 @@
 				WHERE content_id = ? AND language_id = ?
 			";
 			
-			return $this->getListCachedByQuery(
+			return $this->getCachedByQuery(
 				$dbQuery,
 				array($content->getId(), $language->getId())
 			);
 		}
 		
 		public function getList(
-			$contentList = null,
-			$languageList = null
+			array $contentList = null,
+			array $languageList = null
 		) {
-			if (!is_array($contentList) && $contentList) {
-				$contentList = array(
-					$contentList->getId() => $contentList
-				);
-			}
-			
-			if (!is_array($languageList) && $languageList) {
-				$languageList = array(
-					$languageList->getId() => $languageList
-				);
-			}
-			
 			$dbQuery = "SELECT * FROM " . $this->getTable();
 
 			$queryParts = array('1');
@@ -56,13 +44,11 @@
 			
 			if ($contentList) {
 				$params[] = array_keys($contentList);
-				
 				$queryParts[] = 'content_id IN(?)';
 			}
 			
 			if ($languageList) {
 				$params[] = array_keys($languageList);
-				
 				$queryParts[] = 'language_id IN(?)';
 			}
 			

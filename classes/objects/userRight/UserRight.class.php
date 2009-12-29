@@ -12,11 +12,6 @@
 		private $rightId = null;
 		
 		/**
-		 * @var Right
-		 */
-		private $right = null;
-
-		/**
 		 * @return UserRight
 		 */
 		public static function create()
@@ -57,7 +52,6 @@
 		public function setRightId($rightId)
 		{
 			$this->rightId 	= $rightId;
-			$this->right 	= null;
 			return $this;
 		}
 		
@@ -67,27 +61,11 @@
 		}
 
 		/**
-		 * @return UserRight
-		 */
-		public function setRight(Right $right)
-		{
-			$this->right 	= $right;
-			$this->rightId 	= $right->getId();
-			return $this;
-		}
-		
-		/**
 		 * @return Right
 		 */
 		public function getRight()
 		{
-			if (!$this->right && $this->getRightId()) {
-				$this->setRight(
-					Right::da()->getById($this->getRightId())
-				);
-			}
-			
-			return $this->right;
+			return Right::da()->getById($this->getRightId());
 		}
 	}
 ?>

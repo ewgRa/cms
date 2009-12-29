@@ -9,11 +9,6 @@
 	{
 		private $id			= null;
 		
-		/**
-		 * @var Category
-		 */
-		private $category 	= null;
-		
 		private $categoryId = null;
 		
 		/**
@@ -54,33 +49,8 @@
 		/**
 		 * @return Navigation
 		 */
-		public function setCategory(Category $category)
-		{
-			$this->category 	= $category;
-			$this->categoryId 	= $category->getId();
-			return $this;
-		}
-		
-		/**
-		 * @return Category
-		 */
-		public function getCategory()
-		{
-			if (!$this->category && $this->getCategoryId()) {
-				$this->setCategory(
-					Category::da()->getById($this->getCategoryId())
-				);
-			}
-
-			return $this->category;
-		}
-		
-		/**
-		 * @return Navigation
-		 */
 		public function setCategoryId($categoryId)
 		{
-			$this->category 	= null;
 			$this->categoryId 	= $categoryId;
 			return $this;
 		}
@@ -88,6 +58,14 @@
 		public function getCategoryId()
 		{
 			return $this->categoryId;
+		}
+		
+		/**
+		 * @return Category
+		 */
+		public function getCategory()
+		{
+			return Category::da()->getById($this->getCategoryId());
 		}
 		
 		/**

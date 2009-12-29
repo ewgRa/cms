@@ -23,7 +23,10 @@
 			
 			return $this->getListCachedByQuery($dbQuery, array($page->getId()));
 		}
-		
+
+		/**
+		 * @return PageRight
+		 */
 		protected function build(array $array) {
 			return
 				PageRight::create()->

@@ -24,6 +24,9 @@
 			return $this->getListCachedByQuery($dbQuery);
 		}
 
+		/**
+		 * @return Page
+		 */
 		public function getById($id)
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE status = \'normal\' AND id=?';
@@ -31,6 +34,9 @@
 			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 
+		/**
+		 * @return Page
+		 */
 		protected function build(array $array) {
 			return
 				Page::create()->

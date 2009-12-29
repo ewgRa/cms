@@ -4,7 +4,6 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * // FIXME: tested?
 	*/
 	final class SiteDA extends CmsDatabaseRequester
 	{
@@ -17,7 +16,10 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-				
+
+		/**
+		 * @return Site
+		 */
 		public function getByAlias($alias)
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE alias = ?';
@@ -25,6 +27,9 @@
 			return $this->getCachedByQuery($dbQuery, array($alias));
 		}
 		
+		/**
+		 * @return Site
+		 */
 		protected function build(array $array)
 		{
 			return
