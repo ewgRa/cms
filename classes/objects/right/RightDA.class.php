@@ -58,7 +58,7 @@
 					setId($array['id'])->
 					setAlias($array['alias'])->
 					setName($array['name'])->
-					setRole($array['role']);
+					setRole($array['role'] == 1);
 		}
 	}
 ?>

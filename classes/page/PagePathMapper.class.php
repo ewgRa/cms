@@ -7,8 +7,8 @@
 	*/
 	final class PagePathMapper
 	{
-		const NON_PREG	= 'no';
-		const PREG		= 'yes';
+		const PREG		= true;
+		const NON_PREG	= false;
 
 		private $map = null;
 
@@ -31,7 +31,7 @@
 			);
 			
 			foreach (Page::da()->getList() as $page)
-				$this->map[$page->getPreg()][$page->getId()] = $page;
+				$this->map[$page->isPreg()][$page->getId()] = $page;
 			
 			return $this;
 		}

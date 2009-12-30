@@ -83,15 +83,20 @@
 		/**
 		 * @return ViewFile
 		 */
-		public function setJoinable($joinable)
+		public function setJoinable($joinable = true)
 		{
-			$this->joinable = $joinable;
+			$this->joinable = ($joinable === true);
 			return $this;
+		}
+
+		public function getJoinable()
+		{
+			return $this->joinable;
 		}
 		
 		public function isJoinable()
 		{
-			return $this->joinable;
+			return ($this->joinable === true);
 		}
 	}
 ?>

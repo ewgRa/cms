@@ -42,7 +42,7 @@
 				Page::create()->
 					setId($array['id'])->
 					setPath($array['path'])->
-					setPreg($array['preg'])->
+					setPreg($array['preg'] == 1)->
 					setLayoutId($array['layout_id'])->
 					setStatus($array['status'])->
 					setModified($array['modified']);

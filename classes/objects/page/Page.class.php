@@ -62,9 +62,9 @@
 		/**
 		 * @return Page
 		 */
-		public function setPreg($preg)
+		public function setPreg($preg = true)
 		{
-			$this->preg = $preg;
+			$this->preg = ($preg === true);
 			return $this;
 		}
 
@@ -78,7 +78,7 @@
 		
 		public function isPreg()
 		{
-			return $this->preg == true;
+			return ($this->preg === true);
 		}
 		
 		/**

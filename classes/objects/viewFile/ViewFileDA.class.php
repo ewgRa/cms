@@ -71,7 +71,7 @@
 						ContentType::createByName($array['content_type'])
 					)->
 					setPath(Config::me()->replaceVariables($array['path']))->
-					setJoinable($array['joinable']);
+					setJoinable($array['joinable'] == 1);
 		}
 	}
 ?>
