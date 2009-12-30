@@ -44,7 +44,7 @@
 					setPath($array['path'])->
 					setPreg($array['preg'] == 1)->
 					setLayoutId($array['layout_id'])->
-					setStatus($array['status'])->
+					setStatus(PageStatus::create($array['status']))->
 					setModified($array['modified']);
 		}
 	}

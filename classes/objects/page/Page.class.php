@@ -11,7 +11,12 @@
 		private $path		= null;
 		private $preg		= null;
 		private $layoutId	= null;
+		
+		/**
+		 * @var PageStatus
+		 */
 		private $status		= null;
+		
 		private $modified	= null;
 		
 		/**
@@ -106,12 +111,15 @@
 		/**
 		 * @return Page
 		 */
-		public function setStatus($status)
+		public function setStatus(PageStatus $status)
 		{
 			$this->status = $status;
 			return $this;
 		}
 
+		/**
+		 * @return PageStatus
+		 */
 		public function getStatus()
 		{
 			return $this->status;
