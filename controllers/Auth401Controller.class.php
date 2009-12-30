@@ -7,7 +7,6 @@
 	*/
 	final class Auth401Controller extends ChainController
 	{
-		// FIXME: remove direct id
 		private $requiredRights = array('root');
 		
 		/**
