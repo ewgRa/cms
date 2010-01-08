@@ -33,6 +33,14 @@
 			return ContentDataDA::me();
 		}
 		
+		public function getId()
+		{
+			Assert::isNotNull($this->getContentId());
+			Assert::isNotNull($this->getLanguageId());
+			
+			return $this->getContentId().'_'.$this->getLanguageId();
+		}
+		
 		/**
 		 * @return AutoContentData
 		 */

@@ -29,7 +29,14 @@
 		{
 			return <xsl:value-of select="name()" />DA::me();
 		}
-		<xsl:for-each select="*">
+		<xsl:if test="count(*[name()='id']) = 0 and count(*[@id]) &gt; 0">
+		public function getId()
+		{<xsl:for-each select="*[@id]">
+			Assert::isNotNull($this->get<xsl:value-of select="@upperName" />Id());</xsl:for-each>
+			
+			return <xsl:for-each select="*[@id]">$this->get<xsl:value-of select="@upperName" />Id()<xsl:if test="position() != last()">.'_'.</xsl:if></xsl:for-each>;
+		}
+		</xsl:if><xsl:for-each select="*">
 		/**
 		 * @return Auto<xsl:value-of select="name(..)" />
 		 */

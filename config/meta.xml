@@ -14,8 +14,8 @@
 	</Content>
 	
 	<ContentData>
-		<content type="Content" relation="OneToOne"></content>
-		<language type="Language" relation="OneToOne"></language>
+		<content type="Content" relation="OneToOne" id="true"></content>
+		<language type="Language" relation="OneToOne" id="true"></language>
 		<text></text>
 	</ContentData>
 </meta>
