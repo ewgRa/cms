@@ -7,12 +7,12 @@
 	*/
 	final class ContentStatus extends Enumeration
 	{
-		const NORMAL	= 'normal';
-		const DELETED	= 'deleted';
+		const NORMAL	= 1;
+		const DELETED	= 2;
 		
 		protected $names = array(
-			self::NORMAL 	=> self::NORMAL,
-			self::DELETED 	=> self::DELETED
+			self::NORMAL 	=> 'normal',
+			self::DELETED 	=> 'deleted'
 		);
 		
 		/**

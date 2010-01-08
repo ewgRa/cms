@@ -19,7 +19,7 @@
 		{
 			$dbQuery = "
 				SELECT * FROM ".$this->getTable()."
-				WHERE id IN (?) AND status = 'normal'
+				WHERE id IN (?) AND status = ".ContentStatus::NORMAL."
 			";
 			
 			return $this->getListCachedByQuery($dbQuery, array($ids));

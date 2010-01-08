@@ -17,7 +17,9 @@
 
 		public function getList()
 		{
-			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE status = \'normal\'';
+			$dbQuery =
+				'SELECT * FROM '.$this->getTable()
+				.' WHERE status = '.PageStatus::NORMAL;
 
 			return $this->getListCachedByQuery($dbQuery);
 		}
@@ -27,7 +29,9 @@
 		 */
 		public function getById($id)
 		{
-			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE status = \'normal\' AND id=?';
+			$dbQuery =
+				'SELECT * FROM '.$this->getTable()
+				.' WHERE status = '.PageStatus::NORMAL.' AND id=?';
 
 			return $this->getCachedByQuery($dbQuery, array($id));
 		}
