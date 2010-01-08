@@ -29,7 +29,7 @@
 		
 		public function getId()
 		{
-			return $this->getPageId().'_'.$this->getLanguageId();
+			return $this->getPageId().'_'.$this->getPageId().'_'.$this->getLanguageId().'_'.$this->getLanguageId();
 		}
 		
 		/**

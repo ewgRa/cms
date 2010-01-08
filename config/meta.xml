@@ -4,80 +4,116 @@
 	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
 >
 	<Category>
-		<id></id>
-		<alias></alias>
+		<id />
+		<alias />
 	</Category>
 	
 	<Content>
-		<id></id>
-		<status type="ContentStatus"></status>
+		<id />
+		<status type="ContentStatus" />
 	</Content>
 	
 	<ContentData>
-		<content type="Content" relation="OneToOne" id="true"></content>
-		<language type="Language" relation="OneToOne" id="true"></language>
-		<text></text>
+		<content type="Content" relation="OneToOne" id="true" />
+		<language type="Language" relation="OneToOne" id="true" />
+		<text />
 	</ContentData>
 	
 	<DebugData>
-		<id></id>
-		<session null="true"></session>
-		<data type="array"></data>
-		<date></date>
+		<id />
+		<session null="true" />
+		<data type="array" />
+		<date />
 	</DebugData>
 	
 	<Language>
-		<id></id>
-		<abbr></abbr>
+		<id />
+		<abbr />
 	</Language>
 	
 	<Layout>
-		<id></id>
-		<viewFile type="ViewFile" relation="OneToOne"></viewFile>
+		<id />
+		<viewFile type="ViewFile" relation="OneToOne" />
 	</Layout>
 	
 	<Module>
-		<id></id>
-		<name></name>
-		<settings type="array" null="true"></settings>
+		<id />
+		<name />
+		<settings type="array" null="true" />
 	</Module>
 	
 	<Navigation>
-		<id></id>
-		<category type="Category" relation="OneToOne"></category>
-		<uri></uri>
+		<id />
+		<category type="Category" relation="OneToOne" />
+		<uri />
 	</Navigation>
 	
 	<NavigationData>
-		<navigation type="Navigation" relation="OneToOne" id="true"></navigation>
-		<language type="Language" relation="OneToOne" id="true"></language>
-		<text></text>
+		<navigation type="Navigation" relation="OneToOne" id="true" />
+		<language type="Language" relation="OneToOne" id="true" />
+		<text />
 	</NavigationData>
 	
 	<Page>
-		<id></id>
-		<path></path>
-		<preg type="boolean" null="true"></preg>
-		<layout type="Layout" relation="OneToOne"></layout>
-		<status type="PageStatus"></status>
-		<modified></modified>
+		<id />
+		<path />
+		<preg type="boolean" null="true" />
+		<layout type="Layout" relation="OneToOne" />
+		<status type="PageStatus" />
+		<modified />
 	</Page>
 	
 	<PageData>
-		<page type="Page" relation="OneToOne" id="true"></page>
-		<language type="Language" relation="OneToOne" id="true"></language>
-		<title null="true"></title>
-		<description null="true"></description>
-		<keywords null="true"></keywords>
+		<page type="Page" relation="OneToOne" id="true" />
+		<language type="Language" relation="OneToOne" id="true" />
+		<title null="true" />
+		<description null="true" />
+		<keywords null="true" />
 	</PageData>
 	
 	<PageModule>
-		<page type="Page" relation="OneToOne" id="true"></page>
-		<module type="Module" relation="OneToOne" id="true"></module>
-		<section null="true" id="true"></section>
-		<position null="true" id="true"></position>
-		<priority null="true"></priority>
-		<settings null="true"></settings>
-		<viewFile type="ViewFile" relation="OneToOne" null="true"></viewFile>
+		<page type="Page" relation="OneToOne" id="true" />
+		<module type="Module" relation="OneToOne" id="true" />
+		<section null="true" id="true" />
+		<position null="true" id="true" />
+		<priority null="true" />
+		<settings null="true" />
+		<viewFile type="ViewFile" relation="OneToOne" null="true" />
 	</PageModule>
+	
+	<PageRight>
+		<page type="Page" relation="OneToOne" id="true" />
+		<right type="Right" relation="OneToOne" id="true" />
+		<redirectPage type="Page" relation="OneToOne" />
+	</PageRight>
+	
+	<Right>
+		<id />
+		<alias />
+		<name null="true" />
+		<role type="boolean" null="true" />
+	</Right>
+	
+	<Site>
+		<id />
+		<alias />
+	</Site>
+	
+	<User>
+		<id />
+		<login />
+		<password />
+	</User>
+	
+	<UserRight>
+		<user type="User" relation="OneToOne" id="true" />
+		<right type="Right" relation="OneToOne" id="true" />
+	</UserRight>
+	
+	<ViewFile>
+		<id />
+		<contentType type="ContentType" />
+		<path />
+		<joinable type="boolean" null="true" />
+	</ViewFile>
 </meta>

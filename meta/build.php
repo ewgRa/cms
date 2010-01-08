@@ -58,6 +58,11 @@
 			if ($childNode->getAttribute('relation')) {
 				$relationNode = $meta->createElement($childNode->nodeName.'Id');
 
+				foreach ($childNode->attributes as $attrName => $attrValue) {
+					if ($attrName != 'relation' && $attrName != 'type')
+						$relationNode->setAttribute($attrName, $attrValue->value);
+				}
+				
 				$relationNode->setAttribute(
 					'upperName',
 					StringUtils::upperKeyFirstAlpha($relationNode->nodeName)

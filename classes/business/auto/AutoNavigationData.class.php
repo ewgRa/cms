@@ -25,7 +25,7 @@
 		
 		public function getId()
 		{
-			return $this->getNavigationId().'_'.$this->getLanguageId();
+			return $this->getNavigationId().'_'.$this->getNavigationId().'_'.$this->getLanguageId().'_'.$this->getLanguageId();
 		}
 		
 		/**

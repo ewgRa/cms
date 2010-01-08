@@ -25,7 +25,7 @@
 		
 		public function getId()
 		{
-			return $this->getContentId().'_'.$this->getLanguageId();
+			return $this->getContentId().'_'.$this->getContentId().'_'.$this->getLanguageId().'_'.$this->getLanguageId();
 		}
 		
 		/**

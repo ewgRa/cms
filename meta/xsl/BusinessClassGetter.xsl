@@ -20,16 +20,16 @@
 			return <xsl:value-of select="@type" />::da()->getById($this->get<xsl:value-of select="@upperName" />Id());
 		</xsl:otherwise>
 		</xsl:choose>
+		<xsl:if test="@type = 'boolean'">}
+		
+		public function is<xsl:value-of select="@upperName" />()
+		{
+			return ($this->get<xsl:value-of select="@upperName" />() === true);
+		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="position() != last()">}
 		</xsl:when>
 			<xsl:otherwise>}</xsl:otherwise>
 		</xsl:choose>
-		<xsl:if test="@type = 'boolean'">
-		public function is<xsl:value-of select="@upperName" />()
-		{
-			return ($this->get<xsl:value-of select="@upperName" />() === true);
-		}
-		</xsl:if>
 </xsl:template>
 </xsl:stylesheet>

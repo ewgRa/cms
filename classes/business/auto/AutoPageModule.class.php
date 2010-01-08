@@ -33,7 +33,7 @@
 		
 		public function getId()
 		{
-			return $this->getPageId().'_'.$this->getModuleId().'_'.$this->getSection().'_'.$this->getPosition();
+			return $this->getPageId().'_'.$this->getPageId().'_'.$this->getModuleId().'_'.$this->getModuleId().'_'.$this->getSection().'_'.$this->getPosition();
 		}
 		
 		/**
@@ -149,7 +149,6 @@
 		
 		public function getViewFileId()
 		{
-			Assert::isNotNull($this->viewFileId);
 			return $this->viewFileId;
 		}
 		
