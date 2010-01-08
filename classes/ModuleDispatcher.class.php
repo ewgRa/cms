@@ -89,8 +89,7 @@
 			foreach ($this->getModules() as $keyModule => $module) {
 				$result->append(
 					array(
-						'data' =>
-							$module->getRenderedModel(),
+						'data' => $module->getRenderedModel(),
 						'section' => $this->pageModules[$keyModule]->getSection(),
 						'position' => $this->pageModules[$keyModule]->getPosition()
 					)
