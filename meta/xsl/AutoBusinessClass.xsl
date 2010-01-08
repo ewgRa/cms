@@ -33,7 +33,7 @@
 		/**
 		 * @return Auto<xsl:value-of select="name(..)" />
 		 */
-		public function set<xsl:value-of select="@upperName" />(<xsl:if test="@type"><xsl:value-of select="@type" />&#xA0;</xsl:if>$<xsl:value-of select="name()" />)
+		public function set<xsl:value-of select="@upperName" />(<xsl:if test="@type"><xsl:value-of select="@type" /> $</xsl:if><xsl:if test="not(@type)">$</xsl:if><xsl:value-of select="name()" />)
 		{
 			$this-><xsl:value-of select="name()" /> = $<xsl:value-of select="name()" />;
 			return $this;

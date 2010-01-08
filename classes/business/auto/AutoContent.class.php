@@ -42,7 +42,7 @@
 		/**
 		 * @return AutoContent
 		 */
-		public function setStatus(ContentStatus $status)
+		public function setStatus(ContentStatus $status)
 		{
 			$this->status = $status;
 			return $this;

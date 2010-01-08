@@ -51,7 +51,7 @@
 		/**
 		 * @return AutoContentData
 		 */
-		public function setContent(Content $content)
+		public function setContent(Content $content)
 		{
 			$this->content = $content;
 			return $this;
@@ -83,7 +83,7 @@
 		/**
 		 * @return AutoContentData
 		 */
-		public function setLanguage(Language $language)
+		public function setLanguage(Language $language)
 		{
 			$this->language = $language;
 			return $this;
