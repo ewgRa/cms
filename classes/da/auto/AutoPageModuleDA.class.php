@@ -19,37 +19,37 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasPageId())) {
+			if (!is_null($object->getPageId())) {
 				$dbQuery .= 'page_id = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
-			if ($object->hasModuleId())) {
+			if (!is_null($object->getModuleId())) {
 				$dbQuery .= 'module_id = ?';
 				$queryParams[] = $object->getModuleId();
 			}
 			
-			if ($object->hasSection())) {
+			if (!is_null($object->getSection())) {
 				$dbQuery .= 'section = ?';
 				$queryParams[] = $object->getSection();
 			}
 			
-			if ($object->hasPosition())) {
+			if (!is_null($object->getPosition())) {
 				$dbQuery .= 'position = ?';
 				$queryParams[] = $object->getPosition();
 			}
 			
-			if ($object->hasPriority())) {
+			if (!is_null($object->getPriority())) {
 				$dbQuery .= 'priority = ?';
 				$queryParams[] = $object->getPriority();
 			}
 			
-			if ($object->hasSettings())) {
+			if (!is_null($object->getSettings())) {
 				$dbQuery .= 'settings = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}
 			
-			if ($object->hasViewFileId())) {
+			if (!is_null($object->getViewFileId())) {
 				$dbQuery .= 'view_file_id = ?';
 				$queryParams[] = $object->getViewFileId();
 			}

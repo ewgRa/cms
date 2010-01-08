@@ -19,17 +19,17 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasPageId())) {
+			if (!is_null($object->getPageId())) {
 				$dbQuery .= 'page_id = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
-			if ($object->hasRightId())) {
+			if (!is_null($object->getRightId())) {
 				$dbQuery .= 'right_id = ?';
 				$queryParams[] = $object->getRightId();
 			}
 			
-			if ($object->hasRedirectPageId())) {
+			if (!is_null($object->getRedirectPageId())) {
 				$dbQuery .= 'redirect_page_id = ?';
 				$queryParams[] = $object->getRedirectPageId();
 			}

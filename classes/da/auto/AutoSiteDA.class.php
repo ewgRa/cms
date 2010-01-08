@@ -19,7 +19,7 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasAlias())) {
+			if (!is_null($object->getAlias())) {
 				$dbQuery .= 'alias = ?';
 				$queryParams[] = $object->getAlias();
 			}

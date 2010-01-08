@@ -19,12 +19,12 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasLogin())) {
+			if (!is_null($object->getLogin())) {
 				$dbQuery .= 'login = ?';
 				$queryParams[] = $object->getLogin();
 			}
 			
-			if ($object->hasPassword())) {
+			if (!is_null($object->getPassword())) {
 				$dbQuery .= 'password = ?';
 				$queryParams[] = $object->getPassword();
 			}

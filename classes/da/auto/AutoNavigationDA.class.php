@@ -19,12 +19,12 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasCategoryId())) {
+			if (!is_null($object->getCategoryId())) {
 				$dbQuery .= 'category_id = ?';
 				$queryParams[] = $object->getCategoryId();
 			}
 			
-			if ($object->hasUri())) {
+			if (!is_null($object->getUri())) {
 				$dbQuery .= 'uri = ?';
 				$queryParams[] = $object->getUri()->getId();
 			}

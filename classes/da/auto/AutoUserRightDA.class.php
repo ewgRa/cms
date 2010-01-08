@@ -19,12 +19,12 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasUserId())) {
+			if (!is_null($object->getUserId())) {
 				$dbQuery .= 'user_id = ?';
 				$queryParams[] = $object->getUserId();
 			}
 			
-			if ($object->hasRightId())) {
+			if (!is_null($object->getRightId())) {
 				$dbQuery .= 'right_id = ?';
 				$queryParams[] = $object->getRightId();
 			}

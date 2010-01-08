@@ -19,27 +19,27 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasPath())) {
+			if (!is_null($object->getPath())) {
 				$dbQuery .= 'path = ?';
 				$queryParams[] = $object->getPath();
 			}
 			
-			if ($object->hasPreg())) {
+			if (!is_null($object->getPreg())) {
 				$dbQuery .= 'preg = ?';
 				$queryParams[] = $object->getPreg()->getId();
 			}
 			
-			if ($object->hasLayoutId())) {
+			if (!is_null($object->getLayoutId())) {
 				$dbQuery .= 'layout_id = ?';
 				$queryParams[] = $object->getLayoutId();
 			}
 			
-			if ($object->hasStatus())) {
+			if (!is_null($object->getStatus())) {
 				$dbQuery .= 'status = ?';
 				$queryParams[] = $object->getStatus()->getId();
 			}
 			
-			if ($object->hasModified())) {
+			if (!is_null($object->getModified())) {
 				$dbQuery .= 'modified = ?';
 				$queryParams[] = $object->getModified();
 			}

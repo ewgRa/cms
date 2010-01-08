@@ -19,17 +19,17 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasAlias())) {
+			if (!is_null($object->getAlias())) {
 				$dbQuery .= 'alias = ?';
 				$queryParams[] = $object->getAlias();
 			}
 			
-			if ($object->hasName())) {
+			if (!is_null($object->getName())) {
 				$dbQuery .= 'name = ?';
 				$queryParams[] = $object->getName();
 			}
 			
-			if ($object->hasRole())) {
+			if (!is_null($object->getRole())) {
 				$dbQuery .= 'role = ?';
 				$queryParams[] = $object->getRole()->getId();
 			}

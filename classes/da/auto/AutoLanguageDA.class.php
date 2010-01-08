@@ -19,7 +19,7 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasAbbr())) {
+			if (!is_null($object->getAbbr())) {
 				$dbQuery .= 'abbr = ?';
 				$queryParams[] = $object->getAbbr();
 			}

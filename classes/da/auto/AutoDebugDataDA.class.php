@@ -19,17 +19,17 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasSession())) {
+			if (!is_null($object->getSession())) {
 				$dbQuery .= 'session = ?';
 				$queryParams[] = $object->getSession();
 			}
 			
-			if ($object->hasData())) {
+			if (!is_null($object->getData())) {
 				$dbQuery .= 'data = ?';
 				$queryParams[] = serialize($object->getData());
 			}
 			
-			if ($object->hasDate())) {
+			if (!is_null($object->getDate())) {
 				$dbQuery .= 'date = ?';
 				$queryParams[] = $object->getDate();
 			}

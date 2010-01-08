@@ -19,17 +19,17 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasContentType())) {
+			if (!is_null($object->getContentType())) {
 				$dbQuery .= 'content_type = ?';
 				$queryParams[] = $object->getContentType()->getId();
 			}
 			
-			if ($object->hasPath())) {
+			if (!is_null($object->getPath())) {
 				$dbQuery .= 'path = ?';
 				$queryParams[] = $object->getPath();
 			}
 			
-			if ($object->hasJoinable())) {
+			if (!is_null($object->getJoinable())) {
 				$dbQuery .= 'joinable = ?';
 				$queryParams[] = $object->getJoinable()->getId();
 			}

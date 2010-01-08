@@ -19,7 +19,7 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasViewFileId())) {
+			if (!is_null($object->getViewFileId())) {
 				$dbQuery .= 'view_file_id = ?';
 				$queryParams[] = $object->getViewFileId();
 			}

@@ -19,17 +19,17 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasNavigationId())) {
+			if (!is_null($object->getNavigationId())) {
 				$dbQuery .= 'navigation_id = ?';
 				$queryParams[] = $object->getNavigationId();
 			}
 			
-			if ($object->hasLanguageId())) {
+			if (!is_null($object->getLanguageId())) {
 				$dbQuery .= 'language_id = ?';
 				$queryParams[] = $object->getLanguageId();
 			}
 			
-			if ($object->hasText())) {
+			if (!is_null($object->getText())) {
 				$dbQuery .= 'text = ?';
 				$queryParams[] = $object->getText();
 			}

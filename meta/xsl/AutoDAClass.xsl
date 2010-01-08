@@ -24,7 +24,7 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			<xsl:for-each select="*[not(@relation) and name() != 'id']">
-			if ($object->has<xsl:value-of select="@upperName" />())) {<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
+			if (!is_null($object->get<xsl:value-of select="@upperName" />())) {<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
 						<xsl:when test="@type"><xsl:value-of select="$preValue" />->getId()</xsl:when>

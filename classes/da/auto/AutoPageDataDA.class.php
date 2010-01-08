@@ -19,27 +19,27 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasPageId())) {
+			if (!is_null($object->getPageId())) {
 				$dbQuery .= 'page_id = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
-			if ($object->hasLanguageId())) {
+			if (!is_null($object->getLanguageId())) {
 				$dbQuery .= 'language_id = ?';
 				$queryParams[] = $object->getLanguageId();
 			}
 			
-			if ($object->hasTitle())) {
+			if (!is_null($object->getTitle())) {
 				$dbQuery .= 'title = ?';
 				$queryParams[] = $object->getTitle();
 			}
 			
-			if ($object->hasDescription())) {
+			if (!is_null($object->getDescription())) {
 				$dbQuery .= 'description = ?';
 				$queryParams[] = $object->getDescription();
 			}
 			
-			if ($object->hasKeywords())) {
+			if (!is_null($object->getKeywords())) {
 				$dbQuery .= 'keywords = ?';
 				$queryParams[] = $object->getKeywords();
 			}

@@ -19,12 +19,12 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasName())) {
+			if (!is_null($object->getName())) {
 				$dbQuery .= 'name = ?';
 				$queryParams[] = $object->getName();
 			}
 			
-			if ($object->hasSettings())) {
+			if (!is_null($object->getSettings())) {
 				$dbQuery .= 'settings = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}

@@ -19,7 +19,7 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParams = array();
 			
-			if ($object->hasStatus())) {
+			if (!is_null($object->getStatus())) {
 				$dbQuery .= 'status = ?';
 				$queryParams[] = $object->getStatus()->getId();
 			}
