@@ -52,6 +52,5 @@
 					setLanguageId($array['language_id'])->
 					setText($array['text']);
 		}
-
 	}
 ?>

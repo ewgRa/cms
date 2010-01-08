@@ -47,6 +47,5 @@
 					setName($array['name'])->
 					setSettings($array['settings'] ? unserialize($array['settings']) : null);
 		}
-
 	}
 ?>

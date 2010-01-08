@@ -41,6 +41,5 @@
 					setId($array['id'])->
 					setAbbr($array['abbr']);
 		}
-
 	}
 ?>

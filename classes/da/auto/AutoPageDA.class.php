@@ -65,6 +65,5 @@
 					setStatus(PageStatus::create($array['status']))->
 					setModified($array['modified']);
 		}
-
 	}
 ?>

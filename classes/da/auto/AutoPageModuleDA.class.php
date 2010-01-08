@@ -76,6 +76,5 @@
 					setSettings($array['settings'] ? unserialize($array['settings']) : null)->
 					setViewFileId($array['view_file_id']);
 		}
-
 	}
 ?>

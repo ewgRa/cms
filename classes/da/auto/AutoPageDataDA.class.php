@@ -64,6 +64,5 @@
 					setDescription($array['description'])->
 					setKeywords($array['keywords']);
 		}
-
 	}
 ?>

@@ -47,6 +47,5 @@
 					setCategoryId($array['category_id'])->
 					setUri(HttpUrl::createFromString($array['uri']));
 		}
-
 	}
 ?>

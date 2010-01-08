@@ -53,6 +53,5 @@
 					setName($array['name'])->
 					setRole($array['role'] == 1);
 		}
-
 	}
 ?>

@@ -41,6 +41,5 @@
 					setId($array['id'])->
 					setViewFileId($array['view_file_id']);
 		}
-
 	}
 ?>

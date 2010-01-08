@@ -52,6 +52,5 @@
 					setRightId($array['right_id'])->
 					setRedirectPageId($array['redirect_page_id']);
 		}
-
 	}
 ?>

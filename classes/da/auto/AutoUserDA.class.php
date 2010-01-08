@@ -47,6 +47,5 @@
 					setLogin($array['login'])->
 					setPassword($array['password']);
 		}
-
 	}
 ?>

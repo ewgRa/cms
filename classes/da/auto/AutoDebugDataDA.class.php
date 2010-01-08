@@ -53,6 +53,5 @@
 					setData($array['data'] ? unserialize($array['data']) : null)->
 					setDate($array['date']);
 		}
-
 	}
 ?>

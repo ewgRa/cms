@@ -73,7 +73,6 @@
 					set<xsl:value-of select="@upperName" />(<xsl:value-of select="$value"/>)<xsl:value-of select="$endLine" />
 </xsl:for-each>
 		}
-
 	}
 ?&gt;</xsl:template>
 </xsl:stylesheet>

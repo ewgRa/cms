@@ -53,6 +53,5 @@
 					setPath(Config::me()->replaceVariables($array['path']))->
 					setJoinable($array['joinable'] == 1);
 		}
-
 	}
 ?>

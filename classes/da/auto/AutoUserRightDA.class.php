@@ -46,6 +46,5 @@
 					setUserId($array['user_id'])->
 					setRightId($array['right_id']);
 		}
-
 	}
 ?>

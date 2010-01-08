@@ -41,6 +41,5 @@
 					setId($array['id'])->
 					setStatus(ContentStatus::create($array['status']));
 		}
-
 	}
 ?>
