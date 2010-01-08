@@ -18,6 +18,16 @@
 		/**
 		 * @return Right
 		 */
+		public function getByAlias($alias)
+		{
+			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE alias = ?";
+			
+			return $this->getCachedByQuery($dbQuery, array($alias));
+		}
+		
+		/**
+		 * @return Right
+		 */
 		public function getByAliases(array $aliases)
 		{
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE alias IN(?)";

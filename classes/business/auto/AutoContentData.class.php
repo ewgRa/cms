@@ -44,6 +44,15 @@
 		}
 		
 		/**
+		 * @return AutoContentData
+		 */
+		public function setContent(Content $content)
+		{
+			$this->contentId = $content->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Content
 		 */
 		public function getContent()
@@ -64,6 +73,15 @@
 		{
 			Assert::isNotNull($this->languageId);
 			return $this->languageId;
+		}
+		
+		/**
+		 * @return AutoContentData
+		 */
+		public function setLanguage(Language $language)
+		{
+			$this->languageId = $language->getId();
+			return $this;
 		}
 		
 		/**

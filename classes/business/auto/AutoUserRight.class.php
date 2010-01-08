@@ -42,6 +42,15 @@
 		}
 		
 		/**
+		 * @return AutoUserRight
+		 */
+		public function setUser(User $user)
+		{
+			$this->userId = $user->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return User
 		 */
 		public function getUser()
@@ -62,6 +71,15 @@
 		{
 			Assert::isNotNull($this->rightId);
 			return $this->rightId;
+		}
+		
+		/**
+		 * @return AutoUserRight
+		 */
+		public function setRight(Right $right)
+		{
+			$this->rightId = $right->getId();
+			return $this;
 		}
 		
 		/**

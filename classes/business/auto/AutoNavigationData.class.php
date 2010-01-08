@@ -44,6 +44,15 @@
 		}
 		
 		/**
+		 * @return AutoNavigationData
+		 */
+		public function setNavigation(Navigation $navigation)
+		{
+			$this->navigationId = $navigation->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Navigation
 		 */
 		public function getNavigation()
@@ -64,6 +73,15 @@
 		{
 			Assert::isNotNull($this->languageId);
 			return $this->languageId;
+		}
+		
+		/**
+		 * @return AutoNavigationData
+		 */
+		public function setLanguage(Language $language)
+		{
+			$this->languageId = $language->getId();
+			return $this;
 		}
 		
 		/**

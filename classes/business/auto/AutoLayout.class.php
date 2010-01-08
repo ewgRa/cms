@@ -52,6 +52,15 @@
 		}
 		
 		/**
+		 * @return AutoLayout
+		 */
+		public function setViewFile(ViewFile $viewFile)
+		{
+			$this->viewFileId = $viewFile->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return ViewFile
 		 */
 		public function getViewFile()

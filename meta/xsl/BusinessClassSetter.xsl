@@ -4,7 +4,7 @@
 
 <xsl:output method="text" indent="yes" encoding="utf-8"/>
 
-<xsl:template name="classSetter"><xsl:if test="not(@relation)">
+<xsl:template name="classSetter">
 	<xsl:variable name="type">
 		<xsl:if test="@type and @type != 'boolean'"><xsl:value-of select="@type" /> $</xsl:if>
 		<xsl:if test="not(@type) or @type = 'boolean'">$</xsl:if>
@@ -24,8 +24,11 @@
 		 */
 		public function set<xsl:value-of select="@upperName" />(<xsl:value-of select="$type" /><xsl:value-of select="name()" /><xsl:value-of select="$defaultValue"></xsl:value-of>)
 		{
-			$this-><xsl:value-of select="name()" /> = <xsl:value-of select="$value" />;
+			<xsl:choose>
+			<xsl:when test="@relation">$this-><xsl:value-of select="name()" />Id = <xsl:value-of select="$value" />->getId();</xsl:when>
+			<xsl:otherwise>$this-><xsl:value-of select="name()" /> = <xsl:value-of select="$value" />;</xsl:otherwise>
+		</xsl:choose>
 			return $this;
 		}
-		</xsl:if></xsl:template>
+		</xsl:template>
 </xsl:stylesheet>

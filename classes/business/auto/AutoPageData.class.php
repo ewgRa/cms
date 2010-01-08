@@ -48,6 +48,15 @@
 		}
 		
 		/**
+		 * @return AutoPageData
+		 */
+		public function setPage(Page $page)
+		{
+			$this->pageId = $page->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Page
 		 */
 		public function getPage()
@@ -68,6 +77,15 @@
 		{
 			Assert::isNotNull($this->languageId);
 			return $this->languageId;
+		}
+		
+		/**
+		 * @return AutoPageData
+		 */
+		public function setLanguage(Language $language)
+		{
+			$this->languageId = $language->getId();
+			return $this;
 		}
 		
 		/**

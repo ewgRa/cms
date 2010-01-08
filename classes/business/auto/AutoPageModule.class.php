@@ -55,6 +55,15 @@
 		}
 		
 		/**
+		 * @return AutoPageModule
+		 */
+		public function setPage(Page $page)
+		{
+			$this->pageId = $page->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Page
 		 */
 		public function getPage()
@@ -75,6 +84,15 @@
 		{
 			Assert::isNotNull($this->moduleId);
 			return $this->moduleId;
+		}
+		
+		/**
+		 * @return AutoPageModule
+		 */
+		public function setModule(Module $module)
+		{
+			$this->moduleId = $module->getId();
+			return $this;
 		}
 		
 		/**
@@ -156,6 +174,15 @@
 		public function getViewFileId()
 		{
 			return $this->viewFileId;
+		}
+		
+		/**
+		 * @return AutoPageModule
+		 */
+		public function setViewFile(ViewFile $viewFile = null)
+		{
+			$this->viewFileId = $viewFile->getId();
+			return $this;
 		}
 		
 		/**

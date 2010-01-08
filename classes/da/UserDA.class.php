@@ -30,6 +30,21 @@
 		/**
 		 * @return User
 		 */
+		public function getByRight(Right $right)
+		{
+			$dbQuery = '
+				SELECT t1.*
+				FROM '.$this->getTable().' t1
+				INNER JOIN '.UserRight::da()->getTable().' t2
+					ON(t2.user_id = t1.id AND t2.right_id = ?)
+				';
+
+			return $this->getListCachedByQuery($dbQuery, array($right->getId()));
+		}
+		
+		/**
+		 * @return User
+		 */
 		public function getById($id)
 		{
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE id = ?';

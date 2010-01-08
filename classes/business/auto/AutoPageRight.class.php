@@ -44,6 +44,15 @@
 		}
 		
 		/**
+		 * @return AutoPageRight
+		 */
+		public function setPage(Page $page)
+		{
+			$this->pageId = $page->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Page
 		 */
 		public function getPage()
@@ -67,6 +76,15 @@
 		}
 		
 		/**
+		 * @return AutoPageRight
+		 */
+		public function setRight(Right $right)
+		{
+			$this->rightId = $right->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Right
 		 */
 		public function getRight()
@@ -87,6 +105,15 @@
 		{
 			Assert::isNotNull($this->redirectPageId);
 			return $this->redirectPageId;
+		}
+		
+		/**
+		 * @return AutoPageRight
+		 */
+		public function setRedirectPage(Page $redirectPage)
+		{
+			$this->redirectPageId = $redirectPage->getId();
+			return $this;
 		}
 		
 		/**

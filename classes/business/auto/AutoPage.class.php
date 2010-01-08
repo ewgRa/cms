@@ -103,6 +103,15 @@
 		}
 		
 		/**
+		 * @return AutoPage
+		 */
+		public function setLayout(Layout $layout)
+		{
+			$this->layoutId = $layout->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Layout
 		 */
 		public function getLayout()

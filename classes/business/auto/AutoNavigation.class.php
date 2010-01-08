@@ -57,6 +57,15 @@
 		}
 		
 		/**
+		 * @return AutoNavigation
+		 */
+		public function setCategory(Category $category)
+		{
+			$this->categoryId = $category->getId();
+			return $this;
+		}
+		
+		/**
 		 * @return Category
 		 */
 		public function getCategory()
