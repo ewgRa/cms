@@ -36,7 +36,7 @@
 		private function replaceData(PageData $pageData)
 		{
 			foreach ($this->getDispatcher()->getModules() as $module) {
-				if ($module instanceof PageHeadReplacer)
+				if ($module instanceof PageHeadReplacerInterface)
 					$module->replacePageData($pageData);
 			}
 			
