@@ -28,17 +28,25 @@
 		/**
 		 * @return Auto<xsl:value-of select="name(..)" />
 		 */
-		public function set<xsl:value-of select="@upperName" />($<xsl:value-of select="name()" />)
+		public function set<xsl:value-of select="@upperName" />(<xsl:if test="@type"><xsl:value-of select="@type" />&#xA0;</xsl:if>$<xsl:value-of select="name()" />)
 		{
 			$this-><xsl:value-of select="name()" /> = $<xsl:value-of select="name()" />;
 			return $this;
 		}
-		
+		<xsl:if test="@type">
+		/**
+		 * @return <xsl:value-of select="@type" />
+		 */</xsl:if>
 		public function get<xsl:value-of select="@upperName" />()
-		{
+		{<xsl:if test="not(@null)">
+			Assert::isNotNull($this-><xsl:value-of select="name()" />);</xsl:if>
 			return $this-><xsl:value-of select="name()" />;
-		}<xsl:if test="position() = last()">
-</xsl:if></xsl:for-each>
+		<xsl:choose>
+			<xsl:when test="position() != last()">
+		}
+		</xsl:when>
+			<xsl:otherwise>}</xsl:otherwise>
+		</xsl:choose></xsl:for-each>
 	}
 ?&gt;</xsl:template>
 </xsl:stylesheet>

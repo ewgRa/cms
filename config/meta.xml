@@ -7,4 +7,9 @@
 		<id></id>
 		<alias></alias>
 	</Category>
+	
+	<Content>
+		<id></id>
+		<status type="ContentStatus"></status>
+	</Content>
 </meta>

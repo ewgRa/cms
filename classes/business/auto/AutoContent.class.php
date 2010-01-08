@@ -7,22 +7,22 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	class AutoCategory
+	class AutoContent
 	{
 		private $id = null;
 		
-		private $alias = null;
+		private $status = null;
 		
 		/**
-		 * @return CategoryDA
+		 * @return ContentDA
 		 */
 		public static function da()
 		{
-			return CategoryDA::me();
+			return ContentDA::me();
 		}
 		
 		/**
-		 * @return AutoCategory
+		 * @return AutoContent
 		 */
 		public function setId($id)
 		{
@@ -38,18 +38,21 @@
 		}
 		
 		/**
-		 * @return AutoCategory
+		 * @return AutoContent
 		 */
-		public function setAlias($alias)
+		public function setStatus(ContentStatus $status)
 		{
-			$this->alias = $alias;
+			$this->status = $status;
 			return $this;
 		}
 		
-		public function getAlias()
+		/**
+		 * @return ContentStatus
+		 */
+		public function getStatus()
 		{
-			Assert::isNotNull($this->alias);
-			return $this->alias;
+			Assert::isNotNull($this->status);
+			return $this->status;
 		}
 	}
 ?>
