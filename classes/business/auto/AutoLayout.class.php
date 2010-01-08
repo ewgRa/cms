@@ -7,25 +7,22 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	class AutoContent
+	class AutoLayout
 	{
 		private $id = null;
 		
-		/**
-		 * @var ContentStatus
-		 */
-		private $status = null;
+		private $viewFileId = null;
 		
 		/**
-		 * @return ContentDA
+		 * @return LayoutDA
 		 */
 		public static function da()
 		{
-			return ContentDA::me();
+			return LayoutDA::me();
 		}
 		
 		/**
-		 * @return AutoContent
+		 * @return AutoLayout
 		 */
 		public function setId($id)
 		{
@@ -40,21 +37,26 @@
 		}
 		
 		/**
-		 * @return AutoContent
+		 * @return AutoLayout
 		 */
-		public function setStatus(ContentStatus $status)
+		public function setViewFileId($viewFileId)
 		{
-			$this->status = $status;
+			$this->viewFileId = $viewFileId;
 			return $this;
 		}
 		
-		/**
-		 * @return ContentStatus
-		 */
-		public function getStatus()
+		public function getViewFileId()
 		{
-			Assert::isNotNull($this->status);
-			return $this->status;
+			Assert::isNotNull($this->viewFileId);
+			return $this->viewFileId;
+		}
+		
+		/**
+		 * @return ViewFile
+		 */
+		public function getViewFile()
+		{
+			return ViewFile::da()->getById($this->getViewFileId());
 		}
 	}
 ?>

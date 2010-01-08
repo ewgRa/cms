@@ -4,6 +4,7 @@
 
 <xsl:import href="phpdoc.xsl" />
 <xsl:import href="BusinessClassGetter.xsl" />
+<xsl:import href="BusinessClassSetter.xsl" />
 
 <xsl:output method="text" indent="yes" encoding="utf-8"/>
 
@@ -15,10 +16,10 @@
 	 * Do not edit this class!<xsl:call-template name="classPhpDoc" />
 	 */
 	class Auto<xsl:value-of select="name()" />
-	{<xsl:for-each select="*">
+	{<xsl:for-each select="*[not(@relation)]">
 		<xsl:if test="@type">
 		/**
-		 * @return <xsl:value-of select="@type" />
+		 * @var <xsl:value-of select="@type" />
 		 */</xsl:if>
 		private $<xsl:value-of select="name()" /> = null;
 		</xsl:for-each>
@@ -31,20 +32,11 @@
 		}
 		<xsl:if test="count(*[name()='id']) = 0 and count(*[@id]) &gt; 0">
 		public function getId()
-		{<xsl:for-each select="*[@id]">
-			Assert::isNotNull($this->get<xsl:value-of select="@upperName" />Id());</xsl:for-each>
-			
-			return <xsl:for-each select="*[@id]">$this->get<xsl:value-of select="@upperName" />Id()<xsl:if test="position() != last()">.'_'.</xsl:if></xsl:for-each>;
+		{
+			return <xsl:for-each select="*[@id]">$this->get<xsl:value-of select="@upperName" /><xsl:if test="@relation">Id</xsl:if>()<xsl:if test="position() != last()">.'_'.</xsl:if></xsl:for-each>;
 		}
 		</xsl:if><xsl:for-each select="*">
-		/**
-		 * @return Auto<xsl:value-of select="name(..)" />
-		 */
-		public function set<xsl:value-of select="@upperName" />(<xsl:if test="@type"><xsl:value-of select="@type" /> $</xsl:if><xsl:if test="not(@type)">$</xsl:if><xsl:value-of select="name()" />)
-		{
-			$this-><xsl:value-of select="name()" /> = $<xsl:value-of select="name()" />;
-			return $this;
-		}
+		<xsl:call-template name="classSetter" />
 		<xsl:call-template name="classGetter" /></xsl:for-each>
 	}
 ?&gt;</xsl:template>

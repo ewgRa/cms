@@ -25,5 +25,11 @@
 		</xsl:when>
 			<xsl:otherwise>}</xsl:otherwise>
 		</xsl:choose>
+		<xsl:if test="@type = 'boolean'">
+		public function is<xsl:value-of select="@upperName" />()
+		{
+			return ($this->get<xsl:value-of select="@upperName" />() === true);
+		}
+		</xsl:if>
 </xsl:template>
 </xsl:stylesheet>

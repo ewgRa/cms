@@ -7,52 +7,52 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	class AutoContentData
+	class AutoNavigationData
 	{
-		private $contentId = null;
+		private $navigationId = null;
 		
 		private $languageId = null;
 		
 		private $text = null;
 		
 		/**
-		 * @return ContentDataDA
+		 * @return NavigationDataDA
 		 */
 		public static function da()
 		{
-			return ContentDataDA::me();
+			return NavigationDataDA::me();
 		}
 		
 		public function getId()
 		{
-			return $this->getContentId().'_'.$this->getLanguageId();
+			return $this->getNavigationId().'_'.$this->getLanguageId();
 		}
 		
 		/**
-		 * @return AutoContentData
+		 * @return AutoNavigationData
 		 */
-		public function setContentId($contentId)
+		public function setNavigationId($navigationId)
 		{
-			$this->contentId = $contentId;
+			$this->navigationId = $navigationId;
 			return $this;
 		}
 		
-		public function getContentId()
+		public function getNavigationId()
 		{
-			Assert::isNotNull($this->contentId);
-			return $this->contentId;
+			Assert::isNotNull($this->navigationId);
+			return $this->navigationId;
 		}
 		
 		/**
-		 * @return Content
+		 * @return Navigation
 		 */
-		public function getContent()
+		public function getNavigation()
 		{
-			return Content::da()->getById($this->getContentId());
+			return Navigation::da()->getById($this->getNavigationId());
 		}
 		
 		/**
-		 * @return AutoContentData
+		 * @return AutoNavigationData
 		 */
 		public function setLanguageId($languageId)
 		{
@@ -75,7 +75,7 @@
 		}
 		
 		/**
-		 * @return AutoContentData
+		 * @return AutoNavigationData
 		 */
 		public function setText($text)
 		{

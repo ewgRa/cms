@@ -7,25 +7,22 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	class AutoContent
+	class AutoLanguage
 	{
 		private $id = null;
 		
-		/**
-		 * @var ContentStatus
-		 */
-		private $status = null;
+		private $abbr = null;
 		
 		/**
-		 * @return ContentDA
+		 * @return LanguageDA
 		 */
 		public static function da()
 		{
-			return ContentDA::me();
+			return LanguageDA::me();
 		}
 		
 		/**
-		 * @return AutoContent
+		 * @return AutoLanguage
 		 */
 		public function setId($id)
 		{
@@ -40,21 +37,18 @@
 		}
 		
 		/**
-		 * @return AutoContent
+		 * @return AutoLanguage
 		 */
-		public function setStatus(ContentStatus $status)
+		public function setAbbr($abbr)
 		{
-			$this->status = $status;
+			$this->abbr = $abbr;
 			return $this;
 		}
 		
-		/**
-		 * @return ContentStatus
-		 */
-		public function getStatus()
+		public function getAbbr()
 		{
-			Assert::isNotNull($this->status);
-			return $this->status;
+			Assert::isNotNull($this->abbr);
+			return $this->abbr;
 		}
 	}
 ?>

@@ -18,4 +18,66 @@
 		<language type="Language" relation="OneToOne" id="true"></language>
 		<text></text>
 	</ContentData>
+	
+	<DebugData>
+		<id></id>
+		<session null="true"></session>
+		<data type="array"></data>
+		<date></date>
+	</DebugData>
+	
+	<Language>
+		<id></id>
+		<abbr></abbr>
+	</Language>
+	
+	<Layout>
+		<id></id>
+		<viewFile type="ViewFile" relation="OneToOne"></viewFile>
+	</Layout>
+	
+	<Module>
+		<id></id>
+		<name></name>
+		<settings type="array" null="true"></settings>
+	</Module>
+	
+	<Navigation>
+		<id></id>
+		<category type="Category" relation="OneToOne"></category>
+		<uri></uri>
+	</Navigation>
+	
+	<NavigationData>
+		<navigation type="Navigation" relation="OneToOne" id="true"></navigation>
+		<language type="Language" relation="OneToOne" id="true"></language>
+		<text></text>
+	</NavigationData>
+	
+	<Page>
+		<id></id>
+		<path></path>
+		<preg type="boolean" null="true"></preg>
+		<layout type="Layout" relation="OneToOne"></layout>
+		<status type="PageStatus"></status>
+		<modified></modified>
+	</Page>
+	
+	<PageData>
+		<page type="Page" relation="OneToOne" id="true"></page>
+		<language type="Language" relation="OneToOne" id="true"></language>
+		<title null="true"></title>
+		<description null="true"></description>
+		<keywords null="true"></keywords>
+	</PageData>
+	
+	<PageModule>
+		<page type="Page" relation="OneToOne" id="true"></page>
+		<module type="Module" relation="OneToOne" id="true"></module>
+		<section null="true" id="true"></section>
+		<position null="true" id="true"></position>
+		<priority null="true"></priority>
+		<settings null="true"></settings>
+		<viewFile type="ViewFile" relation="OneToOne" null="true"></viewFile>
+	</PageModule>
 </meta>
