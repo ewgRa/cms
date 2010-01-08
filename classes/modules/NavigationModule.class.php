@@ -8,6 +8,7 @@
 	final class NavigationModule extends CmsModule
 	{
 		private $categoryIds = null;
+		private $rightIds = null;
 		
 		/**
 		 * @return NavigationModule
@@ -26,11 +27,26 @@
 		/**
 		 * @return NavigationModule
 		 */
+		public function setRightIds(array $rightIds)
+		{
+			$this->rightIds = $rightIds;
+			return $this;
+		}
+		
+		public function getRightIds()
+		{
+			return $this->rightIds;
+		}
+		
+		/**
+		 * @return NavigationModule
+		 */
 		public function importSettings(array $settings = null)
 		{
 			$this->setCategoryIds($settings['categories']);
 			
-			// TODO XXX: 'needRights'
+			if (isset($settings['rights']))
+				$this->setRightIds($settings['rights']);
 
 			return $this;
 		}
@@ -39,6 +55,27 @@
 		 * @return Model
 		 */
 		public function getModel()
+		{
+			$result = Model::create();
+			
+			if ($this->checkAccess())
+				$result->setData($this->getData());
+				
+			return $result;
+		}
+		
+		private function checkAccess()
+		{
+			if (!$this->getRightIds())
+				return true;
+			
+			return
+				$this->getUser()->checkAccess(
+					Right::da()->getByIds($this->getRightIds())
+				);
+		}
+		
+		private function getData()
 		{
 			$result = array();
 			
@@ -61,8 +98,8 @@
 			}
 			
 			$result['baseUrl'] = $this->getBaseUrl();
-
-			return Model::create()->setData($result);
+			
+			return $result;
 		}
 	}
 ?>

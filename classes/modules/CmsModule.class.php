@@ -162,6 +162,14 @@
 		}
 		
 		/**
+		 * @return User
+		 */
+		public function getUser()
+		{
+			return $this->getRequest()->getAttachedVar(AttachedAliases::USER);
+		}
+		
+		/**
 		 * @return HttpUrl
 		 */
 		public function getBaseUrl()

@@ -1,8 +1,11 @@
+<?php
+	if ($model->has('navigationDataList')) {
+?>
 	<ul>
 <?php
-	$navigationDataList = $model->get('navigationDataList');
+		$navigationDataList = $model->get('navigationDataList');
 	
-	foreach ($model->get('navigationList') as $navigation) {
+		foreach ($model->get('navigationList') as $navigation) {
 ?>
 		<li>
 			<a href="<?php echo $model->get('baseUrl').$navigation->getUri()->getPath()?>">
@@ -10,6 +13,7 @@
 			</a>
 		</li>
 <?php
+		}
 	}
 ?>
 	</ul>
