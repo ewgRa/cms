@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class PageHeadModule extends CmsModule
+	final class PageHeadModule extends CmsModule
 	{
 		/**
 		 * @return Model
@@ -24,10 +24,23 @@
 				$pageData = PageData::create();
 			}
 				
+					
+			$this->replaceData($pageData);
+			
 			return
 				Model::create()->setData(
 					array('pageData' => $pageData)
 				);
+		}
+		
+		private function replaceData(PageData $pageData)
+		{
+			foreach ($this->getDispatcher()->getModules() as $module) {
+				if ($module instanceof PageHeadReplacer)
+					$module->replacePageData($pageData);
+			}
+			
+			return $this;
 		}
 	}
 ?>

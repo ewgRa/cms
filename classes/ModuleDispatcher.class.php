@@ -7,7 +7,8 @@
 	*/
 	final class ModuleDispatcher extends CmsModule
 	{
-		private $modules = array();
+		private $modules 	 = array();
+		private $pageModules = array();
 		
 		/**
 		 * @return ModuleDispatchers
@@ -22,10 +23,8 @@
 		 */
 		public function addModule(CmsModule $module, PageModule $pageModule)
 		{
-			$this->modules[] = array(
-				'instance'		=> $module,
-				'pageModule'	=> $pageModule
-			);
+			$this->modules[] = $module;
+			$this->pageModules[] = $pageModule;
 			
 			return $this;
 		}
@@ -33,18 +32,6 @@
 		public function getModules()
 		{
 			return $this->modules;
-		}
-		
-		public function getModulesByFilterFunction($filterFunction)
-		{
-			$result = array();
-			
-			foreach ($this->getModules() as $module) {
-				if (call_user_func($filterFunction, $module['instance']))
-					$result[] = $module['instance'];
-			}
-			
-			return $result;
 		}
 		
 		/**
@@ -99,13 +86,13 @@
 		{
 			$result = Model::create();
 			
-			foreach ($this->getModules() as $module) {
+			foreach ($this->getModules() as $keyModule => $module) {
 				$result->append(
 					array(
 						'data' =>
-							$module['instance']->getRenderedModel(),
-						'section' => $module['pageModule']->getSection(),
-						'position' => $module['pageModule']->getPosition()
+							$module->getRenderedModel(),
+						'section' => $this->pageModules[$keyModule]->getSection(),
+						'position' => $this->pageModules[$keyModule]->getPosition()
 					)
 				);
 			}
