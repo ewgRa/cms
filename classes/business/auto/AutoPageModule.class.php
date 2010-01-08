@@ -7,7 +7,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	class AutoPageModule
+	abstract class AutoPageModule
 	{
 		private $pageId = null;
 		
@@ -19,6 +19,9 @@
 		
 		private $priority = null;
 		
+		/**
+		 * @var array
+		 */
 		private $settings = null;
 		
 		private $viewFileId = null;
@@ -127,12 +130,15 @@
 		/**
 		 * @return AutoPageModule
 		 */
-		public function setSettings($settings)
+		public function setSettings(array $settings = null)
 		{
 			$this->settings = $settings;
 			return $this;
 		}
 		
+		/**
+		 * @return array
+		 */
 		public function getSettings()
 		{
 			return $this->settings;

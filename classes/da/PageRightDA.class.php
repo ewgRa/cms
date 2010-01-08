@@ -1,16 +1,14 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PageRightDA extends CmsDatabaseRequester
+	final class PageRightDA extends AutoPageRightDA
 	{
-		protected $tableAlias = 'PageRight';
-		
 		/**
-		 * @return RightDA
+		 * @return PageRightDA
 		 */
 		public static function me()
 		{
@@ -22,17 +20,6 @@
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE page_id = ?";
 			
 			return $this->getListCachedByQuery($dbQuery, array($page->getId()));
-		}
-
-		/**
-		 * @return PageRight
-		 */
-		protected function build(array $array) {
-			return
-				PageRight::create()->
-					setPageId($array['page_id'])->
-					setRightId($array['right_id'])->
-					setRedirectPageId($array['redirect_page_id']);
 		}
 	}
 ?>

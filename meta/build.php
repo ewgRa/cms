@@ -14,18 +14,21 @@
 	
 	$xslBuilders = array(
 		'AutoBusinessClass' => META_BUILDER_DIR.'/xsl/AutoBusinessClass.xsl',
-		'BusinessClass' => META_BUILDER_DIR.'/xsl/BusinessClass.xsl'
+		'BusinessClass' => META_BUILDER_DIR.'/xsl/BusinessClass.xsl',
+		'AutoDAClass' => META_BUILDER_DIR.'/xsl/AutoDAClass.xsl',
+		'DAClass' => META_BUILDER_DIR.'/xsl/DAClass.xsl'
 	);
 	
 	$targetFiles = array(
-		'AutoBusinessClass' =>
-			array(CLASSES_DIR.'/business/auto/Auto', '.class.php'),
-		'BusinessClass' =>
-			array(CLASSES_DIR.'/business/', '.class.php')
+		'AutoBusinessClass' => array(CLASSES_DIR.'/business/auto/Auto', '.class.php'),
+		'BusinessClass' => array(CLASSES_DIR.'/business/', '.class.php'),
+		'AutoDAClass' => array(CLASSES_DIR.'/da/auto/Auto', 'DA.class.php'),
+		'DAClass' => array(CLASSES_DIR.'/da/', 'DA.class.php')
 	);
 	
 	$protectedFiles = array(
-		'BusinessClass' => true
+		'BusinessClass' => true,
+		'DAClass' => true
 	);
 	
 	foreach ($xslBuilders as $builderName => $builderFile) {
@@ -44,6 +47,9 @@
 		if ($author = $meta->getDocumentElement()->getAttribute('author'))
 			$node->setAttribute('author', $author);
 			
+		if ($DAExtends = $meta->getDocumentElement()->getAttribute('DAExtends'))
+			$node->setAttribute('DAExtends', $DAExtends);
+			
 		$dom = ExtendedDomDocument::create();
 		
 		foreach ($node->childNodes as $childNode) {
@@ -53,6 +59,11 @@
 			$childNode->setAttribute(
 				'upperName',
 				StringUtils::upperKeyFirstAlpha($childNode->nodeName)
+			);
+			
+			$childNode->setAttribute(
+				'downSeparatedName',
+				StringUtils::separateByUpperKey($childNode->nodeName)
 			);
 			
 			if ($childNode->getAttribute('relation')) {
@@ -66,6 +77,11 @@
 				$relationNode->setAttribute(
 					'upperName',
 					StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
+				);
+				
+				$relationNode->setAttribute(
+					'downSeparatedName',
+					StringUtils::separateByUpperKey($relationNode->nodeName)
 				);
 				
 				$node->insertBefore($relationNode, $childNode);

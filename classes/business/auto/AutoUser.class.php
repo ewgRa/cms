@@ -7,22 +7,24 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoLayout
+	abstract class AutoUser
 	{
 		private $id = null;
 		
-		private $viewFileId = null;
+		private $login = null;
+		
+		private $password = null;
 		
 		/**
-		 * @return LayoutDA
+		 * @return UserDA
 		 */
 		public static function da()
 		{
-			return LayoutDA::me();
+			return UserDA::me();
 		}
 		
 		/**
-		 * @return AutoLayout
+		 * @return AutoUser
 		 */
 		public function setId($id)
 		{
@@ -37,26 +39,33 @@
 		}
 		
 		/**
-		 * @return AutoLayout
+		 * @return AutoUser
 		 */
-		public function setViewFileId($viewFileId)
+		public function setLogin($login)
 		{
-			$this->viewFileId = $viewFileId;
+			$this->login = $login;
 			return $this;
 		}
 		
-		public function getViewFileId()
+		public function getLogin()
 		{
-			Assert::isNotNull($this->viewFileId);
-			return $this->viewFileId;
+			Assert::isNotNull($this->login);
+			return $this->login;
 		}
 		
 		/**
-		 * @return ViewFile
+		 * @return AutoUser
 		 */
-		public function getViewFile()
+		public function setPassword($password)
 		{
-			return ViewFile::da()->getById($this->getViewFileId());
+			$this->password = $password;
+			return $this;
+		}
+		
+		public function getPassword()
+		{
+			Assert::isNotNull($this->password);
+			return $this->password;
 		}
 	}
 ?>

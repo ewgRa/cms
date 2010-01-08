@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class ViewFileDA extends CmsDatabaseRequester
+	final class ViewFileDA extends AutoViewFileDA
 	{
-		protected $tableAlias = 'ViewFile';
-		
 		/**
 		 * @return ViewFileDA
 		 */
@@ -16,7 +14,7 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-
+	
 		public function getByPage(Page $page)
 		{
 			$dbQuery = "
@@ -57,21 +55,6 @@
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
 			
 			return $this->getCachedByQuery($dbQuery, array($id));
-		}
-
-		/**
-		 * @return ViewFile
-		 */
-		protected function build(array $array)
-		{
-			return
-				ViewFile::create()->
-					setId($array['id'])->
-					setContentType(
-						ContentType::createByName($array['content_type'])
-					)->
-					setPath(Config::me()->replaceVariables($array['path']))->
-					setJoinable($array['joinable'] == 1);
 		}
 	}
 ?>

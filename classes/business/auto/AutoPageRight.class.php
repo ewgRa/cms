@@ -7,7 +7,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	class AutoPageRight
+	abstract class AutoPageRight
 	{
 		private $pageId = null;
 		

@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class NavigationDA extends CmsDatabaseRequester
+	final class NavigationDA extends AutoNavigationDA
 	{
-		protected $tableAlias = 'Navigation';
-		
 		/**
 		 * @return NavigationDA
 		 */
@@ -16,7 +14,7 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-
+		
 		public function getByCategory(Category $category)
 		{
 			$dbQuery = "
@@ -25,15 +23,6 @@
 			";
 			
 			return $this->getListCachedByQuery($dbQuery, array($category->getId()));
-		}
-		
-		protected function build(array $array)
-		{
-			return
-				Navigation::create()->
-					setId($array['id'])->
-					setCategoryId($array['category_id'])->
-					setUri(HttpUrl::createFromString($array['uri']));
 		}
 	}
 ?>

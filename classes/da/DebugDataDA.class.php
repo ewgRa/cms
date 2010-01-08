@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DebugDataDA extends CmsDatabaseRequester
+	final class DebugDataDA extends AutoDebugDataDA
 	{
-		protected $tableAlias = 'DebugData';
-		
 		/**
 		 * @return DebugDataDA
 		 */
@@ -28,19 +26,6 @@
 			);
 			
 			return $this->db()->getInsertedId();
-		}
-		
-		/**
-		 * @return DebugData
-		 */
-		protected function build(array $array)
-		{
-			return
-				DebugData::create()->
-					setId($array['id'])->
-					setSession($array['session'])->
-					setData(unserialize($array['data']))->
-					setDate($array['date']);
 		}
 	}
 ?>

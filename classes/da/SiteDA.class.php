@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class SiteDA extends CmsDatabaseRequester
+	final class SiteDA extends AutoSiteDA
 	{
-		protected $tableAlias = 'Site';
-		
 		/**
 		 * @return SiteDA
 		 */
@@ -25,17 +23,6 @@
 			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE alias = ?';
 
 			return $this->getCachedByQuery($dbQuery, array($alias));
-		}
-		
-		/**
-		 * @return Site
-		 */
-		protected function build(array $array)
-		{
-			return
-				Site::create()->
-					setId($array['id'])->
-					setAlias($array['alias']);
 		}
 	}
 ?>

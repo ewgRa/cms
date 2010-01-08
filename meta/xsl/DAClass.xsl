@@ -11,14 +11,14 @@
 	<xsl:call-template name="classPhpDoc">
 		<xsl:with-param name="wholeDoc" select="1" />
 	</xsl:call-template>
-	final class <xsl:value-of select="name()" /> extends Auto<xsl:value-of select="name()" />
+	final class <xsl:value-of select="name()" />DA extends Auto<xsl:value-of select="name()" />DA
 	{
 		/**
-		 * @return <xsl:value-of select="name()" />
+		 * @return <xsl:value-of select="name()" />DA
 		 */
-		public static function create()
+		public static function me()
 		{
-			return new self;
+			return parent::getInstance(__CLASS__);
 		}
 	}
 ?&gt;</xsl:template>

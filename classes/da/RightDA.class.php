@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class RightDA extends CmsDatabaseRequester
+	final class RightDA extends AutoRightDA
 	{
-		protected $tableAlias = 'Right';
-		
 		/**
 		 * @return RightDA
 		 */
@@ -16,7 +14,7 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
+
 		/**
 		 * @return Right
 		 */
@@ -47,18 +45,6 @@
 			";
 			
 			return $this->getListCachedByQuery($dbQuery, array($ids));
-		}
-		
-		/**
-		 * @return Right
-		 */
-		protected function build(array $array) {
-			return
-				Right::create()->
-					setId($array['id'])->
-					setAlias($array['alias'])->
-					setName($array['name'])->
-					setRole($array['role'] == 1);
 		}
 	}
 ?>

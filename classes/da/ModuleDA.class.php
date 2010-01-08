@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class ModuleDA extends CmsDatabaseRequester
+	final class ModuleDA extends AutoModuleDA
 	{
-		protected $tableAlias = 'Module';
-		
 		/**
 		 * @return ModuleDA
 		 */
@@ -22,20 +20,6 @@
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
 			
 			return $this->getCachedByQuery($dbQuery, array($id));
-		}
-		
-		protected function build(array $array)
-		{
-			$settings =
-				$array['settings']
-					? unserialize($array['settings'])
-					: null;
-			
-			return
-				Module::create()->
-					setId($array['id'])->
-					setName($array['name'])->
-					setSettings($settings);
 		}
 	}
 ?>

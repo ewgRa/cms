@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class NavigationDataDA extends CmsDatabaseRequester
+	final class NavigationDataDA extends AutoNavigationDataDA
 	{
-		protected $tableAlias = 'NavigationData';
-		
 		/**
 		 * @return NavigationDataDA
 		 */
@@ -58,14 +56,6 @@
 				$dbQuery,
 				$params
 			);
-		}
-		
-		protected function build(array $array) {
-			return
-				NavigationData::create()->
-					setNavigationId($array['navigation_id'])->
-					setLanguageId($array['language_id'])->
-					setText($array['text']);
 		}
 	}
 ?>

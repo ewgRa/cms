@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class ContentDA extends CmsDatabaseRequester
+	final class ContentDA extends AutoContentDA
 	{
-		protected $tableAlias = 'Content';
-		
 		/**
 		 * @return ContentDA
 		 */
@@ -25,14 +23,6 @@
 			";
 			
 			return $this->getListCachedByQuery($dbQuery, array($ids));
-		}
-				
-		protected function build(array $array)
-		{
-			return
-				Content::create()->
-					setId($array['id'])->
-					setStatus(ContentStatus::create($array['status']));
 		}
 	}
 ?>

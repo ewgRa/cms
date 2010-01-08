@@ -7,22 +7,22 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoLayout
+	abstract class AutoSite
 	{
 		private $id = null;
 		
-		private $viewFileId = null;
+		private $alias = null;
 		
 		/**
-		 * @return LayoutDA
+		 * @return SiteDA
 		 */
 		public static function da()
 		{
-			return LayoutDA::me();
+			return SiteDA::me();
 		}
 		
 		/**
-		 * @return AutoLayout
+		 * @return AutoSite
 		 */
 		public function setId($id)
 		{
@@ -37,26 +37,18 @@
 		}
 		
 		/**
-		 * @return AutoLayout
+		 * @return AutoSite
 		 */
-		public function setViewFileId($viewFileId)
+		public function setAlias($alias)
 		{
-			$this->viewFileId = $viewFileId;
+			$this->alias = $alias;
 			return $this;
 		}
 		
-		public function getViewFileId()
+		public function getAlias()
 		{
-			Assert::isNotNull($this->viewFileId);
-			return $this->viewFileId;
-		}
-		
-		/**
-		 * @return ViewFile
-		 */
-		public function getViewFile()
-		{
-			return ViewFile::da()->getById($this->getViewFileId());
+			Assert::isNotNull($this->alias);
+			return $this->alias;
 		}
 	}
 ?>

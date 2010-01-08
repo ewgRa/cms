@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class LayoutDA extends CmsDatabaseRequester
+	final class LayoutDA extends AutoLayoutDA
 	{
-		protected $tableAlias = 'Layout';
-		
 		/**
 		 * @return LayoutDA
 		 */
@@ -25,13 +23,6 @@
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
 			
 			return $this->getCachedByQuery($dbQuery, array($id));
-		}
-		
-		protected function build(array $array) {
-			return
-				Layout::create()->
-					setId($array['id'])->
-					setViewFileId($array['view_file_id']);
 		}
 	}
 ?>

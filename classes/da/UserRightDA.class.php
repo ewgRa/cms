@@ -1,16 +1,14 @@
 <?php
-	/* $Id$ */
-
-	/**
+	/* $Id */
+	
+	/*
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class UserRightDA extends CmsDatabaseRequester
+	final class UserRightDA extends AutoUserRightDA
 	{
-		protected $tableAlias = 'UserRight';
-		
 		/**
-		 * @return RightDA
+		 * @return UserRightDA
 		 */
 		public static function me()
 		{
@@ -34,16 +32,6 @@
 			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE user_id = ?";
 			
 			return $this->getListCachedByQuery($dbQuery, array($user->getId()));
-		}
-		
-		/**
-		 * @return UserRight
-		 */
-		protected function build(array $array) {
-			return
-				UserRight::create()->
-					setUserId($array['user_id'])->
-					setRightId($array['right_id']);
 		}
 	}
 ?>

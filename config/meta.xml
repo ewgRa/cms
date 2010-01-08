@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <meta 
-	license="http://www.opensource.org/licenses/bsd-license.php BSD" 
+	license="http://www.opensource.org/licenses/bsd-license.php BSD"
 	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
+	DAExtends="CmsDatabaseRequester"
 >
 	<Category>
 		<id />
@@ -77,7 +78,7 @@
 		<section null="true" id="true" />
 		<position null="true" id="true" />
 		<priority null="true" />
-		<settings null="true" />
+		<settings type="array" null="true" />
 		<viewFile type="ViewFile" relation="OneToOne" null="true" />
 	</PageModule>
 	
@@ -113,7 +114,7 @@
 	<ViewFile>
 		<id />
 		<contentType type="ContentType" />
-		<path />
+		<path replaceVariables="true"/>
 		<joinable type="boolean" null="true" />
 	</ViewFile>
 </meta>
