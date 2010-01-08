@@ -56,6 +56,11 @@
 			return $this;
 		}
 		
+		public function getNoRights()
+		{
+			return $this->noRights;
+		}
+		
 		/**
 		 * @return PageException
 		 */
@@ -63,6 +68,11 @@
 		{
 			$this->pageRights = $rights;
 			return $this;
+		}
+		
+		public function getPageRights()
+		{
+			return $this->pageRights;
 		}
 		
 		public function __toString()

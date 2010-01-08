@@ -86,7 +86,7 @@
 			return $this;
 		}
 		
-		public function catchPageNotFoundException(
+		public function catchPageException(
 			HttpRequest $request,
 			PageException $e
 		) {
@@ -99,6 +99,10 @@
 				$chainController->handleRequest($request, $modelAndView);
 				
 				return $modelAndView->render();
+			} else if ($e->getCode() == PageException::NO_RIGHTS_TO_ACCESS) {
+				$right = array_shift($e->getPageRights());
+				header('Location: '.$right->getRedirectPage()->getPath());
+				die();
 			} else
 				throw $e;
 		}
