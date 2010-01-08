@@ -12,4 +12,10 @@
 		<id></id>
 		<status type="ContentStatus"></status>
 	</Content>
+	
+	<ContentData>
+		<content type="Content" relation="OneToOne"></content>
+		<language type="Language" relation="OneToOne"></language>
+		<text></text>
+	</ContentData>
 </meta>

@@ -11,6 +11,9 @@
 	{
 		private $id = null;
 		
+		/**
+		 * @return ContentStatus
+		 */
 		private $status = null;
 		
 		/**
@@ -34,7 +37,6 @@
 		{
 			Assert::isNotNull($this->id);
 			return $this->id;
-		
 		}
 		
 		/**

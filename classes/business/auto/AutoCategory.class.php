@@ -34,7 +34,6 @@
 		{
 			Assert::isNotNull($this->id);
 			return $this->id;
-		
 		}
 		
 		/**

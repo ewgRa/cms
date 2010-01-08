@@ -3,6 +3,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="phpdoc.xsl" />
+<xsl:import href="BusinessClassGetter.xsl" />
 
 <xsl:output method="text" indent="yes" encoding="utf-8"/>
 
@@ -15,6 +16,10 @@
 	 */
 	class Auto<xsl:value-of select="name()" />
 	{<xsl:for-each select="*">
+		<xsl:if test="@type">
+		/**
+		 * @return <xsl:value-of select="@type" />
+		 */</xsl:if>
 		private $<xsl:value-of select="name()" /> = null;
 		</xsl:for-each>
 		/**
@@ -33,20 +38,7 @@
 			$this-><xsl:value-of select="name()" /> = $<xsl:value-of select="name()" />;
 			return $this;
 		}
-		<xsl:if test="@type">
-		/**
-		 * @return <xsl:value-of select="@type" />
-		 */</xsl:if>
-		public function get<xsl:value-of select="@upperName" />()
-		{<xsl:if test="not(@null)">
-			Assert::isNotNull($this-><xsl:value-of select="name()" />);</xsl:if>
-			return $this-><xsl:value-of select="name()" />;
-		<xsl:choose>
-			<xsl:when test="position() != last()">
-		}
-		</xsl:when>
-			<xsl:otherwise>}</xsl:otherwise>
-		</xsl:choose></xsl:for-each>
+		<xsl:call-template name="classGetter" /></xsl:for-each>
 	}
 ?&gt;</xsl:template>
 </xsl:stylesheet>

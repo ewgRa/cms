@@ -54,6 +54,17 @@
 				'upperName',
 				StringUtils::upperKeyFirstAlpha($childNode->nodeName)
 			);
+			
+			if ($childNode->getAttribute('relation')) {
+				$relationNode = $meta->createElement($childNode->nodeName.'Id');
+
+				$relationNode->setAttribute(
+					'upperName',
+					StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
+				);
+				
+				$node->insertBefore($relationNode, $childNode);
+			}
 		}
 		
 		$dom->loadXML($meta->saveXML($node));
