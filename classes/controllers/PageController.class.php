@@ -35,7 +35,10 @@
 			if (!$page)
 				throw PageException::pageNotFound()->setUrl($clearPath);
 
-			$user = $request->getAttachedVar(AttachedAliases::USER);
+			$user =
+				$request->hasAttachedVar(AttachedAliases::USER)
+					? $request->getAttachedVar(AttachedAliases::USER)
+					: null;
 			
 			$this->checkAccessPage($page, $user);
 
