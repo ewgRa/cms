@@ -22,11 +22,17 @@
 		{
 			return
 				<xsl:value-of select="name()" />::create()-><xsl:for-each select="*[not(@relation)]">
+				<xsl:variable name="createFunction">
+					<xsl:choose>
+						<xsl:when test="@createFunction"><xsl:value-of select="@type" />::<xsl:value-of select="@createFunction" /></xsl:when>
+						<xsl:otherwise><xsl:value-of select="@type" />::create</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="preValue">
 					<xsl:choose>
 						<xsl:when test="@type='array'">$array['<xsl:value-of select="@downSeparatedName" />'] ? unserialize($array['<xsl:value-of select="name()" />']) : null</xsl:when>
 						<xsl:when test="@type='boolean'">$array['<xsl:value-of select="@downSeparatedName" />'] == 1</xsl:when>
-						<xsl:when test="@type"><xsl:value-of select="@type" />::create($array['<xsl:value-of select="@downSeparatedName" />'])</xsl:when>
+						<xsl:when test="@type"><xsl:value-of select="$createFunction" />($array['<xsl:value-of select="@downSeparatedName" />'])</xsl:when>
 						<xsl:otherwise>$array['<xsl:value-of select="@downSeparatedName" />']</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

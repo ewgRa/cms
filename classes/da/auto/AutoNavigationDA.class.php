@@ -18,7 +18,7 @@
 				Navigation::create()->
 					setId($array['id'])->
 					setCategoryId($array['category_id'])->
-					setUri($array['uri']);
+					setUri(HttpUrl::createFromString($array['uri']));
 		}
 	}
 ?>

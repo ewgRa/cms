@@ -13,6 +13,9 @@
 		
 		private $categoryId = null;
 		
+		/**
+		 * @var HttpUrl
+		 */
 		private $uri = null;
 		
 		/**
@@ -64,12 +67,15 @@
 		/**
 		 * @return AutoNavigation
 		 */
-		public function setUri($uri)
+		public function setUri(HttpUrl $uri)
 		{
 			$this->uri = $uri;
 			return $this;
 		}
 		
+		/**
+		 * @return HttpUrl
+		 */
 		public function getUri()
 		{
 			Assert::isNotNull($this->uri);

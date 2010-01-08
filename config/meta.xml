@@ -46,7 +46,7 @@
 	<Navigation>
 		<id />
 		<category type="Category" relation="OneToOne" />
-		<uri />
+		<uri type="HttpUrl" createFunction="createFromString"/>
 	</Navigation>
 	
 	<NavigationData>
