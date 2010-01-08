@@ -42,10 +42,6 @@
 		 */
 		public function getModel()
 		{
-			Session::me()->start();
-			Session::me()->drop('userId');
-			Session::me()->save();
-
 			$user = null;
 			$loginResult = null;
 
@@ -56,6 +52,10 @@
 			}
 			
 			if ($requestModel->has('login')) {
+				Session::me()->start();
+				Session::me()->drop('userId');
+				Session::me()->save();
+
 				$loginResult = self::SUCCESS_LOGIN;
 				
 				try {
