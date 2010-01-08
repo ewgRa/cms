@@ -129,14 +129,8 @@
 				}
 
 				if (!count($intersectRights)) {
-					$noRights = array_diff(
-						array_keys($rights), $intersectRights
-					);
-					
 					throw
-						PageException::noRightsToAccess()->
-							setNoRights($noRights)->
-							setPageRights($rights);
+						PageException::noRightsToAccess()->setPageRights($rights);
 				}
 			}
 

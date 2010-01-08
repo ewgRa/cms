@@ -11,7 +11,6 @@
 		const NO_RIGHTS_TO_ACCESS	= 1002;
 		
 		private $url		= null;
-		private $noRights	= null;
 		private $pageRights	= null;
 		
 		/**
@@ -45,20 +44,6 @@
 		{
 			$this->url = $url;
 			return $this;
-		}
-		
-		/**
-		 * @return PageException
-		 */
-		public function setNoRights($noRights)
-		{
-			$this->noRights = $noRights;
-			return $this;
-		}
-		
-		public function getNoRights()
-		{
-			return $this->noRights;
 		}
 		
 		/**
@@ -101,7 +86,6 @@
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
 						$this->message,
-						"No rights: " . serialize($this->noRights),
 						"Page rights: " . serialize($this->pageRights)
 					);
 					
