@@ -100,8 +100,10 @@
 				
 				$result = $this->build($dbResult->fetchArray());
 
-				if ($cacheTicket)
+				if ($cacheTicket) {
 					$cacheTicket->setData($result)->storeData();
+					$this->addTicketToTag($cacheTicket);
+				}
 			} else
 				$result = $cacheTicket->getData();
 			
@@ -125,12 +127,59 @@
 	
 				$result = $this->buildList($dbResult->fetchList());
 
-				if ($cacheTicket)
+				if ($cacheTicket) {
 					$cacheTicket->setData($result)->storeData();
+					$this->addTicketToTag($cacheTicket);
+				}
 			} else
 				$result = $cacheTicket->getData();
 			
 			return $result;
+		}
+		
+		/**
+		 * @return CmsDatabaseRequester
+		 */
+		public function addTicketToTag(CacheTicket $cacheTicket)
+		{
+			$tagTicket =
+				$this->getCacheTicket()->
+				setKey(get_class($this), 'tag')->
+				restoreData();
+
+			$data =
+				$tagTicket->isExpired()
+					? array()
+					: $tagTicket->getData();
+				
+			$data[] = $cacheTicket->getCacheInstance()->compileKey($cacheTicket);
+			
+			$tagTicket->setData($data)->storeData();
+			
+			return $this;
+		}
+
+		public function dropCache()
+		{
+			$tagTicket = $this->getCacheTicket();
+
+			if ($tagTicket) {
+				$tagTicket->
+					setKey(get_class($this), 'tag')->
+					restoreData();
+	
+				$data =
+					$tagTicket->isExpired()
+						? array()
+						: $tagTicket->getData();
+
+				foreach ($data as $cacheKey)
+					$tagTicket->getCacheInstance()->dropByKey($cacheKey);
+					
+				$tagTicket->drop();
+			}
+
+			return $this;
 		}
 	}
 ?>

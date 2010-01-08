@@ -53,7 +53,7 @@
 			setCookie($_COOKIE)->
 			setServer($_SERVER);
 				
-		$databasePool = Database::me()->getPool('darinaprint');
+		$databasePool = Database::me()->getPool(PROJECT);
 		
 		Singleton::dropInstance('Debug');
 		

@@ -30,6 +30,8 @@
 			 
 			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
 			return $object;
 		}
 

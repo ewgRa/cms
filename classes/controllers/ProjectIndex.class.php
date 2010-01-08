@@ -47,13 +47,13 @@
 					? filemtime($fileName)
 					: 0;
 			
-			$debugItemId = null;
+			$debugItem = null;
 			
 			if ($storeDebug) {
 				try {
 					if (Singleton::hasInstance('Debug')) {
 						Debug::me()->addItem($this->createRequestDebugItem());
-						$debugItemId = Debug::me()->store();
+						$debugItem = Debug::me()->store();
 					}
 				} catch (Exception $exception) {
 					// very bad... even write debugItem failed
@@ -65,8 +65,8 @@
 				date('Y-m-d h:i:s ').$_SERVER['HTTP_HOST']
 				.$_SERVER['REQUEST_URI']
 				.(
-					$debugItemId
-						? ' (debugItemId: '.$debugItemId.')'
+					$debugItem
+						? ' (debugItemId: '.$debugItem->getId().')'
 						: null
 				)
 				.PHP_EOL.$e.PHP_EOL.PHP_EOL.PHP_EOL;
@@ -103,7 +103,8 @@
 				
 				return $modelAndView->render();
 			} else if ($e->getCode() == PageException::NO_RIGHTS_TO_ACCESS) {
-				$right = array_shift($e->getPageRights());
+				$rights = $e->getPageRights();
+				$right = array_shift($rights);
 				
 				header(
 					'Location: '.$right->getRedirectPage()->getPath()

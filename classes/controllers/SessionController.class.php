@@ -15,7 +15,6 @@
 			ModelAndView $mav
 		) {
 			Session::me()->relativeStart();
-			
 			return parent::handleRequest($request, $mav);
 		}
 	}
