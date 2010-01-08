@@ -17,18 +17,20 @@
 		public function insert(UserRight $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getUserId())) {
-				$dbQuery .= 'user_id = ?';
+				$queryParts[] = 'user_id = ?';
 				$queryParams[] = $object->getUserId();
 			}
 			
 			if (!is_null($object->getRightId())) {
-				$dbQuery .= 'right_id = ?';
+				$queryParts[] = 'right_id = ?';
 				$queryParams[] = $object->getRightId();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

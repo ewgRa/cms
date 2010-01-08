@@ -17,23 +17,25 @@
 		public function insert(DebugData $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getSession())) {
-				$dbQuery .= 'session = ?';
+				$queryParts[] = 'session = ?';
 				$queryParams[] = $object->getSession();
 			}
 			
 			if (!is_null($object->getData())) {
-				$dbQuery .= 'data = ?';
+				$queryParts[] = 'data = ?';
 				$queryParams[] = serialize($object->getData());
 			}
 			
 			if (!is_null($object->getDate())) {
-				$dbQuery .= 'date = ?';
+				$queryParts[] = 'date = ?';
 				$queryParams[] = $object->getDate();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

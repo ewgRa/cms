@@ -17,33 +17,35 @@
 		public function insert(Page $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getPath())) {
-				$dbQuery .= 'path = ?';
+				$queryParts[] = 'path = ?';
 				$queryParams[] = $object->getPath();
 			}
 			
 			if (!is_null($object->getPreg())) {
-				$dbQuery .= 'preg = ?';
+				$queryParts[] = 'preg = ?';
 				$queryParams[] = $object->getPreg()->getId();
 			}
 			
 			if (!is_null($object->getLayoutId())) {
-				$dbQuery .= 'layout_id = ?';
+				$queryParts[] = 'layout_id = ?';
 				$queryParams[] = $object->getLayoutId();
 			}
 			
 			if (!is_null($object->getStatus())) {
-				$dbQuery .= 'status = ?';
+				$queryParts[] = 'status = ?';
 				$queryParams[] = $object->getStatus()->getId();
 			}
 			
 			if (!is_null($object->getModified())) {
-				$dbQuery .= 'modified = ?';
+				$queryParts[] = 'modified = ?';
 				$queryParams[] = $object->getModified();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

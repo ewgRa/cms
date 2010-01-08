@@ -22,6 +22,7 @@
 		public function insert(<xsl:value-of select="name()" /> $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			<xsl:for-each select="*[not(@relation) and name() != 'id']">
 			if (!is_null($object->get<xsl:value-of select="@upperName" />())) {<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
@@ -31,10 +32,11 @@
 						<xsl:otherwise><xsl:value-of select="$preValue" /></xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				$dbQuery .= '<xsl:value-of select="@downSeparatedName" /> = ?';
+				$queryParts[] = '<xsl:value-of select="@downSeparatedName" /> = ?';
 				$queryParams[] = <xsl:value-of select="$value" />;
 			}
 			</xsl:for-each>
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

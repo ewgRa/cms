@@ -17,18 +17,20 @@
 		public function insert(Module $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getName())) {
-				$dbQuery .= 'name = ?';
+				$queryParts[] = 'name = ?';
 				$queryParams[] = $object->getName();
 			}
 			
 			if (!is_null($object->getSettings())) {
-				$dbQuery .= 'settings = ?';
+				$queryParts[] = 'settings = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

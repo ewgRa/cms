@@ -17,18 +17,20 @@
 		public function insert(Navigation $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getCategoryId())) {
-				$dbQuery .= 'category_id = ?';
+				$queryParts[] = 'category_id = ?';
 				$queryParams[] = $object->getCategoryId();
 			}
 			
 			if (!is_null($object->getUri())) {
-				$dbQuery .= 'uri = ?';
+				$queryParts[] = 'uri = ?';
 				$queryParams[] = $object->getUri()->getId();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

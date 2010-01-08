@@ -17,23 +17,25 @@
 		public function insert(PageRight $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getPageId())) {
-				$dbQuery .= 'page_id = ?';
+				$queryParts[] = 'page_id = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
 			if (!is_null($object->getRightId())) {
-				$dbQuery .= 'right_id = ?';
+				$queryParts[] = 'right_id = ?';
 				$queryParams[] = $object->getRightId();
 			}
 			
 			if (!is_null($object->getRedirectPageId())) {
-				$dbQuery .= 'redirect_page_id = ?';
+				$queryParts[] = 'redirect_page_id = ?';
 				$queryParams[] = $object->getRedirectPageId();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

@@ -17,13 +17,15 @@
 		public function insert(Category $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getAlias())) {
-				$dbQuery .= 'alias = ?';
+				$queryParts[] = 'alias = ?';
 				$queryParams[] = $object->getAlias();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

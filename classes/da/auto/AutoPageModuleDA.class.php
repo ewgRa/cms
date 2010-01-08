@@ -17,43 +17,45 @@
 		public function insert(PageModule $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getPageId())) {
-				$dbQuery .= 'page_id = ?';
+				$queryParts[] = 'page_id = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
 			if (!is_null($object->getModuleId())) {
-				$dbQuery .= 'module_id = ?';
+				$queryParts[] = 'module_id = ?';
 				$queryParams[] = $object->getModuleId();
 			}
 			
 			if (!is_null($object->getSection())) {
-				$dbQuery .= 'section = ?';
+				$queryParts[] = 'section = ?';
 				$queryParams[] = $object->getSection();
 			}
 			
 			if (!is_null($object->getPosition())) {
-				$dbQuery .= 'position = ?';
+				$queryParts[] = 'position = ?';
 				$queryParams[] = $object->getPosition();
 			}
 			
 			if (!is_null($object->getPriority())) {
-				$dbQuery .= 'priority = ?';
+				$queryParts[] = 'priority = ?';
 				$queryParams[] = $object->getPriority();
 			}
 			
 			if (!is_null($object->getSettings())) {
-				$dbQuery .= 'settings = ?';
+				$queryParts[] = 'settings = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}
 			
 			if (!is_null($object->getViewFileId())) {
-				$dbQuery .= 'view_file_id = ?';
+				$queryParts[] = 'view_file_id = ?';
 				$queryParams[] = $object->getViewFileId();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

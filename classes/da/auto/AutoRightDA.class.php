@@ -17,23 +17,25 @@
 		public function insert(Right $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getAlias())) {
-				$dbQuery .= 'alias = ?';
+				$queryParts[] = 'alias = ?';
 				$queryParams[] = $object->getAlias();
 			}
 			
 			if (!is_null($object->getName())) {
-				$dbQuery .= 'name = ?';
+				$queryParts[] = 'name = ?';
 				$queryParams[] = $object->getName();
 			}
 			
 			if (!is_null($object->getRole())) {
-				$dbQuery .= 'role = ?';
+				$queryParts[] = 'role = ?';
 				$queryParams[] = $object->getRole()->getId();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

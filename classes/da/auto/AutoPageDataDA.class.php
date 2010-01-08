@@ -17,33 +17,35 @@
 		public function insert(PageData $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getPageId())) {
-				$dbQuery .= 'page_id = ?';
+				$queryParts[] = 'page_id = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
 			if (!is_null($object->getLanguageId())) {
-				$dbQuery .= 'language_id = ?';
+				$queryParts[] = 'language_id = ?';
 				$queryParams[] = $object->getLanguageId();
 			}
 			
 			if (!is_null($object->getTitle())) {
-				$dbQuery .= 'title = ?';
+				$queryParts[] = 'title = ?';
 				$queryParams[] = $object->getTitle();
 			}
 			
 			if (!is_null($object->getDescription())) {
-				$dbQuery .= 'description = ?';
+				$queryParts[] = 'description = ?';
 				$queryParams[] = $object->getDescription();
 			}
 			
 			if (!is_null($object->getKeywords())) {
-				$dbQuery .= 'keywords = ?';
+				$queryParts[] = 'keywords = ?';
 				$queryParams[] = $object->getKeywords();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

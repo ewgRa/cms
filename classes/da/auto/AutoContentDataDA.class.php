@@ -17,23 +17,25 @@
 		public function insert(ContentData $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getContentId())) {
-				$dbQuery .= 'content_id = ?';
+				$queryParts[] = 'content_id = ?';
 				$queryParams[] = $object->getContentId();
 			}
 			
 			if (!is_null($object->getLanguageId())) {
-				$dbQuery .= 'language_id = ?';
+				$queryParts[] = 'language_id = ?';
 				$queryParams[] = $object->getLanguageId();
 			}
 			
 			if (!is_null($object->getText())) {
-				$dbQuery .= 'text = ?';
+				$queryParts[] = 'text = ?';
 				$queryParams[] = $object->getText();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

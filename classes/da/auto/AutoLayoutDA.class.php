@@ -17,13 +17,15 @@
 		public function insert(Layout $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getViewFileId())) {
-				$dbQuery .= 'view_file_id = ?';
+				$queryParts[] = 'view_file_id = ?';
 				$queryParams[] = $object->getViewFileId();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());

@@ -17,23 +17,25 @@
 		public function insert(ViewFile $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParts = array();
 			$queryParams = array();
 			
 			if (!is_null($object->getContentType())) {
-				$dbQuery .= 'content_type = ?';
+				$queryParts[] = 'content_type = ?';
 				$queryParams[] = $object->getContentType()->getId();
 			}
 			
 			if (!is_null($object->getPath())) {
-				$dbQuery .= 'path = ?';
+				$queryParts[] = 'path = ?';
 				$queryParams[] = $object->getPath();
 			}
 			
 			if (!is_null($object->getJoinable())) {
-				$dbQuery .= 'joinable = ?';
+				$queryParts[] = 'joinable = ?';
 				$queryParams[] = $object->getJoinable()->getId();
 			}
 			
+			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			 
 			$object->setId($this->db()->getInsertedId());
