@@ -87,11 +87,13 @@
 			$result = Model::create();
 			
 			foreach ($this->getModules() as $keyModule => $module) {
+				$pageModule = $this->pageModules[$keyModule];
+				
 				$result->append(
 					array(
 						'data' => $module->getRenderedModel(),
-						'section' => $this->pageModules[$keyModule]->getSection(),
-						'position' => $this->pageModules[$keyModule]->getPosition()
+						'section' => $pageModule->getSection(),
+						'position' => $pageModule->getPosition()
 					)
 				);
 			}
