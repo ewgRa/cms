@@ -20,12 +20,9 @@
 				Session::me()->isStarted()
 				&& Session::me()->has('userId')
 			) {
-					
 				$user = User::da()->getById(Session::me()->get('userId'));
-			}
-			
-			if ($user)
 				$request->setAttachedVar(AttachedAliases::USER, $user);
+			}
 			
 			return parent::handleRequest($request, $mav);
 		}

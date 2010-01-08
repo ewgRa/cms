@@ -5,22 +5,22 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class NavigationModule extends CmsModule
+	final class NavigationModule extends CmsModule
 	{
-		private $categoryAlias = null;
+		private $categoryIds = null;
 		
 		/**
 		 * @return NavigationModule
 		 */
-		public function setCategoryAlias($categoryAlias)
+		public function setCategoryIds(array $categoryIds)
 		{
-			$this->categoryAlias = $categoryAlias;
+			$this->categoryIds = $categoryIds;
 			return $this;
 		}
 		
-		public function getCategoryAlias()
+		public function getCategoryIds()
 		{
-			return $this->categoryAlias;
+			return $this->categoryIds;
 		}
 		
 		/**
@@ -28,7 +28,9 @@
 		 */
 		public function importSettings(array $settings = null)
 		{
-			$this->setCategoryAlias($settings['category']);
+			$this->setCategoryIds($settings['categories']);
+			
+			// TODO XXX: 'needRights'
 
 			return $this;
 		}
@@ -41,8 +43,8 @@
 			$result = array();
 			
 			$result['navigationList'] =
-				Navigation::da()->getByCategory(
-					Category::da()->getByAlias($this->getCategoryAlias())
+				Navigation::da()->getByCategoryIds(
+					$this->getCategoryIds()
 				);
 
 			$result['navigationDataList'] = array();

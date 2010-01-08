@@ -15,14 +15,14 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
-		public function getByCategory(Category $category)
+		public function getByCategoryIds(array $ids)
 		{
 			$dbQuery = "
 				SELECT * FROM ".$this->getTable()."
 				WHERE category_id = ?
 			";
 			
-			return $this->getListCachedByQuery($dbQuery, array($category->getId()));
+			return $this->getListCachedByQuery($dbQuery, array($ids));
 		}
 	}
 ?>
