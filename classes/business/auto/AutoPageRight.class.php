@@ -25,7 +25,9 @@
 		
 		public function getId()
 		{
-			return $this->getPageId().'_'.$this->getPageId().'_'.$this->getRightId().'_'.$this->getRightId();
+			Assert::isNotNull($this->pageId);
+			Assert::isNotNull($this->rightId);
+			return $this->getPageId().'_'.$this->getRightId();
 		}
 		
 		/**
@@ -39,7 +41,6 @@
 		
 		public function getPageId()
 		{
-			Assert::isNotNull($this->pageId);
 			return $this->pageId;
 		}
 		
@@ -71,7 +72,6 @@
 		
 		public function getRightId()
 		{
-			Assert::isNotNull($this->rightId);
 			return $this->rightId;
 		}
 		
@@ -103,7 +103,6 @@
 		
 		public function getRedirectPageId()
 		{
-			Assert::isNotNull($this->redirectPageId);
 			return $this->redirectPageId;
 		}
 		

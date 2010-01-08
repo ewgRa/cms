@@ -13,6 +13,26 @@
 		
 		/**
 		 * @return Site
+		 */		
+		public function insert(Site $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasAlias())) {
+				$dbQuery .= 'alias = ?';
+				$queryParams[] = $object->getAlias();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Site
 		 */
 		protected function build(array $array)
 		{
@@ -21,5 +41,6 @@
 					setId($array['id'])->
 					setAlias($array['alias']);
 		}
+
 	}
 ?>

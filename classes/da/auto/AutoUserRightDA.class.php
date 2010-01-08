@@ -13,6 +13,31 @@
 		
 		/**
 		 * @return UserRight
+		 */		
+		public function insert(UserRight $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasUserId())) {
+				$dbQuery .= 'user_id = ?';
+				$queryParams[] = $object->getUserId();
+			}
+			
+			if ($object->hasRightId())) {
+				$dbQuery .= 'right_id = ?';
+				$queryParams[] = $object->getRightId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return UserRight
 		 */
 		protected function build(array $array)
 		{
@@ -21,5 +46,6 @@
 					setUserId($array['user_id'])->
 					setRightId($array['right_id']);
 		}
+
 	}
 ?>

@@ -18,6 +18,32 @@
 		
 		/**
 		 * @return <xsl:value-of select="name()" />
+		 */		
+		public function insert(<xsl:value-of select="name()" /> $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			<xsl:for-each select="*[not(@relation) and name() != 'id']">
+			if ($object->has<xsl:value-of select="@upperName" />())) {<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
+					<xsl:choose>
+						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
+						<xsl:when test="@type"><xsl:value-of select="$preValue" />->getId()</xsl:when>
+						<xsl:otherwise><xsl:value-of select="$preValue" /></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				$dbQuery .= '<xsl:value-of select="@downSeparatedName" /> = ?';
+				$queryParams[] = <xsl:value-of select="$value" />;
+			}
+			</xsl:for-each>
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return <xsl:value-of select="name()" />
 		 */
 		protected function build(array $array)
 		{
@@ -47,6 +73,7 @@
 					set<xsl:value-of select="@upperName" />(<xsl:value-of select="$value"/>)<xsl:value-of select="$endLine" />
 </xsl:for-each>
 		}
+
 	}
 ?&gt;</xsl:template>
 </xsl:stylesheet>

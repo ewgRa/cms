@@ -13,6 +13,36 @@
 		
 		/**
 		 * @return ViewFile
+		 */		
+		public function insert(ViewFile $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasContentType())) {
+				$dbQuery .= 'content_type = ?';
+				$queryParams[] = $object->getContentType()->getId();
+			}
+			
+			if ($object->hasPath())) {
+				$dbQuery .= 'path = ?';
+				$queryParams[] = $object->getPath();
+			}
+			
+			if ($object->hasJoinable())) {
+				$dbQuery .= 'joinable = ?';
+				$queryParams[] = $object->getJoinable()->getId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return ViewFile
 		 */
 		protected function build(array $array)
 		{
@@ -23,5 +53,6 @@
 					setPath(Config::me()->replaceVariables($array['path']))->
 					setJoinable($array['joinable'] == 1);
 		}
+
 	}
 ?>

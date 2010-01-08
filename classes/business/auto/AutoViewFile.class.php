@@ -60,7 +60,6 @@
 		 */
 		public function getContentType()
 		{
-			Assert::isNotNull($this->contentType);
 			return $this->contentType;
 		}
 		
@@ -75,7 +74,6 @@
 		
 		public function getPath()
 		{
-			Assert::isNotNull($this->path);
 			return $this->path;
 		}
 		

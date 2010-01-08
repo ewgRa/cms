@@ -13,6 +13,36 @@
 		
 		/**
 		 * @return ContentData
+		 */		
+		public function insert(ContentData $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasContentId())) {
+				$dbQuery .= 'content_id = ?';
+				$queryParams[] = $object->getContentId();
+			}
+			
+			if ($object->hasLanguageId())) {
+				$dbQuery .= 'language_id = ?';
+				$queryParams[] = $object->getLanguageId();
+			}
+			
+			if ($object->hasText())) {
+				$dbQuery .= 'text = ?';
+				$queryParams[] = $object->getText();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return ContentData
 		 */
 		protected function build(array $array)
 		{
@@ -22,5 +52,6 @@
 					setLanguageId($array['language_id'])->
 					setText($array['text']);
 		}
+
 	}
 ?>

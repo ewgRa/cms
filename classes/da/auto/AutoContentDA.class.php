@@ -13,6 +13,26 @@
 		
 		/**
 		 * @return Content
+		 */		
+		public function insert(Content $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasStatus())) {
+				$dbQuery .= 'status = ?';
+				$queryParams[] = $object->getStatus()->getId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Content
 		 */
 		protected function build(array $array)
 		{
@@ -21,5 +41,6 @@
 					setId($array['id'])->
 					setStatus(ContentStatus::create($array['status']));
 		}
+
 	}
 ?>

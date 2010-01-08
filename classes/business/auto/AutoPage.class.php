@@ -61,7 +61,6 @@
 		
 		public function getPath()
 		{
-			Assert::isNotNull($this->path);
 			return $this->path;
 		}
 		
@@ -98,7 +97,6 @@
 		
 		public function getLayoutId()
 		{
-			Assert::isNotNull($this->layoutId);
 			return $this->layoutId;
 		}
 		
@@ -133,7 +131,6 @@
 		 */
 		public function getStatus()
 		{
-			Assert::isNotNull($this->status);
 			return $this->status;
 		}
 		
@@ -148,7 +145,6 @@
 		
 		public function getModified()
 		{
-			Assert::isNotNull($this->modified);
 			return $this->modified;
 		}
 	}

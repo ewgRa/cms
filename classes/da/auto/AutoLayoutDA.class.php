@@ -13,6 +13,26 @@
 		
 		/**
 		 * @return Layout
+		 */		
+		public function insert(Layout $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasViewFileId())) {
+				$dbQuery .= 'view_file_id = ?';
+				$queryParams[] = $object->getViewFileId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Layout
 		 */
 		protected function build(array $array)
 		{
@@ -21,5 +41,6 @@
 					setId($array['id'])->
 					setViewFileId($array['view_file_id']);
 		}
+
 	}
 ?>

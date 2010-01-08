@@ -47,7 +47,6 @@
 		
 		public function getAlias()
 		{
-			Assert::isNotNull($this->alias);
 			return $this->alias;
 		}
 	}

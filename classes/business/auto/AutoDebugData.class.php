@@ -71,7 +71,6 @@
 		 */
 		public function getData()
 		{
-			Assert::isNotNull($this->data);
 			return $this->data;
 		}
 		
@@ -86,7 +85,6 @@
 		
 		public function getDate()
 		{
-			Assert::isNotNull($this->date);
 			return $this->date;
 		}
 	}

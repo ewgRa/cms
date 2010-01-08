@@ -13,6 +13,46 @@
 		
 		/**
 		 * @return Page
+		 */		
+		public function insert(Page $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasPath())) {
+				$dbQuery .= 'path = ?';
+				$queryParams[] = $object->getPath();
+			}
+			
+			if ($object->hasPreg())) {
+				$dbQuery .= 'preg = ?';
+				$queryParams[] = $object->getPreg()->getId();
+			}
+			
+			if ($object->hasLayoutId())) {
+				$dbQuery .= 'layout_id = ?';
+				$queryParams[] = $object->getLayoutId();
+			}
+			
+			if ($object->hasStatus())) {
+				$dbQuery .= 'status = ?';
+				$queryParams[] = $object->getStatus()->getId();
+			}
+			
+			if ($object->hasModified())) {
+				$dbQuery .= 'modified = ?';
+				$queryParams[] = $object->getModified();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Page
 		 */
 		protected function build(array $array)
 		{
@@ -25,5 +65,6 @@
 					setStatus(PageStatus::create($array['status']))->
 					setModified($array['modified']);
 		}
+
 	}
 ?>

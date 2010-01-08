@@ -13,6 +13,46 @@
 		
 		/**
 		 * @return PageData
+		 */		
+		public function insert(PageData $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasPageId())) {
+				$dbQuery .= 'page_id = ?';
+				$queryParams[] = $object->getPageId();
+			}
+			
+			if ($object->hasLanguageId())) {
+				$dbQuery .= 'language_id = ?';
+				$queryParams[] = $object->getLanguageId();
+			}
+			
+			if ($object->hasTitle())) {
+				$dbQuery .= 'title = ?';
+				$queryParams[] = $object->getTitle();
+			}
+			
+			if ($object->hasDescription())) {
+				$dbQuery .= 'description = ?';
+				$queryParams[] = $object->getDescription();
+			}
+			
+			if ($object->hasKeywords())) {
+				$dbQuery .= 'keywords = ?';
+				$queryParams[] = $object->getKeywords();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return PageData
 		 */
 		protected function build(array $array)
 		{
@@ -24,5 +64,6 @@
 					setDescription($array['description'])->
 					setKeywords($array['keywords']);
 		}
+
 	}
 ?>

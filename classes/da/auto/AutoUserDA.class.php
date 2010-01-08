@@ -13,6 +13,31 @@
 		
 		/**
 		 * @return User
+		 */		
+		public function insert(User $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasLogin())) {
+				$dbQuery .= 'login = ?';
+				$queryParams[] = $object->getLogin();
+			}
+			
+			if ($object->hasPassword())) {
+				$dbQuery .= 'password = ?';
+				$queryParams[] = $object->getPassword();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return User
 		 */
 		protected function build(array $array)
 		{
@@ -22,5 +47,6 @@
 					setLogin($array['login'])->
 					setPassword($array['password']);
 		}
+
 	}
 ?>

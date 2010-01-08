@@ -13,6 +13,56 @@
 		
 		/**
 		 * @return PageModule
+		 */		
+		public function insert(PageModule $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasPageId())) {
+				$dbQuery .= 'page_id = ?';
+				$queryParams[] = $object->getPageId();
+			}
+			
+			if ($object->hasModuleId())) {
+				$dbQuery .= 'module_id = ?';
+				$queryParams[] = $object->getModuleId();
+			}
+			
+			if ($object->hasSection())) {
+				$dbQuery .= 'section = ?';
+				$queryParams[] = $object->getSection();
+			}
+			
+			if ($object->hasPosition())) {
+				$dbQuery .= 'position = ?';
+				$queryParams[] = $object->getPosition();
+			}
+			
+			if ($object->hasPriority())) {
+				$dbQuery .= 'priority = ?';
+				$queryParams[] = $object->getPriority();
+			}
+			
+			if ($object->hasSettings())) {
+				$dbQuery .= 'settings = ?';
+				$queryParams[] = serialize($object->getSettings());
+			}
+			
+			if ($object->hasViewFileId())) {
+				$dbQuery .= 'view_file_id = ?';
+				$queryParams[] = $object->getViewFileId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return PageModule
 		 */
 		protected function build(array $array)
 		{
@@ -26,5 +76,6 @@
 					setSettings($array['settings'] ? unserialize($array['settings']) : null)->
 					setViewFileId($array['view_file_id']);
 		}
+
 	}
 ?>

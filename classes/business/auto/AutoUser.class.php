@@ -49,7 +49,6 @@
 		
 		public function getLogin()
 		{
-			Assert::isNotNull($this->login);
 			return $this->login;
 		}
 		
@@ -64,7 +63,6 @@
 		
 		public function getPassword()
 		{
-			Assert::isNotNull($this->password);
 			return $this->password;
 		}
 	}

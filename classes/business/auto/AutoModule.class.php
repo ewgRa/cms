@@ -52,7 +52,6 @@
 		
 		public function getName()
 		{
-			Assert::isNotNull($this->name);
 			return $this->name;
 		}
 		

@@ -14,18 +14,5 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-
-		public function insert(DebugData $data)
-		{
-			$dbQuery = "INSERT INTO " . $this->getTable()
-				. " SET session = ?, data = ?";
-			
-			$this->db()->query(
-				$dbQuery,
-				array($data->getSession(), serialize($data->getData()))
-			);
-			
-			return $this->db()->getInsertedId();
-		}
 	}
 ?>

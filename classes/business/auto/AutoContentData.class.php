@@ -25,7 +25,9 @@
 		
 		public function getId()
 		{
-			return $this->getContentId().'_'.$this->getContentId().'_'.$this->getLanguageId().'_'.$this->getLanguageId();
+			Assert::isNotNull($this->contentId);
+			Assert::isNotNull($this->languageId);
+			return $this->getContentId().'_'.$this->getLanguageId();
 		}
 		
 		/**
@@ -39,7 +41,6 @@
 		
 		public function getContentId()
 		{
-			Assert::isNotNull($this->contentId);
 			return $this->contentId;
 		}
 		
@@ -71,7 +72,6 @@
 		
 		public function getLanguageId()
 		{
-			Assert::isNotNull($this->languageId);
 			return $this->languageId;
 		}
 		
@@ -103,7 +103,6 @@
 		
 		public function getText()
 		{
-			Assert::isNotNull($this->text);
 			return $this->text;
 		}
 	}

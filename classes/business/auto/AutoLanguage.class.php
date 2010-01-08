@@ -47,7 +47,6 @@
 		
 		public function getAbbr()
 		{
-			Assert::isNotNull($this->abbr);
 			return $this->abbr;
 		}
 	}

@@ -13,6 +13,26 @@
 		
 		/**
 		 * @return Language
+		 */		
+		public function insert(Language $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasAbbr())) {
+				$dbQuery .= 'abbr = ?';
+				$queryParams[] = $object->getAbbr();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Language
 		 */
 		protected function build(array $array)
 		{
@@ -21,5 +41,6 @@
 					setId($array['id'])->
 					setAbbr($array['abbr']);
 		}
+
 	}
 ?>

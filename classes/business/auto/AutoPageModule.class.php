@@ -36,7 +36,11 @@
 		
 		public function getId()
 		{
-			return $this->getPageId().'_'.$this->getPageId().'_'.$this->getModuleId().'_'.$this->getModuleId().'_'.$this->getSection().'_'.$this->getPosition();
+			Assert::isNotNull($this->pageId);
+			Assert::isNotNull($this->moduleId);
+			Assert::isNotNull($this->section);
+			Assert::isNotNull($this->position);
+			return $this->getPageId().'_'.$this->getModuleId().'_'.$this->getSection().'_'.$this->getPosition();
 		}
 		
 		/**
@@ -50,7 +54,6 @@
 		
 		public function getPageId()
 		{
-			Assert::isNotNull($this->pageId);
 			return $this->pageId;
 		}
 		
@@ -82,7 +85,6 @@
 		
 		public function getModuleId()
 		{
-			Assert::isNotNull($this->moduleId);
 			return $this->moduleId;
 		}
 		

@@ -29,7 +29,9 @@
 		
 		public function getId()
 		{
-			return $this->getPageId().'_'.$this->getPageId().'_'.$this->getLanguageId().'_'.$this->getLanguageId();
+			Assert::isNotNull($this->pageId);
+			Assert::isNotNull($this->languageId);
+			return $this->getPageId().'_'.$this->getLanguageId();
 		}
 		
 		/**
@@ -43,7 +45,6 @@
 		
 		public function getPageId()
 		{
-			Assert::isNotNull($this->pageId);
 			return $this->pageId;
 		}
 		
@@ -75,7 +76,6 @@
 		
 		public function getLanguageId()
 		{
-			Assert::isNotNull($this->languageId);
 			return $this->languageId;
 		}
 		

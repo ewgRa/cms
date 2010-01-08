@@ -23,7 +23,9 @@
 		
 		public function getId()
 		{
-			return $this->getUserId().'_'.$this->getUserId().'_'.$this->getRightId().'_'.$this->getRightId();
+			Assert::isNotNull($this->userId);
+			Assert::isNotNull($this->rightId);
+			return $this->getUserId().'_'.$this->getRightId();
 		}
 		
 		/**
@@ -37,7 +39,6 @@
 		
 		public function getUserId()
 		{
-			Assert::isNotNull($this->userId);
 			return $this->userId;
 		}
 		
@@ -69,7 +70,6 @@
 		
 		public function getRightId()
 		{
-			Assert::isNotNull($this->rightId);
 			return $this->rightId;
 		}
 		

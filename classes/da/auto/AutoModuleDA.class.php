@@ -13,6 +13,31 @@
 		
 		/**
 		 * @return Module
+		 */		
+		public function insert(Module $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasName())) {
+				$dbQuery .= 'name = ?';
+				$queryParams[] = $object->getName();
+			}
+			
+			if ($object->hasSettings())) {
+				$dbQuery .= 'settings = ?';
+				$queryParams[] = serialize($object->getSettings());
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Module
 		 */
 		protected function build(array $array)
 		{
@@ -22,5 +47,6 @@
 					setName($array['name'])->
 					setSettings($array['settings'] ? unserialize($array['settings']) : null);
 		}
+
 	}
 ?>

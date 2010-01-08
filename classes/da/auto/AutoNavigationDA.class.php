@@ -13,6 +13,31 @@
 		
 		/**
 		 * @return Navigation
+		 */		
+		public function insert(Navigation $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasCategoryId())) {
+				$dbQuery .= 'category_id = ?';
+				$queryParams[] = $object->getCategoryId();
+			}
+			
+			if ($object->hasUri())) {
+				$dbQuery .= 'uri = ?';
+				$queryParams[] = $object->getUri()->getId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Navigation
 		 */
 		protected function build(array $array)
 		{
@@ -22,5 +47,6 @@
 					setCategoryId($array['category_id'])->
 					setUri(HttpUrl::createFromString($array['uri']));
 		}
+
 	}
 ?>

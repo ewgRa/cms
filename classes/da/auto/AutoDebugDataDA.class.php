@@ -13,6 +13,36 @@
 		
 		/**
 		 * @return DebugData
+		 */		
+		public function insert(DebugData $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasSession())) {
+				$dbQuery .= 'session = ?';
+				$queryParams[] = $object->getSession();
+			}
+			
+			if ($object->hasData())) {
+				$dbQuery .= 'data = ?';
+				$queryParams[] = serialize($object->getData());
+			}
+			
+			if ($object->hasDate())) {
+				$dbQuery .= 'date = ?';
+				$queryParams[] = $object->getDate();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return DebugData
 		 */
 		protected function build(array $array)
 		{
@@ -23,5 +53,6 @@
 					setData($array['data'] ? unserialize($array['data']) : null)->
 					setDate($array['date']);
 		}
+
 	}
 ?>

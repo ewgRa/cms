@@ -13,6 +13,36 @@
 		
 		/**
 		 * @return Right
+		 */		
+		public function insert(Right $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasAlias())) {
+				$dbQuery .= 'alias = ?';
+				$queryParams[] = $object->getAlias();
+			}
+			
+			if ($object->hasName())) {
+				$dbQuery .= 'name = ?';
+				$queryParams[] = $object->getName();
+			}
+			
+			if ($object->hasRole())) {
+				$dbQuery .= 'role = ?';
+				$queryParams[] = $object->getRole()->getId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return Right
 		 */
 		protected function build(array $array)
 		{
@@ -23,5 +53,6 @@
 					setName($array['name'])->
 					setRole($array['role'] == 1);
 		}
+
 	}
 ?>

@@ -32,8 +32,9 @@
 		}
 		<xsl:if test="count(*[name()='id']) = 0 and count(*[@id]) &gt; 0">
 		public function getId()
-		{
-			return <xsl:for-each select="*[@id]">$this->get<xsl:value-of select="@upperName" /><xsl:if test="@relation">Id</xsl:if>()<xsl:if test="position() != last()">.'_'.</xsl:if></xsl:for-each>;
+		{<xsl:for-each select="*[@id and not(@relation)]">
+			Assert::isNotNull($this-><xsl:value-of select="name()" />);</xsl:for-each>
+			return <xsl:for-each select="*[@id and not(@relation)]">$this->get<xsl:value-of select="@upperName" />()<xsl:if test="position() != last()">.'_'.</xsl:if></xsl:for-each>;
 		}
 		</xsl:if><xsl:for-each select="*">
 		<xsl:call-template name="classSetter" />

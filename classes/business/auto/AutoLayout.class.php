@@ -47,7 +47,6 @@
 		
 		public function getViewFileId()
 		{
-			Assert::isNotNull($this->viewFileId);
 			return $this->viewFileId;
 		}
 		

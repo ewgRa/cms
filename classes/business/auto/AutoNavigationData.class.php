@@ -25,7 +25,9 @@
 		
 		public function getId()
 		{
-			return $this->getNavigationId().'_'.$this->getNavigationId().'_'.$this->getLanguageId().'_'.$this->getLanguageId();
+			Assert::isNotNull($this->navigationId);
+			Assert::isNotNull($this->languageId);
+			return $this->getNavigationId().'_'.$this->getLanguageId();
 		}
 		
 		/**
@@ -39,7 +41,6 @@
 		
 		public function getNavigationId()
 		{
-			Assert::isNotNull($this->navigationId);
 			return $this->navigationId;
 		}
 		
@@ -71,7 +72,6 @@
 		
 		public function getLanguageId()
 		{
-			Assert::isNotNull($this->languageId);
 			return $this->languageId;
 		}
 		
@@ -103,7 +103,6 @@
 		
 		public function getText()
 		{
-			Assert::isNotNull($this->text);
 			return $this->text;
 		}
 	}

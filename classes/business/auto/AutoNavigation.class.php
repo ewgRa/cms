@@ -52,7 +52,6 @@
 		
 		public function getCategoryId()
 		{
-			Assert::isNotNull($this->categoryId);
 			return $this->categoryId;
 		}
 		
@@ -87,7 +86,6 @@
 		 */
 		public function getUri()
 		{
-			Assert::isNotNull($this->uri);
 			return $this->uri;
 		}
 	}

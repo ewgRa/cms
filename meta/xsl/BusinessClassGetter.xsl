@@ -12,7 +12,7 @@
 		public function get<xsl:value-of select="@upperName" />()
 		{<xsl:choose>
 		<xsl:when test="not(@relation)">
-		<xsl:if test="not(@null)">
+			<xsl:if test="name() = 'id'">
 			Assert::isNotNull($this-><xsl:value-of select="name()" />);</xsl:if>
 			return $this-><xsl:value-of select="name()" />;
 		</xsl:when>

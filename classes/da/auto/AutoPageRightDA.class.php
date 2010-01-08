@@ -13,6 +13,36 @@
 		
 		/**
 		 * @return PageRight
+		 */		
+		public function insert(PageRight $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasPageId())) {
+				$dbQuery .= 'page_id = ?';
+				$queryParams[] = $object->getPageId();
+			}
+			
+			if ($object->hasRightId())) {
+				$dbQuery .= 'right_id = ?';
+				$queryParams[] = $object->getRightId();
+			}
+			
+			if ($object->hasRedirectPageId())) {
+				$dbQuery .= 'redirect_page_id = ?';
+				$queryParams[] = $object->getRedirectPageId();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return PageRight
 		 */
 		protected function build(array $array)
 		{
@@ -22,5 +52,6 @@
 					setRightId($array['right_id'])->
 					setRedirectPageId($array['redirect_page_id']);
 		}
+
 	}
 ?>

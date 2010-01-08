@@ -13,6 +13,36 @@
 		
 		/**
 		 * @return NavigationData
+		 */		
+		public function insert(NavigationData $object)
+		{
+			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
+			$queryParams = array();
+			
+			if ($object->hasNavigationId())) {
+				$dbQuery .= 'navigation_id = ?';
+				$queryParams[] = $object->getNavigationId();
+			}
+			
+			if ($object->hasLanguageId())) {
+				$dbQuery .= 'language_id = ?';
+				$queryParams[] = $object->getLanguageId();
+			}
+			
+			if ($object->hasText())) {
+				$dbQuery .= 'text = ?';
+				$queryParams[] = $object->getText();
+			}
+			
+			$this->db()->query($dbQuery, $queryParams);
+			 
+			$object->setId($this->db()->getInsertedId());
+			
+			return $object;
+		}
+
+		/**
+		 * @return NavigationData
 		 */
 		protected function build(array $array)
 		{
@@ -22,5 +52,6 @@
 					setLanguageId($array['language_id'])->
 					setText($array['text']);
 		}
+
 	}
 ?>

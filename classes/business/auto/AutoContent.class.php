@@ -53,7 +53,6 @@
 		 */
 		public function getStatus()
 		{
-			Assert::isNotNull($this->status);
 			return $this->status;
 		}
 	}
