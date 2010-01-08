@@ -92,47 +92,24 @@
 
 		private function checkAccessPage(Page $page, User $user = null)
 		{
-			$rights = PageRight::da()->getByPage($page);
+			$result = true;
 			
+			$pageRights = PageRight::da()->getByPage($page);
 			$rightIds = array();
 			
-			foreach ($rights as $right)
-				$rightIds[] = $right->getRightId();
+			foreach ($pageRights as $pageRight)
+				$rightIds[] = $pageRight->getRightId();
 			
-			$inheritanceRights = Right::da()->getByInheritanceIds($rightIds);
-			
-			$nextInheritanceRights = $inheritanceRights;
-			
-			while ($nextInheritanceRights) {
-				$inheritanceIds = array();
+			$rights = Right::da()->getByIds($rightIds);
+
+			if ($rights && !$user)
+				$result = false;
 				
-				foreach ($inheritanceRights as $right) {
-					if (!isset($this->inheritanceRights[$right->getId()])) {
-						$inheritanceRights[$right->getId()] = $right;
-						$inheritanceIds[] = $right->getId();
-					}
-				}
-
-				$nextInheritanceRights = Right::da()->getByInheritanceIds($inheritanceIds);
-			}
+			if ($result && $rights && $user)
+				$result = $user->checkAccess($rights);
 			
-			if ($rights) {
-				$intersectRights = array();
-				
-				if ($user) {
-					$userRightIds = UserRight::da()->getIdsByUser($user);
-
-					$intersectRights = array_intersect(
-						array_merge($rightIds, array_keys($inheritanceRights)),
-						$userRightIds
-					);
-				}
-
-				if (!count($intersectRights)) {
-					throw
-						PageException::noRightsToAccess()->setPageRights($rights);
-				}
-			}
+			if (!$result)
+				throw PageException::noRightsToAccess()->setPageRights($pageRights);
 
 			return $this;
 		}

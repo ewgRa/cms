@@ -35,6 +35,16 @@
 			return $this->getCachedByQuery($dbQuery, array($id));
 		}
 
+		/**
+		 * @return Right
+		 */
+		public function getByIds(array $ids)
+		{
+			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id IN (?)";
+			
+			return $this->getListCachedByQuery($dbQuery, array($ids));
+		}
+		
 		public function getByInheritanceIds(array $ids)
 		{
 			$dbQuery = "

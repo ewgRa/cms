@@ -19,5 +19,46 @@
 		{
 			return UserRight::da()->getByUser($this);
 		}
+		
+		public function checkAccess(array $rights = null)
+		{
+			if (!$rights)
+				return true;
+			
+			$result = true;
+			
+			$inheritanceRights =
+				Right::da()->getByInheritanceIds(array_keys($rights));
+			
+			$nextInheritanceRights = $inheritanceRights;
+			
+			while ($nextInheritanceRights) {
+				$inheritanceIds = array();
+				
+				foreach ($inheritanceRights as $right) {
+					if (!isset($this->inheritanceRights[$right->getId()])) {
+						$inheritanceRights[$right->getId()] = $right;
+						$inheritanceIds[] = $right->getId();
+					}
+				}
+
+				$nextInheritanceRights =
+					Right::da()->getByInheritanceIds($inheritanceIds);
+			}
+			
+			$intersectRights = array();
+			
+			$userRightIds = UserRight::da()->getRightIdsByUser($this);
+
+			$intersectRights = array_intersect(
+				array_merge(array_keys($rights), array_keys($inheritanceRights)),
+				$userRightIds
+			);
+
+			if (!count($intersectRights))
+				$result = false;
+			
+			return $result;
+		}
 	}
 ?>
