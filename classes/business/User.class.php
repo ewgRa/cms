@@ -14,5 +14,10 @@
 		{
 			return new self;
 		}
+		
+		public function getRights()
+		{
+			return UserRight::da()->getByUser($this);
+		}
 	}
 ?>

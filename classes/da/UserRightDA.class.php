@@ -15,7 +15,7 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
-		public function getRightIdsByUser(User $user)
+		public function getIdsByUser(User $user)
 		{
 			$userRights = $this->getByUser($user);
 			

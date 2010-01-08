@@ -18,9 +18,10 @@
 			
 			if (
 				Session::me()->isStarted()
-				&& $userId = Session::me()->has('userId')) {
-				
-				$user = User::da()->getById($userId);
+				&& Session::me()->has('userId')
+			) {
+					
+				$user = User::da()->getById(Session::me()->get('userId'));
 			}
 			
 			if ($user)

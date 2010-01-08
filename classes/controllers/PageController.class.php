@@ -120,7 +120,7 @@
 				$intersectRights = array();
 				
 				if ($user) {
-					$userRightIds = UserRight::da()->getRightIdsByUser($user);
+					$userRightIds = UserRight::da()->getIdsByUser($user);
 
 					$intersectRights = array_intersect(
 						array_merge($rightIds, array_keys($inheritanceRights)),
