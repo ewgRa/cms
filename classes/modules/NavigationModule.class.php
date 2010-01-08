@@ -69,6 +69,9 @@
 			if (!$this->getRightIds())
 				return true;
 			
+			if (!$this->hasUser())
+				return false;
+			
 			return
 				$this->getUser()->checkAccess(
 					Right::da()->getByIds($this->getRightIds())

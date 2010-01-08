@@ -161,6 +161,11 @@
 			return $this->getRequest()->getAttachedVar(AttachedAliases::PAGE);
 		}
 		
+		public function hasUser()
+		{
+			return $this->getRequest()->hasAttachedVar(AttachedAliases::USER);
+		}
+		
 		/**
 		 * @return User
 		 */
