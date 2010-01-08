@@ -22,6 +22,9 @@
 
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				Debug::me()->addItem($this->createRequestDebugItem());
+
+			if ($request->hasAttachedVar(AttachedAliases::PAGE_HEADER))
+				$request->getAttachedVar(AttachedAliases::PAGE_HEADER)->output();
 			
 			return $output;
 		}
@@ -101,7 +104,12 @@
 				return $modelAndView->render();
 			} else if ($e->getCode() == PageException::NO_RIGHTS_TO_ACCESS) {
 				$right = array_shift($e->getPageRights());
-				header('Location: '.$right->getRedirectPage()->getPath());
+				
+				header(
+					'Location: '.$right->getRedirectPage()->getPath()
+					.'?backurl='.base64_encode($request->getUrl())
+				);
+				
 				die();
 			} else
 				throw $e;

@@ -26,7 +26,7 @@
 		{
 			return $this->source;
 		}
-		
+				
 		/**
 		 * @return LoginModule
 		 */
@@ -46,40 +46,76 @@
 			Session::me()->drop('userId');
 			Session::me()->save();
 
-			$requestModel = $this->getRequestModel();
-			
-			$loginResult = self::SUCCESS_LOGIN;
-			
+			$user = null;
+			$loginResult = null;
+
 			try {
-				$user = User::da()->getByLogin($requestModel->get('login'));
-			} catch(NotFoundException $exception) {
-				$loginResult = self::WRONG_LOGIN;
+				$requestModel = $this->getRequestModel();
+			} catch (BadRequestException $e) {
+				$requestModel = Model::create();
 			}
 			
-			if ($user->getPassword() != md5($requestModel->get('password')))
-				$loginResult = self::WRONG_PASSWORD;
-			
-			if ($loginResult == self::SUCCESS_LOGIN) {
-				$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
-
-				Session::me()->set('userId', $user->getId());
-				Session::me()->save();
+			if ($requestModel->has('login')) {
+				$loginResult = self::SUCCESS_LOGIN;
+				
+				try {
+					$user = User::da()->getByLogin($requestModel->get('login'));
+				} catch(NotFoundException $exception) {
+					$loginResult = self::WRONG_LOGIN;
+				}
+				
+				if ($user && $user->getPassword() != md5($requestModel->get('password')))
+					$loginResult = self::WRONG_PASSWORD;
+				
+				if ($loginResult == self::SUCCESS_LOGIN) {
+					$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
+	
+					Session::me()->set('userId', $user->getId());
+					Session::me()->save();
+					
+					if ($requestModel->has('backurl')) {
+						$this->getPageHeader()->addRedirect(
+							HttpUrl::createFromString(
+								base64_decode($requestModel->get('backurl'))
+							)
+						);
+					}
+				}
 			}
 
+			$backurl =
+				$requestModel->has('backurl')
+					? $requestModel->get('backurl')
+					: null;
+					
+			if (!$backurl) {
+				$backurl =
+					$this->getRequest()->hasGetVar('backurl')
+						? $this->getRequest()->getGetVar('backurl')
+						: null;
+			}
+			
 			return
 				Model::create()->
+					set('source', $this->getSource())->
+					set('backurl', $backurl)->
 					set('user', $user)->
 					set('loginResult', $loginResult);
 		}
 
 		/**
 		 * @return Model
+		 * TODO: Form and primitives
 		 */
 		private function getRequestModel()
 		{
 			$result = Model::create();
 			
-			$keys = array('login' => 'login', 'password' => 'password');
+			$keys = array(
+				'login' => 'login',
+				'password' => 'password',
+				'backurl' => 'backurl'
+			);
 			
 			$function = null;
 			
@@ -104,8 +140,14 @@
 					break;
 			}
 			
-			foreach ($keys as $key => $varKey)
-				$result->set($key, $this->getRequest()->{$function}($varKey));
+			foreach ($keys as $key => $varKey) {
+				try {
+					$result->set($key, $this->getRequest()->{$function}($varKey));
+				} catch (MissingArgumentException $e) {
+					if ($key != 'backurl')
+						throw BadRequestException::create();
+				}
+			}
 			
 			return $result;
 		}

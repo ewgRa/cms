@@ -179,6 +179,9 @@
 		
 		private function renderModel()
 		{
+			if (!$this->getView())
+				$this->getModel();
+			
 			return
 				$this->getView()
 					? ModelAndView::create()->

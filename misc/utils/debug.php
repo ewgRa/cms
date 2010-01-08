@@ -78,7 +78,10 @@
 		$controller = new UserController();
 		$controller->handleRequest($request, ModelAndView::create());
 		
-		$user = $request->getAttachedVar(AttachedAliases::USER);
+		$user =
+			$request->hasAttachedVar(AttachedAliases::USER)
+				? $request->getAttachedVar(AttachedAliases::USER)
+				: null;
 		
 		if ($request->hasServerVar('PHP_AUTH_USER') && !$user) {
 			$loginModule = new LoginModule();

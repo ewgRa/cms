@@ -37,8 +37,13 @@
 		public function output()
 		{
 			foreach ($this->getHeaders() as $alias => $value)
-				header($alias.($value ? $value : null));
-			
+				header($alias.($value ? ': '.$value : null));
+
+			return $this;
+		}
+		
+		public function addRedirect(HttpUrl $url) {
+			$this->add('Location', (string)$url);
 			return $this;
 		}
 	}

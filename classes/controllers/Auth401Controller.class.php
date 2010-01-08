@@ -16,7 +16,10 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$user = $request->getAttachedVar(AttachedAliases::USER);
+			$user =
+				$request->hasAttachedVar(AttachedAliases::USER)
+					? $request->getAttachedVar(AttachedAliases::USER)
+					: null;
 			
 			$requiredRights =
 				array_keys(Right::da()->getByAliases($this->requiredRights));

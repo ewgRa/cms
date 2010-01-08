@@ -16,9 +16,9 @@
 		) {
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
-			if ($cookieLanguageId = $request->getCookieVar('languageId')) {
+			if ($request->hasCookieVar('languageId')) {
 				$localizer->setCookieLanguage(
-					Language::da()->getById($cookieLanguageId)
+					Language::da()->getById($request->getCookieVar('languageId'))
 				);
 			}
 			

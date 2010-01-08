@@ -40,7 +40,7 @@
 		public function loadModules(array $pageModules)
 		{
 			$this->modules = array();
-			
+
 			foreach ($pageModules as $index => $pageModule) {
 				$module = $pageModule->getModule();
 				
