@@ -53,38 +53,46 @@
 		$dom = ExtendedDomDocument::create();
 		
 		foreach ($node->childNodes as $childNode) {
-			if ($childNode->nodeType !== XML_ELEMENT_NODE)
+			if (
+				$childNode->nodeType !== XML_ELEMENT_NODE
+				|| $childNode->nodeName != 'properties'
+			)
 				continue;
 
-			$childNode->setAttribute(
-				'upperName',
-				StringUtils::upperKeyFirstAlpha($childNode->nodeName)
-			);
-			
-			$childNode->setAttribute(
-				'downSeparatedName',
-				StringUtils::separateByUpperKey($childNode->nodeName)
-			);
-			
-			if ($childNode->getAttribute('relation')) {
-				$relationNode = $meta->createElement($childNode->nodeName.'Id');
-
-				foreach ($childNode->attributes as $attrName => $attrValue) {
-					if ($attrName != 'relation' && $attrName != 'type')
-						$relationNode->setAttribute($attrName, $attrValue->value);
-				}
+			foreach ($childNode->childNodes as $propertyNode) {
+				if ($propertyNode->nodeType !== XML_ELEMENT_NODE)
+					continue;
 				
-				$relationNode->setAttribute(
+				$propertyNode->setAttribute(
 					'upperName',
-					StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
+					StringUtils::upperKeyFirstAlpha($propertyNode->nodeName)
 				);
 				
-				$relationNode->setAttribute(
+				$propertyNode->setAttribute(
 					'downSeparatedName',
-					StringUtils::separateByUpperKey($relationNode->nodeName)
+					StringUtils::separateByUpperKey($propertyNode->nodeName)
 				);
 				
-				$node->insertBefore($relationNode, $childNode);
+				if ($propertyNode->getAttribute('relation')) {
+					$relationNode = $meta->createElement($propertyNode->nodeName.'Id');
+	
+					foreach ($propertyNode->attributes as $attrName => $attrValue) {
+						if ($attrName != 'relation' && $attrName != 'type')
+							$relationNode->setAttribute($attrName, $attrValue->value);
+					}
+					
+					$relationNode->setAttribute(
+						'upperName',
+						StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
+					);
+					
+					$relationNode->setAttribute(
+						'downSeparatedName',
+						StringUtils::separateByUpperKey($relationNode->nodeName)
+					);
+					
+					$childNode->insertBefore($relationNode, $propertyNode);
+				}
 			}
 		}
 		

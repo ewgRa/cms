@@ -20,7 +20,7 @@
 		</xsl:choose>
 	</xsl:variable>
 		/**
-		 * @return Auto<xsl:value-of select="name(..)" />
+		 * @return Auto<xsl:value-of select="name(../..)" />
 		 */
 		public function set<xsl:value-of select="@upperName" />(<xsl:value-of select="$type" /><xsl:value-of select="name()" /><xsl:value-of select="$defaultValue"></xsl:value-of>)
 		{

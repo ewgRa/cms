@@ -24,7 +24,7 @@
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParts = array();
 			$queryParams = array();
-			<xsl:for-each select="*[not(@relation) and name() != 'id']">
+			<xsl:for-each select="properties/*[not(@relation) and name() != 'id']">
 			if (!is_null($object->get<xsl:value-of select="@upperName" />())) {<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
@@ -38,7 +38,7 @@
 			</xsl:for-each>
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			<xsl:if test="count(*[name() = 'id']) &gt; 0">
+			<xsl:if test="count(properties/*[name() = 'id']) &gt; 0">
 			$object->setId($this->db()->getInsertedId());
 			</xsl:if>
 			$this->dropCache();
@@ -55,7 +55,7 @@
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
-			<xsl:for-each select="*[not(@relation) and name() != 'id' and not(@id)]">
+			<xsl:for-each select="properties/*[not(@relation) and name() != 'id' and not(@id)]">
 				<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
@@ -67,7 +67,7 @@
 			$queryParams[] = <xsl:value-of select="$value" />;
 			</xsl:for-each>
 			$whereParts = array();
-			<xsl:for-each select="*[not(@relation) and (name() = 'id' or @id)]">
+			<xsl:for-each select="properties/*[not(@relation) and (name() = 'id' or @id)]">
 				<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
@@ -92,7 +92,7 @@
 		protected function build(array $array)
 		{
 			return
-				<xsl:value-of select="name()" />::create()-><xsl:for-each select="*[not(@relation)]">
+				<xsl:value-of select="name()" />::create()-><xsl:for-each select="properties/*[not(@relation)]">
 				<xsl:variable name="createFunction">
 					<xsl:choose>
 						<xsl:when test="@createFunction"><xsl:value-of select="@type" />::<xsl:value-of select="@createFunction" /></xsl:when>

@@ -5,116 +5,152 @@
 	DAExtends="CmsDatabaseRequester"
 >
 	<Category>
-		<id />
-		<alias />
+		<properties>
+			<id />
+			<alias />
+		</properties>
 	</Category>
 	
 	<Content>
-		<id />
-		<status type="ContentStatus" />
+		<properties>
+			<id />
+			<status type="ContentStatus" />
+		</properties>
 	</Content>
 	
 	<ContentData>
-		<content type="Content" relation="OneToOne" id="true" />
-		<language type="Language" relation="OneToOne" id="true" />
-		<text />
+		<properties>
+			<content type="Content" relation="OneToOne" id="true" />
+			<language type="Language" relation="OneToOne" id="true" />
+			<text />
+		</properties>
 	</ContentData>
 	
 	<DebugData>
-		<id />
-		<session null="true" />
-		<data type="array" />
-		<date />
+		<properties>
+			<id />
+			<session null="true" />
+			<data type="array" />
+			<date />
+		</properties>
 	</DebugData>
 	
 	<Language>
-		<id />
-		<abbr />
+		<properties>
+			<id />
+			<abbr />
+		</properties>
 	</Language>
 	
 	<Layout>
-		<id />
-		<viewFile type="ViewFile" relation="OneToOne" />
+		<properties>
+			<id />
+			<viewFile type="ViewFile" relation="OneToOne" />
+		</properties>
 	</Layout>
 	
 	<Module>
-		<id />
-		<name />
-		<settings type="array" null="true" />
+		<properties>
+			<id />
+			<name />
+			<settings type="array" null="true" />
+		</properties>
 	</Module>
 	
 	<Navigation>
-		<id />
-		<category type="Category" relation="OneToOne" />
-		<uri type="HttpUrl" createFunction="createFromString"/>
+		<properties>
+			<id />
+			<category type="Category" relation="OneToOne" />
+			<uri type="HttpUrl" createFunction="createFromString"/>
+		</properties>
 	</Navigation>
 	
 	<NavigationData>
-		<navigation type="Navigation" relation="OneToOne" id="true" />
-		<language type="Language" relation="OneToOne" id="true" />
-		<text />
+		<properties>
+			<navigation type="Navigation" relation="OneToOne" id="true" />
+			<language type="Language" relation="OneToOne" id="true" />
+			<text />
+		</properties>
 	</NavigationData>
 	
 	<Page>
-		<id />
-		<path />
-		<preg type="boolean" null="true" />
-		<layout type="Layout" relation="OneToOne" />
-		<status type="PageStatus" />
-		<modified />
+		<properties>
+			<id />
+			<path />
+			<preg type="boolean" null="true" />
+			<layout type="Layout" relation="OneToOne" />
+			<status type="PageStatus" />
+			<modified />
+		</properties>
 	</Page>
 	
 	<PageData>
-		<page type="Page" relation="OneToOne" id="true" />
-		<language type="Language" relation="OneToOne" id="true" />
-		<title null="true" />
-		<description null="true" />
-		<keywords null="true" />
+		<properties>
+			<page type="Page" relation="OneToOne" id="true" />
+			<language type="Language" relation="OneToOne" id="true" />
+			<title null="true" />
+			<description null="true" />
+			<keywords null="true" />
+		</properties>
 	</PageData>
 	
 	<PageModule>
-		<page type="Page" relation="OneToOne" id="true" />
-		<module type="Module" relation="OneToOne" id="true" />
-		<section null="true" id="true" />
-		<position null="true" id="true" />
-		<priority null="true" />
-		<settings type="array" null="true" />
-		<viewFile type="ViewFile" relation="OneToOne" null="true" />
+		<properties>
+			<page type="Page" relation="OneToOne" id="true" />
+			<module type="Module" relation="OneToOne" id="true" />
+			<section null="true" id="true" />
+			<position null="true" id="true" />
+			<priority null="true" />
+			<settings type="array" null="true" />
+			<viewFile type="ViewFile" relation="OneToOne" null="true" />
+		</properties>
 	</PageModule>
 	
 	<PageRight>
-		<page type="Page" relation="OneToOne" id="true" />
-		<right type="Right" relation="OneToOne" id="true" />
-		<redirectPage type="Page" relation="OneToOne" />
+		<properties>
+			<page type="Page" relation="OneToOne" id="true" />
+			<right type="Right" relation="OneToOne" id="true" />
+			<redirectPage type="Page" relation="OneToOne" />
+		</properties>
 	</PageRight>
 	
 	<Right>
-		<id />
-		<alias />
-		<name null="true" />
-		<role type="boolean" null="true" />
+		<properties>
+			<id />
+			<alias />
+			<name null="true" />
+			<role type="boolean" null="true" />
+		</properties>
 	</Right>
 	
 	<Site>
-		<id />
-		<alias />
+		<properties>
+			<id />
+			<alias />
+		</properties>
 	</Site>
 	
 	<User>
-		<id />
-		<login />
-		<password />
+		<properties>
+			<id />
+			<login />
+			<password />
+		</properties>
 	</User>
 	
 	<UserRight>
-		<user type="User" relation="OneToOne" id="true" />
-		<right type="Right" relation="OneToOne" id="true" />
+		<properties>
+			<user type="User" relation="OneToOne" id="true" />
+			<right type="Right" relation="OneToOne" id="true" />
+		</properties>
 	</UserRight>
 	
 	<ViewFile>
-		<id />
-		<contentType type="ContentType" />
-		<path replaceVariables="true"/>
-		<joinable type="boolean" null="true" />
+		<properties>
+			<id />
+			<contentType type="ContentType" />
+			<path replaceVariables="true"/>
+			<joinable type="boolean" null="true" />
+		</properties>
 	</ViewFile>
 </meta>

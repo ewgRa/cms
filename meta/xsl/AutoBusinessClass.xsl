@@ -16,7 +16,7 @@
 	 * Do not edit this class!<xsl:call-template name="classPhpDoc" />
 	 */
 	abstract class Auto<xsl:value-of select="name()" />
-	{<xsl:for-each select="*[not(@relation)]">
+	{<xsl:for-each select="properties/*[not(@relation)]">
 		<xsl:if test="@type">
 		/**
 		 * @var <xsl:value-of select="@type" />
@@ -30,13 +30,13 @@
 		{
 			return <xsl:value-of select="name()" />DA::me();
 		}
-		<xsl:if test="count(*[name()='id']) = 0 and count(*[@id]) &gt; 0">
+		<xsl:if test="count(properties/*[name()='id']) = 0 and count(properties/*[@id]) &gt; 0">
 		public function getId()
-		{<xsl:for-each select="*[@id and not(@relation)]">
+		{<xsl:for-each select="properties/*[@id and not(@relation)]">
 			Assert::isNotNull($this-><xsl:value-of select="name()" />);</xsl:for-each>
-			return <xsl:for-each select="*[@id and not(@relation)]">$this->get<xsl:value-of select="@upperName" />()<xsl:if test="position() != last()">.'_'.</xsl:if></xsl:for-each>;
+			return <xsl:for-each select="properties/*[@id and not(@relation)]">$this->get<xsl:value-of select="@upperName" />()<xsl:if test="position() != last()">.'_'.</xsl:if></xsl:for-each>;
 		}
-		</xsl:if><xsl:for-each select="*">
+		</xsl:if><xsl:for-each select="properties/*">
 		<xsl:call-template name="classSetter" />
 		<xsl:call-template name="classGetter" /></xsl:for-each>
 	}
