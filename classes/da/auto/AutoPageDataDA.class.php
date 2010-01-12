@@ -47,9 +47,42 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
-			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoPageDataDA
+		 */		
+		public function save(PageData $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'title = ?';
+			$queryParams[] = $object->getTitle();
+			
+			$queryParts[] = 'description = ?';
+			$queryParams[] = $object->getDescription();
+			
+			$queryParts[] = 'keywords = ?';
+			$queryParams[] = $object->getKeywords();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'page_id = ?';
+			$queryParams[] = $object->getPageId();
+			
+			$whereParts[] = 'language_id = ?';
+			$queryParams[] = $object->getLanguageId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

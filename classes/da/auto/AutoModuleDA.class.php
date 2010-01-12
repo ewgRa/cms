@@ -32,9 +32,38 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
+			
 			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoModuleDA
+		 */		
+		public function save(Module $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'name = ?';
+			$queryParams[] = $object->getName();
+			
+			$queryParts[] = 'settings = ?';
+			$queryParams[] = serialize($object->getSettings());
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

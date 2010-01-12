@@ -32,9 +32,33 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
-			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoUserRightDA
+		 */		
+		public function save(UserRight $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'user_id = ?';
+			$queryParams[] = $object->getUserId();
+			
+			$whereParts[] = 'right_id = ?';
+			$queryParams[] = $object->getRightId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

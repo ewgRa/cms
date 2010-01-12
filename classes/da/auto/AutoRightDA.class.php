@@ -37,9 +37,41 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
+			
 			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoRightDA
+		 */		
+		public function save(Right $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'alias = ?';
+			$queryParams[] = $object->getAlias();
+			
+			$queryParts[] = 'name = ?';
+			$queryParams[] = $object->getName();
+			
+			$queryParts[] = 'role = ?';
+			$queryParams[] = $object->getRole()->getId();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

@@ -27,9 +27,35 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
+			
 			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoLayoutDA
+		 */		
+		public function save(Layout $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'view_file_id = ?';
+			$queryParams[] = $object->getViewFileId();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

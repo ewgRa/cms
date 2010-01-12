@@ -37,9 +37,41 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
+			
 			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoDebugDataDA
+		 */		
+		public function save(DebugData $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'session = ?';
+			$queryParams[] = $object->getSession();
+			
+			$queryParts[] = 'data = ?';
+			$queryParams[] = serialize($object->getData());
+			
+			$queryParts[] = 'date = ?';
+			$queryParams[] = $object->getDate();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

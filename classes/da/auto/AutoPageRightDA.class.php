@@ -37,9 +37,36 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
-			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoPageRightDA
+		 */		
+		public function save(PageRight $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'redirect_page_id = ?';
+			$queryParams[] = $object->getRedirectPageId();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'page_id = ?';
+			$queryParams[] = $object->getPageId();
+			
+			$whereParts[] = 'right_id = ?';
+			$queryParams[] = $object->getRightId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

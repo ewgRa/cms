@@ -57,9 +57,48 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
-			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoPageModuleDA
+		 */		
+		public function save(PageModule $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'priority = ?';
+			$queryParams[] = $object->getPriority();
+			
+			$queryParts[] = 'settings = ?';
+			$queryParams[] = serialize($object->getSettings());
+			
+			$queryParts[] = 'view_file_id = ?';
+			$queryParams[] = $object->getViewFileId();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'page_id = ?';
+			$queryParams[] = $object->getPageId();
+			
+			$whereParts[] = 'module_id = ?';
+			$queryParams[] = $object->getModuleId();
+			
+			$whereParts[] = 'section = ?';
+			$queryParams[] = $object->getSection();
+			
+			$whereParts[] = 'position = ?';
+			$queryParams[] = $object->getPosition();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

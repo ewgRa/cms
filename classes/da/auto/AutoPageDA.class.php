@@ -47,9 +47,47 @@
 			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
+			
 			$object->setId($this->db()->getInsertedId());
 			
+			$this->dropCache();
+			
+			return $object;
+		}
+
+		/**
+		 * @return AutoPageDA
+		 */		
+		public function save(Page $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			
+			$queryParts[] = 'path = ?';
+			$queryParams[] = $object->getPath();
+			
+			$queryParts[] = 'preg = ?';
+			$queryParams[] = $object->getPreg()->getId();
+			
+			$queryParts[] = 'layout_id = ?';
+			$queryParams[] = $object->getLayoutId();
+			
+			$queryParts[] = 'status = ?';
+			$queryParams[] = $object->getStatus()->getId();
+			
+			$queryParts[] = 'modified = ?';
+			$queryParams[] = $object->getModified();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
+			
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;

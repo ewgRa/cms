@@ -38,9 +38,49 @@
 			</xsl:for-each>
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
-			 
+			<xsl:if test="count(*[name() = 'id']) &gt; 0">
 			$object->setId($this->db()->getInsertedId());
+			</xsl:if>
+			$this->dropCache();
 			
+			return $object;
+		}
+
+		/**
+		 * @return Auto<xsl:value-of select="name()" />DA
+		 */		
+		public function save(<xsl:value-of select="name()" /> $object)
+		{
+			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
+			$queryParts = array();
+			$whereParts = array();
+			$queryParams = array();
+			<xsl:for-each select="*[not(@relation) and name() != 'id' and not(@id)]">
+				<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
+					<xsl:choose>
+						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
+						<xsl:when test="@type"><xsl:value-of select="$preValue" />->getId()</xsl:when>
+						<xsl:otherwise><xsl:value-of select="$preValue" /></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+			$queryParts[] = '<xsl:value-of select="@downSeparatedName" /> = ?';
+			$queryParams[] = <xsl:value-of select="$value" />;
+			</xsl:for-each>
+			$whereParts = array();
+			<xsl:for-each select="*[not(@relation) and (name() = 'id' or @id)]">
+				<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
+					<xsl:choose>
+						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
+						<xsl:when test="@type"><xsl:value-of select="$preValue" />->getId()</xsl:when>
+						<xsl:otherwise><xsl:value-of select="$preValue" /></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+			$whereParts[] = '<xsl:value-of select="@downSeparatedName" /> = ?';
+			$queryParams[] = <xsl:value-of select="$value" />;
+			</xsl:for-each>
+			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
+			$this->db()->query($dbQuery, $queryParams);
+			 
 			$this->dropCache();
 			
 			return $object;
