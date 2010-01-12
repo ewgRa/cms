@@ -20,6 +20,16 @@
 			return UserRight::da()->getByUser($this);
 		}
 		
+		public function hasRightAlias($alias)
+		{
+			foreach ($this->getRights() as $userRight) {
+				if ($userRight->getRight()->getAlias() == $alias)
+					return true;
+			}
+
+			return false;
+		}
+		
 		public function checkAccess(array $rights = null)
 		{
 			if (!$rights)
