@@ -16,8 +16,7 @@
 	 * Do not edit this class!<xsl:call-template name="classPhpDoc" />
 	 */
 	abstract class Auto<xsl:value-of select="name()" />
-	{<xsl:for-each select="properties/*[not(@relation)]">
-		<xsl:if test="@type">
+	{<xsl:for-each select="properties/*[not(@relation)]"><xsl:if test="@type">
 		/**
 		 * @var <xsl:value-of select="@type" />
 		 */</xsl:if>
