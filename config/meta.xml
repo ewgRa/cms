@@ -4,14 +4,14 @@
 	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
 	DAExtends="CmsDatabaseRequester"
 >
-	<Category>
+	<Category extends="IdentifierObject">
 		<properties>
 			<id />
 			<alias />
 		</properties>
 	</Category>
 	
-	<Content>
+	<Content extends="IdentifierObject">
 		<properties>
 			<id />
 			<status type="ContentStatus" />
@@ -35,21 +35,21 @@
 		</properties>
 	</DebugData>
 	
-	<Language>
+	<Language extends="IdentifierObject">
 		<properties>
 			<id />
 			<abbr />
 		</properties>
 	</Language>
 	
-	<Layout>
+	<Layout extends="IdentifierObject">
 		<properties>
 			<id />
 			<viewFile type="ViewFile" relation="OneToOne" />
 		</properties>
 	</Layout>
 	
-	<Module>
+	<Module extends="IdentifierObject">
 		<properties>
 			<id />
 			<name />
@@ -57,7 +57,7 @@
 		</properties>
 	</Module>
 	
-	<Navigation>
+	<Navigation extends="IdentifierObject">
 		<properties>
 			<id />
 			<category type="Category" relation="OneToOne" />
@@ -73,7 +73,7 @@
 		</properties>
 	</NavigationData>
 	
-	<Page>
+	<Page extends="IdentifierObject">
 		<properties>
 			<id />
 			<path />
@@ -114,7 +114,7 @@
 		</properties>
 	</PageRight>
 	
-	<Right>
+	<Right extends="IdentifierObject">
 		<properties>
 			<id />
 			<alias />
@@ -123,14 +123,14 @@
 		</properties>
 	</Right>
 	
-	<Site>
+	<Site extends="IdentifierObject">
 		<properties>
 			<id />
 			<alias />
 		</properties>
 	</Site>
 	
-	<User>
+	<User extends="IdentifierObject">
 		<properties>
 			<id />
 			<login />
@@ -145,7 +145,7 @@
 		</properties>
 	</UserRight>
 	
-	<ViewFile>
+	<ViewFile extends="IdentifierObject">
 		<properties>
 			<id />
 			<contentType type="ContentType" />

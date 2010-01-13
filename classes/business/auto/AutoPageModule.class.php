@@ -34,15 +34,6 @@
 			return PageModuleDA::me();
 		}
 		
-		public function getId()
-		{
-			Assert::isNotNull($this->pageId);
-			Assert::isNotNull($this->moduleId);
-			Assert::isNotNull($this->section);
-			Assert::isNotNull($this->position);
-			return $this->getPageId().'_'.$this->getModuleId().'_'.$this->getSection().'_'.$this->getPosition();
-		}
-		
 		/**
 		 * @return AutoPageModule
 		 */

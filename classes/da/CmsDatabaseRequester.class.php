@@ -74,7 +74,10 @@
 			foreach ($arrayList as $array) {
 				$object = $this->build($array);
 				
-				$result[$object->getId()] = $object;
+				if ($object instanceof IdentifierObject)
+					$result[$object->getId()] = $object;
+				else
+					$result[] = $object;
 			}
 			
 			return $result;

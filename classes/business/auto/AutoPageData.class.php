@@ -27,13 +27,6 @@
 			return PageDataDA::me();
 		}
 		
-		public function getId()
-		{
-			Assert::isNotNull($this->pageId);
-			Assert::isNotNull($this->languageId);
-			return $this->getPageId().'_'.$this->getLanguageId();
-		}
-		
 		/**
 		 * @return AutoPageData
 		 */

@@ -52,47 +52,41 @@
 			
 		$dom = ExtendedDomDocument::create();
 		
-		foreach ($node->childNodes as $childNode) {
-			if (
-				$childNode->nodeType !== XML_ELEMENT_NODE
-				|| $childNode->nodeName != 'properties'
-			)
-				continue;
+		$propertiesNode = $node->getElementsByTagName('properties')->item(0);
 
-			foreach ($childNode->childNodes as $propertyNode) {
-				if ($propertyNode->nodeType !== XML_ELEMENT_NODE)
-					continue;
-				
-				$propertyNode->setAttribute(
-					'upperName',
-					StringUtils::upperKeyFirstAlpha($propertyNode->nodeName)
-				);
-				
-				$propertyNode->setAttribute(
-					'downSeparatedName',
-					StringUtils::separateByUpperKey($propertyNode->nodeName)
-				);
-				
-				if ($propertyNode->getAttribute('relation')) {
-					$relationNode = $meta->createElement($propertyNode->nodeName.'Id');
-	
-					foreach ($propertyNode->attributes as $attrName => $attrValue) {
-						if ($attrName != 'relation' && $attrName != 'type')
-							$relationNode->setAttribute($attrName, $attrValue->value);
-					}
-					
-					$relationNode->setAttribute(
-						'upperName',
-						StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
-					);
-					
-					$relationNode->setAttribute(
-						'downSeparatedName',
-						StringUtils::separateByUpperKey($relationNode->nodeName)
-					);
-					
-					$childNode->insertBefore($relationNode, $propertyNode);
+		foreach ($propertiesNode->childNodes as $propertyNode) {
+			if ($propertyNode->nodeType !== XML_ELEMENT_NODE)
+				continue;
+			
+			$propertyNode->setAttribute(
+				'upperName',
+				StringUtils::upperKeyFirstAlpha($propertyNode->nodeName)
+			);
+			
+			$propertyNode->setAttribute(
+				'downSeparatedName',
+				StringUtils::separateByUpperKey($propertyNode->nodeName)
+			);
+			
+			if ($propertyNode->getAttribute('relation')) {
+				$relationNode = $meta->createElement($propertyNode->nodeName.'Id');
+
+				foreach ($propertyNode->attributes as $attrName => $attrValue) {
+					if ($attrName != 'relation' && $attrName != 'type')
+						$relationNode->setAttribute($attrName, $attrValue->value);
 				}
+				
+				$relationNode->setAttribute(
+					'upperName',
+					StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
+				);
+				
+				$relationNode->setAttribute(
+					'downSeparatedName',
+					StringUtils::separateByUpperKey($relationNode->nodeName)
+				);
+				
+				$propertiesNode->insertBefore($relationNode, $propertyNode);
 			}
 		}
 		

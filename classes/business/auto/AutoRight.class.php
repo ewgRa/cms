@@ -7,7 +7,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoRight
+	abstract class AutoRight extends IdentifierObject
 	{
 		private $id = null;
 		

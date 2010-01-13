@@ -21,13 +21,6 @@
 			return UserRightDA::me();
 		}
 		
-		public function getId()
-		{
-			Assert::isNotNull($this->userId);
-			Assert::isNotNull($this->rightId);
-			return $this->getUserId().'_'.$this->getRightId();
-		}
-		
 		/**
 		 * @return AutoUserRight
 		 */

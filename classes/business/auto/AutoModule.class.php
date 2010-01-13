@@ -7,7 +7,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoModule
+	abstract class AutoModule extends IdentifierObject
 	{
 		private $id = null;
 		

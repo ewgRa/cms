@@ -23,13 +23,6 @@
 			return NavigationDataDA::me();
 		}
 		
-		public function getId()
-		{
-			Assert::isNotNull($this->navigationId);
-			Assert::isNotNull($this->languageId);
-			return $this->getNavigationId().'_'.$this->getLanguageId();
-		}
-		
 		/**
 		 * @return AutoNavigationData
 		 */

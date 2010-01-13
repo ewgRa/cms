@@ -23,13 +23,6 @@
 			return PageRightDA::me();
 		}
 		
-		public function getId()
-		{
-			Assert::isNotNull($this->pageId);
-			Assert::isNotNull($this->rightId);
-			return $this->getPageId().'_'.$this->getRightId();
-		}
-		
 		/**
 		 * @return AutoPageRight
 		 */
