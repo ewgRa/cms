@@ -9,6 +9,8 @@
 	 */
 	abstract class AutoPageData
 	{
+		private $id = null;
+		
 		private $pageId = null;
 		
 		private $languageId = null;
@@ -25,6 +27,21 @@
 		public static function da()
 		{
 			return PageDataDA::me();
+		}
+		
+		/**
+		 * @return AutoPageData
+		 */
+		public function setId($id)
+		{
+			$this->id = $id;
+			return $this;
+		}
+		
+		public function getId()
+		{
+			Assert::isNotNull($this->id);
+			return $this->id;
 		}
 		
 		/**

@@ -58,6 +58,8 @@
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			
+			$object->setId($this->db()->getInsertedId());
+			
 			$this->dropCache();
 			
 			return $object;
@@ -73,6 +75,18 @@
 			$whereParts = array();
 			$queryParams = array();
 			
+			$queryParts[] = 'page_id = ?';
+			$queryParams[] = $object->getPageId();
+			
+			$queryParts[] = 'module_id = ?';
+			$queryParams[] = $object->getModuleId();
+			
+			$queryParts[] = 'section = ?';
+			$queryParams[] = $object->getSection();
+			
+			$queryParts[] = 'position = ?';
+			$queryParams[] = $object->getPosition();
+			
 			$queryParts[] = 'priority = ?';
 			$queryParams[] = $object->getPriority();
 			
@@ -84,17 +98,8 @@
 			
 			$whereParts = array();
 			
-			$whereParts[] = 'page_id = ?';
-			$queryParams[] = $object->getPageId();
-			
-			$whereParts[] = 'module_id = ?';
-			$queryParams[] = $object->getModuleId();
-			
-			$whereParts[] = 'section = ?';
-			$queryParams[] = $object->getSection();
-			
-			$whereParts[] = 'position = ?';
-			$queryParams[] = $object->getPosition();
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
 			
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
 			$this->db()->query($dbQuery, $queryParams);
@@ -111,6 +116,7 @@
 		{
 			return
 				PageModule::create()->
+					setId($array['id'])->
 					setPageId($array['page_id'])->
 					setModuleId($array['module_id'])->
 					setSection($array['section'])->

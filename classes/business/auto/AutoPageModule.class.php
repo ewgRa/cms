@@ -9,6 +9,8 @@
 	 */
 	abstract class AutoPageModule
 	{
+		private $id = null;
+		
 		private $pageId = null;
 		
 		private $moduleId = null;
@@ -32,6 +34,21 @@
 		public static function da()
 		{
 			return PageModuleDA::me();
+		}
+		
+		/**
+		 * @return AutoPageModule
+		 */
+		public function setId($id)
+		{
+			$this->id = $id;
+			return $this;
+		}
+		
+		public function getId()
+		{
+			Assert::isNotNull($this->id);
+			return $this->id;
 		}
 		
 		/**

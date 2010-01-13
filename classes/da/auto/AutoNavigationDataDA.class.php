@@ -38,6 +38,8 @@
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			
+			$object->setId($this->db()->getInsertedId());
+			
 			$this->dropCache();
 			
 			return $object;
@@ -53,16 +55,19 @@
 			$whereParts = array();
 			$queryParams = array();
 			
+			$queryParts[] = 'navigation_id = ?';
+			$queryParams[] = $object->getNavigationId();
+			
+			$queryParts[] = 'language_id = ?';
+			$queryParams[] = $object->getLanguageId();
+			
 			$queryParts[] = 'text = ?';
 			$queryParams[] = $object->getText();
 			
 			$whereParts = array();
 			
-			$whereParts[] = 'navigation_id = ?';
-			$queryParams[] = $object->getNavigationId();
-			
-			$whereParts[] = 'language_id = ?';
-			$queryParams[] = $object->getLanguageId();
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
 			
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
 			$this->db()->query($dbQuery, $queryParams);
@@ -79,6 +84,7 @@
 		{
 			return
 				NavigationData::create()->
+					setId($array['id'])->
 					setNavigationId($array['navigation_id'])->
 					setLanguageId($array['language_id'])->
 					setText($array['text']);

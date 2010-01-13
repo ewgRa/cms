@@ -9,6 +9,8 @@
 	 */
 	abstract class AutoPageRight
 	{
+		private $id = null;
+		
 		private $pageId = null;
 		
 		private $rightId = null;
@@ -21,6 +23,21 @@
 		public static function da()
 		{
 			return PageRightDA::me();
+		}
+		
+		/**
+		 * @return AutoPageRight
+		 */
+		public function setId($id)
+		{
+			$this->id = $id;
+			return $this;
+		}
+		
+		public function getId()
+		{
+			Assert::isNotNull($this->id);
+			return $this->id;
 		}
 		
 		/**

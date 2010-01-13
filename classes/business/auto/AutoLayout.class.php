@@ -7,7 +7,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoLayout extends IdentifierObject
+	abstract class AutoLayout
 	{
 		private $id = null;
 		

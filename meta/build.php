@@ -8,10 +8,6 @@
 	define('CLASSES_DIR', $curDir.'/classes');
 	define('META_FILE', $curDir.'/config/meta.xml');
 	
-	$meta = ExtendedDomDocument::create();
-	
-	$meta->load(META_FILE);
-	
 	$xslBuilders = array(
 		'AutoBusinessClass' => META_BUILDER_DIR.'/xsl/AutoBusinessClass.xsl',
 		'BusinessClass' => META_BUILDER_DIR.'/xsl/BusinessClass.xsl',
@@ -31,62 +27,23 @@
 		'DAClass' => true
 	);
 	
-	$predifinedAttributes = array('license', 'author', 'DAExtends');
-	
 	foreach ($xslBuilders as $builderName => $builderFile) {
 		${$builderName} =
 			XsltView::create()->
 			loadLayout(File::create()->setPath($builderFile));
 	}
 	
+	$meta = ExtendedDomDocument::create();
+	$meta->load(META_FILE);
+	
+	preConfigure($meta);
+	
 	foreach ($meta->getDocumentElement()->childNodes as $node) {
 		if ($node->nodeType !== XML_ELEMENT_NODE)
 			continue;
 
-		foreach ($predifinedAttributes as $attr) {
-			if ($value = $meta->getDocumentElement()->getAttribute($attr))
-				$node->setAttribute($attr, $value);
-		}
-			
-		$propertiesNode = $node->getElementsByTagName('properties')->item(0);
-
-		foreach ($propertiesNode->childNodes as $propertyNode) {
-			if ($propertyNode->nodeType !== XML_ELEMENT_NODE)
-				continue;
-			
-			$propertyNode->setAttribute(
-				'upperName',
-				StringUtils::upperKeyFirstAlpha($propertyNode->nodeName)
-			);
-			
-			$propertyNode->setAttribute(
-				'downSeparatedName',
-				StringUtils::separateByUpperKey($propertyNode->nodeName)
-			);
-			
-			if ($propertyNode->getAttribute('relation')) {
-				$relationNode = $meta->createElement($propertyNode->nodeName.'Id');
-
-				foreach ($propertyNode->attributes as $attrName => $attrValue) {
-					if ($attrName != 'relation' && $attrName != 'type')
-						$relationNode->setAttribute($attrName, $attrValue->value);
-				}
-				
-				$relationNode->setAttribute(
-					'upperName',
-					StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
-				);
-				
-				$relationNode->setAttribute(
-					'downSeparatedName',
-					StringUtils::separateByUpperKey($relationNode->nodeName)
-				);
-				
-				$propertiesNode->insertBefore($relationNode, $propertyNode);
-			}
-		}
-		
-		$dom = ExtendedDomDocument::create()->loadXML($meta->saveXML($node));
+		$dom = ExtendedDomDocument::create();
+		$dom->loadXML($meta->saveXML($node));
 
 		foreach ($xslBuilders as $builderName => $builderFile) {
 			$file =
@@ -96,6 +53,59 @@
 			
 			if (!isset($protectedFiles[$builderName]) || !$file->isExists())
 				$file->setContent(${$builderName}->transformXML($dom));
+		}
+	}
+	
+	function preConfigure(ExtendedDomDocument $meta)
+	{
+		$predifinedAttributes = array('license', 'author', 'DAExtends');
+	
+		foreach ($meta->getDocumentElement()->childNodes as $node) {
+			if ($node->nodeType !== XML_ELEMENT_NODE)
+				continue;
+	
+			foreach ($predifinedAttributes as $attr) {
+				if ($value = $meta->getDocumentElement()->getAttribute($attr))
+					$node->setAttribute($attr, $value);
+			}
+				
+			$propertiesNode = $node->getElementsByTagName('properties')->item(0);
+	
+			foreach ($propertiesNode->childNodes as $propertyNode) {
+				if ($propertyNode->nodeType !== XML_ELEMENT_NODE)
+					continue;
+				
+				$propertyNode->setAttribute(
+					'upperName',
+					StringUtils::upperKeyFirstAlpha($propertyNode->nodeName)
+				);
+				
+				$propertyNode->setAttribute(
+					'downSeparatedName',
+					StringUtils::separateByUpperKey($propertyNode->nodeName)
+				);
+				
+				if ($propertyNode->getAttribute('relation')) {
+					$relationNode = $meta->createElement($propertyNode->nodeName.'Id');
+	
+					foreach ($propertyNode->attributes as $attrName => $attrValue) {
+						if ($attrName != 'relation' && $attrName != 'type')
+							$relationNode->setAttribute($attrName, $attrValue->value);
+					}
+					
+					$relationNode->setAttribute(
+						'upperName',
+						StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
+					);
+					
+					$relationNode->setAttribute(
+						'downSeparatedName',
+						StringUtils::separateByUpperKey($relationNode->nodeName)
+					);
+					
+					$propertiesNode->insertBefore($relationNode, $propertyNode);
+				}
+			}
 		}
 	}
 ?>

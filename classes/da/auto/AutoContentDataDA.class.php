@@ -38,6 +38,8 @@
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			
+			$object->setId($this->db()->getInsertedId());
+			
 			$this->dropCache();
 			
 			return $object;
@@ -53,16 +55,19 @@
 			$whereParts = array();
 			$queryParams = array();
 			
+			$queryParts[] = 'content_id = ?';
+			$queryParams[] = $object->getContentId();
+			
+			$queryParts[] = 'language_id = ?';
+			$queryParams[] = $object->getLanguageId();
+			
 			$queryParts[] = 'text = ?';
 			$queryParams[] = $object->getText();
 			
 			$whereParts = array();
 			
-			$whereParts[] = 'content_id = ?';
-			$queryParams[] = $object->getContentId();
-			
-			$whereParts[] = 'language_id = ?';
-			$queryParams[] = $object->getLanguageId();
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
 			
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
 			$this->db()->query($dbQuery, $queryParams);
@@ -79,6 +84,7 @@
 		{
 			return
 				ContentData::create()->
+					setId($array['id'])->
 					setContentId($array['content_id'])->
 					setLanguageId($array['language_id'])->
 					setText($array['text']);

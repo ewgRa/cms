@@ -38,6 +38,8 @@
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			
+			$object->setId($this->db()->getInsertedId());
+			
 			$this->dropCache();
 			
 			return $object;
@@ -53,16 +55,19 @@
 			$whereParts = array();
 			$queryParams = array();
 			
+			$queryParts[] = 'page_id = ?';
+			$queryParams[] = $object->getPageId();
+			
+			$queryParts[] = 'right_id = ?';
+			$queryParams[] = $object->getRightId();
+			
 			$queryParts[] = 'redirect_page_id = ?';
 			$queryParams[] = $object->getRedirectPageId();
 			
 			$whereParts = array();
 			
-			$whereParts[] = 'page_id = ?';
-			$queryParams[] = $object->getPageId();
-			
-			$whereParts[] = 'right_id = ?';
-			$queryParams[] = $object->getRightId();
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
 			
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
 			$this->db()->query($dbQuery, $queryParams);
@@ -79,6 +84,7 @@
 		{
 			return
 				PageRight::create()->
+					setId($array['id'])->
 					setPageId($array['page_id'])->
 					setRightId($array['right_id'])->
 					setRedirectPageId($array['redirect_page_id']);

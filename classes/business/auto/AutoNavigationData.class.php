@@ -9,6 +9,8 @@
 	 */
 	abstract class AutoNavigationData
 	{
+		private $id = null;
+		
 		private $navigationId = null;
 		
 		private $languageId = null;
@@ -21,6 +23,21 @@
 		public static function da()
 		{
 			return NavigationDataDA::me();
+		}
+		
+		/**
+		 * @return AutoNavigationData
+		 */
+		public function setId($id)
+		{
+			$this->id = $id;
+			return $this;
+		}
+		
+		public function getId()
+		{
+			Assert::isNotNull($this->id);
+			return $this->id;
 		}
 		
 		/**

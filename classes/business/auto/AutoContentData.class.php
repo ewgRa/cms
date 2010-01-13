@@ -9,6 +9,8 @@
 	 */
 	abstract class AutoContentData
 	{
+		private $id = null;
+		
 		private $contentId = null;
 		
 		private $languageId = null;
@@ -21,6 +23,21 @@
 		public static function da()
 		{
 			return ContentDataDA::me();
+		}
+		
+		/**
+		 * @return AutoContentData
+		 */
+		public function setId($id)
+		{
+			$this->id = $id;
+			return $this;
+		}
+		
+		public function getId()
+		{
+			Assert::isNotNull($this->id);
+			return $this->id;
 		}
 		
 		/**

@@ -4,14 +4,14 @@
 	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
 	DAExtends="CmsDatabaseRequester"
 >
-	<Category extends="IdentifierObject">
+	<Category>
 		<properties>
 			<id />
 			<alias />
 		</properties>
 	</Category>
 	
-	<Content extends="IdentifierObject">
+	<Content>
 		<properties>
 			<id />
 			<status type="ContentStatus" />
@@ -20,6 +20,7 @@
 	
 	<ContentData>
 		<properties>
+			<id />
 			<content type="Content" relation="OneToOne" />
 			<language type="Language" relation="OneToOne" />
 			<text />
@@ -35,21 +36,21 @@
 		</properties>
 	</DebugData>
 	
-	<Language extends="IdentifierObject">
+	<Language>
 		<properties>
 			<id />
 			<abbr />
 		</properties>
 	</Language>
 	
-	<Layout extends="IdentifierObject">
+	<Layout>
 		<properties>
 			<id />
 			<viewFile type="ViewFile" relation="OneToOne" />
 		</properties>
 	</Layout>
 	
-	<Module extends="IdentifierObject">
+	<Module>
 		<properties>
 			<id />
 			<name />
@@ -57,7 +58,7 @@
 		</properties>
 	</Module>
 	
-	<Navigation extends="IdentifierObject">
+	<Navigation>
 		<properties>
 			<id />
 			<category type="Category" relation="OneToOne" />
@@ -67,13 +68,14 @@
 	
 	<NavigationData>
 		<properties>
+			<id />
 			<navigation type="Navigation" relation="OneToOne" />
 			<language type="Language" relation="OneToOne" />
 			<text />
 		</properties>
 	</NavigationData>
 	
-	<Page extends="IdentifierObject">
+	<Page>
 		<properties>
 			<id />
 			<path />
@@ -86,6 +88,7 @@
 	
 	<PageData>
 		<properties>
+			<id />
 			<page type="Page" relation="OneToOne" />
 			<language type="Language" relation="OneToOne" />
 			<title null="true" />
@@ -96,6 +99,7 @@
 	
 	<PageModule>
 		<properties>
+			<id />
 			<page type="Page" relation="OneToOne" />
 			<module type="Module" relation="OneToOne" />
 			<section null="true" />
@@ -108,13 +112,14 @@
 	
 	<PageRight>
 		<properties>
+			<id />
 			<page type="Page" relation="OneToOne" />
 			<right type="Right" relation="OneToOne" />
 			<redirectPage type="Page" relation="OneToOne" />
 		</properties>
 	</PageRight>
 	
-	<Right extends="IdentifierObject">
+	<Right>
 		<properties>
 			<id />
 			<alias />
@@ -123,14 +128,14 @@
 		</properties>
 	</Right>
 	
-	<Site extends="IdentifierObject">
+	<Site>
 		<properties>
 			<id />
 			<alias />
 		</properties>
 	</Site>
 	
-	<User extends="IdentifierObject">
+	<User>
 		<properties>
 			<id />
 			<login />
@@ -140,12 +145,13 @@
 	
 	<UserRight>
 		<properties>
+			<id />
 			<user type="User" relation="OneToOne" />
 			<right type="Right" relation="OneToOne" />
 		</properties>
 	</UserRight>
 	
-	<ViewFile extends="IdentifierObject">
+	<ViewFile>
 		<properties>
 			<id />
 			<contentType type="ContentType" />

@@ -33,6 +33,8 @@
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			
+			$object->setId($this->db()->getInsertedId());
+			
 			$this->dropCache();
 			
 			return $object;
@@ -48,13 +50,16 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$whereParts = array();
-			
-			$whereParts[] = 'user_id = ?';
+			$queryParts[] = 'user_id = ?';
 			$queryParams[] = $object->getUserId();
 			
-			$whereParts[] = 'right_id = ?';
+			$queryParts[] = 'right_id = ?';
 			$queryParams[] = $object->getRightId();
+			
+			$whereParts = array();
+			
+			$whereParts[] = 'id = ?';
+			$queryParams[] = $object->getId();
 			
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
 			$this->db()->query($dbQuery, $queryParams);
@@ -71,6 +76,7 @@
 		{
 			return
 				UserRight::create()->
+					setId($array['id'])->
 					setUserId($array['user_id'])->
 					setRightId($array['right_id']);
 		}

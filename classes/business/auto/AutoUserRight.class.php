@@ -9,6 +9,8 @@
 	 */
 	abstract class AutoUserRight
 	{
+		private $id = null;
+		
 		private $userId = null;
 		
 		private $rightId = null;
@@ -19,6 +21,21 @@
 		public static function da()
 		{
 			return UserRightDA::me();
+		}
+		
+		/**
+		 * @return AutoUserRight
+		 */
+		public function setId($id)
+		{
+			$this->id = $id;
+			return $this;
+		}
+		
+		public function getId()
+		{
+			Assert::isNotNull($this->id);
+			return $this->id;
 		}
 		
 		/**

@@ -55,7 +55,7 @@
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
-			<xsl:for-each select="properties/*[not(@relation) and name() != 'id' and not(@id)]">
+			<xsl:for-each select="properties/*[not(@relation) and name() != 'id']">
 				<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
@@ -67,7 +67,7 @@
 			$queryParams[] = <xsl:value-of select="$value" />;
 			</xsl:for-each>
 			$whereParts = array();
-			<xsl:for-each select="properties/*[not(@relation) and (name() = 'id' or @id)]">
+			<xsl:for-each select="properties/*[not(@relation) and name() = 'id']">
 				<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
