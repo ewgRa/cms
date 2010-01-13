@@ -20,8 +20,8 @@
 	
 	<ContentData>
 		<properties>
-			<content type="Content" relation="OneToOne" id="true" />
-			<language type="Language" relation="OneToOne" id="true" />
+			<content type="Content" relation="OneToOne" />
+			<language type="Language" relation="OneToOne" />
 			<text />
 		</properties>
 	</ContentData>
@@ -67,8 +67,8 @@
 	
 	<NavigationData>
 		<properties>
-			<navigation type="Navigation" relation="OneToOne" id="true" />
-			<language type="Language" relation="OneToOne" id="true" />
+			<navigation type="Navigation" relation="OneToOne" />
+			<language type="Language" relation="OneToOne" />
 			<text />
 		</properties>
 	</NavigationData>
@@ -86,8 +86,8 @@
 	
 	<PageData>
 		<properties>
-			<page type="Page" relation="OneToOne" id="true" />
-			<language type="Language" relation="OneToOne" id="true" />
+			<page type="Page" relation="OneToOne" />
+			<language type="Language" relation="OneToOne" />
 			<title null="true" />
 			<description null="true" />
 			<keywords null="true" />
@@ -96,10 +96,10 @@
 	
 	<PageModule>
 		<properties>
-			<page type="Page" relation="OneToOne" id="true" />
-			<module type="Module" relation="OneToOne" id="true" />
-			<section null="true" id="true" />
-			<position null="true" id="true" />
+			<page type="Page" relation="OneToOne" />
+			<module type="Module" relation="OneToOne" />
+			<section null="true" />
+			<position null="true" />
 			<priority null="true" />
 			<settings type="array" null="true" />
 			<viewFile type="ViewFile" relation="OneToOne" null="true" />
@@ -108,8 +108,8 @@
 	
 	<PageRight>
 		<properties>
-			<page type="Page" relation="OneToOne" id="true" />
-			<right type="Right" relation="OneToOne" id="true" />
+			<page type="Page" relation="OneToOne" />
+			<right type="Right" relation="OneToOne" />
 			<redirectPage type="Page" relation="OneToOne" />
 		</properties>
 	</PageRight>
@@ -140,8 +140,8 @@
 	
 	<UserRight>
 		<properties>
-			<user type="User" relation="OneToOne" id="true" />
-			<right type="Right" relation="OneToOne" id="true" />
+			<user type="User" relation="OneToOne" />
+			<right type="Right" relation="OneToOne" />
 		</properties>
 	</UserRight>
 	

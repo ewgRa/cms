@@ -31,6 +31,8 @@
 		'DAClass' => true
 	);
 	
+	$predifinedAttributes = array('license', 'author', 'DAExtends');
+	
 	foreach ($xslBuilders as $builderName => $builderFile) {
 		${$builderName} =
 			XsltView::create()->
@@ -41,17 +43,11 @@
 		if ($node->nodeType !== XML_ELEMENT_NODE)
 			continue;
 
-		if ($license = $meta->getDocumentElement()->getAttribute('license'))
-			$node->setAttribute('license', $license);
+		foreach ($predifinedAttributes as $attr) {
+			if ($value = $meta->getDocumentElement()->getAttribute($attr))
+				$node->setAttribute($attr, $value);
+		}
 			
-		if ($author = $meta->getDocumentElement()->getAttribute('author'))
-			$node->setAttribute('author', $author);
-			
-		if ($DAExtends = $meta->getDocumentElement()->getAttribute('DAExtends'))
-			$node->setAttribute('DAExtends', $DAExtends);
-			
-		$dom = ExtendedDomDocument::create();
-		
 		$propertiesNode = $node->getElementsByTagName('properties')->item(0);
 
 		foreach ($propertiesNode->childNodes as $propertyNode) {
@@ -90,7 +86,7 @@
 			}
 		}
 		
-		$dom->loadXML($meta->saveXML($node));
+		$dom = ExtendedDomDocument::create()->loadXML($meta->saveXML($node));
 
 		foreach ($xslBuilders as $builderName => $builderFile) {
 			$file =
