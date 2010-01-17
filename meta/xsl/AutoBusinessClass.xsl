@@ -8,7 +8,11 @@
 
 <xsl:output method="text" indent="yes" encoding="utf-8"/>
 
-<xsl:template match="/*">&lt;?php
+<xsl:template match="/meta">
+	<xsl:apply-templates select="*[name() = current()/className]" />
+</xsl:template>
+
+<xsl:template match="*">&lt;?php
 	/* $Id$ */
 	
 	/**

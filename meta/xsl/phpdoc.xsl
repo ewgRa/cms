@@ -7,11 +7,11 @@
 <xsl:template name="classPhpDoc">
 <xsl:param name="wholeDoc" select="0"/>
 <xsl:if test="$wholeDoc">/*</xsl:if>
-<xsl:if test="@license">
-	 * @license <xsl:value-of select="@license" />
+<xsl:if test="/meta/@license">
+	 * @license <xsl:value-of select="/meta/@license" />
 </xsl:if>
-<xsl:if test="@author">
-	 * @author <xsl:value-of select="@author" />
+<xsl:if test="/meta/@author">
+	 * @author <xsl:value-of select="/meta/@author" />
 </xsl:if>
 <xsl:if test="$wholeDoc">
 	*/</xsl:if>

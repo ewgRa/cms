@@ -38,13 +38,22 @@
 	
 	preConfigure($meta);
 	
+	$classNode = $meta->createElement('className', null);
+	
+	$meta->getDocumentElement()->insertBefore(
+		$classNode,
+		$meta->getDocumentElement()->childNodes->item(0)
+	);
+	
 	foreach ($meta->getDocumentElement()->childNodes as $node) {
-		if ($node->nodeType !== XML_ELEMENT_NODE)
+		if (
+			$node->nodeType !== XML_ELEMENT_NODE
+			|| $node->nodeName == 'className'
+		)
 			continue;
 
-		$dom = ExtendedDomDocument::create();
-		$dom->loadXML($meta->saveXML($node));
-
+		$classNode->nodeValue = $node->nodeName;
+		
 		foreach ($xslBuilders as $builderName => $builderFile) {
 			$file =
 				File::create()->setPath(
@@ -52,23 +61,16 @@
 				);
 			
 			if (!isset($protectedFiles[$builderName]) || !$file->isExists())
-				$file->setContent(${$builderName}->transformXML($dom));
+				$file->setContent(${$builderName}->transformXML($meta));
 		}
 	}
 	
 	function preConfigure(ExtendedDomDocument $meta)
 	{
-		$predifinedAttributes = array('license', 'author', 'DAExtends');
-	
 		foreach ($meta->getDocumentElement()->childNodes as $node) {
 			if ($node->nodeType !== XML_ELEMENT_NODE)
 				continue;
 	
-			foreach ($predifinedAttributes as $attr) {
-				if ($value = $meta->getDocumentElement()->getAttribute($attr))
-					$node->setAttribute($attr, $value);
-			}
-				
 			$propertiesNode = $node->getElementsByTagName('properties')->item(0);
 	
 			foreach ($propertiesNode->childNodes as $propertyNode) {
