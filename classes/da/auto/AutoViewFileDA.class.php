@@ -32,7 +32,7 @@
 			
 			if (!is_null($object->getJoinable())) {
 				$queryParts[] = 'joinable = ?';
-				$queryParams[] = $object->getJoinable()->getId();
+				$queryParams[] = $object->getJoinable();
 			}
 			
 			$dbQuery .= join(', ', $queryParts);

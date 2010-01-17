@@ -32,7 +32,7 @@
 			
 			if (!is_null($object->getRole())) {
 				$queryParts[] = 'role = ?';
-				$queryParams[] = $object->getRole()->getId();
+				$queryParams[] = $object->getRole();
 			}
 			
 			$dbQuery .= join(', ', $queryParts);

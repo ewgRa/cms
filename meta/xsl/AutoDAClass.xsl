@@ -33,6 +33,7 @@
 			if (!is_null($object->get<xsl:value-of select="@upperName" />())) {<xsl:variable name="preValue">$object->get<xsl:value-of select="@upperName" />()</xsl:variable><xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">serialize(<xsl:value-of select="$preValue" />)</xsl:when>
+						<xsl:when test="@type='boolean'"><xsl:value-of select="$preValue" /></xsl:when>
 						<xsl:when test="@type"><xsl:value-of select="$preValue" />->getId()</xsl:when>
 						<xsl:otherwise><xsl:value-of select="$preValue" /></xsl:otherwise>
 					</xsl:choose>

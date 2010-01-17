@@ -27,7 +27,7 @@
 			
 			if (!is_null($object->getPreg())) {
 				$queryParts[] = 'preg = ?';
-				$queryParams[] = $object->getPreg()->getId();
+				$queryParams[] = $object->getPreg();
 			}
 			
 			if (!is_null($object->getLayoutId())) {
