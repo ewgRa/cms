@@ -13,6 +13,22 @@
 		
 		private $source = null;
 		
+		private $mode = null;
+		
+		/**
+		 * @return LoginModule
+		 */
+		public function setMode($mode)
+		{
+			$this->mode = $mode;
+			return $this;
+		}
+		
+		public function getMode()
+		{
+			return $this->mode;
+		}
+				
 		/**
 		 * @return LoginModule
 		 */
@@ -34,6 +50,12 @@
 		{
 			$this->setSource($settings['source']);
 
+			$this->setMode(
+				isset($settings['mode'])
+					? $settings['mode']
+					: null
+			);
+			
 			return $this;
 		}
 		
@@ -42,65 +64,77 @@
 		 */
 		public function getModel()
 		{
-			$user = null;
-			$loginResult = null;
-
-			try {
-				$requestModel = $this->getRequestModel();
-			} catch (BadRequestException $e) {
-				$requestModel = Model::create();
-			}
+			$model = Model::create();
 			
-			if ($requestModel->has('login')) {
-				Session::me()->start();
-				Session::me()->drop('userId');
-				Session::me()->save();
-
-				$loginResult = self::SUCCESS_LOGIN;
-				
-				try {
-					$user = User::da()->getByLogin($requestModel->get('login'));
-				} catch(NotFoundException $exception) {
-					$loginResult = self::WRONG_LOGIN;
-				}
-				
-				if ($user && $user->getPassword() != md5($requestModel->get('password')))
-					$loginResult = self::WRONG_PASSWORD;
-				
-				if ($loginResult == self::SUCCESS_LOGIN) {
-					$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
-	
-					Session::me()->set('userId', $user->getId());
-					Session::me()->save();
-					
-					if ($requestModel->has('backurl')) {
-						$this->getPageHeader()->addRedirect(
-							HttpUrl::createFromString(
-								base64_decode($requestModel->get('backurl'))
-							)
-						);
+			switch ($this->getMode()) {
+				case 'logout':
+						Session::me()->start();
+						Session::me()->drop('userId');
+						Session::me()->save();
+					break;
+				default:
+					$user = null;
+					$loginResult = null;
+		
+					try {
+						$requestModel = $this->getRequestModel();
+					} catch (BadRequestException $e) {
+						$requestModel = Model::create();
 					}
-				}
-			}
-
-			$backurl =
-				$requestModel->has('backurl')
-					? $requestModel->get('backurl')
-					: null;
 					
-			if (!$backurl) {
-				$backurl =
-					$this->getRequest()->hasGetVar('backurl')
-						? $this->getRequest()->getGetVar('backurl')
-						: null;
+					if ($requestModel->has('login')) {
+						Session::me()->start();
+						Session::me()->drop('userId');
+						Session::me()->save();
+		
+						$loginResult = self::SUCCESS_LOGIN;
+						
+						try {
+							$user = User::da()->getByLogin($requestModel->get('login'));
+						} catch(NotFoundException $exception) {
+							$loginResult = self::WRONG_LOGIN;
+						}
+						
+						if ($user && $user->getPassword() != md5($requestModel->get('password')))
+							$loginResult = self::WRONG_PASSWORD;
+						
+						if ($loginResult == self::SUCCESS_LOGIN) {
+							$this->getRequest()->setAttachedVar(AttachedAliases::USER, $user);
+			
+							Session::me()->set('userId', $user->getId());
+							Session::me()->save();
+							
+							if ($requestModel->has('backurl')) {
+								$this->getPageHeader()->addRedirect(
+									HttpUrl::createFromString(
+										base64_decode($requestModel->get('backurl'))
+									)
+								);
+							}
+						}
+					}
+		
+					$backurl =
+						$requestModel->has('backurl')
+							? $requestModel->get('backurl')
+							: null;
+							
+					if (!$backurl) {
+						$backurl =
+							$this->getRequest()->hasGetVar('backurl')
+								? $this->getRequest()->getGetVar('backurl')
+								: null;
+					}
+					
+					$model->
+						set('source', $this->getSource())->
+						set('backurl', $backurl)->
+						set('user', $user)->
+						set('loginResult', $loginResult);
+				break;
 			}
 			
-			return
-				Model::create()->
-					set('source', $this->getSource())->
-					set('backurl', $backurl)->
-					set('user', $user)->
-					set('loginResult', $loginResult);
+			return $model;
 		}
 
 		/**
