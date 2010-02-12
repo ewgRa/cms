@@ -107,7 +107,7 @@
 				</xsl:variable>
 				<xsl:variable name="preValue">
 					<xsl:choose>
-						<xsl:when test="@type='array'">$array['<xsl:value-of select="@downSeparatedName" />'] ? unserialize($array['<xsl:value-of select="name()" />']) : null</xsl:when>
+						<xsl:when test="@type='array'">$array['<xsl:value-of select="@downSeparatedName" />'] ? unserialize($array['<xsl:value-of select="@downSeparatedName" />']) : null</xsl:when>
 						<xsl:when test="@type='boolean'">$array['<xsl:value-of select="@downSeparatedName" />'] == 1</xsl:when>
 						<xsl:when test="@type"><xsl:value-of select="$createFunction" />($array['<xsl:value-of select="@downSeparatedName" />'])</xsl:when>
 						<xsl:otherwise>$array['<xsl:value-of select="@downSeparatedName" />']</xsl:otherwise>
