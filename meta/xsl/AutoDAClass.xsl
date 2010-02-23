@@ -123,7 +123,17 @@
 					set<xsl:value-of select="@upperName" />(<xsl:value-of select="$value"/>)<xsl:value-of select="$endLine" />
 </xsl:for-each>
 		<xsl:variable name="name" select="name()" />
+		}<!--<xsl:variable name="relationClasses" select="/meta/*[properties/*[@type=$name and string-length(@relation)]]" /><xsl:if test="count($relationClasses)">
+		
+		public function dropCache()
+		{
+			<xsl:for-each select="$relationClasses">
+			<xsl:value-of select="name()" />::da()->dropCache();
+			</xsl:for-each>			
+			return parent::dropCache();
 		}
+</xsl:if>
+-->
 	}
 ?&gt;</xsl:template>
 </xsl:stylesheet>
