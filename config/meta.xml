@@ -15,6 +15,7 @@
 	<Content>
 		<properties>
 			<id />
+			<!-- TODO: type="object" class="ContentStatus" -->
 			<status type="ContentStatus" />
 		</properties>
 	</Content>
