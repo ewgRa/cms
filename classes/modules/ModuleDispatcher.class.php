@@ -69,7 +69,7 @@
 
 				if ($pageModule->getViewFileId()) {
 					$moduleInstance->setView(
-						ViewFactory::createByViewFile($pageModule->getViewFile())
+						$pageModule->getViewFile()->createView()
 					);
 				}
 				

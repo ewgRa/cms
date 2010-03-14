@@ -43,7 +43,7 @@
 			$this->checkAccessPage($page, $user);
 
 			$mav->setView(
-				ViewFactory::createByViewFile($page->getLayout()->getViewFile())
+				$page->getLayout()->getViewFile()->createView()
 			);
 			
 			$request->setAttachedVar(AttachedAliases::PAGE, $page);
