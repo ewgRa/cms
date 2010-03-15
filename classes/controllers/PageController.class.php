@@ -33,7 +33,7 @@
 			$page = PagePathMapper::create()->loadMap()->getPageByPath($clearPath);
 
 			if (!$page)
-				throw PageException::pageNotFound()->setUrl($clearPath);
+				throw PageNotFoundException::create()->setUrl($clearPath);
 
 			$user =
 				$request->hasAttachedVar(AttachedAliases::USER)
@@ -108,8 +108,12 @@
 			if ($result && $rights && $user)
 				$result = $user->checkAccess($rights);
 			
-			if (!$result)
-				throw PageException::noRightsToAccess()->setPageRights($pageRights);
+			if (!$result) {
+				throw
+					PageAccessDeniedException::create()->
+					setPageRights($pageRights)->
+					setPageId($page->getId());
+			}
 
 			return $this;
 		}

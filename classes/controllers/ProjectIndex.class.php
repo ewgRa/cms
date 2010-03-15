@@ -89,31 +89,33 @@
 			return $this;
 		}
 		
-		public function catchPageException(
+		public function catchPageNotFoundException(
 			HttpRequest $request,
-			PageException $e
+			PageNotFoundException $e
 		) {
-			if ($e->getCode() == PageException::PAGE_NOT_FOUND) {
-				$request->setUrl(HttpUrl::create()->parse('/page-not-found.html'));
+			$request->setUrl(HttpUrl::create()->parse('/page-not-found.html'));
 
-				$modelAndView = ModelAndView::create();
+			$modelAndView = ModelAndView::create();
+			
+			$chainController = createCommonChain();
+			$chainController->handleRequest($request, $modelAndView);
+			
+			return $modelAndView->render();
+		}
+		
+		public function catchPageAccessDeniedException(
+			HttpRequest $request,
+			PageAccessDeniedException $e
+		) {
+			$rights = $e->getPageRights();
+			$right = array_shift($rights);
+			
+			header(
+				'Location: '.$right->getRedirectPage()->getPath()
+				.'?backurl='.base64_encode($request->getUrl())
+			);
 				
-				$chainController = createCommonChain();
-				$chainController->handleRequest($request, $modelAndView);
-				
-				return $modelAndView->render();
-			} else if ($e->getCode() == PageException::NO_RIGHTS_TO_ACCESS) {
-				$rights = $e->getPageRights();
-				$right = array_shift($rights);
-				
-				header(
-					'Location: '.$right->getRedirectPage()->getPath()
-					.'?backurl='.base64_encode($request->getUrl())
-				);
-				
-				die();
-			} else
-				throw $e;
+			die();
 		}
 		
 		/**
