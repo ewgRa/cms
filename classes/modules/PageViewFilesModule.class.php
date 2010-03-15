@@ -77,7 +77,7 @@
 			if ($this->getJoinContentTypes())
 				$viewFiles = $this->joinFiles($viewFiles);
 			
-			return Model::create()->setData($viewFiles);
+			return Model::create()->set('files', $viewFiles);
 		}
 
 		private function joinFiles(array $viewFiles)

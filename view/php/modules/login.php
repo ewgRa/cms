@@ -1,15 +1,15 @@
 <?php
 	if (
-		!$model->has('loginResult')
-		|| $model->get('loginResult') != LoginModule::SUCCESS_LOGIN
+		!isset($loginResult)
+		|| $loginResult != LoginModule::SUCCESS_LOGIN
 	) {
 		$backurl =
-			$model->has('backurl')
-				? $model->get('backurl')
+			isset($backurl)
+				? $backUrl
 				: null;
 ?>
-	<form method="<?php echo $model->get('source');?>">
-		<input type="hidden" name="backurl" value="<?php echo $backurl;?>" /><br />
+	<form method="<?=$source?>">
+		<input type="hidden" name="backurl" value="<?=$backurl?>" /><br />
 		Login: <input type="text" name="login" /><br />
 		Password: <input type="password" name="password" />
 		<input type="submit" />

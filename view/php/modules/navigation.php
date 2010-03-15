@@ -1,15 +1,13 @@
 <?php
-	if ($model->has('navigationDataList')) {
+	if (isset($navigationDataList)) {
 ?>
 	<ul>
 <?php
-		$navigationDataList = $model->get('navigationDataList');
-	
-		foreach ($model->get('navigationList') as $navigation) {
+		foreach ($navigationList as $navigation) {
 ?>
 		<li>
-			<a href="<?php echo $model->get('baseUrl').$navigation->getUri()->getPath()?>">
-				<? echo $navigationDataList[$navigation->getId()]->getText()?>
+			<a href="<?=$baseUrl.$navigation->getUri()->getPath()?>">
+				<?=$navigationDataList[$navigation->getId()]->getText()?>
 			</a>
 		</li>
 <?php

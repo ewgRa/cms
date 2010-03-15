@@ -1,18 +1,16 @@
 <?php
-	if ($model->getData()) {
-		foreach ($model->getData() as $file) {
-			switch ($file->getContentType()->getId()) {
-				case ContentType::TEXT_JAVASCRIPT:
+	foreach ($files as $file) {
+		switch ($file->getContentType()->getId()) {
+			case ContentType::TEXT_JAVASCRIPT:
 ?>
-	<script type="<?php echo $file->getContentType()?>" src="<?php echo $file->getPath()?>"></script>
+	<script type="<?=$file->getContentType()?>" src="<?=$file->getPath()?>"></script>
 <?php
 				break;
-				default:
+			default:
 ?>
-	<link rel="stylesheet" type="<?php echo $file->getContentType()?>" href="<?php echo $file->getPath()?>" />
+	<link rel="stylesheet" type="<?=$file->getContentType()?>" href="<?=$file->getPath()?>" />
 <?php
 				break;
-			}
 		}
 	}
 ?>
