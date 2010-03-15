@@ -4,6 +4,7 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * FIXME: cache needed for avoid generate file list?
 	*/
 	final class PageViewFilesModule extends CmsModule
 	{
@@ -80,6 +81,13 @@
 			return Model::create()->set('files', $viewFiles);
 		}
 
+		public static function createJoinedListsCacheTicket()
+		{
+			$pool = Cache::me()->getPool('cms');
+			Assert::isTrue($pool->hasTicketParams('JoinedViewFilesLists'));
+			return $pool->createTicket('JoinedViewFilesLists');
+		}
+		
 		private function joinFiles(array $viewFiles)
 		{
 			$files =
@@ -94,7 +102,10 @@
 			
 			foreach ($files as $file) {
 				if($file instanceof JoinedViewFile) {
-					$file->saveFileList($dir);
+					$this->createJoinedListsCacheTicket()->
+						setData($file->getFiles())->
+						setKey($file->getPath())->
+						storeData();
 					
 					if (defined('MEDIA_HOST_JOIN_URL'))
 						$file->setPath(MEDIA_HOST_JOIN_URL.'/'.$file->getPath());

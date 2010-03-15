@@ -74,15 +74,5 @@
 			
 			return $this->path;
 		}
-		
-		public function saveFileList(Dir $dir)
-		{
-			file_put_contents(
-				$dir->getPath().DIRECTORY_SEPARATOR.$this->getPath().'.fl',
-				serialize($this->getFiles())
-			);
-			
-			return $this;
-		}
 	}
 ?>

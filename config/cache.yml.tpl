@@ -66,3 +66,7 @@ ticketAliases:
   UserDA:
     prefix: object/user
     lifeTime: 86400
+    
+  JoinedViewFilesLists:
+    prefix: joinedViewFilesLists
+    lifeTime: 86400
