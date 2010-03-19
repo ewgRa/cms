@@ -103,7 +103,7 @@
 			foreach ($files as $file) {
 				if($file instanceof JoinedViewFile) {
 					$this->createJoinedListsCacheTicket()->
-						setData($file->getFiles())->
+						setData($file)->
 						setKey($file->getPath())->
 						storeData();
 					

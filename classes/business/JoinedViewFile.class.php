@@ -74,5 +74,24 @@
 			
 			return $this->path;
 		}
+		
+		public function getJoinedContent($defaultHost, $defaultScheme = 'http')
+		{
+			$result = '';
+	
+			foreach ($this->getFiles() as $file) {
+				$url = HttpUrl::create()->parse($file->getPath());
+				
+				if (!$url->getHost()) {
+					$url->
+						setHost($defaultHost)->
+						setScheme($defaultScheme);
+				}
+				
+				$result .= file_get_contents($url).PHP_EOL.PHP_EOL;
+			}
+			
+			return $result;
+		}
 	}
 ?>
