@@ -67,11 +67,6 @@
 				'search' => array('%baseUrl%'),
 				'replace' => array($this->getBaseUrl()->getPath())
 			);
-
-			if (defined('MEDIA_HOST')) {
-				$params['search'][] = '%MEDIA_HOST%';
-				$params['replace'][] = MEDIA_HOST;
-			}
 			
 			$result->
 				setSearch($params['search'])->

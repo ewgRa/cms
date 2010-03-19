@@ -10,6 +10,8 @@
 	{
 		private $joinContentTypes = array();
 		
+		private $additionalJoinUrl = '/join';
+		
 		/**
 		 * @return PageViewFilesModule
 		 */
@@ -29,6 +31,9 @@
 		 */
 		public function importSettings(array $settings = null)
 		{
+			if(isset($settings['additionalJoinUrl']))
+				$this->additionalJoinUrl = $settings['additionalJoinUrl'];
+			
 			if(isset($settings['joinContentTypes'])) {
 				Assert::isArray($settings['joinContentTypes']);
 				
@@ -95,11 +100,6 @@
 				setContentTypes($this->getJoinContentTypes())->
 				joinFiles($viewFiles);
 
-			$dir = Dir::create()->setPath(JOIN_FILES_DIR);
-			
-			if (!$dir->isExists())
-				$dir->make();
-			
 			foreach ($files as $file) {
 				if($file instanceof JoinedViewFile) {
 					$this->createJoinedListsCacheTicket()->
@@ -107,8 +107,8 @@
 						setKey($file->getPath())->
 						storeData();
 					
-					if (defined('MEDIA_HOST_JOIN_URL'))
-						$file->setPath(MEDIA_HOST_JOIN_URL.'/'.$file->getPath());
+					if ($this->additionalJoinUrl)
+						$file->setPath($this->additionalJoinUrl.'/'.$file->getPath());
 				}
 			}
 
