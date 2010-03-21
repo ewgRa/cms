@@ -4,7 +4,6 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * FIXME: cache needed for avoid generate file list?
 	*/
 	final class PageViewFilesModule extends CmsModule
 	{
@@ -58,6 +57,16 @@
 		 */
 		public function getModel()
 		{
+			$cacheTicket =
+				ViewFile::da()->getCacheTicket()->
+				setKey(get_class($this), __FUNCTION__, $this->getPage())->
+				restoreData();
+				
+			$viewFiles = $cacheTicket->getData();
+				
+			if ($viewFiles)
+				return Model::create()->set('files', $viewFiles);
+
 			$viewFiles = ViewFile::da()->getByPage($this->getPage());
 			
 			$inheritanceFiles =
@@ -82,6 +91,9 @@
 			
 			if ($this->getJoinContentTypes())
 				$viewFiles = $this->joinFiles($viewFiles);
+			
+			$cacheTicket->setData($viewFiles)->storeData();
+			ViewFile::da()->addTicketToTag($cacheTicket);
 			
 			return Model::create()->set('files', $viewFiles);
 		}
