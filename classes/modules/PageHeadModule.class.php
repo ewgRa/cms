@@ -12,18 +12,14 @@
 		 */
 		public function getModel()
 		{
-			$pageData = null;
+			$pageData =
+				PageData::da()->get(
+					$this->getPage(),
+					$this->getRequestLanguage()
+				);
 			
-			try {
-				$pageData =
-					PageData::da()->get(
-						$this->getPage(),
-						$this->getRequestLanguage()
-					);
-			} catch(NotFoundException $e) {
+			if (!$pageData)
 				$pageData = PageData::create();
-			}
-				
 					
 			$this->replaceData($pageData);
 			

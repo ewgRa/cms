@@ -94,10 +94,8 @@
 			if (!$cacheTicket || $cacheTicket->isExpired()) {
 				$dbResult = $this->db()->query($dbQuery, $params);
 	
-				if (!$dbResult->recordCount())
-					throw NotFoundException::create();
-				
-				$result = $this->build($dbResult->fetchArray());
+				if ($dbResult->recordCount())
+					$result = $this->build($dbResult->fetchArray());
 
 				if ($cacheTicket) {
 					$cacheTicket->setData($result)->storeData();

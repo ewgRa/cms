@@ -89,11 +89,10 @@
 		
 						$loginResult = self::SUCCESS_LOGIN;
 						
-						try {
-							$user = User::da()->getByLogin($requestModel->get('login'));
-						} catch(NotFoundException $exception) {
+						$user = User::da()->getByLogin($requestModel->get('login'));
+						
+						if (!$user)
 							$loginResult = self::WRONG_LOGIN;
-						}
 						
 						if ($user && $user->getPassword() != md5($requestModel->get('password')))
 							$loginResult = self::WRONG_PASSWORD;
