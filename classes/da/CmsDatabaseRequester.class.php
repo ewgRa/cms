@@ -52,19 +52,17 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function getCacheTicket()
+		public function createCacheTicket()
 		{
-			try {
-				$cacheTicket =
-					Cache::me()->
-						getPool($this->getPoolAlias())->
-						createTicket(get_class($this));
-
-			} catch(MissingArgumentException $e) {
-				$cacheTicket = null;
-			}
+			$pool =
+				Cache::me()->hasPool($this->getPoolAlias())
+					? Cache::me()->getPool($this->getPoolAlias())
+					: null;
 			
-			return $cacheTicket;
+			return
+				$pool
+					? $pool->createTicket()->setPrefix(get_class($this))
+					: null;
 		}
 		
 		protected function buildList(array $arrayList)
@@ -82,12 +80,12 @@
 		public function getCachedByQuery($dbQuery, array $params = array())
 		{
 			$result = null;
-			
-			$cacheTicket = $this->getCacheTicket();
+
+			$cacheTicket = $this->createCacheTicket();
 			
 			if ($cacheTicket) {
 				$cacheTicket->
-					setKey(get_class($this), $dbQuery, $params)->
+					setKey($dbQuery, $params)->
 					restoreData();
 			}
 				
@@ -111,7 +109,7 @@
 		{
 			$result = null;
 			
-			$cacheTicket = $this->getCacheTicket();
+			$cacheTicket = $this->createCacheTicket();
 			
 			if ($cacheTicket) {
 				$cacheTicket->
@@ -140,8 +138,8 @@
 		public function addTicketToTag(CacheTicket $cacheTicket)
 		{
 			$tagTicket =
-				$this->getCacheTicket()->
-				setKey(get_class($this), 'tag')->
+				$this->createCacheTicket()->
+				setKey('tag')->
 				restoreData();
 
 			$data =
@@ -158,11 +156,11 @@
 
 		public function dropCache()
 		{
-			$tagTicket = $this->getCacheTicket();
+			$tagTicket = $this->createCacheTicket();
 
 			if ($tagTicket) {
 				$tagTicket->
-					setKey(get_class($this), 'tag')->
+					setKey('tag')->
 					restoreData();
 	
 				$data =

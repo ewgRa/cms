@@ -113,6 +113,7 @@
 			return $this;
 		}
 		
+		// FIXME: render cache ticket?
 		public function getRenderedModel()
 		{
 			$renderedModel = null;

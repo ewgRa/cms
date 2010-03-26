@@ -57,15 +57,17 @@
 		 */
 		public function getModel()
 		{
-			$cacheTicket =
-				ViewFile::da()->getCacheTicket()->
-				setKey(get_class($this), __FUNCTION__, $this->getPage())->
-				restoreData();
+			$cacheTicket = ViewFile::da()->createCacheTicket();
+			
+			if ($cacheTicket) {
+				$cacheTicket->
+					setPrefix(__CLASS__.'/'.__FUNCTION__)->
+					setKey($this->getPage())->
+					restoreData();
+			}
 				
-			$viewFiles = $cacheTicket->getData();
-				
-			if ($viewFiles)
-				return Model::create()->set('files', $viewFiles);
+			if ($cacheTicket && !$cacheTicket->isExpired())
+				return $cacheTicket->getData();
 
 			$viewFiles = ViewFile::da()->getByPage($this->getPage());
 			
@@ -92,17 +94,22 @@
 			if ($this->getJoinContentTypes())
 				$viewFiles = $this->joinFiles($viewFiles);
 			
-			$cacheTicket->setData($viewFiles)->storeData();
-			ViewFile::da()->addTicketToTag($cacheTicket);
+			$model = Model::create()->set('files', $viewFiles);
 			
-			return Model::create()->set('files', $viewFiles);
+			if ($cacheTicket) {
+				$cacheTicket->setData($model)->storeData();
+				ViewFile::da()->addTicketToTag($cacheTicket);
+			}
+			
+			return $model;
 		}
 
 		public static function createJoinedListsCacheTicket()
 		{
-			$pool = Cache::me()->getPool('cms');
-			Assert::isTrue($pool->hasTicketParams('JoinedViewFilesLists'));
-			return $pool->createTicket('JoinedViewFilesLists');
+			return
+				Cache::me()->getPool('cms')->
+				createTicket()->
+				setPrefix(__CLASS__.'/'.__FUNCTION__);
 		}
 		
 		private function joinFiles(array $viewFiles)
