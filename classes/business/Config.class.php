@@ -20,23 +20,6 @@
 		/**
 		 * @return Config
 		 */
-		public function initialize($yamlFile)
-		{
-			$settings = Yaml::load($yamlFile);
-
-			foreach ($settings as $optionaAlias => $optionValue) {
-				$this->setOption(
-					$optionaAlias,
-					$this->replaceVariables($optionValue)
-				);
-			}
-			
-			return $this;
-		}
-		
-		/**
-		 * @return Config
-		 */
 		public function setOption($alias, $value)
 		{
 			$this->options[$alias] = $value;
@@ -51,31 +34,6 @@
 				$result = $this->options[$alias];
 			
 			return $result;
-		}
-
-		public function replaceVariables($variable)
-		{
-			if (is_array($variable)) {
-				foreach ($variable as &$var)
-					$var = $this->{__FUNCTION__}($var);
-			} else {
-				$matches = null;
-				preg_match_all('/%(.*?)%/', $variable, $matches);
-				
-				foreach (array_unique($matches[1]) as $match) {
-					$matchVarValue = VariableUtils::getValueByString($match);
-					
-					if ($matchVarValue) {
-						$variable = str_replace(
-							"%" . $match . "%",
-							$matchVarValue,
-							$variable
-						);
-					}
-				}
-			}
-			
-			return $variable;
 		}
 	}
 ?>
