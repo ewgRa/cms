@@ -20,23 +20,6 @@
 		/**
 		 * @return Config
 		 */
-		public function initialize($yamlFile)
-		{
-			$settings = Yaml::load($yamlFile);
-
-			foreach ($settings as $optionaAlias => $optionValue) {
-				$this->setOption(
-					$optionaAlias,
-					$this->replaceVariables($optionValue)
-				);
-			}
-			
-			return $this;
-		}
-		
-		/**
-		 * @return Config
-		 */
 		public function setOption($alias, $value)
 		{
 			$this->options[$alias] = $value;
