@@ -93,7 +93,7 @@
 			HttpRequest $request,
 			PageNotFoundException $e
 		) {
-			$request->setUrl(HttpUrl::create()->parse('/page-not-found.html'));
+			$request->setUrl(HttpUrl::createFromString('/page-not-found.html'));
 
 			$modelAndView = ModelAndView::create();
 			

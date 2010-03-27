@@ -80,7 +80,7 @@
 			$result = '';
 	
 			foreach ($this->getFiles() as $file) {
-				$url = HttpUrl::create()->parse($file->getPath());
+				$url = HttpUrl::createFromString($file->getPath());
 				
 				if (!$url->getHost()) {
 					$url->
