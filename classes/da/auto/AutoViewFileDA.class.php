@@ -35,6 +35,11 @@
 				$queryParams[] = $object->getJoinable();
 			}
 			
+			if (!is_null($object->getSourceId())) {
+				$queryParts[] = 'source_id = ?';
+				$queryParams[] = $object->getSourceId();
+			}
+			
 			$dbQuery .= join(', ', $queryParts);
 			$this->db()->query($dbQuery, $queryParams);
 			
@@ -64,6 +69,9 @@
 			$queryParts[] = 'joinable = ?';
 			$queryParams[] = $object->getJoinable()->getId();
 			
+			$queryParts[] = 'source_id = ?';
+			$queryParams[] = $object->getSourceId();
+			
 			$whereParts = array();
 			
 			$whereParts[] = 'id = ?';
@@ -86,8 +94,9 @@
 				ViewFile::create()->
 					setId($array['id'])->
 					setContentType(ContentType::create($array['content_type']))->
-					setPath(Config::me()->replaceVariables($array['path']))->
-					setJoinable($array['joinable'] == 1);
+					setPath($array['path'])->
+					setJoinable($array['joinable'] == 1)->
+					setSourceId($array['source_id']);
 		}
 	}
 ?>

@@ -193,6 +193,7 @@
 		
 		private function renderModel()
 		{
+			// FIXME: bad practice
 			if (!$this->getView())
 				$this->getModel();
 			

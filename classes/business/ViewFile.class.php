@@ -19,7 +19,12 @@
 		{
 			$result = null;
 			
-			$layout = File::create()->setPath($this->getPath());
+			$path = $this->getPath();
+			
+			if ($this->getSource())
+				$path = $this->getSource()->getPath().$path;
+			
+			$layout = File::create()->setPath($path);
 				
 			switch ($this->getContentType()->getId()) {
 				case ContentType::TEXT_XSLT:

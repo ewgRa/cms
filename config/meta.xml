@@ -157,8 +157,17 @@
 		<properties>
 			<id />
 			<contentType type="ContentType" />
-			<path replaceVariables="true"/>
+			<path />
 			<joinable type="boolean" null="true" />
+			<source type="FileSource" relation="OneToOne" />
 		</properties>
 	</ViewFile>
+
+	<FileSource>
+		<properties>
+			<id />
+			<alias />
+		</properties>
+	</FileSource>
+
 </meta>

@@ -35,30 +35,5 @@
 			
 			return $result;
 		}
-
-		public function replaceVariables($variable)
-		{
-			if (is_array($variable)) {
-				foreach ($variable as &$var)
-					$var = $this->{__FUNCTION__}($var);
-			} else {
-				$matches = null;
-				preg_match_all('/%(.*?)%/', $variable, $matches);
-				
-				foreach (array_unique($matches[1]) as $match) {
-					$matchVarValue = VariableUtils::getValueByString($match);
-					
-					if ($matchVarValue) {
-						$variable = str_replace(
-							"%" . $match . "%",
-							$matchVarValue,
-							$variable
-						);
-					}
-				}
-			}
-			
-			return $variable;
-		}
 	}
 ?>

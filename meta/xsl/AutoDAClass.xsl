@@ -105,18 +105,12 @@
 						<xsl:otherwise><xsl:value-of select="@type" />::create</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:variable name="preValue">
+				<xsl:variable name="value">
 					<xsl:choose>
 						<xsl:when test="@type='array'">$array['<xsl:value-of select="@downSeparatedName" />'] ? unserialize($array['<xsl:value-of select="@downSeparatedName" />']) : null</xsl:when>
 						<xsl:when test="@type='boolean'">$array['<xsl:value-of select="@downSeparatedName" />'] == 1</xsl:when>
 						<xsl:when test="@type"><xsl:value-of select="$createFunction" />($array['<xsl:value-of select="@downSeparatedName" />'])</xsl:when>
 						<xsl:otherwise>$array['<xsl:value-of select="@downSeparatedName" />']</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:variable name="value">
-					<xsl:choose>
-						<xsl:when test="@replaceVariables">Config::me()->replaceVariables(<xsl:value-of select="$preValue" />)</xsl:when>
-						<xsl:otherwise><xsl:value-of select="$preValue" /></xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="endLine"><xsl:if test="position() != last()">-></xsl:if><xsl:if test="position() = last()">;</xsl:if></xsl:variable>

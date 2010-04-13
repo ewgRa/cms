@@ -23,6 +23,8 @@
 		 */
 		private $joinable = null;
 		
+		private $sourceId = null;
+		
 		/**
 		 * @return ViewFileDA
 		 */
@@ -97,6 +99,37 @@
 		public function isJoinable()
 		{
 			return ($this->getJoinable() === true);
+		}
+		
+		/**
+		 * @return AutoViewFile
+		 */
+		public function setSourceId($sourceId)
+		{
+			$this->sourceId = $sourceId;
+			return $this;
+		}
+		
+		public function getSourceId()
+		{
+			return $this->sourceId;
+		}
+		
+		/**
+		 * @return AutoViewFile
+		 */
+		public function setSource(FileSource $source)
+		{
+			$this->sourceId = $source->getId();
+			return $this;
+		}
+		
+		/**
+		 * @return FileSource
+		 */
+		public function getSource()
+		{
+			return FileSource::da()->getById($this->getSourceId());
 		}
 	}
 ?>
