@@ -22,7 +22,7 @@
 			$path = $this->getPath();
 			
 			if ($this->getSource())
-				$path = $this->getSource()->getPath().$path;
+				$path = $this->getSource()->getPath().DIRECTORY_SEPARATOR.$path;
 			
 			$layout = File::create()->setPath($path);
 				
