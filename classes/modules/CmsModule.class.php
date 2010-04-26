@@ -193,17 +193,11 @@
 		
 		private function renderModel()
 		{
-			// FIXME: bad practice
-			if (!$this->getView())
-				$this->getModel();
-			
 			return
-				$this->getView()
-					? ModelAndView::create()->
-						setModel($this->getModel())->
-						setView($this->getView())->
-						render()
-					: null;
+				ModelAndView::create()->
+					setModel($this->getModel())->
+					setView($this->getView())->
+					render();
 		}
 	}
 ?>

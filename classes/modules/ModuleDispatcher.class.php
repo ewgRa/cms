@@ -71,6 +71,8 @@
 					$moduleInstance->setView(
 						$pageModule->getViewFile()->createView()
 					);
+				} else {
+					$moduleInstance->setView(NullTransformView::create());
 				}
 				
 				$this->addModule($moduleInstance, $pageModule);

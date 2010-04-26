@@ -15,7 +15,7 @@
 					.' 404 Not Found'
 				);
 			
-			return null;
+			return Model::create();
 		}
 	}
 ?>
