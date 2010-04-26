@@ -49,6 +49,16 @@
 				}
 			}
 			
+			$cacheTicket = ViewFile::da()->createCacheTicket();
+			
+			if ($cacheTicket) {
+				$this->setCacheTicket(
+					$cacheTicket->
+						setPrefix(__CLASS__.'/'.__FUNCTION__)->
+						setKey($this->getPage())
+				);
+			}
+			
 			return $this;
 		}
 		
@@ -57,18 +67,6 @@
 		 */
 		public function getModel()
 		{
-			$cacheTicket = ViewFile::da()->createCacheTicket();
-			
-			if ($cacheTicket) {
-				$cacheTicket->
-					setPrefix(__CLASS__.'/'.__FUNCTION__)->
-					setKey($this->getPage())->
-					restoreData();
-			}
-				
-			if ($cacheTicket && !$cacheTicket->isExpired())
-				return $cacheTicket->getData();
-
 			$viewFiles = ViewFile::da()->getByPage($this->getPage());
 			
 			$inheritanceFiles =
@@ -96,11 +94,6 @@
 			
 			$model = Model::create()->set('files', $viewFiles);
 			
-			if ($cacheTicket) {
-				$cacheTicket->setData($model)->storeData();
-				ViewFile::da()->addTicketToTag($cacheTicket);
-			}
-			
 			return $model;
 		}
 
@@ -110,6 +103,19 @@
 				Cache::me()->getPool('cms')->
 				createTicket()->
 				setPrefix(__CLASS__.'/'.__FUNCTION__);
+		}
+		
+		/**
+		 * @return PageViewFilesModule
+		 */
+		protected function storeCacheTicketData($data)
+		{
+			parent::storeCacheTicketData($data);
+			
+			if ($this->getCacheTicket())
+				ViewFile::da()->addTicketToTag($this->getCacheTicket());
+			
+			return $this;
 		}
 		
 		private function joinFiles(array $viewFiles)

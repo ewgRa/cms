@@ -55,6 +55,15 @@
 		}
 		
 		/**
+		 * @return CmsModule
+		 */
+		protected function storeCacheTicketData($data)
+		{
+			$this->getCacheTicket()->setData($data)->storeData();
+			return $this;
+		}
+		
+		/**
 		 * @return ModuleDispatcher
 		 */
 		public function getDispatcher()
@@ -113,7 +122,6 @@
 			return $this;
 		}
 		
-		// FIXME: render cache ticket?
 		public function getRenderedModel()
 		{
 			$renderedModel = null;
