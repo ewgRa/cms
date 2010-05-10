@@ -57,22 +57,13 @@
 		}
 
 		/**
-		 * @return StringReplaceImportFilter
+		 * @return StringReplaceFilter
 		 */
 		private function getReplaceFilter()
 		{
-			$result = StringReplaceFilter::create();
-			
-			$params = array(
-				'search' => array('%baseUrl%'),
-				'replace' => array($this->getBaseUrl()->getPath())
-			);
-			
-			$result->
-				setSearch($params['search'])->
-				setReplace($params['replace']);
-			
-			return $result;
+			return
+				StringReplaceFilter::create()->
+				addReplacement('%baseUrl%', $this->getBaseUrl()->getPath());
 		}
 	}
 ?>
