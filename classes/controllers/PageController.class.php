@@ -33,7 +33,7 @@
 			$page = PagePathMapper::create()->loadMap()->getPageByPath($clearPath);
 
 			if (!$page)
-				throw PageNotFoundException::create()->setUrl($clearPath);
+				throw PageNotFoundException::create();
 
 			$user =
 				$request->hasAttachedVar(AttachedAliases::USER)
