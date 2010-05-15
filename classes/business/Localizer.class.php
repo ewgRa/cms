@@ -133,7 +133,7 @@
 				$this->setRequestLanguage($language);
 				$this->setSource(LocalizerLanguageSource::defaultSource());
 			} else {
-				throw DefaultException::create(
+				throw MissingArgumentException::create(
 					'Known nothing about default language '
 					.'"'.$languageAbbr.'"'
 				);

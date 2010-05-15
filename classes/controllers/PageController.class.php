@@ -40,13 +40,13 @@
 					? $request->getAttachedVar(AttachedAliases::USER)
 					: null;
 			
+			$request->setAttachedVar(AttachedAliases::PAGE, $page);
+			
 			$this->checkAccessPage($page, $user);
 
 			$mav->setView(
 				$page->getLayout()->getViewFile()->createView()
 			);
-			
-			$request->setAttachedVar(AttachedAliases::PAGE, $page);
 			
 			$baseUrl = HttpUrl::create()->setPath('');
 			
@@ -108,12 +108,8 @@
 			if ($result && $rights && $user)
 				$result = $user->checkAccess($rights);
 			
-			if (!$result) {
-				throw
-					PageAccessDeniedException::create()->
-					setPageRights($pageRights)->
-					setPageId($page->getId());
-			}
+			if (!$result)
+				throw PageAccessDeniedException::create();
 
 			return $this;
 		}

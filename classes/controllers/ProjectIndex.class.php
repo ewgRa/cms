@@ -107,7 +107,11 @@
 			HttpRequest $request,
 			PageAccessDeniedException $e
 		) {
-			$rights = $e->getPageRights();
+			$rights =
+				PageRight::da()->getByPage(
+					$request->getAttachedVar(AttachedAliases::PAGE)
+				);
+			
 			$right = array_shift($rights);
 			
 			header(

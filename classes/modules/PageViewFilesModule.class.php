@@ -40,7 +40,7 @@
 					$contentType = ContentType::createByName($contentTypeName);
 					
 					if (!$contentType->canBeJoined()) {
-						throw DefaultException::create(
+						throw WrongStateException::create(
 							'Don\'t know how join content-type '.$contentType
 						);
 					}
