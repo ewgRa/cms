@@ -39,11 +39,10 @@
 				foreach ($settings['joinContentTypes'] as $contentTypeName) {
 					$contentType = ContentType::createByName($contentTypeName);
 					
-					if (!$contentType->canBeJoined()) {
-						throw WrongStateException::create(
-							'Don\'t know how join content-type '.$contentType
-						);
-					}
+					Assert::isTrue(
+						$contentType->canBeJoined(),
+						'Don\'t know how join content-type '.$contentType
+					);
 				
 					$this->addJoinContentType($contentType);
 				}
