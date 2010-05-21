@@ -29,9 +29,11 @@
 		
 		public function getByUser(User $user)
 		{
-			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE user_id = ?";
-			
-			return $this->getListCachedByQuery($dbQuery, array($user->getId()));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery("SELECT * FROM ".$this->getTable()." WHERE user_id = ?")->
+				setValues(array($user->getId()))
+			);
 		}
 	}
 ?>

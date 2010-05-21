@@ -13,7 +13,7 @@
 		
 		/**
 		 * @return DebugData
-		 */		
+		 */
 		public function insert(DebugData $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
@@ -36,7 +36,12 @@
 			}
 			
 			$dbQuery .= join(', ', $queryParts);
-			$this->db()->query($dbQuery, $queryParams);
+			
+			$this->db()->query(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($queryParams)
+			);
 			
 			$object->setId($this->db()->getInsertedId());
 			
@@ -47,7 +52,7 @@
 
 		/**
 		 * @return AutoDebugDataDA
-		 */		
+		 */
 		public function save(DebugData $object)
 		{
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -70,8 +75,13 @@
 			$queryParams[] = $object->getId();
 			
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
-			$this->db()->query($dbQuery, $queryParams);
-			 
+
+			$this->db()->query(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($queryParams)
+			);
+						 
 			$this->dropCache();
 			
 			return $object;

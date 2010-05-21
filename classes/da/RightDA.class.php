@@ -20,9 +20,11 @@
 		 */
 		public function getByAlias($alias)
 		{
-			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE alias = ?";
-			
-			return $this->getCachedByQuery($dbQuery, array($alias));
+			return $this->getCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery("SELECT * FROM ".$this->getTable()." WHERE alias = ?")->
+				setValues(array($alias))
+			);
 		}
 		
 		/**
@@ -30,9 +32,11 @@
 		 */
 		public function getByAliases(array $aliases)
 		{
-			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE alias IN(?)";
-			
-			return $this->getListCachedByQuery($dbQuery, array($aliases));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery("SELECT * FROM ".$this->getTable()." WHERE alias IN(?)")->
+				setValues(array($aliases))
+			);
 		}
 		
 		/**
@@ -40,9 +44,11 @@
 		 */
 		public function getById($id)
 		{
-			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
-			
-			return $this->getCachedByQuery($dbQuery, array($id));
+			return $this->getCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery('SELECT * FROM '.$this->getTable().' WHERE id = ?')->
+				setValues(array($id))
+			);
 		}
 
 		/**
@@ -50,21 +56,27 @@
 		 */
 		public function getByIds(array $ids)
 		{
-			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id IN (?)";
-			
-			return $this->getListCachedByQuery($dbQuery, array($ids));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery("SELECT * FROM ".$this->getTable()." WHERE id IN (?)")->
+				setValues(array($ids))
+			);
 		}
 		
 		public function getByInheritanceIds(array $ids)
 		{
 			$dbQuery = "
 				SELECT t1.* FROM ".$this->getTable()." t1
-				INNER JOIN ".$this->db()->getTable('Right_inheritance')." t2
+				INNER JOIN ".$this->escapeTable('Right_inheritance')." t2
 					ON(t2.right_id = t1.id)
 				WHERE t2.child_right_id IN (?)
 			";
 			
-			return $this->getListCachedByQuery($dbQuery, array($ids));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery($dbQquery)->
+				setValues(array($ids))
+			);
 		}
 	}
 ?>

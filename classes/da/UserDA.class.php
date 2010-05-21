@@ -22,9 +22,11 @@
 		 */
 		public function getByLogin($login)
 		{
-			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE login = ?';
-
-			return $this->getCachedByQuery($dbQuery, array($login));
+			return $this->getCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery('SELECT * FROM '.$this->getTable().' WHERE login = ?')->
+				setValues(array($login))
+			);
 		}
 
 		/**
@@ -39,7 +41,11 @@
 					ON(t2.user_id = t1.id AND t2.right_id = ?)
 				';
 
-			return $this->getListCachedByQuery($dbQuery, array($right->getId()));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues(array($right->getId()))
+			);
 		}
 		
 		/**
@@ -47,9 +53,11 @@
 		 */
 		public function getById($id)
 		{
-			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE id = ?';
-
-			return $this->getCachedByQuery($dbQuery, array($id));
+			return $this->getCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery("SELECT * FROM ".$this->getTable()." WHERE id = ?")->
+				setValues(array($id))
+			);
 		}
 		
 		/**

@@ -21,7 +21,10 @@
 				'SELECT * FROM '.$this->getTable()
 				.' WHERE status = '.PageStatus::NORMAL;
 
-			return $this->getListCachedByQuery($dbQuery);
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)
+			);
 		}
 
 		/**
@@ -33,7 +36,11 @@
 				'SELECT * FROM '.$this->getTable()
 				.' WHERE status = '.PageStatus::NORMAL.' AND id=?';
 
-			return $this->getCachedByQuery($dbQuery, array($id));
+			return $this->getCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues(array($id))
+			);
 		}
 	}
 ?>

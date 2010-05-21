@@ -26,8 +26,9 @@
 			";
 			
 			return $this->getCachedByQuery(
-				$dbQuery,
-				array($navigation->getId(), $language->getId())
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues(array($navigation->getId(), $language->getId()))
 			);
 		}
 		
@@ -53,8 +54,9 @@
 			$dbQuery .= ' WHERE '.join(' AND ', $queryParts);
 			
 			return $this->getListCachedByQuery(
-				$dbQuery,
-				$params
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($params)
 			);
 		}
 	}

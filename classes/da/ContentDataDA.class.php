@@ -20,14 +20,13 @@
 		 */
 		public function get(Content $content, Language $language)
 		{
-			$dbQuery = "
-				SELECT * FROM " . $this->getTable() . "
-				WHERE content_id = ? AND language_id = ?
-			";
-			
 			return $this->getCachedByQuery(
-				$dbQuery,
-				array($content->getId(), $language->getId())
+				DatabaseQuery::create()->
+				setQuery(
+					"SELECT * FROM ".$this->getTable()
+					." WHERE content_id = ? AND language_id = ?"
+				)->
+				setValues(array($content->getId(), $language->getId()))
 			);
 		}
 		
@@ -53,8 +52,9 @@
 			$dbQuery .= ' WHERE '.join(' AND ', $queryParts);
 			
 			return $this->getListCachedByQuery(
-				$dbQuery,
-				$params
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($params)
 			);
 		}
 	}

@@ -17,12 +17,14 @@
 
 		public function getByIds(array $ids)
 		{
-			$dbQuery = "
-				SELECT * FROM ".$this->getTable()."
-				WHERE id IN (?) AND status = ".ContentStatus::NORMAL."
-			";
-			
-			return $this->getListCachedByQuery($dbQuery, array($ids));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery(
+					"SELECT * FROM ".$this->getTable()
+					." WHERE id IN (?) AND status = ".ContentStatus::NORMAL
+				)->
+				setValues(array($ids))
+			);
 		}
 	}
 ?>

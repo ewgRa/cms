@@ -16,7 +16,14 @@
 		{
 			Assert::isNotNull($this->tableAlias);
 			
-			return $this->db()->getTable($this->tableAlias);
+			return $this->escapeTable($this->tableAlias);
+		}
+		
+		public function escapeTable($table)
+		{
+			return
+				$this->db()->getDialect()->
+				escapeTable($table, $this->db());
 		}
 		
 		/**
@@ -77,7 +84,7 @@
 			return $result;
 		}
 		
-		public function getCachedByQuery($dbQuery, array $params = array())
+		public function getCachedByQuery(DatabaseQueryInterface $dbQuery)
 		{
 			$result = null;
 
@@ -85,15 +92,15 @@
 			
 			if ($cacheTicket) {
 				$cacheTicket->
-					setKey($dbQuery, $params)->
+					setKey($dbQuery)->
 					restoreData();
 			}
 				
 			if (!$cacheTicket || $cacheTicket->isExpired()) {
-				$dbResult = $this->db()->query($dbQuery, $params);
+				$dbResult = $this->db()->query($dbQuery);
 	
 				if ($dbResult->recordCount())
-					$result = $this->build($dbResult->fetchArray());
+					$result = $this->build($dbResult->fetchRow());
 
 				if ($cacheTicket) {
 					$cacheTicket->setData($result)->storeData();
@@ -105,7 +112,7 @@
 			return $result;
 		}
 
-		public function getListCachedByQuery($dbQuery, array $params = array())
+		public function getListCachedByQuery(DatabaseQueryInterface $dbQuery)
 		{
 			$result = null;
 			
@@ -113,12 +120,12 @@
 			
 			if ($cacheTicket) {
 				$cacheTicket->
-					setKey(get_class($this), $dbQuery, $params)->
+					setKey(get_class($this), $dbQuery)->
 					restoreData();
 			}
 				
 			if (!$cacheTicket || $cacheTicket->isExpired()) {
-				$dbResult = $this->db()->query($dbQuery, $params);
+				$dbResult = $this->db()->query($dbQuery);
 	
 				$result = $this->buildList($dbResult->fetchList());
 

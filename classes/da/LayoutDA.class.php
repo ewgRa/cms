@@ -20,9 +20,11 @@
 		 */
 		public function getById($id)
 		{
-			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE id = ?";
-			
-			return $this->getCachedByQuery($dbQuery, array($id));
+			return $this->getCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery("SELECT * FROM ".$this->getTable()." WHERE id = ?")->
+				setValues(array($id))
+			);
 		}
 	}
 ?>

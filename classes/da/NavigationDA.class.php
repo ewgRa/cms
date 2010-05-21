@@ -22,7 +22,11 @@
 				WHERE category_id = ?
 			";
 			
-			return $this->getListCachedByQuery($dbQuery, array($ids));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues(array($ids))
+			);
 		}
 	}
 ?>

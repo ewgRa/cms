@@ -20,9 +20,11 @@
 		 */
 		public function getByAlias($alias)
 		{
-			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE alias = ?';
-
-			return $this->getCachedByQuery($dbQuery, array($alias));
+			return $this->getCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery('SELECT * FROM '.$this->getTable().' WHERE alias = ?')->
+				setValues(array($alias))
+			);
 		}
 	}
 ?>

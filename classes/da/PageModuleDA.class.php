@@ -22,7 +22,11 @@
 				ORDER BY priority, priority IS NULL
 			";
 			
-			return $this->getListCachedByQuery($dbQuery, array($page->getId()));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues(array($page->getId()))
+			);
 		}
 	}
 ?>

@@ -17,9 +17,11 @@
 		
 		public function getByPage(Page $page)
 		{
-			$dbQuery = "SELECT * FROM ".$this->getTable()." WHERE page_id = ?";
-			
-			return $this->getListCachedByQuery($dbQuery, array($page->getId()));
+			return $this->getListCachedByQuery(
+				DatabaseQuery::create()->
+				setQuery("SELECT * FROM ".$this->getTable()." WHERE page_id = ?")->
+				setValues(array($page->getId()))
+			);
 		}
 	}
 ?>
