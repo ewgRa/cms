@@ -43,7 +43,12 @@
 			}
 			</xsl:for-each>
 			$dbQuery .= join(', ', $queryParts);
-			$this->db()->query($dbQuery, $queryParams);
+			
+			$this->db()->query(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($queryParams)
+			);
 			<xsl:if test="count(properties/*[name() = 'id']) &gt; 0">
 			$object->setId($this->db()->getInsertedId());
 			</xsl:if>
@@ -85,7 +90,12 @@
 			$queryParams[] = <xsl:value-of select="$value" />;
 			</xsl:for-each>
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
-			$this->db()->query($dbQuery, $queryParams);
+
+			$this->db()->query(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($queryParams)
+			);
 			 
 			$this->dropCache();
 			

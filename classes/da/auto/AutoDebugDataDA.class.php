@@ -13,7 +13,7 @@
 		
 		/**
 		 * @return DebugData
-		 */
+		 */		
 		public function insert(DebugData $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
@@ -52,7 +52,7 @@
 
 		/**
 		 * @return AutoDebugDataDA
-		 */
+		 */		
 		public function save(DebugData $object)
 		{
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -81,7 +81,7 @@
 				setQuery($dbQuery)->
 				setValues($queryParams)
 			);
-						 
+			 
 			$this->dropCache();
 			
 			return $object;

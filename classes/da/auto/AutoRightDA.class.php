@@ -36,7 +36,12 @@
 			}
 			
 			$dbQuery .= join(', ', $queryParts);
-			$this->db()->query($dbQuery, $queryParams);
+			
+			$this->db()->query(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($queryParams)
+			);
 			
 			$object->setId($this->db()->getInsertedId());
 			
@@ -70,7 +75,12 @@
 			$queryParams[] = $object->getId();
 			
 			$dbQuery .= join(', ', $queryParts). ' WHERE '.join(' AND ', $whereParts);
-			$this->db()->query($dbQuery, $queryParams);
+
+			$this->db()->query(
+				DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues($queryParams)
+			);
 			 
 			$this->dropCache();
 			
