@@ -67,7 +67,7 @@
 		{
 			$dbQuery = "
 				SELECT t1.* FROM ".$this->getTable()." t1
-				INNER JOIN ".$this->escapeTable('Right_inheritance')." t2
+				INNER JOIN ".$this->quoteTable('Right_inheritance')." t2
 					ON(t2.right_id = t1.id)
 				WHERE t2.child_right_id IN (?)
 			";

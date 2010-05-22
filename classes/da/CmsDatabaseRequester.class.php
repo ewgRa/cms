@@ -16,14 +16,14 @@
 		{
 			Assert::isNotNull($this->tableAlias);
 			
-			return $this->escapeTable($this->tableAlias);
+			return $this->quoteTable($this->tableAlias);
 		}
 		
-		public function escapeTable($table)
+		public function quoteTable($table)
 		{
 			return
 				$this->db()->getDialect()->
-				escapeTable($table, $this->db());
+				quoteTable($table, $this->db());
 		}
 		
 		/**
