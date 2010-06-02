@@ -98,19 +98,24 @@
 		$pointer = isset($_GET['pointer']) ? $_GET['pointer'] : 0;
 
 		$dbQuery = "SELECT SQL_CALC_FOUND_ROWS * FROM "
-			.$databasePool->getTable('DebugData')
+			.$databasePool->getDialect()->quoteTable('DebugData')
 			." WHERE session = ? ORDER BY id DESC LIMIT "
 			.(int)$pointer.", 1";
 
 		$dbResult = $databasePool->query(
-			$dbQuery,
-			array(Session::me()->getId())
+			DatabaseQuery::create()->
+			setQuery($dbQuery)->
+			setValues(array(Session::me()->getId()))
 		);
 		
-		$dbRow = $dbResult->fetchArray();
+		$dbRow = $dbResult->fetchRow();
 
-		$dbResult = $databasePool->query('SELECT FOUND_ROWS() as cnt');
-		$dbRowCount = $dbResult->fetchArray();
+		$dbResult =
+			$databasePool->query(
+				DatabaseQuery::create()->setQuery('SELECT FOUND_ROWS() as cnt')
+			);
+		
+		$dbRowCount = $dbResult->fetchRow();
 		
 		$debugItems = unserialize($dbRow['data']);
 		$model = Model::create();
@@ -141,10 +146,6 @@
 							'lifeTime' =>
 								$data->getLifeTime()
 									? date('Y-m-d h:i:s', $data->getLifeTime())
-									: null,
-							'actualTime' =>
-								$data->getActualTime()
-									? date('Y-m-d h:i:s', $data->getActualTime())
 									: null,
 							'status' => $data->isExpired() ? 'expired' : 'actual'
 						);

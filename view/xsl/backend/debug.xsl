@@ -130,7 +130,6 @@
 								<td>Key</td>
 								<td>Cache instance</td>
 								<td>Life time</td>
-								<td>Actual time</td>
 								<td>Status</td>
 							</tr>
 							<xsl:for-each select="item[type=4]">
@@ -140,7 +139,6 @@
 									<td><xsl:value-of select="data/key"/></td>
 									<td><xsl:value-of select="data/cacheInstance"/></td>
 									<td><xsl:value-of select="data/expiredTime"/></td>
-									<td><xsl:value-of select="data/actualTime"/></td>
 									<td><xsl:value-of select="data/status"/></td>
 								</tr>
 							</xsl:for-each>
