@@ -30,16 +30,10 @@
 		 */
 		public function createTicket()
 		{
-			$result = null;
-			
-			if ($this->cache()->hasTicketParams($this->getAlias())) {
-				$result =
-					$this->cache()->
-						createTicket($this->getAlias())->
-						setKey($this->getKey());
-			}
-			
-			return $result;
+			return
+				$this->cache()->
+					createTicket()->
+					setKey($this->getKey());
 		}
 		
 		/**

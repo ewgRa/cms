@@ -91,7 +91,8 @@
 			$cacheTicket = $this->createCacheTicket();
 			
 			if ($cacheTicket) {
-				$cacheTicket->
+				$result =
+					$cacheTicket->
 					setKey($dbQuery)->
 					restoreData();
 			}
@@ -103,11 +104,10 @@
 					$result = $this->build($dbResult->fetchRow());
 
 				if ($cacheTicket) {
-					$cacheTicket->setData($result)->storeData();
+					$cacheTicket->storeData($result);
 					$this->addTicketToTag($cacheTicket);
 				}
-			} else
-				$result = $cacheTicket->getData();
+			}
 			
 			return $result;
 		}
@@ -119,9 +119,10 @@
 			$cacheTicket = $this->createCacheTicket();
 			
 			if ($cacheTicket) {
-				$cacheTicket->
-					setKey(get_class($this), $dbQuery)->
-					restoreData();
+				$result =
+					$cacheTicket->
+						setKey(get_class($this), $dbQuery)->
+						restoreData();
 			}
 				
 			if (!$cacheTicket || $cacheTicket->isExpired()) {
@@ -130,11 +131,10 @@
 				$result = $this->buildList($dbResult->fetchList());
 
 				if ($cacheTicket) {
-					$cacheTicket->setData($result)->storeData();
+					$cacheTicket->storeData($result);
 					$this->addTicketToTag($cacheTicket);
 				}
-			} else
-				$result = $cacheTicket->getData();
+			}
 			
 			return $result;
 		}
@@ -146,17 +146,16 @@
 		{
 			$tagTicket =
 				$this->createCacheTicket()->
-				setKey('tag')->
-				restoreData();
+				setKey('tag');
+				
+			$data = $tagTicket->restoreData();
 
-			$data =
-				$tagTicket->isExpired()
-					? array()
-					: $tagTicket->getData();
+			if ($tagTicket->isExpired())
+				$data = array();
 				
 			$data[] = $cacheTicket->getCacheInstance()->compileKey($cacheTicket);
 			
-			$tagTicket->setData($data)->storeData();
+			$tagTicket->storeData($data);
 			
 			return $this;
 		}
@@ -166,14 +165,10 @@
 			$tagTicket = $this->createCacheTicket();
 
 			if ($tagTicket) {
-				$tagTicket->
-					setKey('tag')->
-					restoreData();
+				$data = $tagTicket->setKey('tag')->restoreData();
 	
-				$data =
-					$tagTicket->isExpired()
-						? array()
-						: $tagTicket->getData();
+				if ($tagTicket->isExpired())
+					$data = array();
 
 				foreach ($data as $cacheKey)
 					$tagTicket->getCacheInstance()->dropByKey($cacheKey);

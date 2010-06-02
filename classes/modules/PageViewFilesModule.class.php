@@ -127,9 +127,8 @@
 			foreach ($files as $file) {
 				if($file instanceof JoinedViewFile) {
 					$this->createJoinedListsCacheTicket()->
-						setData($file)->
 						setKey($file->getPath())->
-						storeData();
+						storeData($file);
 					
 					if ($this->additionalJoinUrl)
 						$file->setPath($this->additionalJoinUrl.'/'.$file->getPath());

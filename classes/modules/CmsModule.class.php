@@ -127,16 +127,13 @@
 			$renderedModel = null;
 			
 			if ($this->hasCacheTicket()) {
-				$this->getCacheTicket()->restoreData();
+				$renderedModel = $this->getCacheTicket()->restoreData();
 				
 				if ($this->getCacheTicket()->isExpired()) {
 					$renderedModel = $this->renderModel();
 					
-					$this->getCacheTicket()->
-						setData($renderedModel)->
-						storeData();
-				} else
-					$renderedModel = $this->getCacheTicket()->getData();
+					$this->getCacheTicket()->storeData($renderedModel);
+				}
 			}
 
 			if (is_null($renderedModel))

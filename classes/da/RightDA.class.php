@@ -74,7 +74,7 @@
 			
 			return $this->getListCachedByQuery(
 				DatabaseQuery::create()->
-				setQuery($dbQquery)->
+				setQuery($dbQuery)->
 				setValues(array($ids))
 			);
 		}
