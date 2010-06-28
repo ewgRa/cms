@@ -12,6 +12,8 @@
 		</properties>
 	</Category>
 	
+	<ContentStatus type="Enumeration" />
+	
 	<Content>
 		<properties>
 			<id />
@@ -59,6 +61,8 @@
 		</properties>
 	</Module>
 	
+	<HttpUrl type="Stringable" />
+
 	<Navigation>
 		<properties>
 			<id />
@@ -75,7 +79,9 @@
 			<text />
 		</properties>
 	</NavigationData>
-	
+
+	<PageStatus type="Enumeration" />
+		
 	<Page>
 		<properties>
 			<id />
@@ -115,7 +121,7 @@
 		<properties>
 			<id />
 			<page class="Page" />
-			<right clss="Right" />
+			<right class="Right" />
 			<redirectPage class="Page" />
 		</properties>
 	</PageRight>
@@ -151,6 +157,8 @@
 			<right class="Right" />
 		</properties>
 	</UserRight>
+	
+	<ContentType type="Enumeration" />
 	
 	<ViewFile>
 		<properties>
