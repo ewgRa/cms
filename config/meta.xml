@@ -15,16 +15,15 @@
 	<Content>
 		<properties>
 			<id />
-			<!-- TODO: type="object" class="ContentStatus" -->
-			<status type="ContentStatus" />
+			<status class="ContentStatus" />
 		</properties>
 	</Content>
 	
 	<ContentData>
 		<properties>
 			<id />
-			<content type="Content" relation="OneToOne" />
-			<language type="Language" relation="OneToOne" />
+			<content class="Content" />
+			<language class="Language" />
 			<text />
 		</properties>
 	</ContentData>
@@ -32,7 +31,7 @@
 	<DebugData>
 		<properties>
 			<id />
-			<session null="true" />
+			<session nullable="true" />
 			<data type="array" />
 			<date />
 		</properties>
@@ -48,7 +47,7 @@
 	<Layout>
 		<properties>
 			<id />
-			<viewFile type="ViewFile" relation="OneToOne" />
+			<viewFile class="ViewFile" />
 		</properties>
 	</Layout>
 	
@@ -56,23 +55,23 @@
 		<properties>
 			<id />
 			<name />
-			<settings type="array" null="true" />
+			<settings type="array" nullable="true" />
 		</properties>
 	</Module>
 	
 	<Navigation>
 		<properties>
 			<id />
-			<category type="Category" relation="OneToOne" />
-			<uri type="HttpUrl" createFunction="createFromString"/>
+			<category class="Category" />
+			<uri class="HttpUrl" createFunction="createFromString"/>
 		</properties>
 	</Navigation>
 	
 	<NavigationData>
 		<properties>
 			<id />
-			<navigation type="Navigation" relation="OneToOne" />
-			<language type="Language" relation="OneToOne" />
+			<navigation class="Navigation" />
+			<language class="Language" />
 			<text />
 		</properties>
 	</NavigationData>
@@ -81,9 +80,9 @@
 		<properties>
 			<id />
 			<path />
-			<preg type="boolean" null="true" />
-			<layout type="Layout" relation="OneToOne" />
-			<status type="PageStatus" />
+			<preg type="boolean" nullable="true" />
+			<layout class="Layout" />
+			<status class="PageStatus" />
 			<modified />
 		</properties>
 	</Page>
@@ -91,33 +90,33 @@
 	<PageData>
 		<properties>
 			<id />
-			<page type="Page" relation="OneToOne" />
-			<language type="Language" relation="OneToOne" />
-			<title null="true" />
-			<description null="true" />
-			<keywords null="true" />
+			<page class="Page" />
+			<language class="Language" />
+			<title nullable="true" />
+			<description nullable="true" />
+			<keywords nullable="true" />
 		</properties>
 	</PageData>
 	
 	<PageModule>
 		<properties>
 			<id />
-			<page type="Page" relation="OneToOne" />
-			<module type="Module" relation="OneToOne" />
-			<section null="true" />
-			<position null="true" />
-			<priority null="true" />
-			<settings type="array" null="true" />
-			<viewFile type="ViewFile" relation="OneToOne" null="true" />
+			<page class="Page" />
+			<module class="Module" />
+			<section nullable="true" />
+			<position nullable="true" />
+			<priority nullable="true" />
+			<settings type="array" nullable="true" />
+			<viewFile class="ViewFile" nullable="true" />
 		</properties>
 	</PageModule>
 	
 	<PageRight>
 		<properties>
 			<id />
-			<page type="Page" relation="OneToOne" />
-			<right type="Right" relation="OneToOne" />
-			<redirectPage type="Page" relation="OneToOne" />
+			<page class="Page" />
+			<right clss="Right" />
+			<redirectPage class="Page" />
 		</properties>
 	</PageRight>
 	
@@ -125,8 +124,8 @@
 		<properties>
 			<id />
 			<alias />
-			<name null="true" />
-			<role type="boolean" null="true" />
+			<name nullable="true" />
+			<role type="boolean" nullable="true" />
 		</properties>
 	</Right>
 	
@@ -148,18 +147,18 @@
 	<UserRight>
 		<properties>
 			<id />
-			<user type="User" relation="OneToOne" />
-			<right type="Right" relation="OneToOne" />
+			<user class="User" />
+			<right class="Right" />
 		</properties>
 	</UserRight>
 	
 	<ViewFile>
 		<properties>
 			<id />
-			<contentType type="ContentType" />
+			<contentType class="ContentType" />
 			<path />
-			<joinable type="boolean" null="true" />
-			<source type="FileSource" relation="OneToOne" />
+			<joinable type="boolean" nullable="true" />
+			<source class="FileSource" />
 		</properties>
 	</ViewFile>
 
