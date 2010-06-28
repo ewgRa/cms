@@ -20,7 +20,7 @@
 			$request	= init();
 			$output		= run($request);
 
-			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+			if(Debug::me()->isEnabled())
 				Debug::me()->addItem($this->createRequestDebugItem());
 
 			if ($request->hasAttachedVar(AttachedAliases::PAGE_HEADER))
@@ -49,12 +49,17 @@
 			
 			$debugItem = null;
 			
-			if ($storeDebug) {
+			if ($storeDebug && Debug::me()->isEnabled()) {
 				try {
-					if (Singleton::hasInstance('Debug')) {
-						Debug::me()->addItem($this->createRequestDebugItem());
-						$debugItem = Debug::me()->store();
-					}
+					Debug::me()->addItem($this->createRequestDebugItem());
+
+					$debugItem =
+						DebugData::da()->insert(
+							DebugData::create()->
+								setSession(Session::me()->getId())->
+								setData(Debug::me()->getItems())
+						);
+					
 				} catch (Exception $exception) {
 					// very bad... even write debugItem failed
 					$this->catchException($exception, false);
@@ -175,8 +180,7 @@
 		private function createRequestDebugItem()
 		{
 			return
-				CmsDebugItem::create()->
-				setType(CmsDebugItem::REQUEST)->
+				RequestDebugItem::create()->
 				setData(
 					array(
 						'get'	 	=> $_GET,

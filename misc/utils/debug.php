@@ -11,20 +11,6 @@
 			ProjectIndex::me()->catchEcho($echo);
 			
 		echo ProjectIndex::me()->getOutput($output, $echo);
-
-		if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled()) {
-			$debugItem =
-				CmsDebugItem::create()->
-				setType(CmsDebugItem::ENGINE_ECHO)->
-				setData($echo)->
-				setStartTime($startTime)->
-				setEndTime(microtime(true));
-			
-			Debug::me()->addItem($debugItem);
-			
-			if (Session::me()->isStarted())
-				Debug::me()->store();
-		}
 		
 	} catch(Exception $e) {
 		error_log($e);
@@ -121,6 +107,8 @@
 		$model = Model::create();
 		
 		if ($debugItems) {
+			// FIXME: Render
+			var_dump($debugItems);die;
 			foreach ($debugItems as $item) {
 				$data = $item->getData();
 				

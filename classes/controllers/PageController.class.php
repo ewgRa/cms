@@ -68,7 +68,7 @@
 				PageHeader::create()
 			);
 			
-			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+			if (Debug::me()->isEnabled())
 				$this->addDebug($startTime, microtime(true), $page);
 			
 			return parent::handleRequest($request, $mav);
@@ -79,9 +79,8 @@
 		 */
 		private function addDebug($startTime, $endTime, Page $page)
 		{
-			$debugItem = CmsDebugItem::create()->
+			$debugItem = PageDebugItem::create()->
 				setData($page)->
-				setType(CmsDebugItem::PAGE)->
 				setStartTime($startTime)->
 				setEndTime($endTime);
 			
