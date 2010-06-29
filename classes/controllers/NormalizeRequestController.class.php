@@ -1,9 +1,10 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 *
+	 * DEPRECATED from 5.3.0
+	 * http://ru2.php.net/manual/en/info.configuration.php#ini.magic-quotes-gpc 
 	*/
 	final class NormalizeRequestController extends ChainController
 	{

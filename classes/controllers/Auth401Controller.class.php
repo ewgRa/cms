@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -37,6 +35,9 @@
 			return $this->unAuthorized('Enter you auth data', 'Need auth', $request);
 		}
 		
+		/**
+		 * FIXME: stay in framework area
+		 */
 		private function unAuthorized($realm, $cancelMessage, HttpRequest $request)
 		{
 			header('WWW-Authenticate: Basic realm="' . $realm . '"');
