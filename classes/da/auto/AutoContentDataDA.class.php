@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoContentDataDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'ContentData';
 		
 		/**

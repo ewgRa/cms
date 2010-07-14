@@ -30,6 +30,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -45,6 +46,7 @@
 		public function setName($name)
 		{
 			$this->name = $name;
+
 			return $this;
 		}
 		
@@ -59,6 +61,7 @@
 		public function setSettings(array $settings = null)
 		{
 			$this->settings = $settings;
+
 			return $this;
 		}
 		

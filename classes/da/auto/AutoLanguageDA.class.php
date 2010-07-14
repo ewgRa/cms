@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoLanguageDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Language';
 		
 		/**
@@ -79,6 +78,14 @@
 				Language::create()->
 				setId($array['id'])->
 				setAbbr($array['abbr']);
+		}
+
+		public function dropCache()
+		{
+			ContentData::da()->dropCache();
+			NavigationData::da()->dropCache();
+			PageData::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

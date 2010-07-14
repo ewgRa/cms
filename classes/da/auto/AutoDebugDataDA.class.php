@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoDebugDataDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'DebugData';
 		
 		/**

@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoCategoryDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Category';
 		
 		/**
@@ -79,6 +78,12 @@
 				Category::create()->
 				setId($array['id'])->
 				setAlias($array['alias']);
+		}
+
+		public function dropCache()
+		{
+			Navigation::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

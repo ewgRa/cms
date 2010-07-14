@@ -24,6 +24,11 @@
 		private $sourceId = null;
 		
 		/**
+		 * @var FileSource
+		 */
+		private $source = null;
+		
+		/**
 		 * @return ViewFileDA
 		 */
 		public static function da()
@@ -37,6 +42,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -52,6 +58,7 @@
 		public function setContentType(ContentType $contentType)
 		{
 			$this->contentType = $contentType;
+
 			return $this;
 		}
 		
@@ -69,6 +76,7 @@
 		public function setPath($path)
 		{
 			$this->path = $path;
+
 			return $this;
 		}
 		
@@ -83,6 +91,7 @@
 		public function setJoinable($joinable = true)
 		{
 			$this->joinable = ($joinable === true);
+
 			return $this;
 		}
 		
@@ -104,7 +113,9 @@
 		 */
 		public function setSourceId($sourceId)
 		{
+			$this->source = null;
 			$this->sourceId = $sourceId;
+
 			return $this;
 		}
 		
@@ -119,6 +130,8 @@
 		public function setSource(FileSource $source)
 		{
 			$this->sourceId = $source->getId();
+			$this->source = $source;
+
 			return $this;
 		}
 		
@@ -127,7 +140,10 @@
 		 */
 		public function getSource()
 		{
-			return FileSource::da()->getById($this->getSourceId());
+			if (!$this->source && $this->getSourceId())
+				$this->source = FileSource::da()->getById($this->getSourceId());
+				
+			return $this->source;
 		}
 	}
 ?>

@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoUserDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'User';
 		
 		/**
@@ -87,6 +86,12 @@
 				setId($array['id'])->
 				setLogin($array['login'])->
 				setPassword($array['password']);
+		}
+
+		public function dropCache()
+		{
+			UserRight::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

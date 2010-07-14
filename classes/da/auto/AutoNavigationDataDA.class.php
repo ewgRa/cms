@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoNavigationDataDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'NavigationData';
 		
 		/**

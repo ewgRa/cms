@@ -11,7 +11,17 @@
 		
 		private $navigationId = null;
 		
+		/**
+		 * @var Navigation
+		 */
+		private $navigation = null;
+		
 		private $languageId = null;
+		
+		/**
+		 * @var Language
+		 */
+		private $language = null;
 		
 		private $text = null;
 		
@@ -29,6 +39,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -43,7 +54,9 @@
 		 */
 		public function setNavigationId($navigationId)
 		{
+			$this->navigation = null;
 			$this->navigationId = $navigationId;
+
 			return $this;
 		}
 		
@@ -58,6 +71,8 @@
 		public function setNavigation(Navigation $navigation)
 		{
 			$this->navigationId = $navigation->getId();
+			$this->navigation = $navigation;
+
 			return $this;
 		}
 		
@@ -66,7 +81,10 @@
 		 */
 		public function getNavigation()
 		{
-			return Navigation::da()->getById($this->getNavigationId());
+			if (!$this->navigation && $this->getNavigationId())
+				$this->navigation = Navigation::da()->getById($this->getNavigationId());
+				
+			return $this->navigation;
 		}
 		
 		/**
@@ -74,7 +92,9 @@
 		 */
 		public function setLanguageId($languageId)
 		{
+			$this->language = null;
 			$this->languageId = $languageId;
+
 			return $this;
 		}
 		
@@ -89,6 +109,8 @@
 		public function setLanguage(Language $language)
 		{
 			$this->languageId = $language->getId();
+			$this->language = $language;
+
 			return $this;
 		}
 		
@@ -97,7 +119,10 @@
 		 */
 		public function getLanguage()
 		{
-			return Language::da()->getById($this->getLanguageId());
+			if (!$this->language && $this->getLanguageId())
+				$this->language = Language::da()->getById($this->getLanguageId());
+				
+			return $this->language;
 		}
 		
 		/**
@@ -106,6 +131,7 @@
 		public function setText($text)
 		{
 			$this->text = $text;
+
 			return $this;
 		}
 		

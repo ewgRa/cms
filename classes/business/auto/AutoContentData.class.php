@@ -11,7 +11,17 @@
 		
 		private $contentId = null;
 		
+		/**
+		 * @var Content
+		 */
+		private $content = null;
+		
 		private $languageId = null;
+		
+		/**
+		 * @var Language
+		 */
+		private $language = null;
 		
 		private $text = null;
 		
@@ -29,6 +39,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -43,7 +54,9 @@
 		 */
 		public function setContentId($contentId)
 		{
+			$this->content = null;
 			$this->contentId = $contentId;
+
 			return $this;
 		}
 		
@@ -58,6 +71,8 @@
 		public function setContent(Content $content)
 		{
 			$this->contentId = $content->getId();
+			$this->content = $content;
+
 			return $this;
 		}
 		
@@ -66,7 +81,10 @@
 		 */
 		public function getContent()
 		{
-			return Content::da()->getById($this->getContentId());
+			if (!$this->content && $this->getContentId())
+				$this->content = Content::da()->getById($this->getContentId());
+				
+			return $this->content;
 		}
 		
 		/**
@@ -74,7 +92,9 @@
 		 */
 		public function setLanguageId($languageId)
 		{
+			$this->language = null;
 			$this->languageId = $languageId;
+
 			return $this;
 		}
 		
@@ -89,6 +109,8 @@
 		public function setLanguage(Language $language)
 		{
 			$this->languageId = $language->getId();
+			$this->language = $language;
+
 			return $this;
 		}
 		
@@ -97,7 +119,10 @@
 		 */
 		public function getLanguage()
 		{
-			return Language::da()->getById($this->getLanguageId());
+			if (!$this->language && $this->getLanguageId())
+				$this->language = Language::da()->getById($this->getLanguageId());
+				
+			return $this->language;
 		}
 		
 		/**
@@ -106,6 +131,7 @@
 		public function setText($text)
 		{
 			$this->text = $text;
+
 			return $this;
 		}
 		

@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoPageRightDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'PageRight';
 		
 		/**

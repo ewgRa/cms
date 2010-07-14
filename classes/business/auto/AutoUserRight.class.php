@@ -11,7 +11,17 @@
 		
 		private $userId = null;
 		
+		/**
+		 * @var User
+		 */
+		private $user = null;
+		
 		private $rightId = null;
+		
+		/**
+		 * @var Right
+		 */
+		private $right = null;
 		
 		/**
 		 * @return UserRightDA
@@ -27,6 +37,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -41,7 +52,9 @@
 		 */
 		public function setUserId($userId)
 		{
+			$this->user = null;
 			$this->userId = $userId;
+
 			return $this;
 		}
 		
@@ -56,6 +69,8 @@
 		public function setUser(User $user)
 		{
 			$this->userId = $user->getId();
+			$this->user = $user;
+
 			return $this;
 		}
 		
@@ -64,7 +79,10 @@
 		 */
 		public function getUser()
 		{
-			return User::da()->getById($this->getUserId());
+			if (!$this->user && $this->getUserId())
+				$this->user = User::da()->getById($this->getUserId());
+				
+			return $this->user;
 		}
 		
 		/**
@@ -72,7 +90,9 @@
 		 */
 		public function setRightId($rightId)
 		{
+			$this->right = null;
 			$this->rightId = $rightId;
+
 			return $this;
 		}
 		
@@ -87,6 +107,8 @@
 		public function setRight(Right $right)
 		{
 			$this->rightId = $right->getId();
+			$this->right = $right;
+
 			return $this;
 		}
 		
@@ -95,7 +117,10 @@
 		 */
 		public function getRight()
 		{
-			return Right::da()->getById($this->getRightId());
+			if (!$this->right && $this->getRightId())
+				$this->right = Right::da()->getById($this->getRightId());
+				
+			return $this->right;
 		}
 	}
 ?>

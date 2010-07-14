@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoNavigationDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Navigation';
 		
 		/**
@@ -87,6 +86,12 @@
 				setId($array['id'])->
 				setCategoryId($array['category_id'])->
 				setUri(HttpUrl::createFromString($array['uri']));
+		}
+
+		public function dropCache()
+		{
+			NavigationData::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

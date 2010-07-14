@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoUserRightDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'UserRight';
 		
 		/**

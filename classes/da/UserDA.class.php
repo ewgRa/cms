@@ -56,16 +56,5 @@
 				setValues(array($id))
 			);
 		}
-		
-		/**
-		 * @return User
-		 */
-		protected function build(array $array) {
-			return
-				User::create()->
-					setId($array['id'])->
-					setLogin($array['login'])->
-					setPassword($array['password']);
-		}
 	}
 ?>

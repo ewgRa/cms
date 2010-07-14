@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoPageModuleDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'PageModule';
 		
 		/**

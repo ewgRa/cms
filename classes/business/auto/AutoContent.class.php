@@ -28,6 +28,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -43,6 +44,7 @@
 		public function setStatus(ContentStatus $status)
 		{
 			$this->status = $status;
+
 			return $this;
 		}
 		

@@ -25,6 +25,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -40,6 +41,7 @@
 		public function setAlias($alias)
 		{
 			$this->alias = $alias;
+
 			return $this;
 		}
 		

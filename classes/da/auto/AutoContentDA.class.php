@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoContentDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Content';
 		
 		/**
@@ -79,6 +78,12 @@
 				Content::create()->
 				setId($array['id'])->
 				setStatus(ContentStatus::create($array['status']));
+		}
+
+		public function dropCache()
+		{
+			ContentData::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

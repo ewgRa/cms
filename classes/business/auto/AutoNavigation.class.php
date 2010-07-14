@@ -12,6 +12,11 @@
 		private $categoryId = null;
 		
 		/**
+		 * @var Category
+		 */
+		private $category = null;
+		
+		/**
 		 * @var HttpUrl
 		 */
 		private $uri = null;
@@ -30,6 +35,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -44,7 +50,9 @@
 		 */
 		public function setCategoryId($categoryId)
 		{
+			$this->category = null;
 			$this->categoryId = $categoryId;
+
 			return $this;
 		}
 		
@@ -59,6 +67,8 @@
 		public function setCategory(Category $category)
 		{
 			$this->categoryId = $category->getId();
+			$this->category = $category;
+
 			return $this;
 		}
 		
@@ -67,7 +77,10 @@
 		 */
 		public function getCategory()
 		{
-			return Category::da()->getById($this->getCategoryId());
+			if (!$this->category && $this->getCategoryId())
+				$this->category = Category::da()->getById($this->getCategoryId());
+				
+			return $this->category;
 		}
 		
 		/**
@@ -76,6 +89,7 @@
 		public function setUri(HttpUrl $uri)
 		{
 			$this->uri = $uri;
+
 			return $this;
 		}
 		

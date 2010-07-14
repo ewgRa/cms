@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoModuleDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Module';
 		
 		/**
@@ -87,6 +86,12 @@
 				setId($array['id'])->
 				setName($array['name'])->
 				setSettings($array['settings'] ? unserialize($array['settings']) : null);
+		}
+
+		public function dropCache()
+		{
+			PageModule::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoLayoutDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Layout';
 		
 		/**
@@ -79,6 +78,12 @@
 				Layout::create()->
 				setId($array['id'])->
 				setViewFileId($array['view_file_id']);
+		}
+
+		public function dropCache()
+		{
+			Page::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

@@ -11,7 +11,17 @@
 		
 		private $pageId = null;
 		
+		/**
+		 * @var Page
+		 */
+		private $page = null;
+		
 		private $moduleId = null;
+		
+		/**
+		 * @var Module
+		 */
+		private $module = null;
 		
 		private $section = null;
 		
@@ -27,6 +37,11 @@
 		private $viewFileId = null;
 		
 		/**
+		 * @var ViewFile
+		 */
+		private $viewFile = null;
+		
+		/**
 		 * @return PageModuleDA
 		 */
 		public static function da()
@@ -40,6 +55,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -54,7 +70,9 @@
 		 */
 		public function setPageId($pageId)
 		{
+			$this->page = null;
 			$this->pageId = $pageId;
+
 			return $this;
 		}
 		
@@ -69,6 +87,8 @@
 		public function setPage(Page $page)
 		{
 			$this->pageId = $page->getId();
+			$this->page = $page;
+
 			return $this;
 		}
 		
@@ -77,7 +97,10 @@
 		 */
 		public function getPage()
 		{
-			return Page::da()->getById($this->getPageId());
+			if (!$this->page && $this->getPageId())
+				$this->page = Page::da()->getById($this->getPageId());
+				
+			return $this->page;
 		}
 		
 		/**
@@ -85,7 +108,9 @@
 		 */
 		public function setModuleId($moduleId)
 		{
+			$this->module = null;
 			$this->moduleId = $moduleId;
+
 			return $this;
 		}
 		
@@ -100,6 +125,8 @@
 		public function setModule(Module $module)
 		{
 			$this->moduleId = $module->getId();
+			$this->module = $module;
+
 			return $this;
 		}
 		
@@ -108,7 +135,10 @@
 		 */
 		public function getModule()
 		{
-			return Module::da()->getById($this->getModuleId());
+			if (!$this->module && $this->getModuleId())
+				$this->module = Module::da()->getById($this->getModuleId());
+				
+			return $this->module;
 		}
 		
 		/**
@@ -117,6 +147,7 @@
 		public function setSection($section = null)
 		{
 			$this->section = $section;
+
 			return $this;
 		}
 		
@@ -131,6 +162,7 @@
 		public function setPosition($position = null)
 		{
 			$this->position = $position;
+
 			return $this;
 		}
 		
@@ -145,6 +177,7 @@
 		public function setPriority($priority = null)
 		{
 			$this->priority = $priority;
+
 			return $this;
 		}
 		
@@ -159,6 +192,7 @@
 		public function setSettings(array $settings = null)
 		{
 			$this->settings = $settings;
+
 			return $this;
 		}
 		
@@ -175,7 +209,9 @@
 		 */
 		public function setViewFileId($viewFileId = null)
 		{
+			$this->viewFile = null;
 			$this->viewFileId = $viewFileId;
+
 			return $this;
 		}
 		
@@ -190,6 +226,8 @@
 		public function setViewFile(ViewFile $viewFile = null)
 		{
 			$this->viewFileId = $viewFile->getId();
+			$this->viewFile = $viewFile;
+
 			return $this;
 		}
 		
@@ -198,7 +236,10 @@
 		 */
 		public function getViewFile()
 		{
-			return ViewFile::da()->getById($this->getViewFileId());
+			if (!$this->viewFile && $this->getViewFileId())
+				$this->viewFile = ViewFile::da()->getById($this->getViewFileId());
+				
+			return $this->viewFile;
 		}
 	}
 ?>

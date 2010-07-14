@@ -12,6 +12,11 @@
 		private $viewFileId = null;
 		
 		/**
+		 * @var ViewFile
+		 */
+		private $viewFile = null;
+		
+		/**
 		 * @return LayoutDA
 		 */
 		public static function da()
@@ -25,6 +30,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -39,7 +45,9 @@
 		 */
 		public function setViewFileId($viewFileId)
 		{
+			$this->viewFile = null;
 			$this->viewFileId = $viewFileId;
+
 			return $this;
 		}
 		
@@ -54,6 +62,8 @@
 		public function setViewFile(ViewFile $viewFile)
 		{
 			$this->viewFileId = $viewFile->getId();
+			$this->viewFile = $viewFile;
+
 			return $this;
 		}
 		
@@ -62,7 +72,10 @@
 		 */
 		public function getViewFile()
 		{
-			return ViewFile::da()->getById($this->getViewFileId());
+			if (!$this->viewFile && $this->getViewFileId())
+				$this->viewFile = ViewFile::da()->getById($this->getViewFileId());
+				
+			return $this->viewFile;
 		}
 	}
 ?>

@@ -142,9 +142,7 @@
 		 */
 		public function addTicketToTag(CacheTicket $cacheTicket)
 		{
-			$tagTicket =
-				$this->createCacheTicket()->
-				setKey('tag');
+			$tagTicket = $this->createCacheTicket()->setKey('tag');
 				
 			$data = $tagTicket->restoreData();
 

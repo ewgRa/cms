@@ -11,9 +11,24 @@
 		
 		private $pageId = null;
 		
+		/**
+		 * @var Page
+		 */
+		private $page = null;
+		
 		private $rightId = null;
 		
+		/**
+		 * @var Right
+		 */
+		private $right = null;
+		
 		private $redirectPageId = null;
+		
+		/**
+		 * @var Page
+		 */
+		private $redirectPage = null;
 		
 		/**
 		 * @return PageRightDA
@@ -29,6 +44,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -43,7 +59,9 @@
 		 */
 		public function setPageId($pageId)
 		{
+			$this->page = null;
 			$this->pageId = $pageId;
+
 			return $this;
 		}
 		
@@ -58,6 +76,8 @@
 		public function setPage(Page $page)
 		{
 			$this->pageId = $page->getId();
+			$this->page = $page;
+
 			return $this;
 		}
 		
@@ -66,7 +86,10 @@
 		 */
 		public function getPage()
 		{
-			return Page::da()->getById($this->getPageId());
+			if (!$this->page && $this->getPageId())
+				$this->page = Page::da()->getById($this->getPageId());
+				
+			return $this->page;
 		}
 		
 		/**
@@ -74,7 +97,9 @@
 		 */
 		public function setRightId($rightId)
 		{
+			$this->right = null;
 			$this->rightId = $rightId;
+
 			return $this;
 		}
 		
@@ -89,6 +114,8 @@
 		public function setRight(Right $right)
 		{
 			$this->rightId = $right->getId();
+			$this->right = $right;
+
 			return $this;
 		}
 		
@@ -97,7 +124,10 @@
 		 */
 		public function getRight()
 		{
-			return Right::da()->getById($this->getRightId());
+			if (!$this->right && $this->getRightId())
+				$this->right = Right::da()->getById($this->getRightId());
+				
+			return $this->right;
 		}
 		
 		/**
@@ -105,7 +135,9 @@
 		 */
 		public function setRedirectPageId($redirectPageId)
 		{
+			$this->redirectPage = null;
 			$this->redirectPageId = $redirectPageId;
+
 			return $this;
 		}
 		
@@ -120,6 +152,8 @@
 		public function setRedirectPage(Page $redirectPage)
 		{
 			$this->redirectPageId = $redirectPage->getId();
+			$this->redirectPage = $redirectPage;
+
 			return $this;
 		}
 		
@@ -128,7 +162,10 @@
 		 */
 		public function getRedirectPage()
 		{
-			return Page::da()->getById($this->getRedirectPageId());
+			if (!$this->redirectPage && $this->getRedirectPageId())
+				$this->redirectPage = Page::da()->getById($this->getRedirectPageId());
+				
+			return $this->redirectPage;
 		}
 	}
 ?>

@@ -32,6 +32,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -47,6 +48,7 @@
 		public function setAlias($alias)
 		{
 			$this->alias = $alias;
+
 			return $this;
 		}
 		
@@ -61,6 +63,7 @@
 		public function setName($name = null)
 		{
 			$this->name = $name;
+
 			return $this;
 		}
 		
@@ -75,6 +78,7 @@
 		public function setRole($role = true)
 		{
 			$this->role = ($role === true);
+
 			return $this;
 		}
 		

@@ -11,7 +11,17 @@
 		
 		private $pageId = null;
 		
+		/**
+		 * @var Page
+		 */
+		private $page = null;
+		
 		private $languageId = null;
+		
+		/**
+		 * @var Language
+		 */
+		private $language = null;
 		
 		private $title = null;
 		
@@ -33,6 +43,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -47,7 +58,9 @@
 		 */
 		public function setPageId($pageId)
 		{
+			$this->page = null;
 			$this->pageId = $pageId;
+
 			return $this;
 		}
 		
@@ -62,6 +75,8 @@
 		public function setPage(Page $page)
 		{
 			$this->pageId = $page->getId();
+			$this->page = $page;
+
 			return $this;
 		}
 		
@@ -70,7 +85,10 @@
 		 */
 		public function getPage()
 		{
-			return Page::da()->getById($this->getPageId());
+			if (!$this->page && $this->getPageId())
+				$this->page = Page::da()->getById($this->getPageId());
+				
+			return $this->page;
 		}
 		
 		/**
@@ -78,7 +96,9 @@
 		 */
 		public function setLanguageId($languageId)
 		{
+			$this->language = null;
 			$this->languageId = $languageId;
+
 			return $this;
 		}
 		
@@ -93,6 +113,8 @@
 		public function setLanguage(Language $language)
 		{
 			$this->languageId = $language->getId();
+			$this->language = $language;
+
 			return $this;
 		}
 		
@@ -101,7 +123,10 @@
 		 */
 		public function getLanguage()
 		{
-			return Language::da()->getById($this->getLanguageId());
+			if (!$this->language && $this->getLanguageId())
+				$this->language = Language::da()->getById($this->getLanguageId());
+				
+			return $this->language;
 		}
 		
 		/**
@@ -110,6 +135,7 @@
 		public function setTitle($title = null)
 		{
 			$this->title = $title;
+
 			return $this;
 		}
 		
@@ -124,6 +150,7 @@
 		public function setDescription($description = null)
 		{
 			$this->description = $description;
+
 			return $this;
 		}
 		
@@ -138,6 +165,7 @@
 		public function setKeywords($keywords = null)
 		{
 			$this->keywords = $keywords;
+
 			return $this;
 		}
 		

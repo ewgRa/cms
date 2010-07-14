@@ -32,6 +32,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -47,6 +48,7 @@
 		public function setSession($session = null)
 		{
 			$this->session = $session;
+
 			return $this;
 		}
 		
@@ -61,6 +63,7 @@
 		public function setData(array $data)
 		{
 			$this->data = $data;
+
 			return $this;
 		}
 		
@@ -78,6 +81,7 @@
 		public function setDate($date)
 		{
 			$this->date = $date;
+
 			return $this;
 		}
 		

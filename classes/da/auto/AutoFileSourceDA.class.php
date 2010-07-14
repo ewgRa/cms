@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoFileSourceDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'FileSource';
 		
 		/**
@@ -79,6 +78,12 @@
 				FileSource::create()->
 				setId($array['id'])->
 				setAlias($array['alias']);
+		}
+
+		public function dropCache()
+		{
+			ViewFile::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

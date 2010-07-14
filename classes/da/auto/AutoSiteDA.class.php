@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoSiteDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Site';
 		
 		/**

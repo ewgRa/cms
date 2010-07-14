@@ -19,6 +19,11 @@
 		private $layoutId = null;
 		
 		/**
+		 * @var Layout
+		 */
+		private $layout = null;
+		
+		/**
 		 * @var PageStatus
 		 */
 		private $status = null;
@@ -39,6 +44,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -54,6 +60,7 @@
 		public function setPath($path)
 		{
 			$this->path = $path;
+
 			return $this;
 		}
 		
@@ -68,6 +75,7 @@
 		public function setPreg($preg = true)
 		{
 			$this->preg = ($preg === true);
+
 			return $this;
 		}
 		
@@ -89,7 +97,9 @@
 		 */
 		public function setLayoutId($layoutId)
 		{
+			$this->layout = null;
 			$this->layoutId = $layoutId;
+
 			return $this;
 		}
 		
@@ -104,6 +114,8 @@
 		public function setLayout(Layout $layout)
 		{
 			$this->layoutId = $layout->getId();
+			$this->layout = $layout;
+
 			return $this;
 		}
 		
@@ -112,7 +124,10 @@
 		 */
 		public function getLayout()
 		{
-			return Layout::da()->getById($this->getLayoutId());
+			if (!$this->layout && $this->getLayoutId())
+				$this->layout = Layout::da()->getById($this->getLayoutId());
+				
+			return $this->layout;
 		}
 		
 		/**
@@ -121,6 +136,7 @@
 		public function setStatus(PageStatus $status)
 		{
 			$this->status = $status;
+
 			return $this;
 		}
 		
@@ -138,6 +154,7 @@
 		public function setModified($modified)
 		{
 			$this->modified = $modified;
+
 			return $this;
 		}
 		

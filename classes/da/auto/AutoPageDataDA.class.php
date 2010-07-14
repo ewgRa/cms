@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoPageDataDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'PageData';
 		
 		/**

@@ -25,6 +25,7 @@
 		public function setId($id)
 		{
 			$this->id = $id;
+
 			return $this;
 		}
 		
@@ -40,6 +41,7 @@
 		public function setAbbr($abbr)
 		{
 			$this->abbr = $abbr;
+
 			return $this;
 		}
 		

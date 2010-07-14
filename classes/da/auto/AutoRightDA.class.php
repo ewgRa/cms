@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoRightDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Right';
 		
 		/**
@@ -95,6 +94,13 @@
 				setAlias($array['alias'])->
 				setName($array['name'])->
 				setRole($array['role'] == true);
+		}
+
+		public function dropCache()
+		{
+			PageRight::da()->dropCache();
+			UserRight::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

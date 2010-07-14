@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoViewFileDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'ViewFile';
 		
 		/**
@@ -103,6 +102,13 @@
 				setPath($array['path'])->
 				setJoinable($array['joinable'] == true)->
 				setSourceId($array['source_id']);
+		}
+
+		public function dropCache()
+		{
+			Layout::da()->dropCache();
+			PageModule::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>

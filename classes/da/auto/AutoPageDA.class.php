@@ -7,7 +7,6 @@
 	 */
 	abstract class AutoPageDA extends CmsDatabaseRequester
 	{
-
 		protected $tableAlias = 'Page';
 		
 		/**
@@ -111,6 +110,14 @@
 				setLayoutId($array['layout_id'])->
 				setStatus(PageStatus::create($array['status']))->
 				setModified($array['modified']);
+		}
+
+		public function dropCache()
+		{
+			PageData::da()->dropCache();
+			PageModule::da()->dropCache();
+			PageRight::da()->dropCache();
+			return parent::dropCache();
 		}
 	}
 ?>
