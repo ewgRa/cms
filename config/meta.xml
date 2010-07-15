@@ -5,13 +5,6 @@
 	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
 	DAExtends="CmsDatabaseRequester"
 >
-	<Category>
-		<properties>
-			<id />
-			<alias />
-		</properties>
-	</Category>
-	
 	<DebugData>
 		<properties>
 			<id />
@@ -43,25 +36,6 @@
 		</properties>
 	</Module>
 	
-	<HttpUrl type="Stringable" />
-
-	<Navigation>
-		<properties>
-			<id />
-			<category class="Category" />
-			<uri class="HttpUrl" createFunction="createFromString"/>
-		</properties>
-	</Navigation>
-	
-	<NavigationData>
-		<properties>
-			<id />
-			<navigation class="Navigation" />
-			<language class="Language" />
-			<text />
-		</properties>
-	</NavigationData>
-
 	<PageStatus type="Enumeration" />
 		
 	<Page>
