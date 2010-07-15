@@ -12,24 +12,6 @@
 		</properties>
 	</Category>
 	
-	<ContentStatus type="Enumeration" />
-	
-	<Content>
-		<properties>
-			<id />
-			<status class="ContentStatus" />
-		</properties>
-	</Content>
-	
-	<ContentData>
-		<properties>
-			<id />
-			<content class="Content" />
-			<language class="Language" />
-			<text />
-		</properties>
-	</ContentData>
-	
 	<DebugData>
 		<properties>
 			<id />

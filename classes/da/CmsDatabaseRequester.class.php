@@ -3,10 +3,12 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class CmsDatabaseRequester extends Singleton
+	abstract class CmsDatabaseRequester extends Singleton implements CacherInterface
 	{
 		protected $poolAlias	= 'cms';
 		protected $tableAlias	= null;
+		
+		private $linkedCachers = array();
 		
 		abstract protected function build(array $array);
 		
@@ -36,6 +38,18 @@
 		public function getPoolAlias()
 		{
 			return $this->poolAlias;
+		}
+		
+		public function addLinkedCacher(CacherInterface $cacher)
+		{
+			Assert::isFalse($cacher->hasLinkedCacher($this), 'recursion detected');
+			
+			$this->linkedCachers[get_class($cacher)] = $cacher;
+		}
+		
+		public function hasLinkedCacher(CacherInterface $cacher)
+		{
+			return isset($this->linkedCachers[get_class($cacher)]);
 		}
 		
 		/**
@@ -172,6 +186,9 @@
 				$tagTicket->drop();
 			}
 
+			foreach ($this->linkedCachers as $cacher)
+				$cacher->dropCache();
+			
 			return $this;
 		}
 	}
