@@ -6,19 +6,12 @@
 	final class PageController extends ChainController
 	{
 		/**
-		 * @var HttpRequest
-		 */
-		private $request = null;
-		
-		/**
 		 * @return ModelAndView
 		 */
 		public function handleRequest(
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$this->request = $request;
-			
 			$startTime = microtime(true);
 			
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
@@ -40,11 +33,7 @@
 			
 			$request->setAttachedVar(AttachedAliases::PAGE, $page);
 			
-			$this->checkAccessPage($page, $user);
-
-			$mav->setView(
-				$page->getLayout()->getViewFile()->createView()
-			);
+			$mav->setView($page->getLayout()->getViewFile()->createView());
 			
 			$baseUrl = HttpUrl::create()->setPath('');
 			
@@ -84,30 +73,6 @@
 			
 			Debug::me()->addItem($debugItem);
 			
-			return $this;
-		}
-
-		private function checkAccessPage(Page $page, User $user = null)
-		{
-			$result = true;
-			
-			$pageRights = PageRight::da()->getByPage($page);
-			$rightIds = array();
-			
-			foreach ($pageRights as $pageRight)
-				$rightIds[] = $pageRight->getRightId();
-			
-			$rights = Right::da()->getByIds($rightIds);
-
-			if ($rights && !$user)
-				$result = false;
-				
-			if ($result && $rights && $user)
-				$result = $user->checkAccess($rights);
-			
-			if (!$result)
-				throw PageAccessDeniedException::create();
-
 			return $this;
 		}
 	}
