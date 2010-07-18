@@ -21,13 +21,6 @@
 		</properties>
 	</Language>
 	
-	<Layout>
-		<properties>
-			<id />
-			<viewFile class="ViewFile" />
-		</properties>
-	</Layout>
-	
 	<Module>
 		<properties>
 			<id />
@@ -38,6 +31,13 @@
 	
 	<PageStatus type="Enumeration" />
 		
+	<Layout>
+		<properties>
+			<id />
+			<viewFile class="ViewFile" />
+		</properties>
+	</Layout>
+	
 	<Page>
 		<properties>
 			<id />
@@ -73,24 +73,6 @@
 		</properties>
 	</PageModule>
 	
-	<PageRight>
-		<properties>
-			<id />
-			<page class="Page" />
-			<right class="Right" />
-			<redirectPage class="Page" />
-		</properties>
-	</PageRight>
-	
-	<Right>
-		<properties>
-			<id />
-			<alias />
-			<name nullable="true" />
-			<role type="boolean" nullable="true" />
-		</properties>
-	</Right>
-	
 	<Site>
 		<properties>
 			<id />
@@ -98,24 +80,15 @@
 		</properties>
 	</Site>
 	
-	<User>
-		<properties>
-			<id />
-			<login />
-			<password />
-		</properties>
-	</User>
-	
-	<UserRight>
-		<properties>
-			<id />
-			<user class="User" />
-			<right class="Right" />
-		</properties>
-	</UserRight>
-	
 	<ContentType type="Enumeration" />
 	
+	<FileSource>
+		<properties>
+			<id />
+			<alias />
+		</properties>
+	</FileSource>
+
 	<ViewFile>
 		<properties>
 			<id />
@@ -125,12 +98,5 @@
 			<source class="FileSource" />
 		</properties>
 	</ViewFile>
-
-	<FileSource>
-		<properties>
-			<id />
-			<alias />
-		</properties>
-	</FileSource>
 
 </meta>
