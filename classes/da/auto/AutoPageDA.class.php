@@ -116,7 +116,6 @@
 		{
 			PageData::da()->dropCache();
 			PageModule::da()->dropCache();
-			PageRight::da()->dropCache();
 			return parent::dropCache();
 		}
 	}

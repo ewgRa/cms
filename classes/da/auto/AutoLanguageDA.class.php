@@ -82,8 +82,6 @@
 
 		public function dropCache()
 		{
-			ContentData::da()->dropCache();
-			NavigationData::da()->dropCache();
 			PageData::da()->dropCache();
 			return parent::dropCache();
 		}
