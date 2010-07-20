@@ -106,25 +106,6 @@
 			return $modelAndView->render();
 		}
 		
-		public function catchPageAccessDeniedException(
-			HttpRequest $request,
-			PageAccessDeniedException $e
-		) {
-			$rights =
-				PageRight::da()->getByPage(
-					$request->getAttachedVar(AttachedAliases::PAGE)
-				);
-			
-			$right = array_shift($rights);
-			
-			header(
-				'Location: '.$right->getRedirectPage()->getPath()
-				.'?backurl='.base64_encode($request->getUrl())
-			);
-				
-			die();
-		}
-		
 		/**
 		 * @return ProjectIndex
 		 */
