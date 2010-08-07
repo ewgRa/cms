@@ -63,9 +63,7 @@
 					restoreData();
 				
 			if ($cacheTicket->isExpired()) {
-				$dbResult = $requester->db()->query($dbQuery);
-	
-				$result = $requester->buildList($dbResult->fetchList());
+				$result = $requester->getListByQuery($dbQuery);
 
 				$cacheTicket->storeData($result);
 				$this->addTicketToTag($cacheTicket, $requester);

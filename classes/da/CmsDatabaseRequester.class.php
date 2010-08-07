@@ -10,7 +10,7 @@
 		
 		private $linkedCachers = array();
 		
-		abstract public function build(array $array);
+		abstract protected function build(array $array);
 		
 		public function getTable()
 		{
@@ -109,18 +109,6 @@
 			return $this;
 		}
 
-		public function buildList(array $arrayList)
-		{
-			$result = array();
-			
-			foreach ($arrayList as $array) {
-				$object = $this->build($array);
-				$result[$object->getId()] = $object;
-			}
-			
-			return $result;
-		}
-		
 		public function getCacheWorker()
 		{
 			return DefaultCacheWorker::me();
@@ -135,6 +123,18 @@
 		public function addCacheTicketToTag(CacheTicket $ticket)
 		{
 			return $this->getCacheWorker()->addTicketToTag($ticket, $this);
+		}
+
+		protected function buildList(array $arrayList)
+		{
+			$result = array();
+			
+			foreach ($arrayList as $array) {
+				$object = $this->build($array);
+				$result[$object->getId()] = $object;
+			}
+			
+			return $result;
 		}
 	}
 ?>

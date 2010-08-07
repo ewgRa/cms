@@ -114,7 +114,7 @@
 		/**
 		 * @return PageModule
 		 */
-		public function build(array $array)
+		protected function build(array $array)
 		{
 			return
 				PageModule::create()->

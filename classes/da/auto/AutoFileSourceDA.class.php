@@ -72,7 +72,7 @@
 		/**
 		 * @return FileSource
 		 */
-		public function build(array $array)
+		protected function build(array $array)
 		{
 			return
 				FileSource::create()->
