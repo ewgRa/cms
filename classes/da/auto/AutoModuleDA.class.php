@@ -79,7 +79,7 @@
 		/**
 		 * @return Module
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Module::create()->

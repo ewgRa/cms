@@ -72,7 +72,7 @@
 		/**
 		 * @return Layout
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Layout::create()->

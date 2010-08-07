@@ -93,7 +93,7 @@
 		/**
 		 * @return ViewFile
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				ViewFile::create()->

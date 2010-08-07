@@ -72,7 +72,7 @@
 		/**
 		 * @return Site
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Site::create()->

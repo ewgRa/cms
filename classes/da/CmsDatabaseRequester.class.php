@@ -10,7 +10,7 @@
 		
 		private $linkedCachers = array();
 		
-		abstract protected function build(array $array);
+		abstract public function build(array $array);
 		
 		public function getTable()
 		{
@@ -38,6 +38,11 @@
 		public function getPoolAlias()
 		{
 			return $this->poolAlias;
+		}
+		
+		public function getLinkedCachers()
+		{
+			return $this->linkedCachers;			
 		}
 		
 		public function addLinkedCacher(CacherInterface $cacher)
@@ -68,23 +73,43 @@
 			return $this->getPool();
 		}
 		
-		/**
-		 * @return CacheTicket
-		 */
-		public function createCacheTicket()
+		public function getByQuery(DatabaseQueryInterface $dbQuery)
 		{
-			$pool =
-				Cache::me()->hasPool($this->getPoolAlias())
-					? Cache::me()->getPool($this->getPoolAlias())
-					: null;
+			$result = null;
 			
-			return
-				$pool
-					? $pool->createTicket()->setPrefix(get_class($this))
-					: null;
+			$dbResult = $this->db()->query($dbQuery);
+
+			if ($dbResult->recordCount())
+				$result = $this->build($dbResult->fetchRow());
+			
+			return $result;
 		}
 		
-		protected function buildList(array $arrayList)
+		public function getCachedByQuery(DatabaseQueryInterface $dbQuery)
+		{
+			return $this->getCacheWorker()->getCachedByQuery($dbQuery, $this);
+		}
+		
+		public function getListByQuery(DatabaseQueryInterface $dbQuery)
+		{
+			$dbResult = $this->db()->query($dbQuery);
+
+			return $this->buildList($dbResult->fetchList());
+		}
+		
+		public function getListCachedByQuery(DatabaseQueryInterface $dbQuery)
+		{
+			return $this->getCacheWorker()->getListCachedByQuery($dbQuery, $this);
+		}
+		
+		public function dropCache()
+		{
+			$this->getCacheWorker()->dropCache($this);
+			
+			return $this;
+		}
+
+		public function buildList(array $arrayList)
 		{
 			$result = array();
 			
@@ -96,100 +121,20 @@
 			return $result;
 		}
 		
-		public function getCachedByQuery(DatabaseQueryInterface $dbQuery)
+		public function getCacheWorker()
 		{
-			$result = null;
-
-			$cacheTicket = $this->createCacheTicket();
-			
-			if ($cacheTicket) {
-				$result =
-					$cacheTicket->
-					setKey($dbQuery)->
-					restoreData();
-			}
-				
-			if (!$cacheTicket || $cacheTicket->isExpired()) {
-				$dbResult = $this->db()->query($dbQuery);
-	
-				if ($dbResult->recordCount())
-					$result = $this->build($dbResult->fetchRow());
-
-				if ($cacheTicket) {
-					$cacheTicket->storeData($result);
-					$this->addTicketToTag($cacheTicket);
-				}
-			}
-			
-			return $result;
-		}
-
-		public function getListCachedByQuery(DatabaseQueryInterface $dbQuery)
-		{
-			$result = null;
-			
-			$cacheTicket = $this->createCacheTicket();
-			
-			if ($cacheTicket) {
-				$result =
-					$cacheTicket->
-						setKey(get_class($this), $dbQuery)->
-						restoreData();
-			}
-				
-			if (!$cacheTicket || $cacheTicket->isExpired()) {
-				$dbResult = $this->db()->query($dbQuery);
-	
-				$result = $this->buildList($dbResult->fetchList());
-
-				if ($cacheTicket) {
-					$cacheTicket->storeData($result);
-					$this->addTicketToTag($cacheTicket);
-				}
-			}
-			
-			return $result;
+			return DefaultCacheWorker::me();
 		}
 		
-		/**
-		 * @return CmsDatabaseRequester
-		 */
-		public function addTicketToTag(CacheTicket $cacheTicket)
+		public function createCacheTicket()
 		{
-			$tagTicket = $this->createCacheTicket()->setKey('tag');
-				
-			$data = $tagTicket->restoreData();
-
-			if ($tagTicket->isExpired())
-				$data = array();
-				
-			$data[] = $cacheTicket->getCacheInstance()->compileKey($cacheTicket);
-			
-			$tagTicket->storeData($data);
-			
-			return $this;
+			return $this->getCacheWorker()->createTicket($this);
 		}
 
-		public function dropCache()
+		
+		public function addCacheTicketToTag(CacheTicket $ticket)
 		{
-			$tagTicket = $this->createCacheTicket();
-
-			if ($tagTicket) {
-				$data = $tagTicket->setKey('tag')->restoreData();
-	
-				if ($tagTicket->isExpired())
-					$data = array();
-
-				foreach ($data as $cacheKey)
-					$tagTicket->getCacheInstance()->dropByKey($cacheKey);
-					
-				$tagTicket->drop();
-			}
-
-			foreach ($this->linkedCachers as $cacher)
-				$cacher->dropCache();
-			
-			return $this;
+			return $this->getCacheWorker()->addTicketToTag($ticket, $this);
 		}
 	}
 ?>

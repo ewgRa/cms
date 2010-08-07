@@ -86,7 +86,7 @@
 		/**
 		 * @return DebugData
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				DebugData::create()->

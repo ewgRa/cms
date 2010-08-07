@@ -100,7 +100,7 @@
 		/**
 		 * @return Page
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Page::create()->

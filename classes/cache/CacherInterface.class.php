@@ -7,6 +7,8 @@
 	{
 		public function dropCache();
 
+		public function getLinkedCachers();
+		
 		public function addLinkedCacher(CacherInterface $cacher);
 
 		public function hasLinkedCacher(CacherInterface $cacher);

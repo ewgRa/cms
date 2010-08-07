@@ -57,7 +57,7 @@
 		 */
 		protected function storeCacheTicketData($data)
 		{
-			$this->getCacheTicket()->setData($data)->storeData();
+			$this->getCacheTicket()->storeData($data);
 			return $this;
 		}
 		
@@ -130,7 +130,7 @@
 				if ($this->getCacheTicket()->isExpired()) {
 					$renderedModel = $this->renderModel();
 					
-					$this->getCacheTicket()->storeData($renderedModel);
+					$this->storeCacheTicketData($renderedModel);
 				}
 			}
 
