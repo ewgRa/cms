@@ -106,6 +106,9 @@
 		{
 			$this->getCacheWorker()->dropCache($this);
 			
+			foreach ($this->getLinkedCachers() as $cacher)
+				$cacher->dropCache();
+			
 			return $this;
 		}
 
@@ -114,6 +117,9 @@
 			return DefaultCacheWorker::me();
 		}
 		
+		/**
+		 * @return CacheTicket
+		 */
 		public function createCacheTicket()
 		{
 			return $this->getCacheWorker()->createTicket($this);
@@ -122,7 +128,8 @@
 		
 		public function addCacheTicketToTag(CacheTicket $ticket)
 		{
-			return $this->getCacheWorker()->addTicketToTag($ticket, $this);
+			$this->getCacheWorker()->addTicketToTag($ticket, $this);
+			return $this;
 		}
 
 		protected function buildList(array $arrayList)

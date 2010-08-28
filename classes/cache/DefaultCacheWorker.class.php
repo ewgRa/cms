@@ -3,7 +3,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DefaultCacheWorker extends Singleton
+	final class DefaultCacheWorker extends Singleton implements CacheWorkerInterface
 	{
 		/**
 		 * @return DefaultCacheWorker
@@ -73,7 +73,7 @@
 		}
 		
 		/**
-		 * @return CmsDatabaseRequester
+		 * @return DefaultCacheWorker
 		 */
 		public function addTicketToTag(
 			CacheTicket $cacheTicket,
@@ -95,6 +95,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return DefaultCacheWorker
+		 */
 		public function dropCache(CmsDatabaseRequester $requester)
 		{
 			$tagTicket = $this->createTicket($requester);
@@ -109,9 +112,6 @@
 				
 			$tagTicket->drop();
 
-			foreach ($requester->getLinkedCachers() as $cacher)
-				$cacher->dropCache();
-			
 			return $this;
 		}
 	}	
