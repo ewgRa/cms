@@ -70,12 +70,9 @@
 				: null;
 		
 		if ($request->hasServerVar('PHP_AUTH_USER') && !$user) {
-			$loginModule = new LoginModule();
+			$authModule = new Auth401Module();
 			
-			$loginModule->
-				setRequest($request)->
-				importSettings(array('source' => 'server'))->
-				getModel();
+			$authModule->setRequest($request)->login();
 		}
 		
 		$controller = new Auth401Controller();
