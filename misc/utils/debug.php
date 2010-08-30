@@ -72,7 +72,10 @@
 		if ($request->hasServerVar('PHP_AUTH_USER') && !$user) {
 			$authModule = new Auth401Module();
 			
-			$authModule->setRequest($request)->login();
+			$authModule->
+				setRequest($request)->
+				setRequestAction('login')->
+				getModel();
 		}
 		
 		$controller = new Auth401Controller();
