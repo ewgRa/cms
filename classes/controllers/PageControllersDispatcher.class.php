@@ -65,7 +65,6 @@
 						$settings = $pageController->getSettings();
 				}
 
-				// FIXME XXX: shit 
 				if (method_exists($controllerInstance, 'importSettings'))
 					$controllerInstance->importSettings($settings);
 
