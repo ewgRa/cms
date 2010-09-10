@@ -18,7 +18,7 @@
 		{
 			$dbQuery = "
 				SELECT DISTINCT t1.* FROM ".$this->getTable()." t1
-				INNER JOIN ".PageModule::da()->getTable()." t2
+				INNER JOIN ".PageController::da()->getTable()." t2
 					ON(t2.view_file_id = t1.id)
 				WHERE t2.page_id = ?
 				UNION

@@ -115,7 +115,7 @@
 		public function dropCache()
 		{
 			PageData::da()->dropCache();
-			PageModule::da()->dropCache();
+			PageController::da()->dropCache();
 			return parent::dropCache();
 		}
 	}

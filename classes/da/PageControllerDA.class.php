@@ -4,10 +4,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	final class PageModuleDA extends AutoPageModuleDA
+	final class PageControllerDA extends AutoPageControllerDA
 	{
 		/**
-		 * @return PageModuleDA
+		 * @return PageControllerDA
 		 */
 		public static function me()
 		{

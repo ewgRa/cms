@@ -2,20 +2,16 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * FIXME: move to better place
 	*/
-	abstract class CmsActionModule extends CmsModule
+	abstract class ActionChainController extends ChainController
 	{
 		private $requestAction = null;
 		private $defaultAction = null;
 		private $actionList = array();
 		
-		public function __construct()
-		{
-			parent::__construct();	
-		}
-		
 		/**
-		 * @return CmsActionModule
+		 * @return ActionChainController
 		 */
 		public function setRequestAction($requestAction)
 		{
@@ -29,7 +25,7 @@
 		}
 				
 		/**
-		 * @return CmsActionModule
+		 * @return ActionChainController
 		 */
 		public function setDefaultAction($defaultAction)
 		{
@@ -43,7 +39,7 @@
 		}
 		
 		/**
-		 * @return CmsActionModule
+		 * @return ActionChainController
 		 */
 		public function addAction($action, $function)
 		{
@@ -52,7 +48,7 @@
 		}
 		
 		/**
-		 * @return CmsActionModule
+		 * @return ActionChainController
 		 */
 		public function importSettings(array $settings = null)
 		{
@@ -62,27 +58,30 @@
 					: null
 			);
 			
-			$form = 
-				Form::create()->
-				addPrimitive(PrmitiveString::create('action'));
-			
-			$form->import(
-				$this->getRequest()->getPost()
-				+ $this->getRequest()->getGet()
-			);
-			
-			if ($action = $form->getValue('action'))
-				$this->setRequestAction($action);
-			
-			return parent::importSettings($settings);
+			return $this;
 		}
 
 		/**
-		 * @return Model
+		 * @return ModelAndView
 		 */
-		public function getModel()
-		{
+		public function handleRequest(
+			HttpRequest $request,
+			ModelAndView $mav
+		) {
 			$action = $this->getRequestAction();
+			
+			if (!$action) {
+				$form = 
+					Form::create()->
+					addPrimitive(PrimitiveString::create('action'));
+				
+				$form->import(
+					$request->getPost()
+					+ $request->getGet()
+				);
+				
+				$action = $form->getValue('action');
+			}
 			
 			if (!$action)
 				$action = $this->getDefaultAction();
@@ -92,16 +91,17 @@
 			if(!isset($this->actionList[$action]))
 				throw BadRequestException::create();
 			
-			return $this->{$this->actionList[$action]}();
+			return $this->{$this->actionList[$action]}($request, $mav);
 		}
 
 		/**
-		 * @return CmsModule
+		 * @return ModelAndView
 		 */
-		protected function setCacheTicket(CacheTicket $cacheTicket)
-		{
-			$cacheTicket->addKey($this->getAction());
-			return parent::setCacheTicket($cacheTicket);
+		public function continueHandleRequest(
+			HttpRequest $request,
+			ModelAndView $mav
+		) {
+			return parent::handleRequest($request, $mav);
 		}
 	}
 ?>

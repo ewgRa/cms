@@ -4,10 +4,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	final class Module extends AutoModule
+	final class PageController extends AutoPageController
 	{
 		/**
-		 * @return Module
+		 * @return PageController
 		 */
 		public static function create()
 		{

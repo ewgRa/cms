@@ -5,14 +5,14 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoPageModuleDA extends CmsDatabaseRequester
+	abstract class AutoPageControllerDA extends CmsDatabaseRequester
 	{
-		protected $tableAlias = 'PageModule';
+		protected $tableAlias = 'PageController';
 		
 		/**
-		 * @return PageModule
+		 * @return PageController
 		 */
-		public function insert(PageModule $object)
+		public function insert(PageController $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParts = array();
@@ -23,9 +23,9 @@
 				$queryParams[] = $object->getPageId();
 			}
 			
-			if (!is_null($object->getModuleId())) {
-				$queryParts[] = 'module_id = ?';
-				$queryParams[] = $object->getModuleId();
+			if (!is_null($object->getControllerId())) {
+				$queryParts[] = 'controller_id = ?';
+				$queryParams[] = $object->getControllerId();
 			}
 			
 			if (!is_null($object->getSection())) {
@@ -69,9 +69,9 @@
 		}
 
 		/**
-		 * @return AutoPageModuleDA
+		 * @return AutoPageControllerDA
 		 */
-		public function save(PageModule $object)
+		public function save(PageController $object)
 		{
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 			
@@ -81,8 +81,8 @@
 			
 			$queryParts[] = 'page_id = ?';
 			$queryParams[] = $object->getPageId();
-			$queryParts[] = 'module_id = ?';
-			$queryParams[] = $object->getModuleId();
+			$queryParts[] = 'controller_id = ?';
+			$queryParams[] = $object->getControllerId();
 			$queryParts[] = 'section = ?';
 			$queryParams[] = $object->getSection();
 			$queryParts[] = 'position = ?';
@@ -112,15 +112,15 @@
 		}
 
 		/**
-		 * @return PageModule
+		 * @return PageController
 		 */
 		protected function build(array $array)
 		{
 			return
-				PageModule::create()->
+				PageController::create()->
 				setId($array['id'])->
 				setPageId($array['page_id'])->
-				setModuleId($array['module_id'])->
+				setControllerId($array['controller_id'])->
 				setSection($array['section'])->
 				setPosition($array['position'])->
 				setPriority($array['priority'])->

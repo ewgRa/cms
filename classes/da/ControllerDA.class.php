@@ -4,10 +4,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	final class ModuleDA extends AutoModuleDA
+	final class ControllerDA extends AutoControllerDA
 	{
 		/**
-		 * @return ModuleDA
+		 * @return ControllerDA
 		 */
 		public static function me()
 		{

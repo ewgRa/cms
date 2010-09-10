@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoModule
+	abstract class AutoController
 	{
 		private $id = null;
 		
@@ -17,15 +17,15 @@
 		private $settings = null;
 		
 		/**
-		 * @return ModuleDA
+		 * @return ControllerDA
 		 */
 		public static function da()
 		{
-			return ModuleDA::me();
+			return ControllerDA::me();
 		}
 		
 		/**
-		 * @return AutoModule
+		 * @return AutoController
 		 */
 		public function setId($id)
 		{
@@ -41,7 +41,7 @@
 		}
 		
 		/**
-		 * @return AutoModule
+		 * @return AutoController
 		 */
 		public function setName($name)
 		{
@@ -56,7 +56,7 @@
 		}
 		
 		/**
-		 * @return AutoModule
+		 * @return AutoController
 		 */
 		public function setSettings(array $settings = null)
 		{

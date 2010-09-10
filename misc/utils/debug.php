@@ -39,6 +39,11 @@
 			setCookie($_COOKIE)->
 			setServer($_SERVER);
 				
+		$request->setAttachedVar(
+			AttachedAliases::PAGE_HEADER,
+			PageHeader::create()
+		);
+
 		$databasePool = Database::me()->getPool(PROJECT);
 		
 		Singleton::dropInstance('Debug');
@@ -61,26 +66,22 @@
 		if(!Session::me()->isStarted())
 			die('no session started');
 		
-		$controller = new UserController();
-		$controller->handleRequest($request, ModelAndView::create());
+		$controller =
+			new UserController( 
+				Auth401Controller::create(
+					new UserRight401Controller()
+				)->
+				setRequestAction('login')
+			);
 		
-		$user =
-			$request->hasAttachedVar(AttachedAliases::USER)
-				? $request->getAttachedVar(AttachedAliases::USER)
-				: null;
+		$modelAndView = $controller->handleRequest(
+			$request,
+			ModelAndView::create()
+		);
 		
-		if ($request->hasServerVar('PHP_AUTH_USER') && !$user) {
-			$authModule = new Auth401Module();
-			
-			$authModule->
-				setRequest($request)->
-				setRequestAction('login')->
-				getModel();
-		}
-		
-		$controller = new Auth401Controller();
-		$controller->handleRequest($request, ModelAndView::create());
-		
+		return $modelAndView->render();
+
+		die;
 		$pointer = isset($_GET['pointer']) ? $_GET['pointer'] : 0;
 
 		$dbQuery = "SELECT SQL_CALC_FOUND_ROWS * FROM "

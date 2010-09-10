@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoPageModule
+	abstract class AutoPageController
 	{
 		private $id = null;
 		
@@ -16,12 +16,12 @@
 		 */
 		private $page = null;
 		
-		private $moduleId = null;
+		private $controllerId = null;
 		
 		/**
-		 * @var Module
+		 * @var Controller
 		 */
-		private $module = null;
+		private $controller = null;
 		
 		private $section = null;
 		
@@ -42,15 +42,15 @@
 		private $viewFile = null;
 		
 		/**
-		 * @return PageModuleDA
+		 * @return PageControllerDA
 		 */
 		public static function da()
 		{
-			return PageModuleDA::me();
+			return PageControllerDA::me();
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setId($id)
 		{
@@ -66,7 +66,7 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setPageId($pageId)
 		{
@@ -82,7 +82,7 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setPage(Page $page)
 		{
@@ -104,45 +104,45 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
-		public function setModuleId($moduleId)
+		public function setControllerId($controllerId)
 		{
-			$this->module = null;
-			$this->moduleId = $moduleId;
+			$this->controller = null;
+			$this->controllerId = $controllerId;
 
 			return $this;
 		}
 		
-		public function getModuleId()
+		public function getControllerId()
 		{
-			return $this->moduleId;
+			return $this->controllerId;
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
-		public function setModule(Module $module)
+		public function setController(Controller $controller)
 		{
-			$this->moduleId = $module->getId();
-			$this->module = $module;
+			$this->controllerId = $controller->getId();
+			$this->controller = $controller;
 
 			return $this;
 		}
 		
 		/**
-		 * @return Module
+		 * @return Controller
 		 */
-		public function getModule()
+		public function getController()
 		{
-			if (!$this->module && $this->getModuleId())
-				$this->module = Module::da()->getById($this->getModuleId());
+			if (!$this->controller && $this->getControllerId())
+				$this->controller = Controller::da()->getById($this->getControllerId());
 				
-			return $this->module;
+			return $this->controller;
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setSection($section = null)
 		{
@@ -157,7 +157,7 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setPosition($position = null)
 		{
@@ -172,7 +172,7 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setPriority($priority = null)
 		{
@@ -187,7 +187,7 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setSettings(array $settings = null)
 		{
@@ -205,7 +205,7 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setViewFileId($viewFileId = null)
 		{
@@ -221,7 +221,7 @@
 		}
 		
 		/**
-		 * @return AutoPageModule
+		 * @return AutoPageController
 		 */
 		public function setViewFile(ViewFile $viewFile = null)
 		{

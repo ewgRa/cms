@@ -21,13 +21,13 @@
 		</properties>
 	</Language>
 	
-	<Module>
+	<Controller>
 		<properties>
 			<id />
 			<name />
 			<settings type="array" nullable="true" />
 		</properties>
-	</Module>
+	</Controller>
 	
 	<PageStatus type="Enumeration" />
 		
@@ -60,18 +60,18 @@
 		</properties>
 	</PageData>
 	
-	<PageModule>
+	<PageController>
 		<properties>
 			<id />
 			<page class="Page" />
-			<module class="Module" />
+			<controller class="Controller" />
 			<section nullable="true" />
 			<position nullable="true" />
 			<priority nullable="true" />
 			<settings type="array" nullable="true" />
 			<viewFile class="ViewFile" nullable="true" />
 		</properties>
-	</PageModule>
+	</PageController>
 	
 	<Site>
 		<properties>

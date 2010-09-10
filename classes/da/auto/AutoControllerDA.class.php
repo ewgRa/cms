@@ -5,14 +5,14 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoModuleDA extends CmsDatabaseRequester
+	abstract class AutoControllerDA extends CmsDatabaseRequester
 	{
-		protected $tableAlias = 'Module';
+		protected $tableAlias = 'Controller';
 		
 		/**
-		 * @return Module
+		 * @return Controller
 		 */
-		public function insert(Module $object)
+		public function insert(Controller $object)
 		{
 			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
 			$queryParts = array();
@@ -44,9 +44,9 @@
 		}
 
 		/**
-		 * @return AutoModuleDA
+		 * @return AutoControllerDA
 		 */
-		public function save(Module $object)
+		public function save(Controller $object)
 		{
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 			
@@ -77,12 +77,12 @@
 		}
 
 		/**
-		 * @return Module
+		 * @return Controller
 		 */
 		protected function build(array $array)
 		{
 			return
-				Module::create()->
+				Controller::create()->
 				setId($array['id'])->
 				setName($array['name'])->
 				setSettings($array['settings'] ? unserialize($array['settings']) : null);
@@ -90,7 +90,7 @@
 
 		public function dropCache()
 		{
-			PageModule::da()->dropCache();
+			PageController::da()->dropCache();
 			return parent::dropCache();
 		}
 	}
