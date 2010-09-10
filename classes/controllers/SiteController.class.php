@@ -10,6 +10,14 @@
 		/**
 		 * @return SiteController
 		 */
+		public static function create(ChainController $controller = null)
+		{
+			return new self($controller);
+		}
+		
+		/**
+		 * @return SiteController
+		 */
 		public function setSiteAlias($alias)
 		{
 			$this->siteAlias = $alias;

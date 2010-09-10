@@ -12,8 +12,6 @@
 			HttpRequest $request,
 			ModelAndView $mav
 		) {
-			$startTime = microtime(true);
-			
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
 			$clearPath =
@@ -55,25 +53,7 @@
 				PageHeader::create()
 			);
 			
-			if (Debug::me()->isEnabled())
-				$this->addDebug($startTime, microtime(true), $page);
-			
 			return parent::handleRequest($request, $mav);
-		}
-
-		/**
-		 * @return PageController
-		 */
-		private function addDebug($startTime, $endTime, Page $page)
-		{
-			$debugItem = PageDebugItem::create()->
-				setData($page)->
-				setStartTime($startTime)->
-				setEndTime($endTime);
-			
-			Debug::me()->addItem($debugItem);
-			
-			return $this;
 		}
 	}
 ?>

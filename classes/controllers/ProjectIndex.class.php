@@ -92,15 +92,16 @@
 			return $this;
 		}
 		
-		public function catchPageNotFoundException(HttpRequest $request) {
+		public function catchPageNotFoundException(
+			HttpRequest $request,
+			ChainController $chainController
+		) {
 			$request->setUrl(HttpUrl::createFromString('/page-not-found.html'));
 
-			$modelAndView = ModelAndView::create();
-			
-			$chainController = createCommonChain();
-			$chainController->handleRequest($request, $modelAndView);
-			
-			return $modelAndView->render();
+			return
+				$chainController->
+				handleRequest($request, ModelAndView::create())->
+				render();
 		}
 		
 		/**
