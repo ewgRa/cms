@@ -5,6 +5,8 @@
 	*/
 	final class ProjectIndex extends Singleton
 	{
+		private $startTime = null;
+		
 		/**
 		 * @return ProjectIndex
 		 */
@@ -12,32 +14,24 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-			
-		public function run()
+
+		public function setStartTime($time)
 		{
-			$request	= init();
-			$output		= run($request);
-
-			if(Debug::me()->isEnabled())
-				Debug::me()->addItem($this->createRequestDebugItem());
-
-			if ($request->hasAttachedVar(AttachedAliases::PAGE_HEADER))
-				$request->getAttachedVar(AttachedAliases::PAGE_HEADER)->output();
-			
-			return $output;
+			$this->startTime = $time;
+			return $this;	
 		}
 		
-		public function sendUnavailableHeaders()
+		public function catchException(Exception $e)
 		{
-			header($_SERVER['SERVER_PROTOCOL'] . ' 503 Service Temporarily Unavailable');
-			header('Status: 503 Service Temporarily Unavailable');
-			header('Retry-After: 3600');
-			
-			return $this;
-		}
+			$debugStored = false;
 
-		public function catchException(Exception $e, $storeDebug = true)
-		{
+			try {
+				$this->storeDebug();
+				$debugStored = true;
+			} catch (Exception $exception) {
+				// very bad... even write debug failed
+			}
+			
 			$fileName = LOG_DIR.'/errors.txt';
 			
 			$logTime =
@@ -45,32 +39,20 @@
 					? filemtime($fileName)
 					: 0;
 			
-			$debugItem = null;
-			
-			if ($storeDebug && Debug::me()->isEnabled()) {
-				try {
-					Debug::me()->addItem($this->createRequestDebugItem());
-
-					$debugItem =
-						DebugData::da()->insert(
-							DebugData::create()->
-								setSession(Session::me()->getId())->
-								setData(Debug::me()->getItems())
-						);
-					
-				} catch (Exception $exception) {
-					// very bad... even write debugItem failed
-					$this->catchException($exception, false);
-				}
-			}
-			
 			$exceptionString =
 				date('Y-m-d h:i:s ').$_SERVER['HTTP_HOST']
 				.$_SERVER['REQUEST_URI']
 				.(
-					$debugItem
-						? ' (debugItemId: '.$debugItem->getId().')'
-						: null
+					Debug::me()->isEnabled()
+						? 
+							' (debug hash: '.Debug::me()->getHash()
+							. (
+								$debugStored
+									? ' [stored]'
+									: ' [store failed]'
+							)
+							.')'
+						: ' (without debug)'
 				)
 				.PHP_EOL.$e.PHP_EOL.PHP_EOL.PHP_EOL;
 			
@@ -90,18 +72,6 @@
 			}
 						
 			return $this;
-		}
-		
-		public function catchPageNotFoundException(
-			HttpRequest $request,
-			ChainController $chainController
-		) {
-			$request->setUrl(HttpUrl::createFromString('/page-not-found.html'));
-
-			return
-				$chainController->
-				handleRequest($request, ModelAndView::create())->
-				render();
 		}
 		
 		/**
@@ -127,11 +97,26 @@
 				mail(
 					ADMIN_EMAIL,
 					'Echo is not empty on host '.$_SERVER['HTTP_HOST'],
-					'Check log '.$fileName.PHP_EOL.PHP_EOL
+					'Check log '.$fileName
+					.(
+						Debug::me()->isEnabled()
+							? ' (debug hash: '.Debug::me()->getHash().')'
+							: ' (without debug)'
+					).PHP_EOL.PHP_EOL
 					.'Last echo:'.PHP_EOL.$echo
 				);
 			}
 			
+			if (Debug::me()->isEnabled()) {
+				$debugItem =
+					EngineEchoDebugItem::create()->
+					setData($echo)->
+					setStartTime($this->startTime)->
+					setEndTime(microtime(true));
+				
+				Debug::me()->addItem($debugItem);
+			}
+
 			return $this;
 		}
 		
@@ -139,9 +124,9 @@
 		{
 			$result = $output;
 			
-			$hasBody = preg_match('/<body.*?>.*?<\/body>/is', $output);
-			
 			if ($echo && ini_get('display_errors')) {
+				$hasBody = preg_match('/<body.*?>.*?<\/body>/is', $output);
+			
 				$result =
 					$hasBody
 						? preg_replace('/(<body.*?>)/', '$1'.$echo, $result, 1)
@@ -150,26 +135,25 @@
 
 			return $result;
 		}
-		
-		/**
-		 *@return CmsDebugItem
-		 */
-		private function createRequestDebugItem()
+
+		public function storeDebug()
 		{
-			return
-				RequestDebugItem::create()->
-				setData(
-					array(
-						'get'	 	=> $_GET,
-						'post'	 	=> $_POST,
-						'server' 	=> $_SERVER,
-						'cookie' 	=> $_COOKIE,
-						'session'	=>
-							isset($_SESSION)
-								? $_SESSION
-								: array()
-					)
+			if (Debug::me()->isEnabled()) {
+				Debug::me()->addItem(Debug::me()->createRequestDebugItem());
+
+				DebugData::da()->insert(
+					DebugData::create()->
+						setSession(
+							Session::me()->isStarted()
+								? Session::me()->getId()
+								: null
+							
+						)->
+						setData(Debug::me()->getItems())
 				);
+			}	
+			
+			return $this;
 		}
 	}
 ?>

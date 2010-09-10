@@ -1,35 +1,18 @@
 <?php
-	try {
-		$startTime 	= microtime(true);
-		
-		classesAutoloaderInit();
-		
-		$output	= ProjectIndex::me()->run();
-		$echo	= ob_get_clean();
-	
-		if ($echo)
-			ProjectIndex::me()->catchEcho($echo);
-			
-		echo ProjectIndex::me()->getOutput($output, $echo);
-		
-	} catch(Exception $e) {
-		error_log($e);
+	classesAutoloaderInit();
 
-		ProjectIndex::me()->
-			sendUnavailableHeaders()->
-			catchException($e);
+	$request	= initRequest();
+	$output		= run($request);
 
-		echo
-			!ini_get('display_errors')
-				? file_get_contents(SITE_DIR . '/view/html/haserror.html')
-				: (
-					$e instanceof DefaultException
-						? $e->toHtmlString()
-						: '<pre>'.$e.'</pre>'
-				);
+	$echo	= ob_get_clean();
+
+	if ($echo)
+		ProjectIndex::me()->catchEcho($echo);
 		
-		die;
-	}
+	if ($request->hasAttachedVar(AttachedAliases::PAGE_HEADER))
+		$request->getAttachedVar(AttachedAliases::PAGE_HEADER)->output();
+		
+	echo ProjectIndex::me()->getOutput($output, $echo);
 	
 	function run(HttpRequest $request)
 	{

@@ -5,15 +5,6 @@
 	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
 	DAExtends="CmsDatabaseRequester"
 >
-	<DebugData>
-		<properties>
-			<id />
-			<session nullable="true" />
-			<data type="array" />
-			<date />
-		</properties>
-	</DebugData>
-	
 	<Language>
 		<properties>
 			<id />
