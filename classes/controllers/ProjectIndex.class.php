@@ -92,10 +92,7 @@
 			return $this;
 		}
 		
-		public function catchPageNotFoundException(
-			HttpRequest $request,
-			PageNotFoundException $e
-		) {
+		public function catchPageNotFoundException(HttpRequest $request) {
 			$request->setUrl(HttpUrl::createFromString('/page-not-found.html'));
 
 			$modelAndView = ModelAndView::create();

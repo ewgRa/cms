@@ -13,7 +13,7 @@
 			ModelAndView $mav
 		) {
 			$page = $request->getAttachedVar(AttachedAliases::PAGE);
-			
+
 			$this->insertControllers(
 				PageController::da()->getByPage($page),
 				$mav
@@ -29,12 +29,14 @@
 			array $pageControllers,
 			ModelAndView $mav
 		) {
+			$lastController = $this;
+			
 			foreach ($pageControllers as $pageController) {
 				$controller = $pageController->getController();
 				
 				$controllerName = $controller->getName();
 				
-				$proxyOut = new ProxyOutPageController($this->getInner());
+				$proxyOut = new ProxyOutPageController($lastController->getInner());
 				$proxyOut->setMav($mav);
 				$proxyOut->setPageController($pageController);
 				
@@ -44,7 +46,12 @@
 				$proxyMav = ModelAndView::create();
 				$proxyIn->setMav($proxyMav);
 
-				$this->setInner($proxyIn);
+				$lastController->setInner($proxyIn);
+
+				$lastController = 
+					$proxyOut->getInner()
+						? $proxyOut->getInner()
+						: $proxyOut;
 
 				$settings = $controller->getSettings();
 				

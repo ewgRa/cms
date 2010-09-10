@@ -22,7 +22,7 @@
 					getPath();
 
 			$page = PagePathMapper::create()->loadMap()->getPageByPath($clearPath);
-
+			
 			if (!$page)
 				throw PageNotFoundException::create();
 
@@ -43,8 +43,8 @@
 					!= LocalizerLanguageSource::URL_AND_COOKIE
 			) {
 				$baseUrl->setPath(
-					'/' . $localizer->getRequestLanguage()->getAbbr()
-					. $baseUrl->getPath()
+					'/'.$localizer->getRequestLanguage()->getAbbr()
+					.$baseUrl->getPath()
 				);
 			}
 			

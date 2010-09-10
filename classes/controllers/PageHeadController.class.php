@@ -33,7 +33,7 @@
 		private function replaceData(PageData $pageData)
 		{
 			$outerController = $this;
-			
+
 			while ($outerController = $outerController->getOuter()) {
 				if ($outerController instanceof PageHeadReplacerInterface)
 					$outerController->replacePageData($pageData);
