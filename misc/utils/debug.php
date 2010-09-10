@@ -69,7 +69,8 @@
 		$controller =
 			new UserController( 
 				Auth401Controller::create(
-					new UserRight401Controller()
+					UserRight401Controller::create()->
+					setRequiredRightAliases(array('root'))
 				)->
 				setRequestAction('login')
 			);
