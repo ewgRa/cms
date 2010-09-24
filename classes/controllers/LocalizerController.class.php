@@ -14,6 +14,17 @@
 		) {
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
+			$localizer->setLanguages(Language::da()->getList());
+			
+			$projectOptions = Config::me()->getOption('project');
+
+			if (isset($projectOptions['defaultLanguage'])) {
+				$localizer->selectDefaultLanguage(
+					$projectOptions['defaultLanguage']
+				);
+			} else
+				throw DefaultException::create('no default language');
+			
 			if ($request->hasCookieVar('languageId')) {
 				$localizer->setCookieLanguage(
 					Language::da()->getById($request->getCookieVar('languageId'))
@@ -24,7 +35,8 @@
 			
 			CookieManager::me()->
 				setCookie(
-					'languageId', $localizer->getRequestLanguage()->getId()
+					'languageId', 
+					$localizer->getRequestLanguage()->getId()
 				);
 			
 			return parent::handleRequest($request, $mav);

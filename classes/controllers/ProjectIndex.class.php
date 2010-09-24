@@ -26,7 +26,7 @@
 			$debugStored = false;
 
 			try {
-				$this->storeDebug();
+				Debug::me()->store();
 				$debugStored = true;
 			} catch (Exception $exception) {
 				// very bad... even write debug failed
@@ -109,7 +109,7 @@
 			
 			if (Debug::me()->isEnabled()) {
 				$debugItem =
-					EngineEchoDebugItem::create()->
+					EchoDebugItem::create()->
 					setData($echo)->
 					setStartTime($this->startTime)->
 					setEndTime(microtime(true));
@@ -134,26 +134,6 @@
 			}
 
 			return $result;
-		}
-
-		public function storeDebug()
-		{
-			if (Debug::me()->isEnabled()) {
-				Debug::me()->addItem(Debug::me()->createRequestDebugItem());
-
-				DebugData::da()->insert(
-					DebugData::create()->
-						setSession(
-							Session::me()->isStarted()
-								? Session::me()->getId()
-								: null
-							
-						)->
-						setData(Debug::me()->getItems())
-				);
-			}	
-			
-			return $this;
 		}
 	}
 ?>

@@ -65,6 +65,7 @@
 		
 		return $modelAndView->render();
 
+		// FIXME: what next?
 		die;
 		$pointer = isset($_GET['pointer']) ? $_GET['pointer'] : 0;
 
@@ -92,7 +93,6 @@
 		$model = Model::create();
 		
 		if ($debugItems) {
-			// FIXME: Render
 			var_dump($debugItems);die;
 			foreach ($debugItems as $item) {
 				$data = $item->getData();
