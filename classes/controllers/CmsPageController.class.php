@@ -5,6 +5,27 @@
 	*/
 	final class CmsPageController extends ChainController
 	{
+		private $observerManager = null;
+		
+		/**
+		 * @return CmsPageControllerObserverManager
+		 */
+		public function getObserverManager()
+		{
+			return $this->observerManager;
+		}
+
+		/**
+		 * @return CmsPageController
+		 */
+		public function __construct(ChainController $controller = null)
+		{
+			$this->observerManager = 
+				CmsPageControllerObserverManager::create($this);
+				
+			return parent::__construct($controller);
+		}
+		
 		/**
 		 * @return ModelAndView
 		 */
@@ -24,6 +45,8 @@
 			if (!$page)
 				throw PageNotFoundException::create();
 
+			$this->getObserverManager()->notifyPageDefined($page);
+			
 			$user =
 				$request->hasAttachedVar(AttachedAliases::USER)
 					? $request->getAttachedVar(AttachedAliases::USER)
@@ -52,7 +75,7 @@
 				AttachedAliases::PAGE_HEADER,
 				PageHeader::create()
 			);
-			
+
 			return parent::handleRequest($request, $mav);
 		}
 	}

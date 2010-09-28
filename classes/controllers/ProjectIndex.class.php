@@ -109,11 +109,12 @@
 			
 			if (Debug::me()->isEnabled()) {
 				$debugItem =
-					EchoDebugItem::create()->
-					setData($echo)->
+					DebugItem::create()->
+					setTrace(Debug::traceToDisplay(debug_backtrace()))->
+					setData(array('echo' => $echo))->
 					setStartTime($this->startTime)->
 					setEndTime(microtime(true));
-				
+					
 				Debug::me()->addItem($debugItem);
 			}
 
