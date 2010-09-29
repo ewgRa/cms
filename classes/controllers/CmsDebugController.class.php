@@ -75,8 +75,9 @@
 				setData(
 					array(
 						'page' => array(
-							'Defined page with path "'.$page->getPath().'"'
-							.' and id "'.$page->getId().'"'
+							'path' => $page->getPath(),
+							'id' => $page->getId(),
+							'layoutId' => $page->getLayout()->getId()
 						)
 					)
 				);
@@ -92,14 +93,10 @@
 				DebugItem::create()->
 				setTrace(Debug::traceToDisplay(debug_backtrace()))->
 				setData(
-					array(
-						'query' => array(
-							'text' => $model->get('query'),
-							'started' => $model->get('startTime'),
-							'ended' => $model->get('endTime')
-						)
-					)
-				);
+					array('query' => $model->get('query'))
+				)->
+				setStartTime($model->get('startTime'))->
+				setEndTime($model->get('endTime'));
 				
 			Debug::me()->addItem($debugItem);
 
@@ -108,13 +105,27 @@
 
 		public function cacheTicketGot(Model $model)
 		{
+			$ticket = $model->get('ticket');
+			
 			$debugItem =
 				DebugItem::create()->
 				setTrace(Debug::traceToDisplay(debug_backtrace()))->
 				setData(
 					array(
 						'cacheTicket' => array(
-							'expired' => $model->get('ticket')->isExpired()
+							'prefix' => $ticket->getPrefix(),
+							'key' => 
+								$ticket->getCacheInstance()->compileKey($ticket),
+							'cacheInstance' => get_class($ticket->getCacheInstance()),
+							'expiredTime' =>
+								$ticket->getExpiredTime()
+									? date('Y-m-d h:i:s', $ticket->getExpiredTime())
+									: null,
+							'lifeTime' =>
+								$ticket->getLifeTime()
+									? date('Y-m-d h:i:s', $ticket->getLifeTime())
+									: null,
+							'status' => $ticket->isExpired() ? 'expired' : 'actual'
 						)
 					)
 				);

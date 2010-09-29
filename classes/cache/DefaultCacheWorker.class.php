@@ -59,7 +59,7 @@
 			
 			$result =
 				$cacheTicket->
-					setKey(get_class($this), $dbQuery)->
+					setKey(get_class($requester), $dbQuery)->
 					restoreData();
 				
 			if ($cacheTicket->isExpired()) {
