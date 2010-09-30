@@ -114,7 +114,12 @@
 
 		public function getCacheWorker()
 		{
-			return DefaultCacheWorker::me();
+			$worker = CacheWorkerManager::me()->getFor($this);
+			
+			if (!$worker)
+				$worker = CacheWorkerManager::me()->getDefault();
+
+			return $worker; 
 		}
 		
 		/**

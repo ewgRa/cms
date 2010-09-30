@@ -5,6 +5,8 @@
 	*/
 	final class DebugItem
 	{
+		private $alias 		= null;
+		
 		private $trace 		= null;
 
 		private $data  		= null;
@@ -15,6 +17,20 @@
 		public static function create()
 		{
 			return new self;
+		}
+		
+		/**
+		 * @return DebugItem
+		 */
+		public function setAlias($alias)
+		{
+			$this->alias = $alias;
+			return $this;
+		}
+		
+		public function getAlias()
+		{
+			return $this->alias;
 		}
 		
 		/**

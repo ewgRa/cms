@@ -26,7 +26,9 @@
 			$debugStored = false;
 
 			try {
-				Debug::me()->store();
+				Debug::me()->addRequestDebugItem();
+				// FIXME XXX: debug queue storage		
+				// var_dump(Debug::me()->getAsXml());
 				$debugStored = true;
 			} catch (Exception $exception) {
 				// very bad... even write debug failed
@@ -88,7 +90,8 @@
 			
 			file_put_contents(
 				$fileName,
-				date('Y-m-d h:i:s ').$_SERVER['REQUEST_URI'].PHP_EOL
+				date('Y-m-d h:i:s ')
+				.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].PHP_EOL
 				.$echo.PHP_EOL.PHP_EOL.PHP_EOL,
 				FILE_APPEND
 			);
@@ -110,8 +113,9 @@
 			if (Debug::me()->isEnabled()) {
 				$debugItem =
 					DebugItem::create()->
+					setAlias('echo')->
 					setTrace(Debug::traceToDisplay(debug_backtrace()))->
-					setData(array('echo' => $echo))->
+					setData($echo)->
 					setStartTime($this->startTime)->
 					setEndTime(microtime(true));
 					

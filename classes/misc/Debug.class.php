@@ -8,6 +8,7 @@
 		private $hash = null;
 		
 		private $enabled = null;
+		
 		private $items	 = array();
 		
 		/**
@@ -124,25 +125,27 @@
 		/**
 		 *@return CmsDebugItem
 		 */
-		public function createRequestDebugItem()
+		public function addRequestDebugItem()
 		{
-			return
+			$this->addItem(
 				DebugItem::create()->
+				setAlias('request')->
 				setTrace(Debug::traceToDisplay(debug_backtrace()))->
 				setData(
 					array(
-						'request' => array(
-							'get'	 	=> $_GET,
-							'post'	 	=> $_POST,
-							'server' 	=> $_SERVER,
-							'cookie' 	=> $_COOKIE,
-							'session'	=>
-								isset($_SESSION)
-									? $_SESSION
-									: array()
-						)
+						'get'	 	=> $_GET,
+						'post'	 	=> $_POST,
+						'server' 	=> $_SERVER,
+						'cookie' 	=> $_COOKIE,
+						'session'	=>
+							isset($_SESSION)
+								? $_SESSION
+								: array()
 					)
-				);
+				)
+			);
+			
+			return $this;
 		}
 		
 		public function getHash()
@@ -153,16 +156,17 @@
 			return $this->hash;
 		}
 		
-		public function store($withRequest = true)
+		public function getAsXml()
 		{
-			if ($this->isEnabled()) {
-				if ($withRequest)
-					$this->addItem($this->createRequestDebugItem());
-
-				// FIXME XXX: store?
+			$domDocument = ExtendedDomDocument::create();
+			
+			foreach ($this->getItems() as $item) {
+				$domDocument->appendChild(
+					$domDocument->createNodeFromVar($item->getData(), $item->getAlias())
+				); 
 			}
 			
-			return $this;
-		}
+			return $domDocument->saveXml();
+		} 
 	}
 ?>

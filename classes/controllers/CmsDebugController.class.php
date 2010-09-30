@@ -71,14 +71,13 @@
 			
 			$debugItem =
 				DebugItem::create()->
+				setAlias('page')->
 				setTrace(Debug::traceToDisplay(debug_backtrace()))->
 				setData(
 					array(
-						'page' => array(
-							'path' => $page->getPath(),
-							'id' => $page->getId(),
-							'layoutId' => $page->getLayout()->getId()
-						)
+						'path' => $page->getPath(),
+						'id' => $page->getId(),
+						'layoutId' => $page->getLayout()->getId()
 					)
 				);
 			
@@ -91,10 +90,9 @@
 		{
 			$debugItem =
 				DebugItem::create()->
+				setAlias('databaseQuery')->
 				setTrace(Debug::traceToDisplay(debug_backtrace()))->
-				setData(
-					array('query' => $model->get('query'))
-				)->
+				setData($model->get('query'))->
 				setStartTime($model->get('startTime'))->
 				setEndTime($model->get('endTime'));
 				
@@ -109,24 +107,23 @@
 			
 			$debugItem =
 				DebugItem::create()->
+				setAlias('cacheTicket')->
 				setTrace(Debug::traceToDisplay(debug_backtrace()))->
 				setData(
 					array(
-						'cacheTicket' => array(
-							'prefix' => $ticket->getPrefix(),
-							'key' => 
-								$ticket->getCacheInstance()->compileKey($ticket),
-							'cacheInstance' => get_class($ticket->getCacheInstance()),
-							'expiredTime' =>
-								$ticket->getExpiredTime()
-									? date('Y-m-d h:i:s', $ticket->getExpiredTime())
-									: null,
-							'lifeTime' =>
-								$ticket->getLifeTime()
-									? date('Y-m-d h:i:s', $ticket->getLifeTime())
-									: null,
-							'status' => $ticket->isExpired() ? 'expired' : 'actual'
-						)
+						'prefix' => $ticket->getPrefix(),
+						'key' => 
+							$ticket->getCacheInstance()->compileKey($ticket),
+						'cacheInstance' => get_class($ticket->getCacheInstance()),
+						'expiredTime' =>
+							$ticket->getExpiredTime()
+								? date('Y-m-d h:i:s', $ticket->getExpiredTime())
+								: null,
+						'lifeTime' =>
+							$ticket->getLifeTime()
+								? date('Y-m-d h:i:s', $ticket->getLifeTime())
+								: null,
+						'status' => $ticket->isExpired() ? 'expired' : 'actual'
 					)
 				);
 				
