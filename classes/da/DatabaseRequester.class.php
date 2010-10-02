@@ -1,9 +1,12 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class DatabaseRequester extends Singleton implements CacherInterface
+	abstract class DatabaseRequester extends \ewgraFramework\Singleton 
+		implements CacherInterface
 	{
 		protected $poolAlias	= 'cms';
 		protected $tableAlias	= null;
@@ -14,7 +17,7 @@
 		
 		public function getTable()
 		{
-			Assert::isNotNull($this->tableAlias);
+			\ewgraFramework\Assert::isNotNull($this->tableAlias);
 			
 			return $this->quoteTable($this->tableAlias);
 		}
@@ -47,7 +50,7 @@
 		
 		public function addLinkedCacher(CacherInterface $cacher)
 		{
-			Assert::isFalse($cacher->hasLinkedCacher($this), 'recursion detected');
+			\ewgraFramework\Assert::isFalse($cacher->hasLinkedCacher($this), 'recursion detected');
 			
 			$this->linkedCachers[get_class($cacher)] = $cacher;
 		}
@@ -58,22 +61,22 @@
 		}
 		
 		/**
-		 * @return BaseDatabase
+		 * @return \ewgraFramework\BaseDatabase
 		 */
 		public function getPool()
 		{
-			return Database::me()->getPool($this->getPoolAlias());
+			return \ewgraFramework\Database::me()->getPool($this->getPoolAlias());
 		}
 
 		/**
-		 * @return BaseDatabase
+		 * @return \ewgraFramework\BaseDatabase
 		 */
 		public function db()
 		{
 			return $this->getPool();
 		}
 		
-		public function getByQuery(DatabaseQueryInterface $dbQuery)
+		public function getByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
 		{
 			$result = null;
 			
@@ -85,19 +88,19 @@
 			return $result;
 		}
 		
-		public function getCachedByQuery(DatabaseQueryInterface $dbQuery)
+		public function getCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
 		{
 			return $this->getCacheWorker()->getCachedByQuery($dbQuery, $this);
 		}
 		
-		public function getListByQuery(DatabaseQueryInterface $dbQuery)
+		public function getListByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
 		{
 			$dbResult = $this->db()->query($dbQuery);
 
 			return $this->buildList($dbResult->fetchList());
 		}
 		
-		public function getListCachedByQuery(DatabaseQueryInterface $dbQuery)
+		public function getListCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
 		{
 			return $this->getCacheWorker()->getListCachedByQuery($dbQuery, $this);
 		}
@@ -123,7 +126,7 @@
 		}
 		
 		/**
-		 * @return CacheTicket
+		 * @return \ewgraFramework\CacheTicket
 		 */
 		public function createCacheTicket()
 		{
@@ -131,7 +134,7 @@
 		}
 
 		
-		public function addCacheTicketToTag(CacheTicket $ticket)
+		public function addCacheTicketToTag(\ewgraFramework\CacheTicket $ticket)
 		{
 			$this->getCacheWorker()->addTicketToTag($ticket, $this);
 			return $this;

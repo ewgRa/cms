@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraCms;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -22,7 +24,7 @@
 		 */
 		private $source = null;
 		
-		abstract protected function getLanguageAbbr(HttpUrl $url);
+		abstract protected function getLanguageAbbr(\ewgraFramework\HttpUrl $url);
 				
 		/**
 		 * @return Language
@@ -84,7 +86,7 @@
 		/**
 		 * @return Localizer
 		 */
-		public function defineLanguage(HttpUrl $url)
+		public function defineLanguage(\ewgraFramework\HttpUrl $url)
 		{
 			if ($this->cookieLanguage) {
 				$this->setRequestLanguage($this->cookieLanguage);
@@ -131,7 +133,7 @@
 				$this->setRequestLanguage($language);
 				$this->setSource(LocalizerLanguageSource::defaultSource());
 			} else {
-				throw MissingArgumentException::create(
+				throw \ewgraFramework\MissingArgumentException::create(
 					'Known nothing about default language '
 					.'"'.$languageAbbr.'"'
 				);

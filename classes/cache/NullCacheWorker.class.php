@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class NullCacheWorker extends Singleton implements CacheWorkerInterface
+	final class NullCacheWorker extends \ewgraFramework\Singleton implements CacheWorkerInterface
 	{
 		private $cacheInstance = null;
 		
@@ -13,7 +15,7 @@
 		protected function __construct()
 		{
 			parent::__construct();
-			$this->cacheInstance = NullCache::create();
+			$this->cacheInstance = \ewgraFramework\NullCache::create();
 		}
 		
 		/**
@@ -30,12 +32,12 @@
 		public function createTicket(DatabaseRequester $requester)
 		{
 			return 
-				CacheTicket::create()->
+				\ewgraFramework\CacheTicket::create()->
 				setCacheInstance($this->cacheInstance);
 		}
 
 		public function getCachedByQuery(
-			DatabaseQueryInterface $dbQuery,
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			DatabaseRequester $requester
 		)
 		{
@@ -43,7 +45,7 @@
 		}
 		
 		public function getListCachedByQuery(
-			DatabaseQueryInterface $dbQuery,
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			DatabaseRequester $requester
 		)
 		{
@@ -54,7 +56,7 @@
 		 * @return NullCacheWorker
 		 */
 		public function addTicketToTag(
-			CacheTicket $cacheTicket,
+			\ewgraFramework\CacheTicket $cacheTicket,
 			DatabaseRequester $requester
 		)
 		{

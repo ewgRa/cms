@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class BadRequestException extends DefaultException
+	final class BadRequestException extends \ewgraFramework\DefaultException
 	{
 		/**
 		 * @return BadRequestException

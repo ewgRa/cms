@@ -1,9 +1,12 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DefaultCacheWorker extends Singleton implements CacheWorkerInterface
+	final class DefaultCacheWorker extends \ewgraFramework\Singleton 
+		implements CacheWorkerInterface
 	{
 		/**
 		 * @return DefaultCacheWorker
@@ -18,18 +21,18 @@
 		 */
 		public function createTicket(DatabaseRequester $requester)
 		{
-			Assert::isTrue(
-				Cache::me()->hasPool($requester->getPoolAlias()),
+			\ewgraFramework\Assert::isTrue(
+				\ewgraFramework\Cache::me()->hasPool($requester->getPoolAlias()),
 				'define pool for '.$requester->getPoolAlias()
 			);
 			
-			$pool = Cache::me()->getPool($requester->getPoolAlias());
+			$pool = \ewgraFramework\Cache::me()->getPool($requester->getPoolAlias());
 			
 			return $pool->createTicket()->setPrefix(get_class($requester));
 		}
 
 		public function getCachedByQuery(
-			DatabaseQueryInterface $dbQuery,
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			DatabaseRequester $requester
 		)
 		{
@@ -51,7 +54,7 @@
 		}
 		
 		public function getListCachedByQuery(
-			DatabaseQueryInterface $dbQuery,
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			DatabaseRequester $requester
 		)
 		{
@@ -76,7 +79,7 @@
 		 * @return DefaultCacheWorker
 		 */
 		public function addTicketToTag(
-			CacheTicket $cacheTicket,
+			\ewgraFramework\CacheTicket $cacheTicket,
 			DatabaseRequester $requester
 		)
 		{

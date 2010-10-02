@@ -1,18 +1,20 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DebugController extends ChainController
+	final class DebugController extends \ewgraFramework\ChainController
 	{
 		private $alreadySubscribed = false;
 		
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
 			if ($this->alreadySubscribed)
 				return parent::handleRequest($request, $mav);
@@ -22,11 +24,11 @@
 			$innerController = $this;
 			
 			while ($innerController = $innerController->getInner()) {
-				if ($innerController instanceof CmsPageController) {
+				if ($innerController instanceof DefinePageController) {
 					$innerController->
 						getObserverManager()->
 						addObserver(
-							CmsPageControllerObserverManager::PAGE_DEFINED_EVENT,
+							DefinePageControllerObserverManager::PAGE_DEFINED_EVENT,
 							array($this, 'pageDefined') 
 						);
 				}
@@ -34,22 +36,22 @@
 
 			$hashes = array();
 			
-			foreach (Database::me()->getPools() as $pool) {
+			foreach (\ewgraFramework\Database::me()->getPools() as $pool) {
 				foreach ($hashes as $hash) {
 					if ($pool->hasObserver($hash))
-						continue 2;	
+						continue 2;
 				}
 				
 				$hashes[] = 
 					$pool->addObserver(
-						BaseDatabase::QUERY_EVENT, 
+						\ewgraFramework\BaseDatabase::QUERY_EVENT, 
 						array($this, 'databaseQuery')
 					);
 			}
 			
 			$hashes = array(); 
 			
-			foreach (Cache::me()->getPools() as $pool) {
+			foreach (\ewgraFramework\Cache::me()->getPools() as $pool) {
 				foreach ($hashes as $hash) {
 					if ($pool->hasObserver($hash))
 						continue 2;	
@@ -57,7 +59,7 @@
 				
 				$hashes[] = 
 					$pool->addObserver(
-						BaseCache::GET_TICKET_EVENT, 
+						\ewgraFramework\BaseCache::GET_TICKET_EVENT, 
 						array($this, 'cacheTicketGot')
 					);
 			}
@@ -65,7 +67,7 @@
 			return parent::handleRequest($request, $mav);
 		}
 		
-		public function pageDefined(Model $model)
+		public function pageDefined(\ewgraFramework\Model $model)
 		{
 			$page = $model->get('page');
 			
@@ -86,7 +88,7 @@
 			return $this;
 		}
 
-		public function databaseQuery(Model $model)
+		public function databaseQuery(\ewgraFramework\Model $model)
 		{
 			$debugItem =
 				DebugItem::create()->
@@ -101,7 +103,7 @@
 			return $this;
 		}
 
-		public function cacheTicketGot(Model $model)
+		public function cacheTicketGot(\ewgraFramework\Model $model)
 		{
 			$ticket = $model->get('ticket');
 			

@@ -1,16 +1,18 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class LocalizerController extends ChainController
+	final class LocalizerController extends \ewgraFramework\ChainController
 	{
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
@@ -23,7 +25,7 @@
 					$projectOptions['defaultLanguage']
 				);
 			} else
-				throw DefaultException::create('no default language');
+				throw \ewgraFramework\DefaultException::create('no default language');
 			
 			if ($request->hasCookieVar('languageId')) {
 				$localizer->setCookieLanguage(
@@ -33,7 +35,7 @@
 			
 			$localizer->defineLanguage($request->getUrl());
 			
-			CookieManager::me()->
+			\ewgraFramework\CookieManager::me()->
 				setCookie(
 					'languageId', 
 					$localizer->getRequestLanguage()->getId()

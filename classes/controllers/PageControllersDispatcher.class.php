@@ -1,16 +1,18 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PageControllersDispatcher extends ChainController
+	final class PageControllersDispatcher extends \ewgraFramework\ChainController
 	{
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
 			$page = $request->getAttachedVar(AttachedAliases::PAGE);
 
@@ -27,7 +29,7 @@
 		 */
 		private function insertControllers(
 			array $pageControllers,
-			ModelAndView $mav
+			\ewgraFramework\ModelAndView $mav
 		) {
 			$lastController = $this;
 			
@@ -43,7 +45,7 @@
 				$controllerInstance = new $controllerName($proxyOut);
 				
 				$proxyIn = new ProxyInPageController($controllerInstance);
-				$proxyMav = ModelAndView::create();
+				$proxyMav = \ewgraFramework\ModelAndView::create();
 				$proxyIn->setMav($proxyMav);
 
 				$lastController->setInner($proxyIn);
@@ -73,7 +75,7 @@
 						$pageController->getViewFile()->createView()
 					);
 				} else {
-					$proxyMav->setView(NullTransformView::create());
+					$proxyMav->setView(\ewgraFramework\NullTransformView::create());
 				}
 			}
 			

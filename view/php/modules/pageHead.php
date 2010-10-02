@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraCms;
+	
 	if ($pageData->getTitle()) {
 ?>
 	<title><?=$pageData->getTitle()?></title>

@@ -1,18 +1,20 @@
 <?php
+	namespace ewgraCms;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class SessionController extends ChainController
+	final class SessionController extends \ewgraFramework\ChainController
 	{
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
-			Session::me()->relativeStart();
+			\ewgraFramework\Session::me()->relativeStart();
 			return parent::handleRequest($request, $mav);
 		}
 	}

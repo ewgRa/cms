@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PageAccessDeniedException extends DefaultException
+	final class PageAccessDeniedException extends \ewgraFramework\DefaultException
 	{
 		/**
 		 * @return PageAccessDeniedException

@@ -1,27 +1,29 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class ProxyInPageController extends ChainController
+	final class ProxyInPageController extends \ewgraFramework\ChainController
 	{
 		/**
-		 * @var ModelAndView
+		 * @var \ewgraFramework\ModelAndView
 		 */
 		private $mav = null;
 
-		public function setMav(ModelAndView $mav)
+		public function setMav(\ewgraFramework\ModelAndView $mav)
 		{
 			$this->mav = $mav;
 			return $this;	
 		}
 		
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
 			return parent::handleRequest($request, $this->mav);
 		}

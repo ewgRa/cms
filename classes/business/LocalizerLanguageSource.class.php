@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class LocalizerLanguageSource extends Enumeration
+	final class LocalizerLanguageSource extends \ewgraFramework\Enumeration
 	{
 		const DEFAULT_SOURCE = 1;
 		const COOKIE  		 = 2;

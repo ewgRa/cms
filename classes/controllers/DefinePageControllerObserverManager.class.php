@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DefinePageControllerObserverManager extends Observable
+	final class DefinePageControllerObserverManager extends \ewgraFramework\Observable
 	{
 		const PAGE_DEFINED_EVENT = 1;
 		
@@ -32,7 +34,7 @@
 		{
 			$this->notifyObservers(
 				self::PAGE_DEFINED_EVENT,
-				Model::create()->
+				\ewgraFramework\Model::create()->
 				set('page', $page)
 			);
 			

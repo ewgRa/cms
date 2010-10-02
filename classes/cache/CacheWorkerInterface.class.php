@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -11,12 +13,12 @@
 		public function createTicket(DatabaseRequester $requester);
 
 		public function getCachedByQuery(
-			DatabaseQueryInterface $dbQuery,
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			DatabaseRequester $requester
 		);
 		
 		public function getListCachedByQuery(
-			DatabaseQueryInterface $dbQuery,
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			DatabaseRequester $requester
 		);
 		
@@ -24,7 +26,7 @@
 		 * @return DatabaseRequester
 		 */
 		public function addTicketToTag(
-			CacheTicket $cacheTicket,
+			\ewgraFramework\CacheTicket $cacheTicket,
 			DatabaseRequester $requester
 		);
 		

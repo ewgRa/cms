@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class ProjectIndex extends Singleton
+	final class ProjectIndex extends \ewgraFramework\Singleton
 	{
 		private $startTime = null;
 		
@@ -21,7 +23,7 @@
 			return $this;	
 		}
 		
-		public function catchException(Exception $e)
+		public function catchException(\Exception $e)
 		{
 			$debugStored = false;
 

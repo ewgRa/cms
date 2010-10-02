@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PageStatus extends Enumeration
+	final class PageStatus extends \ewgraFramework\Enumeration
 	{
 		const NORMAL	= 1;
 		const DELETED	= 2;

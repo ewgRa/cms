@@ -1,20 +1,7 @@
 <?php
-	classesAutoloaderInit();
+	namespace ewgraCms\debugScript;
 
-	$request	= initRequest();
-	$output		= run($request);
-
-	$echo	= ob_get_clean();
-
-	if ($echo)
-		ProjectIndex::me()->catchEcho($echo);
-		
-	if ($request->hasAttachedVar(AttachedAliases::PAGE_HEADER))
-		$request->getAttachedVar(AttachedAliases::PAGE_HEADER)->output();
-		
-	echo ProjectIndex::me()->getOutput($output, $echo);
-	
-	function run(HttpRequest $request)
+	function run(\ewgraFramework\HttpRequest $request)
 	{
 		$request->
 			setPost($_POST)->
@@ -23,36 +10,36 @@
 			setServer($_SERVER);
 				
 		$request->setAttachedVar(
-			AttachedAliases::PAGE_HEADER,
-			PageHeader::create()
+			\ewgraCms\AttachedAliases::PAGE_HEADER,
+			\ewgraCms\PageHeader::create()
 		);
 
-		$databasePool = Database::me()->getPool(PROJECT);
+		$databasePool = \ewgraFramework\Database::me()->getPool(PROJECT);
 		
-		Singleton::dropInstance('Debug');
+		\ewgraFramework\Singleton::dropInstance('ewgraCms\Debug');
 		
-		Session::me()->relativeStart();
+		\ewgraFramework\Session::me()->relativeStart();
 		
-		if (!Session::me()->isStarted() && isset($_GET['startSession'])) {
-			Session::me()->start();
+		if (!\ewgraFramework\Session::me()->isStarted() && isset($_GET['startSession'])) {
+			\ewgraFramework\Session::me()->start();
 			
-			if (!Session::me()->has('enableDebug')) {
-				Session::me()->
+			if (!\ewgraFramework\Session::me()->has('enableDebug')) {
+				\ewgraFramework\Session::me()->
 					set('enableDebug', true)->
 					save();
 			}
 			
 			if (!isset($_COOKIE['enableDebug']))
-				CookieManager::me()->setCookie('enableDebug', true);
+				\ewgraFramework\CookieManager::me()->setCookie('enableDebug', true);
 		}
 		
-		if(!Session::me()->isStarted())
+		if(!\ewgraFramework\Session::me()->isStarted())
 			die('no session started');
 		
 		$controller =
-			new UserController( 
-				Auth401Controller::create(
-					UserRight401Controller::create()->
+			new \ewgraCmsModules\UserController( 
+				\ewgraCmsModules\Auth401Controller::create(
+					\ewgraCmsModules\UserRight401Controller::create()->
 					setRequiredRightAliases(array('root'))
 				)->
 				setRequestAction('login')
@@ -60,7 +47,7 @@
 		
 		$modelAndView = $controller->handleRequest(
 			$request,
-			ModelAndView::create()
+			\ewgraFramework\ModelAndView::create()
 		);
 		
 		return $modelAndView->render();

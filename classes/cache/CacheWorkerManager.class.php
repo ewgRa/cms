@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class CacheWorkerManager extends Singleton
+	final class CacheWorkerManager extends \ewgraFramework\Singleton
 	{
 		private $default = null;
 		
@@ -25,7 +27,7 @@
 		
 		public function getDefault()
 		{
-			Assert::isNotNull(
+			\ewgraFramework\Assert::isNotNull(
 				$this->default, 
 				'you must define default cache worker'
 			);

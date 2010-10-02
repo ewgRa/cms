@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -13,7 +15,7 @@
 			return new self;
 		}
 		
-		protected function getLanguageAbbr(HttpUrl $url)
+		protected function getLanguageAbbr(\ewgraFramework\HttpUrl $url)
 		{
 			$result = null;
 			
@@ -26,9 +28,9 @@
 		}
 
 		/**
-		 * @return HttpUrl
+		 * @return \ewgraFramework\HttpUrl
 		 */
-		public function removeLanguageFromUrl(HttpUrl $url)
+		public function removeLanguageFromUrl(\ewgraFramework\HttpUrl $url)
 		{
 			return
 				$this->getSource()->isLanguageInUrl()
@@ -37,9 +39,9 @@
 		}
 
 		/**
-		 * @return HttpUrl
+		 * @return \ewgraFramework\HttpUrl
 		 */
-		private function cutLanguageAbbr(HttpUrl $url)
+		private function cutLanguageAbbr(\ewgraFramework\HttpUrl $url)
 		{
 			if (
 				$this->getLanguageAbbr($url)

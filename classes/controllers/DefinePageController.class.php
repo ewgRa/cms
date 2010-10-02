@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DefinePageController extends ChainController
+	final class DefinePageController extends \ewgraFramework\ChainController
 	{
 		private $observerManager = null;
 		
@@ -18,7 +20,7 @@
 		/**
 		 * @return DefinePageController
 		 */
-		public function __construct(ChainController $controller = null)
+		public function __construct(\ewgraFramework\ChainController $controller = null)
 		{
 			$this->observerManager = 
 				DefinePageControllerObserverManager::create($this);
@@ -27,11 +29,11 @@
 		}
 		
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
 			
@@ -56,7 +58,7 @@
 			
 			$mav->setView($page->getLayout()->getViewFile()->createView());
 			
-			$baseUrl = HttpUrl::create()->setPath('');
+			$baseUrl = \ewgraFramework\HttpUrl::create()->setPath('');
 			
 			if (
 				$localizer->getSource()->isLanguageInUrl()

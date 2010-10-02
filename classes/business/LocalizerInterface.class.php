@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -20,7 +22,7 @@
 		/**
 		 * @return Localizer
 		 */
-		public function defineLanguage(HttpUrl $url);
+		public function defineLanguage(\ewgraFramework\HttpUrl $url);
 
 		/**
 		 * @return Language
@@ -28,8 +30,8 @@
 		public function getRequestLanguage();
 		
 		/**
-		 * @return HttpUrl
+		 * @return \ewgraFramework\HttpUrl
 		 */
-		public function removeLanguageFromUrl(HttpUrl $url);
+		public function removeLanguageFromUrl(\ewgraFramework\HttpUrl $url);
 	}
 ?>

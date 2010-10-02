@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraCms;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -40,7 +42,7 @@
 			return $this;
 		}
 		
-		public function addRedirect(HttpUrl $url) {
+		public function addRedirect(\ewgraFramework\HttpUrl $url) {
 			$this->add('Location', (string)$url);
 			return $this;
 		}

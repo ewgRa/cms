@@ -4,6 +4,7 @@
 	license="http://www.opensource.org/licenses/bsd-license.php BSD"
 	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
 	DAExtends="DatabaseRequester"
+	namespace="ewgraCms"
 >
 	<Language>
 		<properties>
@@ -71,7 +72,7 @@
 		</properties>
 	</Site>
 	
-	<ContentType type="Enumeration" />
+	<ContentType namespace="\ewgraFramework" type="Enumeration" />
 	
 	<FileSource>
 		<properties>
@@ -83,7 +84,7 @@
 	<ViewFile>
 		<properties>
 			<id />
-			<contentType class="ContentType" />
+			<contentType class="\ewgraFramework\ContentType" />
 			<path />
 			<joinable type="boolean" nullable="true" />
 			<source class="FileSource" />

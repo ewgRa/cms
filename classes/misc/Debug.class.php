@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class Debug extends Singleton
+	final class Debug extends \ewgraFramework\Singleton
 	{
 		private $hash = null;
 		
@@ -68,9 +70,9 @@
 				ini_get('display_errors')
 				|| (
 					isset($_COOKIE['enableDebug'])
-					&& Session::me()->relativeStart()
-					&& Session::me()->isStarted()
-					&& Session::me()->get('enableDebug')
+					&& \ewgraFramework\Session::me()->relativeStart()
+					&& \ewgraFramework\Session::me()->isStarted()
+					&& \ewgraFramework\Session::me()->get('enableDebug')
 				)
 			)
 				$this->enable();
@@ -158,7 +160,7 @@
 		
 		public function getAsXml()
 		{
-			$domDocument = ExtendedDomDocument::create();
+			$domDocument = \ewgraFramework\ExtendedDomDocument::create();
 			
 			foreach ($this->getItems() as $item) {
 				$domDocument->appendChild(

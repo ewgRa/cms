@@ -1,16 +1,18 @@
 <?php
+	namespace ewgraCms;
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class SiteController extends ChainController
+	final class SiteController extends \ewgraFramework\ChainController
 	{
 		private $siteAlias = null;
 
 		/**
 		 * @return SiteController
 		 */
-		public static function create(ChainController $controller = null)
+		public static function create(\ewgraFramework\ChainController $controller = null)
 		{
 			return new self($controller);
 		}
@@ -30,13 +32,13 @@
 		}
 		
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
-			Assert::isNotNull($this->getSiteAlias());
+			\ewgraFramework\Assert::isNotNull($this->getSiteAlias());
 			
 			$request->setAttachedVar(
 				AttachedAliases::SITE,
