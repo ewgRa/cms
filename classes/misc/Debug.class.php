@@ -123,7 +123,7 @@
 		}
 
 		/**
-		 *@return CmsDebugItem
+		 *@return DebugItem
 		 */
 		public function addRequestDebugItem()
 		{

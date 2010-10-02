@@ -3,7 +3,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class CmsDatabaseRequester extends Singleton implements CacherInterface
+	abstract class DatabaseRequester extends Singleton implements CacherInterface
 	{
 		protected $poolAlias	= 'cms';
 		protected $tableAlias	= null;
@@ -27,7 +27,7 @@
 		}
 		
 		/**
-		 * @return CmsDatabaseRequester
+		 * @return DatabaseRequester
 		 */
 		public function setPoolAlias($alias)
 		{

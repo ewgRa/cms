@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoPageDA extends CmsDatabaseRequester
+	abstract class AutoPageDA extends DatabaseRequester
 	{
 		protected $tableAlias = 'Page';
 		

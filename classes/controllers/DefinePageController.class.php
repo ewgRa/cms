@@ -3,12 +3,12 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class CmsPageController extends ChainController
+	final class DefinePageController extends ChainController
 	{
 		private $observerManager = null;
 		
 		/**
-		 * @return CmsPageControllerObserverManager
+		 * @return DefinePageControllerObserverManager
 		 */
 		public function getObserverManager()
 		{
@@ -16,12 +16,12 @@
 		}
 
 		/**
-		 * @return CmsPageController
+		 * @return DefinePageController
 		 */
 		public function __construct(ChainController $controller = null)
 		{
 			$this->observerManager = 
-				CmsPageControllerObserverManager::create($this);
+				DefinePageControllerObserverManager::create($this);
 				
 			return parent::__construct($controller);
 		}

@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoLayoutDA extends CmsDatabaseRequester
+	abstract class AutoLayoutDA extends DatabaseRequester
 	{
 		protected $tableAlias = 'Layout';
 		

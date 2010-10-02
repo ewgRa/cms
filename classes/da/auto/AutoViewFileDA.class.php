@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoViewFileDA extends CmsDatabaseRequester
+	abstract class AutoViewFileDA extends DatabaseRequester
 	{
 		protected $tableAlias = 'ViewFile';
 		

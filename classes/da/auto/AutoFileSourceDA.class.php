@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	abstract class AutoFileSourceDA extends CmsDatabaseRequester
+	abstract class AutoFileSourceDA extends DatabaseRequester
 	{
 		protected $tableAlias = 'FileSource';
 		

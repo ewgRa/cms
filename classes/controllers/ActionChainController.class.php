@@ -1,12 +1,14 @@
 <?php
+	namespace ewgraCms;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class CmsActionChainController extends ActionChainController
+	abstract class ActionChainController extends \ActionChainController
 	{
 		/**
-		 * @return CmsActionChainController
+		 * @return ActionChainController
 		 */
 		public function importSettings(array $settings = null)
 		{

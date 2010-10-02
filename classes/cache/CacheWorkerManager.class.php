@@ -34,14 +34,14 @@
 		}
 		
 		public function addRequesterMap(
-			CmsDatabaseRequester $requester, 
+			DatabaseRequester $requester, 
 			CacheWorkerInterface $cacheWorker
 		) {
 			$this->requester[get_class($requester)] = $cacheWorker;
 			return $this;
 		}
 		
-		public function getFor(CmsDatabaseRequester $requester)
+		public function getFor(DatabaseRequester $requester)
 		{
 			if (isset($this->requesterMap[get_class($requester)]))
 				return $this->requesterMap[get_class($requester)];

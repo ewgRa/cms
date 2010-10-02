@@ -3,7 +3,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class CmsDebugController extends ChainController
+	final class DebugController extends ChainController
 	{
 		private $alreadySubscribed = false;
 		

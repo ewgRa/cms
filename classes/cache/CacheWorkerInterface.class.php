@@ -8,29 +8,29 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function createTicket(CmsDatabaseRequester $requester);
+		public function createTicket(DatabaseRequester $requester);
 
 		public function getCachedByQuery(
 			DatabaseQueryInterface $dbQuery,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		);
 		
 		public function getListCachedByQuery(
 			DatabaseQueryInterface $dbQuery,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		);
 		
 		/**
-		 * @return CmsDatabaseRequester
+		 * @return DatabaseRequester
 		 */
 		public function addTicketToTag(
 			CacheTicket $cacheTicket,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		);
 		
 		/**
-		 * @return CmsDatabaseRequester
+		 * @return DatabaseRequester
 		 */
-		public function dropCache(CmsDatabaseRequester $requester);
+		public function dropCache(DatabaseRequester $requester);
 	}	
 ?>

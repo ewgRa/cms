@@ -16,7 +16,7 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function createTicket(CmsDatabaseRequester $requester)
+		public function createTicket(DatabaseRequester $requester)
 		{
 			Assert::isTrue(
 				Cache::me()->hasPool($requester->getPoolAlias()),
@@ -30,7 +30,7 @@
 
 		public function getCachedByQuery(
 			DatabaseQueryInterface $dbQuery,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		)
 		{
 			$cacheTicket = $this->createTicket($requester);
@@ -52,7 +52,7 @@
 		
 		public function getListCachedByQuery(
 			DatabaseQueryInterface $dbQuery,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		)
 		{
 			$cacheTicket = $this->createTicket($requester);
@@ -77,7 +77,7 @@
 		 */
 		public function addTicketToTag(
 			CacheTicket $cacheTicket,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		)
 		{
 			$tagTicket = $this->createTicket($requester);
@@ -98,7 +98,7 @@
 		/**
 		 * @return DefaultCacheWorker
 		 */
-		public function dropCache(CmsDatabaseRequester $requester)
+		public function dropCache(DatabaseRequester $requester)
 		{
 			$tagTicket = $this->createTicket($requester);
 

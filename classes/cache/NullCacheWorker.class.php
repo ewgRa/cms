@@ -27,7 +27,7 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function createTicket(CmsDatabaseRequester $requester)
+		public function createTicket(DatabaseRequester $requester)
 		{
 			return 
 				CacheTicket::create()->
@@ -36,7 +36,7 @@
 
 		public function getCachedByQuery(
 			DatabaseQueryInterface $dbQuery,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		)
 		{
 			return $requester->getByQuery($dbQuery);
@@ -44,7 +44,7 @@
 		
 		public function getListCachedByQuery(
 			DatabaseQueryInterface $dbQuery,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		)
 		{
 			return $requester->getListByQuery($dbQuery);
@@ -55,7 +55,7 @@
 		 */
 		public function addTicketToTag(
 			CacheTicket $cacheTicket,
-			CmsDatabaseRequester $requester
+			DatabaseRequester $requester
 		)
 		{
 			return $this;
@@ -64,7 +64,7 @@
 		/**
 		 * @return NullCacheWorker
 		 */
-		public function dropCache(CmsDatabaseRequester $requester)
+		public function dropCache(DatabaseRequester $requester)
 		{
 			return $this;
 		}

@@ -3,30 +3,30 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class CmsPageControllerObserverManager extends Observable
+	final class DefinePageControllerObserverManager extends Observable
 	{
 		const PAGE_DEFINED_EVENT = 1;
 		
 		private $controller = null;
 		
 		/**
-		 * @return CmsPageControllerObserverManager
+		 * @return DefinePageControllerObserverManager
 		 */
-		public static function create(CmsPageController $controller)
+		public static function create(DefinePageController $controller)
 		{
 			return new self($controller);
 		}
 		
 		/**
-		 * @return CmsPageControllerObserverManager
+		 * @return DefinePageControllerObserverManager
 		 */
-		public function __construct(CmsPageController $controller)
+		public function __construct(DefinePageController $controller)
 		{
 			$this->controller = $controller;
 		}
 		
 		/**
-		 * @return CmsPageControllerObserverManager
+		 * @return DefinePageControllerObserverManager
 		 */
 		public function notifyPageDefined(Page $page)
 		{
