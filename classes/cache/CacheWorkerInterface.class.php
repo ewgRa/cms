@@ -10,29 +10,29 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function createTicket(DatabaseRequester $requester);
+		public function createTicket(CacheableRequesterInterface $requester);
 
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		);
 		
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		);
 		
 		/**
-		 * @return DatabaseRequester
+		 * @return CacheWorkerInterface
 		 */
 		public function addTicketToTag(
 			\ewgraFramework\CacheTicket $cacheTicket,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		);
 		
 		/**
-		 * @return DatabaseRequester
+		 * @return CacheWorkerInterface
 		 */
-		public function dropCache(DatabaseRequester $requester);
+		public function dropCache(CacheableRequesterInterface $requester);
 	}	
 ?>

@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
 	abstract class DatabaseRequester extends \ewgraFramework\Singleton 
-		implements CacherInterface
+		implements CacherInterface, CacheableRequesterInterface
 	{
 		protected $poolAlias	= 'cms';
 		protected $tableAlias	= null;
@@ -82,8 +82,15 @@
 			
 			$dbResult = $this->db()->query($dbQuery);
 
-			if ($dbResult->recordCount())
+			if ($dbResult->recordCount()) {
+				\ewgraFramework\Assert::isEqual(
+					$dbResult->recordCount(), 
+					1, 
+					'query returned more than one row'
+				);
+				
 				$result = $this->build($dbResult->fetchRow());
+			}
 			
 			return $result;
 		}

@@ -29,7 +29,7 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function createTicket(DatabaseRequester $requester)
+		public function createTicket(CacheableRequesterInterface $requester)
 		{
 			return 
 				\ewgraFramework\CacheTicket::create()->
@@ -38,7 +38,7 @@
 
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		)
 		{
 			return $requester->getByQuery($dbQuery);
@@ -46,7 +46,7 @@
 		
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		)
 		{
 			return $requester->getListByQuery($dbQuery);
@@ -57,7 +57,7 @@
 		 */
 		public function addTicketToTag(
 			\ewgraFramework\CacheTicket $cacheTicket,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		)
 		{
 			return $this;
@@ -66,7 +66,7 @@
 		/**
 		 * @return NullCacheWorker
 		 */
-		public function dropCache(DatabaseRequester $requester)
+		public function dropCache(CacheableRequesterInterface $requester)
 		{
 			return $this;
 		}

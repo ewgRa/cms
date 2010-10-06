@@ -19,7 +19,7 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function createTicket(DatabaseRequester $requester)
+		public function createTicket(CacheableRequesterInterface $requester)
 		{
 			\ewgraFramework\Assert::isTrue(
 				\ewgraFramework\Cache::me()->hasPool($requester->getPoolAlias()),
@@ -33,7 +33,7 @@
 
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		)
 		{
 			$cacheTicket = $this->createTicket($requester);
@@ -55,7 +55,7 @@
 		
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		)
 		{
 			$cacheTicket = $this->createTicket($requester);
@@ -80,7 +80,7 @@
 		 */
 		public function addTicketToTag(
 			\ewgraFramework\CacheTicket $cacheTicket,
-			DatabaseRequester $requester
+			CacheableRequesterInterface $requester
 		)
 		{
 			$tagTicket = $this->createTicket($requester);
@@ -101,7 +101,7 @@
 		/**
 		 * @return DefaultCacheWorker
 		 */
-		public function dropCache(DatabaseRequester $requester)
+		public function dropCache(CacheableRequesterInterface $requester)
 		{
 			$tagTicket = $this->createTicket($requester);
 
