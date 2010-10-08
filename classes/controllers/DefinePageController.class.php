@@ -72,11 +72,13 @@
 			}
 			
 			$request->setAttachedVar(AttachedAliases::BASE_URL, $baseUrl);
-			
-			$request->setAttachedVar(
-				AttachedAliases::PAGE_HEADER,
-				PageHeader::create()
-			);
+
+			if (!$request->hasAttachedVar(AttachedAliases::PAGE_HEADER)) {
+				$request->setAttachedVar(
+					AttachedAliases::PAGE_HEADER,
+					PageHeader::create()
+				);
+			}
 
 			return parent::handleRequest($request, $mav);
 		}
