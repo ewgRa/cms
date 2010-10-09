@@ -132,10 +132,8 @@
 		
 		$view = XsltView::create()->loadLayout($layout);
 		
-		$projectConfig = Config::me()->getOption('project');
-		
-		if (isset($projectConfig['charset']))
-			$view->setCharset($projectConfig['charset']);
+		if ($charset = Config::me()->getOption('charset'))
+			$view->setCharset($charset);
 		
 		$modelAndView = ModelAndView::create()->
 			setModel($model)->

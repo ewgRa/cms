@@ -36,16 +36,8 @@
 				// very bad... even write debug failed
 			}
 			
-			$fileName = LOG_DIR.'/errors.txt';
-			
-			$logTime =
-				file_exists($fileName)
-					? filemtime($fileName)
-					: 0;
-			
 			$exceptionString =
-				date('Y-m-d h:i:s ').$_SERVER['HTTP_HOST']
-				.$_SERVER['REQUEST_URI']
+				$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']
 				.(
 					Debug::me()->isEnabled()
 						? 
@@ -60,20 +52,7 @@
 				)
 				.PHP_EOL.$e.PHP_EOL.PHP_EOL.PHP_EOL;
 			
-			file_put_contents(
-				$fileName,
-				$exceptionString,
-				FILE_APPEND
-			);
-	
-			if (time() - $logTime > 180) {
-				mail(
-					ADMIN_EMAIL,
-					'Exception on '.$_SERVER['HTTP_HOST'],
-					'Check log: '.$fileName.PHP_EOL.PHP_EOL
-					.'Last exception:'.PHP_EOL.$exceptionString
-				);
-			}
+			error_log($exceptionString);
 						
 			return $this;
 		}
@@ -83,35 +62,11 @@
 		 */
 		public function catchEcho($echo)
 		{
-			$fileName = LOG_DIR.'/echo.txt';
-			
-			$logTime =
-				file_exists($fileName)
-					? filemtime($fileName)
-					: 0;
-			
-			file_put_contents(
-				$fileName,
-				date('Y-m-d h:i:s ')
-				.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].PHP_EOL
-				.$echo.PHP_EOL.PHP_EOL.PHP_EOL,
-				FILE_APPEND
+			error_log(
+				$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].PHP_EOL
+				.$echo.PHP_EOL.PHP_EOL.PHP_EOL
 			);
-			
-			if (time() - $logTime > 180) {
-				mail(
-					ADMIN_EMAIL,
-					'Echo is not empty on host '.$_SERVER['HTTP_HOST'],
-					'Check log '.$fileName
-					.(
-						Debug::me()->isEnabled()
-							? ' (debug hash: '.Debug::me()->getHash().')'
-							: ' (without debug)'
-					).PHP_EOL.PHP_EOL
-					.'Last echo:'.PHP_EOL.$echo
-				);
-			}
-			
+
 			if (Debug::me()->isEnabled()) {
 				$debugItem =
 					DebugItem::create()->

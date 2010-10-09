@@ -31,10 +31,8 @@
 				case \ewgraFramework\ContentType::TEXT_XSLT:
 					$result = \ewgraFramework\XsltView::create();
 					
-					$projectConfig = Config::me()->getOption('project');
-					
-					if (isset($projectConfig['charset']))
-						$result->setCharset($projectConfig['charset']);
+					if ($charset = Config::me()->getOption('charset'))
+						$result->setCharset($charset);
 					
 					$result->loadLayout($layout);
 					

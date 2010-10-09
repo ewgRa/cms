@@ -18,13 +18,9 @@
 			
 			$localizer->setLanguages(Language::da()->getList());
 			
-			$projectOptions = Config::me()->getOption('project');
-
-			if (isset($projectOptions['defaultLanguage'])) {
-				$localizer->selectDefaultLanguage(
-					$projectOptions['defaultLanguage']
-				);
-			} else
+			if ($defaultLanguage = Config::me()->getOption('defaultLanguage'))
+				$localizer->selectDefaultLanguage($defaultLanguage);
+			else
 				throw \ewgraFramework\DefaultException::create('no default language');
 			
 			if ($request->hasCookieVar('languageId')) {
