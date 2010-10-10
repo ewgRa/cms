@@ -15,5 +15,16 @@
 		{
 			return new self;
 		}
+		
+		public function getUrlMatches(\ewgraFramework\HttpUrl $url)
+		{
+			preg_match(
+				'@'.str_replace('@', '\@', $this->getPath()).'@',
+				$url->getPath(),
+				$matches
+			);
+
+			return $matches;
+		}
 	}
 ?>
