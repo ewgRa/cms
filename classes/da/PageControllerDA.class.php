@@ -20,7 +20,7 @@
 		{
 			$dbQuery = "
 				SELECT * FROM ".$this->getTable()." WHERE page_id = ?
-				ORDER BY priority, priority IS NULL
+				ORDER BY priority, priority IS NULL, position
 			";
 			
 			return $this->getListCachedByQuery(
