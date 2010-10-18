@@ -76,7 +76,7 @@
 			return $this->getPool();
 		}
 		
-		public function getByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
+		public function getCustomByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
 		{
 			$result = null;
 			
@@ -89,10 +89,25 @@
 					'query returned more than one row'
 				);
 				
-				$result = $this->build($dbResult->fetchRow());
+				$result = $dbResult->fetchRow();
 			}
 			
 			return $result;
+		}
+		
+		public function getByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
+		{
+			$result = $this->getCustomByQuery($dbQuery);
+			
+			if ($result)
+				$result = $this->build($result);
+			
+			return $result;
+		}
+		
+		public function getCustomCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
+		{
+			return $this->getCacheWorker()->getCustomCachedByQuery($dbQuery, $this);
 		}
 		
 		public function getCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)

@@ -12,6 +12,11 @@
 		 */
 		public function createTicket(CacheableRequesterInterface $requester);
 
+		public function getCustomCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			CacheableRequesterInterface $requester
+		);
+		
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester

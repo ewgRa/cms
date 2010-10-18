@@ -31,6 +31,28 @@
 			return $pool->createTicket()->setPrefix(get_class($requester));
 		}
 
+		public function getCustomCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			CacheableRequesterInterface $requester
+		)
+		{
+			$cacheTicket = $this->createTicket($requester);
+			
+			$result =
+				$cacheTicket->
+				setKey($dbQuery)->
+				restoreData();
+				
+			if ($cacheTicket->isExpired()) {
+				$result = $requester->getCustomByQuery($dbQuery);
+
+				$cacheTicket->storeData($result);
+				$this->addTicketToTag($cacheTicket, $requester);
+			}
+			
+			return $result;
+		}
+		
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
