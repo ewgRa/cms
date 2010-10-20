@@ -40,7 +40,7 @@
 			
 			$result =
 				$cacheTicket->
-				setKey($dbQuery)->
+				setKey(__FUNCTION__, $dbQuery)->
 				restoreData();
 				
 			if ($cacheTicket->isExpired()) {
@@ -62,11 +62,33 @@
 			
 			$result =
 				$cacheTicket->
-				setKey($dbQuery)->
+				setKey(__FUNCTION__, $dbQuery)->
 				restoreData();
 				
 			if ($cacheTicket->isExpired()) {
 				$result = $requester->getByQuery($dbQuery);
+
+				$cacheTicket->storeData($result);
+				$this->addTicketToTag($cacheTicket, $requester);
+			}
+			
+			return $result;
+		}
+		
+		public function getCustomListCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			CacheableRequesterInterface $requester
+		)
+		{
+			$cacheTicket = $this->createTicket($requester);
+			
+			$result =
+				$cacheTicket->
+					setKey(__FUNCTION__, get_class($requester), $dbQuery)->
+					restoreData();
+				
+			if ($cacheTicket->isExpired()) {
+				$result = $requester->getCustomListByQuery($dbQuery);
 
 				$cacheTicket->storeData($result);
 				$this->addTicketToTag($cacheTicket, $requester);
@@ -84,7 +106,7 @@
 			
 			$result =
 				$cacheTicket->
-					setKey(get_class($requester), $dbQuery)->
+					setKey(__FUNCTION__, get_class($requester), $dbQuery)->
 					restoreData();
 				
 			if ($cacheTicket->isExpired()) {

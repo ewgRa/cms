@@ -22,6 +22,11 @@
 			CacheableRequesterInterface $requester
 		);
 		
+		public function getCustomListCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			CacheableRequesterInterface $requester
+		);
+		
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester

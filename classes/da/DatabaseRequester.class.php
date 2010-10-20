@@ -115,16 +115,26 @@
 			return $this->getCacheWorker()->getCachedByQuery($dbQuery, $this);
 		}
 		
-		public function getListByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
+		public function getCustomListByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
 		{
 			$dbResult = $this->db()->query($dbQuery);
 
-			return $this->buildList($dbResult->fetchList());
+			return $dbResult->fetchList();
+		}
+		
+		public function getListByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
+		{
+			return $this->buildList($this->getCustomListByQuery($dbQuery));
 		}
 		
 		public function getListCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
 		{
 			return $this->getCacheWorker()->getListCachedByQuery($dbQuery, $this);
+		}
+		
+		public function getCustomListCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
+		{
+			return $this->getCacheWorker()->getCustomListCachedByQuery($dbQuery, $this);
 		}
 		
 		public function dropCache()
