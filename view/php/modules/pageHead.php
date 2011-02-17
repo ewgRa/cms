@@ -15,7 +15,7 @@
 
 	if ($pageData->getKeywords()) {
 ?>
-	<meta name="description" content="<?=$pageData->getKeywords()?>"></meta>
+	<meta name="keywords" content="<?=$pageData->getKeywords()?>"></meta>
 <?php
 	}
 ?>

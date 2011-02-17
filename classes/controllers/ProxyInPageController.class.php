@@ -15,7 +15,7 @@
 		public function setMav(\ewgraFramework\ModelAndView $mav)
 		{
 			$this->mav = $mav;
-			return $this;	
+			return $this;
 		}
 		
 		/**
