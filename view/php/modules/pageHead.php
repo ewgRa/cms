@@ -3,19 +3,19 @@
 	
 	if ($pageData->getTitle()) {
 ?>
-	<title><?=$pageData->getTitle()?></title>
+	<title><?=htmlspecialchars($pageData->getTitle())?></title>
 <?php
     }
 
 	if ($pageData->getDescription()) {
 ?>
-	<meta name="description" content="<?=$pageData->getDescription()?>"></meta>
+	<meta name="description" content="<?=htmlspecialchars($pageData->getDescription())?>"></meta>
 <?php
 	}
 
 	if ($pageData->getKeywords()) {
 ?>
-	<meta name="keywords" content="<?=$pageData->getKeywords()?>"></meta>
+	<meta name="keywords" content="<?=htmlspecialchars($pageData->getKeywords())?>"></meta>
 <?php
 	}
 ?>
