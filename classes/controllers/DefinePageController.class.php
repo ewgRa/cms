@@ -22,7 +22,7 @@
 		 */
 		public function __construct(\ewgraFramework\ChainController $controller = null)
 		{
-			$this->observerManager = 
+			$this->observerManager =
 				DefinePageControllerObserverManager::create($this);
 				
 			return parent::__construct($controller);

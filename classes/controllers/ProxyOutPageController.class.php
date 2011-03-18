@@ -20,13 +20,13 @@
 		public function setMav(\ewgraFramework\ModelAndView $mav)
 		{
 			$this->mav = $mav;
-			return $this;	
+			return $this;
 		}
 		
 		public function setPageController(PageController $pageController)
 		{
 			$this->pageController = $pageController;
-			return $this;	
+			return $this;
 		}
 		
 		/**
@@ -36,11 +36,12 @@
 			\ewgraFramework\HttpRequest $request,
 			\ewgraFramework\ModelAndView $mav
 		) {
+			// FIXME: set proxiedData or set proxy name key instead of append?
 			$this->mav->getModel()->append(
 				array(
 					'data' => $mav->render(),
 					'section' => $this->pageController->getSection(),
-					'position' => $this->pageController->getPosition() 
+					'position' => $this->pageController->getPosition()
 				)
 			);
 			

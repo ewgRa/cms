@@ -26,5 +26,10 @@
 
 			return $matches;
 		}
+		
+		public function getData(Language $language)
+		{
+			return PageData::da()->get($this, $language);
+		}
 	}
 ?>
