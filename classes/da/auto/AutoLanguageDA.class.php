@@ -21,7 +21,7 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getAbbr())) {
-				$queryParts[] = 'abbr = ?';
+				$queryParts[] = '`abbr` = ?';
 				$queryParams[] = $object->getAbbr();
 			}
 			
@@ -51,7 +51,7 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'abbr = ?';
+			$queryParts[] = '`abbr` = ?';
 			$queryParams[] = $object->getAbbr();
 			
 			$whereParts[] = 'id = ?';
@@ -74,7 +74,7 @@
 		/**
 		 * @return Language
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Language::create()->

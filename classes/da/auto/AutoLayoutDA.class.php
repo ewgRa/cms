@@ -21,7 +21,7 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getViewFileId())) {
-				$queryParts[] = 'view_file_id = ?';
+				$queryParts[] = '`view_file_id` = ?';
 				$queryParams[] = $object->getViewFileId();
 			}
 			
@@ -51,7 +51,7 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'view_file_id = ?';
+			$queryParts[] = '`view_file_id` = ?';
 			$queryParams[] = $object->getViewFileId();
 			
 			$whereParts[] = 'id = ?';
@@ -74,7 +74,7 @@
 		/**
 		 * @return Layout
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Layout::create()->

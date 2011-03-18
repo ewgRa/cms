@@ -21,7 +21,7 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getAlias())) {
-				$queryParts[] = 'alias = ?';
+				$queryParts[] = '`alias` = ?';
 				$queryParams[] = $object->getAlias();
 			}
 			
@@ -51,7 +51,7 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'alias = ?';
+			$queryParts[] = '`alias` = ?';
 			$queryParams[] = $object->getAlias();
 			
 			$whereParts[] = 'id = ?';
@@ -74,7 +74,7 @@
 		/**
 		 * @return FileSource
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				FileSource::create()->

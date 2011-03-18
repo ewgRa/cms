@@ -21,22 +21,22 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getContentType())) {
-				$queryParts[] = 'content_type = ?';
+				$queryParts[] = '`content_type` = ?';
 				$queryParams[] = $object->getContentType()->getId();
 			}
 			
 			if (!is_null($object->getPath())) {
-				$queryParts[] = 'path = ?';
+				$queryParts[] = '`path` = ?';
 				$queryParams[] = $object->getPath();
 			}
 			
 			if (!is_null($object->getJoinable())) {
-				$queryParts[] = 'joinable = ?';
+				$queryParts[] = '`joinable` = ?';
 				$queryParams[] = $object->getJoinable();
 			}
 			
 			if (!is_null($object->getSourceId())) {
-				$queryParts[] = 'source_id = ?';
+				$queryParts[] = '`source_id` = ?';
 				$queryParams[] = $object->getSourceId();
 			}
 			
@@ -66,13 +66,13 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'content_type = ?';
+			$queryParts[] = '`content_type` = ?';
 			$queryParams[] = $object->getContentType()->getId();
-			$queryParts[] = 'path = ?';
+			$queryParts[] = '`path` = ?';
 			$queryParams[] = $object->getPath();
-			$queryParts[] = 'joinable = ?';
+			$queryParts[] = '`joinable` = ?';
 			$queryParams[] = $object->getJoinable();
-			$queryParts[] = 'source_id = ?';
+			$queryParts[] = '`source_id` = ?';
 			$queryParams[] = $object->getSourceId();
 			
 			$whereParts[] = 'id = ?';
@@ -95,7 +95,7 @@
 		/**
 		 * @return ViewFile
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				ViewFile::create()->

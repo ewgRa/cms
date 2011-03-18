@@ -21,37 +21,37 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getPageId())) {
-				$queryParts[] = 'page_id = ?';
+				$queryParts[] = '`page_id` = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
 			if (!is_null($object->getControllerId())) {
-				$queryParts[] = 'controller_id = ?';
+				$queryParts[] = '`controller_id` = ?';
 				$queryParams[] = $object->getControllerId();
 			}
 			
 			if (!is_null($object->getSection())) {
-				$queryParts[] = 'section = ?';
+				$queryParts[] = '`section` = ?';
 				$queryParams[] = $object->getSection();
 			}
 			
 			if (!is_null($object->getPosition())) {
-				$queryParts[] = 'position = ?';
+				$queryParts[] = '`position` = ?';
 				$queryParams[] = $object->getPosition();
 			}
 			
 			if (!is_null($object->getPriority())) {
-				$queryParts[] = 'priority = ?';
+				$queryParts[] = '`priority` = ?';
 				$queryParams[] = $object->getPriority();
 			}
 			
 			if (!is_null($object->getSettings())) {
-				$queryParts[] = 'settings = ?';
+				$queryParts[] = '`settings` = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}
 			
 			if (!is_null($object->getViewFileId())) {
-				$queryParts[] = 'view_file_id = ?';
+				$queryParts[] = '`view_file_id` = ?';
 				$queryParams[] = $object->getViewFileId();
 			}
 			
@@ -81,19 +81,19 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'page_id = ?';
+			$queryParts[] = '`page_id` = ?';
 			$queryParams[] = $object->getPageId();
-			$queryParts[] = 'controller_id = ?';
+			$queryParts[] = '`controller_id` = ?';
 			$queryParams[] = $object->getControllerId();
-			$queryParts[] = 'section = ?';
+			$queryParts[] = '`section` = ?';
 			$queryParams[] = $object->getSection();
-			$queryParts[] = 'position = ?';
+			$queryParts[] = '`position` = ?';
 			$queryParams[] = $object->getPosition();
-			$queryParts[] = 'priority = ?';
+			$queryParts[] = '`priority` = ?';
 			$queryParams[] = $object->getPriority();
-			$queryParts[] = 'settings = ?';
+			$queryParts[] = '`settings` = ?';
 			$queryParams[] = serialize($object->getSettings());
-			$queryParts[] = 'view_file_id = ?';
+			$queryParts[] = '`view_file_id` = ?';
 			$queryParams[] = $object->getViewFileId();
 			
 			$whereParts[] = 'id = ?';
@@ -116,7 +116,7 @@
 		/**
 		 * @return PageController
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				PageController::create()->

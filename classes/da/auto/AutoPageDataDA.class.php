@@ -21,27 +21,27 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getPageId())) {
-				$queryParts[] = 'page_id = ?';
+				$queryParts[] = '`page_id` = ?';
 				$queryParams[] = $object->getPageId();
 			}
 			
 			if (!is_null($object->getLanguageId())) {
-				$queryParts[] = 'language_id = ?';
+				$queryParts[] = '`language_id` = ?';
 				$queryParams[] = $object->getLanguageId();
 			}
 			
 			if (!is_null($object->getTitle())) {
-				$queryParts[] = 'title = ?';
+				$queryParts[] = '`title` = ?';
 				$queryParams[] = $object->getTitle();
 			}
 			
 			if (!is_null($object->getDescription())) {
-				$queryParts[] = 'description = ?';
+				$queryParts[] = '`description` = ?';
 				$queryParams[] = $object->getDescription();
 			}
 			
 			if (!is_null($object->getKeywords())) {
-				$queryParts[] = 'keywords = ?';
+				$queryParts[] = '`keywords` = ?';
 				$queryParams[] = $object->getKeywords();
 			}
 			
@@ -71,15 +71,15 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'page_id = ?';
+			$queryParts[] = '`page_id` = ?';
 			$queryParams[] = $object->getPageId();
-			$queryParts[] = 'language_id = ?';
+			$queryParts[] = '`language_id` = ?';
 			$queryParams[] = $object->getLanguageId();
-			$queryParts[] = 'title = ?';
+			$queryParts[] = '`title` = ?';
 			$queryParams[] = $object->getTitle();
-			$queryParts[] = 'description = ?';
+			$queryParts[] = '`description` = ?';
 			$queryParams[] = $object->getDescription();
-			$queryParts[] = 'keywords = ?';
+			$queryParts[] = '`keywords` = ?';
 			$queryParams[] = $object->getKeywords();
 			
 			$whereParts[] = 'id = ?';
@@ -102,7 +102,7 @@
 		/**
 		 * @return PageData
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				PageData::create()->

@@ -21,27 +21,27 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getPath())) {
-				$queryParts[] = 'path = ?';
+				$queryParts[] = '`path` = ?';
 				$queryParams[] = $object->getPath();
 			}
 			
 			if (!is_null($object->getPreg())) {
-				$queryParts[] = 'preg = ?';
+				$queryParts[] = '`preg` = ?';
 				$queryParams[] = $object->getPreg();
 			}
 			
 			if (!is_null($object->getLayoutId())) {
-				$queryParts[] = 'layout_id = ?';
+				$queryParts[] = '`layout_id` = ?';
 				$queryParams[] = $object->getLayoutId();
 			}
 			
 			if (!is_null($object->getStatus())) {
-				$queryParts[] = 'status = ?';
+				$queryParts[] = '`status` = ?';
 				$queryParams[] = $object->getStatus()->getId();
 			}
 			
 			if (!is_null($object->getModified())) {
-				$queryParts[] = 'modified = ?';
+				$queryParts[] = '`modified` = ?';
 				$queryParams[] = $object->getModified();
 			}
 			
@@ -71,15 +71,15 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'path = ?';
+			$queryParts[] = '`path` = ?';
 			$queryParams[] = $object->getPath();
-			$queryParts[] = 'preg = ?';
+			$queryParts[] = '`preg` = ?';
 			$queryParams[] = $object->getPreg();
-			$queryParts[] = 'layout_id = ?';
+			$queryParts[] = '`layout_id` = ?';
 			$queryParams[] = $object->getLayoutId();
-			$queryParts[] = 'status = ?';
+			$queryParts[] = '`status` = ?';
 			$queryParams[] = $object->getStatus()->getId();
-			$queryParts[] = 'modified = ?';
+			$queryParts[] = '`modified` = ?';
 			$queryParams[] = $object->getModified();
 			
 			$whereParts[] = 'id = ?';
@@ -102,7 +102,7 @@
 		/**
 		 * @return Page
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Page::create()->

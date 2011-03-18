@@ -21,12 +21,12 @@
 			$queryParams = array();
 			
 			if (!is_null($object->getName())) {
-				$queryParts[] = 'name = ?';
+				$queryParts[] = '`name` = ?';
 				$queryParams[] = $object->getName();
 			}
 			
 			if (!is_null($object->getSettings())) {
-				$queryParts[] = 'settings = ?';
+				$queryParts[] = '`settings` = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}
 			
@@ -56,9 +56,9 @@
 			$whereParts = array();
 			$queryParams = array();
 			
-			$queryParts[] = 'name = ?';
+			$queryParts[] = '`name` = ?';
 			$queryParams[] = $object->getName();
-			$queryParts[] = 'settings = ?';
+			$queryParts[] = '`settings` = ?';
 			$queryParams[] = serialize($object->getSettings());
 			
 			$whereParts[] = 'id = ?';
@@ -81,7 +81,7 @@
 		/**
 		 * @return Controller
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				Controller::create()->
