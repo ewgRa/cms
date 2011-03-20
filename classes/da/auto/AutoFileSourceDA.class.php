@@ -72,6 +72,25 @@
 		}
 
 		/**
+		 * @return AutoFileSourceDA
+		 */
+		public function delete(FileSource $object)
+		{
+			$dbQuery =
+				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
+			
+			$this->db()->query(
+				\ewgraFramework\DatabaseQuery::create()->setQuery($dbQuery)
+			);
+			 
+			$object->setId(null);
+			
+			$this->dropCache();
+			
+			return $this;
+		}
+
+		/**
 		 * @return FileSource
 		 */
 		public function build(array $array)

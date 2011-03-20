@@ -72,6 +72,25 @@
 		}
 
 		/**
+		 * @return AutoSiteDA
+		 */
+		public function delete(Site $object)
+		{
+			$dbQuery =
+				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
+			
+			$this->db()->query(
+				\ewgraFramework\DatabaseQuery::create()->setQuery($dbQuery)
+			);
+			 
+			$object->setId(null);
+			
+			$this->dropCache();
+			
+			return $this;
+		}
+
+		/**
 		 * @return Site
 		 */
 		public function build(array $array)

@@ -100,6 +100,25 @@
 		}
 
 		/**
+		 * @return AutoPageDA
+		 */
+		public function delete(Page $object)
+		{
+			$dbQuery =
+				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
+			
+			$this->db()->query(
+				\ewgraFramework\DatabaseQuery::create()->setQuery($dbQuery)
+			);
+			 
+			$object->setId(null);
+			
+			$this->dropCache();
+			
+			return $this;
+		}
+
+		/**
 		 * @return Page
 		 */
 		public function build(array $array)

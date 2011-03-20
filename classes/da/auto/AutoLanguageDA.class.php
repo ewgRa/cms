@@ -72,6 +72,25 @@
 		}
 
 		/**
+		 * @return AutoLanguageDA
+		 */
+		public function delete(Language $object)
+		{
+			$dbQuery =
+				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
+			
+			$this->db()->query(
+				\ewgraFramework\DatabaseQuery::create()->setQuery($dbQuery)
+			);
+			 
+			$object->setId(null);
+			
+			$this->dropCache();
+			
+			return $this;
+		}
+
+		/**
 		 * @return Language
 		 */
 		public function build(array $array)
