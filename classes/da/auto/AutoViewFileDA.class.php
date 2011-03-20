@@ -102,7 +102,7 @@
 				setId($array['id'])->
 				setContentType(\ewgraFramework\ContentType::create($array['content_type']))->
 				setPath($array['path'])->
-				setJoinable($array['joinable'] == true)->
+				setJoinable($array['joinable'] == null ? null : $array['joinable'] == true)->
 				setSourceId($array['source_id']);
 		}
 

@@ -108,7 +108,7 @@
 				Page::create()->
 				setId($array['id'])->
 				setPath($array['path'])->
-				setPreg($array['preg'] == true)->
+				setPreg($array['preg'] == null ? null : $array['preg'] == true)->
 				setLayoutId($array['layout_id'])->
 				setStatus(PageStatus::create($array['status']))->
 				setModified($array['modified']);
