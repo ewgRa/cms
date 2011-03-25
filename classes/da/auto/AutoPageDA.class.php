@@ -35,6 +35,11 @@
 				$queryParams[] = $object->getLayoutId();
 			}
 			
+			if (!is_null($object->getLayoutSettings())) {
+				$queryParts[] = '`layout_settings` = ?';
+				$queryParams[] = serialize($object->getLayoutSettings());
+			}
+			
 			if (!is_null($object->getStatus())) {
 				$queryParts[] = '`status` = ?';
 				$queryParams[] = $object->getStatus()->getId();
@@ -77,6 +82,8 @@
 			$queryParams[] = $object->getPreg();
 			$queryParts[] = '`layout_id` = ?';
 			$queryParams[] = $object->getLayoutId();
+			$queryParts[] = '`layout_settings` = ?';
+			$queryParams[] = serialize($object->getLayoutSettings());
 			$queryParts[] = '`status` = ?';
 			$queryParams[] = $object->getStatus()->getId();
 			$queryParts[] = '`modified` = ?';
@@ -118,6 +125,24 @@
 			return $this;
 		}
 
+		public function getById($id)
+		{
+			return $this->getCachedByQuery(
+				\ewgraFramework\DatabaseQuery::create()->
+				setQuery('SELECT * FROM '.$this->getTable().' WHERE id = ?')->
+				setValues(array($id))
+			);
+		}
+		
+		public function getByIds(array $ids)
+		{
+			return $this->getListCachedByQuery(
+				\ewgraFramework\DatabaseQuery::create()->
+				setQuery('SELECT * FROM '.$this->getTable().' WHERE id IN(?)')->
+				setValues(array($ids))
+			);
+		}
+		
 		/**
 		 * @return Page
 		 */
@@ -129,6 +154,7 @@
 				setPath($array['path'])->
 				setPreg($array['preg'] == null ? null : $array['preg'] == true)->
 				setLayoutId($array['layout_id'])->
+				setLayoutSettings($array['layout_settings'] ? unserialize($array['layout_settings']) : null)->
 				setStatus(PageStatus::create($array['status']))->
 				setModified($array['modified']);
 		}

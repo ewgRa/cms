@@ -7,6 +7,8 @@
 	*/
 	final class PageControllersDispatcher extends \ewgraFramework\ChainController
 	{
+		const DATA_KEY = 'data';
+		
 		/**
 		 * @return \ewgraFramework\ModelAndView
 		 */
@@ -40,6 +42,7 @@
 				
 				$proxyOut = new ProxyOutPageController($lastController->getInner());
 				$proxyOut->setMav($mav);
+				$proxyOut->setModelKey(self::DATA_KEY);
 				$proxyOut->setPageController($pageController);
 				
 				$controllerInstance = new $controllerName($proxyOut);
@@ -50,7 +53,7 @@
 
 				$lastController->setInner($proxyIn);
 
-				$lastController = 
+				$lastController =
 					$proxyOut->getInner()
 						? $proxyOut->getInner()
 						: $proxyOut;

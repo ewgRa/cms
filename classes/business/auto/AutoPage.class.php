@@ -26,6 +26,11 @@
 		private $layout = null;
 		
 		/**
+		 * @var array
+		 */
+		private $layoutSettings = null;
+		
+		/**
 		 * @var PageStatus
 		 */
 		private $status = null;
@@ -130,6 +135,24 @@
 				$this->layout = Layout::da()->getById($this->getLayoutId());
 				
 			return $this->layout;
+		}
+		
+		/**
+		 * @return AutoPage
+		 */
+		public function setLayoutSettings(array $layoutSettings = null)
+		{
+			$this->layoutSettings = $layoutSettings;
+
+			return $this;
+		}
+		
+		/**
+		 * @return array
+		 */
+		public function getLayoutSettings()
+		{
+			return $this->layoutSettings;
 		}
 		
 		/**

@@ -58,6 +58,8 @@
 			
 			$mav->setView($page->getLayout()->getViewFile()->createView());
 			
+			$mav->getModel()->set('layoutSettings', $page->getLayoutSettings());
+			
 			$baseUrl = \ewgraFramework\HttpUrl::create()->setPath('');
 			
 			if (

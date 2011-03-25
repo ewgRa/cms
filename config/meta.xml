@@ -36,6 +36,7 @@
 			<path />
 			<preg type="boolean" nullable="true" />
 			<layout class="Layout" />
+			<layoutSettings type="array" nullable="true" />
 			<status class="PageStatus" />
 			<modified />
 		</properties>
