@@ -81,7 +81,7 @@
 		 */
 		public function setPreg($preg = true)
 		{
-			$this->preg = ($preg === true);
+			$this->preg = ($preg === null ? null : ($preg === true));
 
 			return $this;
 		}

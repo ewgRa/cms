@@ -85,16 +85,46 @@
 			$queryParams[] = $object->getPageId();
 			$queryParts[] = '`controller_id` = ?';
 			$queryParams[] = $object->getControllerId();
-			$queryParts[] = '`section` = ?';
-			$queryParams[] = $object->getSection();
-			$queryParts[] = '`position` = ?';
-			$queryParams[] = $object->getPosition();
-			$queryParts[] = '`priority` = ?';
-			$queryParams[] = $object->getPriority();
-			$queryParts[] = '`settings` = ?';
-			$queryParams[] = serialize($object->getSettings());
-			$queryParts[] = '`view_file_id` = ?';
-			$queryParams[] = $object->getViewFileId();
+			
+			if ($object->getSection() === null)
+				$queryParts[] = '`section` = NULL';
+			else {
+				$queryParts[] = '`section` = ?';
+				$queryParams[] = $object->getSection();
+			}
+			
+			
+			if ($object->getPosition() === null)
+				$queryParts[] = '`position` = NULL';
+			else {
+				$queryParts[] = '`position` = ?';
+				$queryParams[] = $object->getPosition();
+			}
+			
+			
+			if ($object->getPriority() === null)
+				$queryParts[] = '`priority` = NULL';
+			else {
+				$queryParts[] = '`priority` = ?';
+				$queryParams[] = $object->getPriority();
+			}
+			
+			
+			if ($object->getSettings() === null)
+				$queryParts[] = '`settings` = NULL';
+			else {
+				$queryParts[] = '`settings` = ?';
+				$queryParams[] = serialize($object->getSettings());
+			}
+			
+			
+			if ($object->getViewFileId() === null)
+				$queryParts[] = '`view_file_id` = NULL';
+			else {
+				$queryParts[] = '`view_file_id` = ?';
+				$queryParams[] = $object->getViewFileId();
+			}
+			
 			
 			$whereParts[] = 'id = ?';
 			$queryParams[] = $object->getId();

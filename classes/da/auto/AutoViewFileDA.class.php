@@ -70,8 +70,14 @@
 			$queryParams[] = $object->getContentType()->getId();
 			$queryParts[] = '`path` = ?';
 			$queryParams[] = $object->getPath();
-			$queryParts[] = '`joinable` = ?';
-			$queryParams[] = $object->getJoinable();
+			
+			if ($object->getJoinable() === null)
+				$queryParts[] = '`joinable` = NULL';
+			else {
+				$queryParts[] = '`joinable` = ?';
+				$queryParams[] = $object->getJoinable();
+			}
+			
 			$queryParts[] = '`source_id` = ?';
 			$queryParams[] = $object->getSourceId();
 			

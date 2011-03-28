@@ -58,8 +58,14 @@
 			
 			$queryParts[] = '`name` = ?';
 			$queryParams[] = $object->getName();
-			$queryParts[] = '`settings` = ?';
-			$queryParams[] = serialize($object->getSettings());
+			
+			if ($object->getSettings() === null)
+				$queryParts[] = '`settings` = NULL';
+			else {
+				$queryParts[] = '`settings` = ?';
+				$queryParams[] = serialize($object->getSettings());
+			}
+			
 			
 			$whereParts[] = 'id = ?';
 			$queryParams[] = $object->getId();

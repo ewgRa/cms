@@ -78,12 +78,24 @@
 			
 			$queryParts[] = '`path` = ?';
 			$queryParams[] = $object->getPath();
-			$queryParts[] = '`preg` = ?';
-			$queryParams[] = $object->getPreg();
+			
+			if ($object->getPreg() === null)
+				$queryParts[] = '`preg` = NULL';
+			else {
+				$queryParts[] = '`preg` = ?';
+				$queryParams[] = $object->getPreg();
+			}
+			
 			$queryParts[] = '`layout_id` = ?';
 			$queryParams[] = $object->getLayoutId();
-			$queryParts[] = '`layout_settings` = ?';
-			$queryParams[] = serialize($object->getLayoutSettings());
+			
+			if ($object->getLayoutSettings() === null)
+				$queryParts[] = '`layout_settings` = NULL';
+			else {
+				$queryParts[] = '`layout_settings` = ?';
+				$queryParams[] = serialize($object->getLayoutSettings());
+			}
+			
 			$queryParts[] = '`status` = ?';
 			$queryParams[] = $object->getStatus()->getId();
 			$queryParts[] = '`modified` = ?';

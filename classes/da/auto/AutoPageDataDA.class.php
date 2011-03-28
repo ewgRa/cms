@@ -75,12 +75,30 @@
 			$queryParams[] = $object->getPageId();
 			$queryParts[] = '`language_id` = ?';
 			$queryParams[] = $object->getLanguageId();
-			$queryParts[] = '`title` = ?';
-			$queryParams[] = $object->getTitle();
-			$queryParts[] = '`description` = ?';
-			$queryParams[] = $object->getDescription();
-			$queryParts[] = '`keywords` = ?';
-			$queryParams[] = $object->getKeywords();
+			
+			if ($object->getTitle() === null)
+				$queryParts[] = '`title` = NULL';
+			else {
+				$queryParts[] = '`title` = ?';
+				$queryParams[] = $object->getTitle();
+			}
+			
+			
+			if ($object->getDescription() === null)
+				$queryParts[] = '`description` = NULL';
+			else {
+				$queryParts[] = '`description` = ?';
+				$queryParams[] = $object->getDescription();
+			}
+			
+			
+			if ($object->getKeywords() === null)
+				$queryParts[] = '`keywords` = NULL';
+			else {
+				$queryParts[] = '`keywords` = ?';
+				$queryParams[] = $object->getKeywords();
+			}
+			
 			
 			$whereParts[] = 'id = ?';
 			$queryParams[] = $object->getId();

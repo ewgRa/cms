@@ -92,7 +92,7 @@
 		 */
 		public function setJoinable($joinable = true)
 		{
-			$this->joinable = ($joinable === true);
+			$this->joinable = ($joinable === null ? null : ($joinable === true));
 
 			return $this;
 		}
