@@ -21,17 +21,17 @@
 						getAttachedVar(AttachedAliases::LOCALIZER)->
 						getRequestLanguage()
 				);
-			
+
 			if (!$pageData)
 				$pageData = PageData::create();
-					
+
 			$this->replaceData($pageData);
-			
+
 			$mav->getModel()->set('pageData', $pageData);
-			
+
 			return parent::handleRequest($request, $mav);
 		}
-		
+
 		private function replaceData(PageData $pageData)
 		{
 			$outerController = $this;
@@ -40,7 +40,7 @@
 				if ($outerController instanceof PageHeadReplacerInterface)
 					$outerController->replacePageData($pageData);
 			}
-			
+
 			return $this;
 		}
 	}

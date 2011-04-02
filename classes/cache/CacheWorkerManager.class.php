@@ -8,9 +8,9 @@
 	final class CacheWorkerManager extends \ewgraFramework\Singleton
 	{
 		private $default = null;
-		
+
 		private $requesterMap = null;
-		
+
 		/**
 		 * @return CacheWorkerManager
 		 */
@@ -18,31 +18,31 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
+
 		public function setDefault(CacheWorkerInterface $cacheWorker)
 		{
 			$this->default = $cacheWorker;
 			return $this;
 		}
-		
+
 		public function getDefault()
 		{
 			\ewgraFramework\Assert::isNotNull(
-				$this->default, 
+				$this->default,
 				'you must define default cache worker'
 			);
-			
-			return $this->default;	
+
+			return $this->default;
 		}
-		
+
 		public function addRequesterMap(
-			DatabaseRequester $requester, 
+			DatabaseRequester $requester,
 			CacheWorkerInterface $cacheWorker
 		) {
 			$this->requester[get_class($requester)] = $cacheWorker;
 			return $this;
 		}
-		
+
 		public function getFor(DatabaseRequester $requester)
 		{
 			if (isset($this->requesterMap[get_class($requester)]))
@@ -50,5 +50,5 @@
 
 			return null;
 		}
-	}	
+	}
 ?>

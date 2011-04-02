@@ -8,7 +8,7 @@
 	final class PageControllersDispatcher extends \ewgraFramework\ChainController
 	{
 		const DATA_KEY = 'data';
-		
+
 		/**
 		 * @return \ewgraFramework\ModelAndView
 		 */
@@ -22,7 +22,7 @@
 				PageController::da()->getByPage($page),
 				$mav
 			);
-					
+
 			return parent::handleRequest($request, $mav);
 		}
 
@@ -34,19 +34,19 @@
 			\ewgraFramework\ModelAndView $mav
 		) {
 			$lastController = $this;
-			
+
 			foreach ($pageControllers as $pageController) {
 				$controller = $pageController->getController();
-				
+
 				$controllerName = $controller->getName();
-				
+
 				$proxyOut = new ProxyOutPageController($lastController->getInner());
 				$proxyOut->setMav($mav);
 				$proxyOut->setModelKey(self::DATA_KEY);
 				$proxyOut->setPageController($pageController);
-				
+
 				$controllerInstance = new $controllerName($proxyOut);
-				
+
 				$proxyIn = new ProxyInPageController($controllerInstance);
 				$proxyMav = \ewgraFramework\ModelAndView::create();
 				$proxyIn->setMav($proxyMav);
@@ -59,7 +59,7 @@
 						: $proxyOut;
 
 				$settings = $controller->getSettings();
-				
+
 				if ($pageController->getSettings()) {
 					if ($settings) {
 						$settings = array_merge(
@@ -81,7 +81,7 @@
 					$proxyMav->setView(\ewgraFramework\NullTransformView::create());
 				}
 			}
-			
+
 			return $this;
 		}
 	}

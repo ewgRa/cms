@@ -14,16 +14,16 @@
 		{
 			return new self;
 		}
-		
+
 		protected function getLanguageAbbr(\ewgraFramework\HttpUrl $url)
 		{
 			$result = null;
-			
+
 			$parts = explode('/', $url->getPath());
 
 			if (count($parts) > 2)
 				$result = $parts[1];
-			
+
 			return $result;
 		}
 
@@ -54,7 +54,7 @@
 					)
 				);
 			}
-			
+
 			return $url;
 		}
 	}

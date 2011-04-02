@@ -8,7 +8,7 @@
 	final class Config extends \ewgraFramework\Singleton
 	{
 		private $options = null;
-		
+
 		/**
 		 * @return Config
 		 */
@@ -16,7 +16,7 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
+
 		/**
 		 * @return Config
 		 */
@@ -32,7 +32,7 @@
 
 			if (isset($this->options[$alias]))
 				$result = $this->options[$alias];
-			
+
 			return $result;
 		}
 	}

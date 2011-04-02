@@ -8,7 +8,7 @@
 	final class DefinePageController extends \ewgraFramework\ChainController
 	{
 		private $observerManager = null;
-		
+
 		/**
 		 * @return DefinePageControllerObserverManager
 		 */
@@ -24,10 +24,10 @@
 		{
 			$this->observerManager =
 				DefinePageControllerObserverManager::create($this);
-				
+
 			return parent::__construct($controller);
 		}
-		
+
 		/**
 		 * @return \ewgraFramework\ModelAndView
 		 */
@@ -36,32 +36,32 @@
 			\ewgraFramework\ModelAndView $mav
 		) {
 			$localizer = $request->getAttachedVar(AttachedAliases::LOCALIZER);
-			
+
 			$clearPath =
 				$localizer->
 					removeLanguageFromUrl($request->getUrl())->
 					getPath();
 
 			$page = PagePathMapper::create()->loadMap()->getPageByPath($clearPath);
-			
+
 			if (!$page)
 				throw PageNotFoundException::create();
 
 			$this->getObserverManager()->notifyPageDefined($page);
-			
+
 			$user =
 				$request->hasAttachedVar(AttachedAliases::USER)
 					? $request->getAttachedVar(AttachedAliases::USER)
 					: null;
-			
+
 			$request->setAttachedVar(AttachedAliases::PAGE, $page);
-			
+
 			$mav->setView($page->getLayout()->getViewFile()->createView());
-			
+
 			$mav->getModel()->set('layoutSettings', $page->getLayoutSettings());
-			
+
 			$baseUrl = \ewgraFramework\HttpUrl::create()->setPath('');
-			
+
 			if (
 				$localizer->getSource()->isLanguageInUrl()
 				&& $localizer->getSource()->getId()
@@ -72,7 +72,7 @@
 					.$baseUrl->getPath()
 				);
 			}
-			
+
 			$request->setAttachedVar(AttachedAliases::BASE_URL, $baseUrl);
 
 			if (!$request->hasAttachedVar(AttachedAliases::PAGE_HEADER)) {

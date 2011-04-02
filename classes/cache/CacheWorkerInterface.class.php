@@ -16,22 +16,22 @@
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
 		);
-		
+
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
 		);
-		
+
 		public function getCustomListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
 		);
-		
+
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
 		);
-		
+
 		/**
 		 * @return CacheWorkerInterface
 		 */
@@ -39,10 +39,10 @@
 			\ewgraFramework\CacheTicket $cacheTicket,
 			CacheableRequesterInterface $requester
 		);
-		
+
 		/**
 		 * @return CacheWorkerInterface
 		 */
 		public function dropCache(CacheableRequesterInterface $requester);
-	}	
+	}
 ?>

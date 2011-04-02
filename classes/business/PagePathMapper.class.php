@@ -29,13 +29,13 @@
 				self::NON_PREG => array(),
 				self::PREG => array()
 			);
-			
+
 			foreach (Page::da()->getList() as $page)
 				$this->map[$page->isPreg()][$page->getId()] = $page;
-			
+
 			return $this;
 		}
-		
+
 		public function getPageByPath($path)
 		{
 			$result = null;
@@ -46,7 +46,7 @@
 					break;
 				}
 			}
-			
+
 			if (!$result) {
 				foreach ($this->map[self::PREG] as $page) {
 					if (preg_match('@' . $page->getPath() . '@', $path)) {
@@ -55,7 +55,7 @@
 					}
 				}
 			}
-			
+
 			return $result;
 		}
 	}

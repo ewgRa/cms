@@ -11,14 +11,14 @@
 		const COOKIE  		 = 2;
 		const URL 	  		 = 3;
 		const URL_AND_COOKIE = 4;
-				
+
 		protected $names = array(
 			self::DEFAULT_SOURCE	=> 'default',
 			self::COOKIE		 	=> 'cookie',
 			self::URL				=> 'url',
 			self::URL_AND_COOKIE	=> 'urlAndCookie'
 		);
-		
+
 		/**
 		 * @return LocalizerLanguageSource
 		 */
@@ -26,7 +26,7 @@
 		{
 			return new self($id);
 		}
-		
+
 		/**
 		 * @return LocalizerLanguageSource
 		 */
@@ -34,7 +34,7 @@
 		{
 			return self::defaultSource();
 		}
-		
+
 		/**
 		 * @return LocalizerLanguageSource
 		 */

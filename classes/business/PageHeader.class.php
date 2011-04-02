@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraCms;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,7 +8,7 @@
 	final class PageHeader
 	{
 		private $headers = array();
-		
+
 		/**
 		 * @return PageHeader
 		 */
@@ -16,12 +16,12 @@
 		{
 			return new self;
 		}
-		
+
 		public function getHeaders()
 		{
 			return $this->headers;
 		}
-		
+
 		/**
 		 * @return PageHeader
 		 */
@@ -30,7 +30,7 @@
 			$this->headers[$alias] = $value;
 			return $this;
 		}
-		
+
 		/**
 		 * @return PageHeader
 		 */
@@ -41,7 +41,7 @@
 
 			return $this;
 		}
-		
+
 		public function addRedirect(\ewgraFramework\HttpUrl $url) {
 			$this->add('Location', (string)$url);
 			return $this;

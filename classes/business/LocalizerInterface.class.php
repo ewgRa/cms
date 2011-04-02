@@ -8,17 +8,17 @@
 	interface LocalizerInterface
 	{
 		public static function create();
-		
+
 		/**
 		 * @return Localizer
 		 */
 		public function selectDefaultLanguage($languageAbbr);
-		
+
 		/**
 		 * @return Localizer
 		 */
 		public function setCookieLanguage(Language $language);
-		
+
 		/**
 		 * @return Localizer
 		 */
@@ -28,7 +28,7 @@
 		 * @return Language
 		 */
 		public function getRequestLanguage();
-		
+
 		/**
 		 * @return \ewgraFramework\HttpUrl
 		 */

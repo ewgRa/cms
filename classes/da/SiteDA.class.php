@@ -15,7 +15,7 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
+
 		/**
 		 * @return Site
 		 */

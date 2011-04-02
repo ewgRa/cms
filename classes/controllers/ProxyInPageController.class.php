@@ -17,7 +17,7 @@
 			$this->mav = $mav;
 			return $this;
 		}
-		
+
 		/**
 		 * @return \ewgraFramework\ModelAndView
 		 */

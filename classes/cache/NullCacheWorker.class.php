@@ -8,7 +8,7 @@
 	final class NullCacheWorker extends \ewgraFramework\Singleton implements CacheWorkerInterface
 	{
 		private $cacheInstance = null;
-		
+
 		/**
 		 * @return NullCacheWorker
 		 */
@@ -17,7 +17,7 @@
 			parent::__construct();
 			$this->cacheInstance = \ewgraFramework\NullCache::create();
 		}
-		
+
 		/**
 		 * @return NullCacheWorker
 		 */
@@ -25,13 +25,13 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
 		public function createTicket(CacheableRequesterInterface $requester)
 		{
-			return 
+			return
 				\ewgraFramework\CacheTicket::create()->
 				setCacheInstance($this->cacheInstance);
 		}
@@ -43,7 +43,7 @@
 		{
 			return $requester->getByQuery($dbQuery);
 		}
-		
+
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
@@ -51,7 +51,7 @@
 		{
 			return $requester->getListByQuery($dbQuery);
 		}
-		
+
 		/**
 		 * @return NullCacheWorker
 		 */
@@ -62,7 +62,7 @@
 		{
 			return $this;
 		}
-		
+
 		/**
 		 * @return NullCacheWorker
 		 */
@@ -70,5 +70,5 @@
 		{
 			return $this;
 		}
-	}	
+	}
 ?>

@@ -31,14 +31,14 @@
 					ON(t3.id = t2.view_file_id)
 				WHERE t1.id = ?
 			";
-			
+
 			return $this->getListCachedByQuery(
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->
 				setValues(array($page->getId(), $page->getId()))
 			);
 		}
-		
+
 		public function getInheritanceByIds(array $ids)
 		{
 			$dbQuery = "
@@ -48,7 +48,7 @@
 				WHERE t2.view_file_id IN (?)
 				ORDER BY position
 			";
-			
+
 			return $this->getListCachedByQuery(
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->

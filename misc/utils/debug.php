@@ -8,48 +8,48 @@
 			setGet($_GET)->
 			setCookie($_COOKIE)->
 			setServer($_SERVER);
-				
+
 		$request->setAttachedVar(
 			\ewgraCms\AttachedAliases::PAGE_HEADER,
 			\ewgraCms\PageHeader::create()
 		);
 
 		$databasePool = \ewgraFramework\Database::me()->getPool(PROJECT);
-		
+
 		\ewgraFramework\Singleton::dropInstance('ewgraCms\Debug');
-		
+
 		\ewgraFramework\Session::me()->relativeStart();
-		
+
 		if (!\ewgraFramework\Session::me()->isStarted() && isset($_GET['startSession'])) {
 			\ewgraFramework\Session::me()->start();
-			
+
 			if (!\ewgraFramework\Session::me()->has('enableDebug')) {
 				\ewgraFramework\Session::me()->
 					set('enableDebug', true)->
 					save();
 			}
-			
+
 			if (!isset($_COOKIE['enableDebug']))
 				\ewgraFramework\CookieManager::me()->setCookie('enableDebug', true);
 		}
-		
+
 		if(!\ewgraFramework\Session::me()->isStarted())
 			die('no session started');
-		
+
 		$controller =
-			new \ewgraCmsModules\UserController( 
+			new \ewgraCmsModules\UserController(
 				\ewgraCmsModules\Auth401Controller::create(
 					\ewgraCmsModules\UserRight401Controller::create()->
 					setRequiredRightAliases(array('root'))
 				)->
 				setRequestAction('login')
 			);
-		
+
 		$modelAndView = $controller->handleRequest(
 			$request,
 			\ewgraFramework\ModelAndView::create()
 		);
-		
+
 		return $modelAndView->render();
 
 		// FIXME: what next?
@@ -66,24 +66,24 @@
 			setQuery($dbQuery)->
 			setValues(array(Session::me()->getId()))
 		);
-		
+
 		$dbRow = $dbResult->fetchRow();
 
 		$dbResult =
 			$databasePool->query(
 				DatabaseQuery::create()->setQuery('SELECT FOUND_ROWS() as cnt')
 			);
-		
+
 		$dbRowCount = $dbResult->fetchRow();
-		
+
 		$debugItems = unserialize($dbRow['data']);
 		$model = Model::create();
-		
+
 		if ($debugItems) {
 			var_dump($debugItems);die;
 			foreach ($debugItems as $item) {
 				$data = $item->getData();
-				
+
 				switch ($item->getType()) {
 					case CmsDebugItem::PAGE:
 						$data = array(
@@ -91,9 +91,9 @@
 							'id' => $data->getId(),
 							'layoutId' => $data->getLayoutId()
 						);
-					
+
 					break;
-					
+
 					case DebugItem::CACHE:
 						$data = array(
 							'prefix' => $data->getPrefix(),
@@ -111,7 +111,7 @@
 						);
 					break;
 				}
-				
+
 				$model->append(
 					array(
 						'type' 		=> $item->getType(),
@@ -122,23 +122,23 @@
 				);
 			}
 		}
-		
+
 		$model->set('countItems', $dbRowCount['cnt']);
-		
+
 		$model->set('pointer', $pointer);
-		
+
 		$layout =
 			File::create()->setPath(CMS_DIR . '/view/xsl/backend/debug.xsl');
-		
+
 		$view = XsltView::create()->loadLayout($layout);
-		
+
 		if ($charset = Config::me()->getOption('charset'))
 			$view->setCharset($charset);
-		
+
 		$modelAndView = ModelAndView::create()->
 			setModel($model)->
 			setView($view);
-			
+
 		return $modelAndView->render();
 	}
 ?>

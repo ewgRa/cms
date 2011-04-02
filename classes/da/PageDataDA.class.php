@@ -25,14 +25,14 @@
 				SELECT * FROM " . $this->getTable() . "
 				WHERE page_id = ? AND language_id = ?
 			";
-			
+
 			return $this->getCachedByQuery(
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->
 				setValues(array($page->getId(), $language->getId()))
 			);
 		}
-		
+
 		public function getList(
 			array $pageList = null,
 			array $languageList = null
@@ -41,19 +41,19 @@
 
 			$queryParts = array('1');
 			$params = array();
-			
+
 			if ($pageList) {
 				$params[] = \ewgraFramework\ArrayUtils::getObjectIds($pageList);
 				$queryParts[] = 'page_id IN(?)';
 			}
-			
+
 			if ($languageList) {
 				$params[] = \ewgraFramework\ArrayUtils::getObjectIds($languageList);
 				$queryParts[] = 'language_id IN(?)';
 			}
-			
+
 			$dbQuery .= ' WHERE '.join(' AND ', $queryParts);
-			
+
 			return $this->getListCachedByQuery(
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->

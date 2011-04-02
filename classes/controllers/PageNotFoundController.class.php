@@ -17,7 +17,7 @@
 			$request->
 				getAttachedVar(AttachedAliases::PAGE_HEADER)->
 				add($request->getServerVar('SERVER_PROTOCOL').' 404 Not Found');
-			
+
 			return parent::handleRequest($request, $mav);
 		}
 	}

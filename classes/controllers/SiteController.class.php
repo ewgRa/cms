@@ -16,7 +16,7 @@
 		{
 			return new self($controller);
 		}
-		
+
 		/**
 		 * @return SiteController
 		 */
@@ -30,7 +30,7 @@
 		{
 			return $this->siteAlias;
 		}
-		
+
 		/**
 		 * @return \ewgraFramework\ModelAndView
 		 */
@@ -39,12 +39,12 @@
 			\ewgraFramework\ModelAndView $mav
 		) {
 			\ewgraFramework\Assert::isNotNull($this->getSiteAlias());
-			
+
 			$request->setAttachedVar(
 				AttachedAliases::SITE,
 				Site::da()->getByAlias($this->getSiteAlias())
 			);
-			
+
 			return parent::handleRequest($request, $mav);
 		}
 	}

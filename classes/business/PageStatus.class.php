@@ -9,12 +9,12 @@
 	{
 		const NORMAL	= 1;
 		const DELETED	= 2;
-		
+
 		protected $names = array(
 			self::NORMAL 	=> 'normal',
 			self::DELETED 	=> 'deleted'
 		);
-		
+
 		/**
 		 * @return PageStatus
 		 */
@@ -22,7 +22,7 @@
 		{
 			return new self($id);
 		}
-		
+
 		/**
 		 * @return PageStatus
 		 */
@@ -30,7 +30,7 @@
 		{
 			return self::normal();
 		}
-		
+
 		/**
 		 * @return PageStatus
 		 */

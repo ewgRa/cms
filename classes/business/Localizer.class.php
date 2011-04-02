@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraCms;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -11,21 +11,21 @@
 		 * @var Language
 		 */
 		private $requestLanguage = null;
-		
+
 		private $languages 		 = null;
-		
+
 		/**
 		 * @var Language
 		 */
 		private $cookieLanguage  = null;
-		
+
 		/**
 		 * @return LocalizerLanguageSource
 		 */
 		private $source = null;
-		
+
 		abstract protected function getLanguageAbbr(\ewgraFramework\HttpUrl $url);
-				
+
 		/**
 		 * @return Language
 		 */
@@ -33,7 +33,7 @@
 		{
 			return $this->requestLanguage;
 		}
-		
+
 		/**
 		 * @return Localizer
 		 */
@@ -50,7 +50,7 @@
 		{
 			return $this->source;
 		}
-		
+
 		/**
 		 * @return Localizer
 		 */
@@ -59,12 +59,12 @@
 			$this->source = $source;
 			return $this;
 		}
-		
+
 		public function getLanguages()
 		{
 			return $this->languages;
 		}
-		
+
 		/**
 		 * @return Localizer
 		 */
@@ -73,7 +73,7 @@
 			$this->languages = $languages;
 			return $this;
 		}
-		
+
 		/**
 		 * @return Localizer
 		 */
@@ -82,7 +82,7 @@
 			$this->cookieLanguage = $language;
 			return $this;
 		}
-		
+
 		/**
 		 * @return Localizer
 		 */
@@ -119,7 +119,7 @@
 		public function selectDefaultLanguage($languageAbbr)
 		{
 			$language = null;
-			
+
 			if ($this->getLanguages()) {
 				foreach ($this->getLanguages() as $oneLanguage) {
 					if ($oneLanguage->getAbbr() == $languageAbbr) {
@@ -138,7 +138,7 @@
 					.'"'.$languageAbbr.'"'
 				);
 			}
-			
+
 			return $this;
 		}
 	}

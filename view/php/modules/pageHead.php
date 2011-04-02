@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraCms;
-	
+
 	if ($pageData->getTitle()) {
 ?>
 	<title><?=htmlspecialchars($pageData->getTitle())?></title>

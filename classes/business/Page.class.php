@@ -15,7 +15,7 @@
 		{
 			return new self;
 		}
-		
+
 		public function getUrlMatches(\ewgraFramework\HttpUrl $url)
 		{
 			preg_match(
@@ -26,7 +26,7 @@
 
 			return $matches;
 		}
-		
+
 		public function getData(Language $language)
 		{
 			return PageData::da()->get($this, $language);

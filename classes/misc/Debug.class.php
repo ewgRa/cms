@@ -8,11 +8,11 @@
 	final class Debug extends \ewgraFramework\Singleton
 	{
 		private $hash = null;
-		
+
 		private $enabled = null;
-		
+
 		private $items	 = array();
-		
+
 		/**
 		 * @return Debug
 		 */
@@ -25,18 +25,18 @@
 		{
 			foreach ($trace as $key => &$oneTrace) {
 				$resultTrace = '#'.$key.' ';
-				
+
 				if (isset($oneTrace['class']))
 					$resultTrace .= $oneTrace['class'].$oneTrace['type'];
-				
+
 				$resultTrace .= $oneTrace['function'].'(';
-				
+
 				if ($oneTrace['args']) {
 					$args = array();
-					
+
 					foreach ($oneTrace['args'] as $arg) {
 						$type = gettype($arg);
-						
+
 						switch ($type) {
 							case 'object':
 								$args[] = get_class($arg);
@@ -46,21 +46,21 @@
 								break;
 						}
 					}
-					
+
 					$resultTrace .= join(', ', $args);
 				}
-				
+
 				$resultTrace .= ')';
-				
+
 				if (isset($oneTrace['file']))
 					$resultTrace .= ' called at ['.$oneTrace['file'].':'.$oneTrace['line'].']';
-				
+
 				$oneTrace = $resultTrace;
 			}
-			
-			return $trace; 		
+
+			return $trace;
 		}
-		
+
 		/**
 		 * @return Debug
 		 */
@@ -76,7 +76,7 @@
 				)
 			)
 				$this->enable();
-			
+
 			return $this;
 		}
 		/**
@@ -87,7 +87,7 @@
 			$this->enabled = true;
 			return $this;
 		}
-		
+
 		/**
 		 * @return Debug
 		 */
@@ -96,12 +96,12 @@
 			$this->enabled = null;
 			return $this;
 		}
-		
+
 		public function isEnabled()
 		{
 			return $this->enabled;
 		}
-		
+
 		/**
 		 * @return Debug
 		 */
@@ -110,7 +110,7 @@
 			$this->items[] = $item;
 			return $this;
 		}
-		
+
 		public function getItems()
 		{
 			return $this->items;
@@ -146,29 +146,29 @@
 					)
 				)
 			);
-			
+
 			return $this;
 		}
-		
+
 		public function getHash()
 		{
 			if (!$this->hash)
 				$this->hash = md5(microtime().' '.rand(0, 1000000));
-			
+
 			return $this->hash;
 		}
-		
+
 		public function getAsXml()
 		{
 			$domDocument = \ewgraFramework\ExtendedDomDocument::create();
-			
+
 			foreach ($this->getItems() as $item) {
 				$domDocument->appendChild(
 					$domDocument->createNodeFromVar($item->getData(), $item->getAlias())
-				); 
+				);
 			}
-			
+
 			return $domDocument->saveXml();
-		} 
+		}
 	}
 ?>

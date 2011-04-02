@@ -8,9 +8,9 @@
 	final class DefinePageControllerObserverManager extends \ewgraFramework\Observable
 	{
 		const PAGE_DEFINED_EVENT = 1;
-		
+
 		private $controller = null;
-		
+
 		/**
 		 * @return DefinePageControllerObserverManager
 		 */
@@ -18,7 +18,7 @@
 		{
 			return new self($controller);
 		}
-		
+
 		/**
 		 * @return DefinePageControllerObserverManager
 		 */
@@ -26,7 +26,7 @@
 		{
 			$this->controller = $controller;
 		}
-		
+
 		/**
 		 * @return DefinePageControllerObserverManager
 		 */
@@ -37,7 +37,7 @@
 				\ewgraFramework\Model::create()->
 				set('page', $page)
 			);
-			
+
 			return $this;
 		}
 	}

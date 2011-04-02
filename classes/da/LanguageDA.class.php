@@ -24,7 +24,7 @@
 				setValues(array($id))
 			);
 		}
-		
+
 		public function getList()
 		{
 			return

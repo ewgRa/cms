@@ -8,7 +8,7 @@
 	final class DebugController extends \ewgraFramework\ChainController
 	{
 		private $alreadySubscribed = false;
-		
+
 		/**
 		 * @return \ewgraFramework\ModelAndView
 		 */
@@ -18,59 +18,59 @@
 		) {
 			if ($this->alreadySubscribed)
 				return parent::handleRequest($request, $mav);
-			
+
 			$this->alreadySubscribed = true;
-			
+
 			$innerController = $this;
-			
+
 			while ($innerController = $innerController->getInner()) {
 				if ($innerController instanceof DefinePageController) {
 					$innerController->
 						getObserverManager()->
 						addObserver(
 							DefinePageControllerObserverManager::PAGE_DEFINED_EVENT,
-							array($this, 'pageDefined') 
+							array($this, 'pageDefined')
 						);
 				}
 			}
 
 			$hashes = array();
-			
+
 			foreach (\ewgraFramework\Database::me()->getPools() as $pool) {
 				foreach ($hashes as $hash) {
 					if ($pool->hasObserver($hash))
 						continue 2;
 				}
-				
-				$hashes[] = 
+
+				$hashes[] =
 					$pool->addObserver(
-						\ewgraFramework\BaseDatabase::QUERY_EVENT, 
+						\ewgraFramework\BaseDatabase::QUERY_EVENT,
 						array($this, 'databaseQuery')
 					);
 			}
-			
-			$hashes = array(); 
-			
+
+			$hashes = array();
+
 			foreach (\ewgraFramework\Cache::me()->getPools() as $pool) {
 				foreach ($hashes as $hash) {
 					if ($pool->hasObserver($hash))
-						continue 2;	
+						continue 2;
 				}
-				
-				$hashes[] = 
+
+				$hashes[] =
 					$pool->addObserver(
-						\ewgraFramework\BaseCache::GET_TICKET_EVENT, 
+						\ewgraFramework\BaseCache::GET_TICKET_EVENT,
 						array($this, 'cacheTicketGot')
 					);
 			}
-			
+
 			return parent::handleRequest($request, $mav);
 		}
-		
+
 		public function pageDefined(\ewgraFramework\Model $model)
 		{
 			$page = $model->get('page');
-			
+
 			$debugItem =
 				DebugItem::create()->
 				setAlias('page')->
@@ -82,7 +82,7 @@
 						'layoutId' => $page->getLayout()->getId()
 					)
 				);
-			
+
 			Debug::me()->addItem($debugItem);
 
 			return $this;
@@ -97,7 +97,7 @@
 				setData($model->get('query'))->
 				setStartTime($model->get('startTime'))->
 				setEndTime($model->get('endTime'));
-				
+
 			Debug::me()->addItem($debugItem);
 
 			return $this;
@@ -106,7 +106,7 @@
 		public function cacheTicketGot(\ewgraFramework\Model $model)
 		{
 			$ticket = $model->get('ticket');
-			
+
 			$debugItem =
 				DebugItem::create()->
 				setAlias('cacheTicket')->
@@ -114,7 +114,7 @@
 				setData(
 					array(
 						'prefix' => $ticket->getPrefix(),
-						'key' => 
+						'key' =>
 							$ticket->getCacheInstance()->compileKey($ticket),
 						'cacheInstance' => get_class($ticket->getCacheInstance()),
 						'expiredTime' =>
@@ -128,7 +128,7 @@
 						'status' => $ticket->isExpired() ? 'expired' : 'actual'
 					)
 				);
-				
+
 			Debug::me()->addItem($debugItem);
 
 			return $this;
