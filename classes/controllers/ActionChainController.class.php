@@ -7,18 +7,29 @@
 	*/
 	abstract class ActionChainController extends \ewgraFramework\ActionChainController
 	{
+		private $settingsAction = null;
+
 		/**
 		 * @return ActionChainController
 		 */
 		public function importSettings(array $settings = null)
 		{
-			$this->setRequestAction(
+			$this->settingsAction =
 				isset($settings['action'])
 					? $settings['action']
-					: null
-			);
+					: null;
 
 			return $this;
+		}
+
+		protected function defineActionFromRequest(\ewgraFramework\HttpRequest $request)
+		{
+			$action = parent::defineActionFromRequest($request);
+
+			if (!$action)
+				$action = $this->settingsAction;
+
+			return $action;
 		}
 	}
 ?>
