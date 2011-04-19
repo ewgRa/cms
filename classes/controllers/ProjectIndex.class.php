@@ -37,7 +37,7 @@
 			}
 
 			$exceptionString =
-				$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']
+				$this->getRunUrl()
 				.(
 					Debug::me()->isEnabled()
 						?
@@ -63,7 +63,7 @@
 		public function catchEcho($echo)
 		{
 			error_log(
-				$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].PHP_EOL
+				$this->getRunUrl().PHP_EOL
 				.$echo.PHP_EOL.PHP_EOL.PHP_EOL
 			);
 
@@ -96,6 +96,14 @@
 			}
 
 			return $result;
+		}
+
+		private function getRunUrl()
+		{
+			return
+				PHP_SAPI != 'cli'
+					? $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']
+					: 'file://'.gethostname().$_SERVER['PWD'].'/'.$_SERVER['argv'][0];
 		}
 	}
 ?>
