@@ -137,6 +137,7 @@
 
 			$data[] = $cacheTicket->getCacheInstance()->compileKey($cacheTicket);
 
+			// FIXME: life time for tag ticket must be equal max lifetime for it keys
 			$tagTicket->storeData($data);
 
 			return $this;
