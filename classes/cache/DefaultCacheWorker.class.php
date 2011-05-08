@@ -18,12 +18,22 @@
 
 		public function restoreTicketData(
 			\ewgraFramework\CacheTicket $cacheTicket,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $relatedRequesters = array()
 		)
 		{
 			$result = $cacheTicket->restoreData();
 
 			$this->catchTicketVersion($requester, $cacheTicket, $result);
+
+			if (!$cacheTicket->isExpired()) {
+				foreach ($relatedRequesters as $relatedRequester) {
+					$this->catchTicketVersion($relatedRequester, $cacheTicket, $result);
+
+					if ($cacheTicket->isExpired())
+						break;
+				}
+			}
 
 			return
 				$cacheTicket->isExpired()
@@ -34,11 +44,22 @@
 		public function storeTicketData(
 			\ewgraFramework\CacheTicket $cacheTicket,
 			$data,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $relatedRequesters = array()
 		)
 		{
+			$tagVersions = array();
+
+			$tagVersions[get_class($requester)] =
+				$this->addTicketToTag($cacheTicket, $requester);
+
+			foreach ($relatedRequesters as $relatedRequester) {
+				$tagVersions[get_class($relatedRequester)] =
+					$this->addTicketToTag($cacheTicket, $relatedRequester);
+			}
+
 			$data = array(
-				'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+				'tagVersions' => $tagVersions,
 				'data' => $data
 			);
 
@@ -61,7 +82,10 @@
 
 			if ($cacheTicket->isExpired()) {
 				$result = array(
-					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'tagVersions' => array(
+						get_class($requester) =>
+							$this->addTicketToTag($cacheTicket, $requester)
+					),
 					'data' => $requester->getCustomByQuery($dbQuery)
 				);
 
@@ -87,7 +111,10 @@
 
 			if ($cacheTicket->isExpired()) {
 				$result = array(
-					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'tagVersions' => array(
+						get_class($requester) =>
+							$this->addTicketToTag($cacheTicket, $requester)
+					),
 					'data' => $requester->getByQuery($dbQuery)
 				);
 
@@ -113,7 +140,10 @@
 
 			if ($cacheTicket->isExpired()) {
 				$result = array(
-					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'tagVersions' => array(
+						get_class($requester) =>
+							$this->addTicketToTag($cacheTicket, $requester)
+					),
 					'data' => $requester->getCustomListByQuery($dbQuery)
 				);
 
@@ -139,7 +169,10 @@
 
 			if ($cacheTicket->isExpired()) {
 				$result = array(
-					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'tagVersions' => array(
+						get_class($requester) =>
+							$this->addTicketToTag($cacheTicket, $requester)
+					),
 					'data' => $requester->getListByQuery($dbQuery)
 				);
 
@@ -172,12 +205,16 @@
 		/**
 		 * @return CacheWorkerTicket
 		 */
-		public function createWorkerTicket(CacheableRequesterInterface $requester)
+		public function createWorkerTicket(
+			CacheableRequesterInterface $requester,
+			array $relatedRequesters = array()
+		)
 		{
 			return CacheWorkerTicket::create(
 				$this,
 				$requester,
-				$this->createTicket($requester)
+				$this->createTicket($requester, $relatedRequesters),
+				$relatedRequesters
 			);
 		}
 
@@ -185,7 +222,10 @@
 		/**
 		 * @return CacheTicket
 		 */
-		private function createTicket(CacheableRequesterInterface $requester)
+		private function createTicket(
+			CacheableRequesterInterface $requester,
+			array $relatedRequesters = array()
+		)
 		{
 			\ewgraFramework\Assert::isTrue(
 				\ewgraFramework\Cache::me()->hasPool($requester->getPoolAlias()),
@@ -194,7 +234,12 @@
 
 			$pool = \ewgraFramework\Cache::me()->getPool($requester->getPoolAlias());
 
-			return $pool->createTicket()->setPrefix(get_class($requester));
+			$prefix = array(get_class($requester));
+
+			foreach ($relatedRequesters as $relatedRequester)
+				$prefix[] = get_class($relatedRequester);
+
+			return $pool->createTicket()->setPrefix(join('-', $prefix));
 		}
 
 		/**
@@ -251,8 +296,8 @@
 			$tagVersion = $this->getTagVersion($requester);
 
 			if (
-				!isset($result['tagVersion'])
-				|| $tagVersion != $result['tagVersion']
+				!isset($result['tagVersions'][get_class($requester)])
+				|| $tagVersion != $result['tagVersions'][get_class($requester)]
 			)
 				$cacheTicket->drop();
 

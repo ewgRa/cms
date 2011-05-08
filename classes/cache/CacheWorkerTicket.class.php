@@ -20,7 +20,9 @@
 		/**
 		 * @var CacheableRequesterInterface
 		 */
-		private $requester = null;
+		private $requester = array();
+
+		private $relatedRequesters = array();
 
 		/**
 		 * @return CacheWorkerTicket
@@ -28,20 +30,23 @@
 		public static function create(
 			CacheWorkerInterface $cacheWorker,
 			CacheableRequesterInterface $requester,
-			\ewgraFramework\CacheTicket $cacheTicket
+			\ewgraFramework\CacheTicket $cacheTicket,
+			array $relatedRequesters = array()
 		)
 		{
-			return new self($cacheWorker, $requester, $cacheTicket);
+			return new self($cacheWorker, $requester, $cacheTicket, $relatedRequesters);
 		}
 
 		public function __construct(
 			CacheWorkerInterface $cacheWorker,
 			CacheableRequesterInterface $requester,
-			\ewgraFramework\CacheTicket $cacheTicket
+			\ewgraFramework\CacheTicket $cacheTicket,
+			array $relatedRequesters = array()
 		) {
 			$this->cacheWorker = $cacheWorker;
 			$this->requester = $requester;
 			$this->cacheTicket = $cacheTicket;
+			$this->relatedRequesters = $relatedRequesters;
 		}
 
 		public function setKey()
@@ -63,7 +68,8 @@
 			$this->cacheWorker->storeTicketData(
 				$this->cacheTicket,
 				$data,
-				$this->requester
+				$this->requester,
+				$this->relatedRequesters
 			);
 
 			return $this;
@@ -73,7 +79,8 @@
 		{
 			return $this->cacheWorker->restoreTicketData(
 				$this->cacheTicket,
-				$this->requester
+				$this->requester,
+				$this->relatedRequesters
 			);
 		}
 	}
