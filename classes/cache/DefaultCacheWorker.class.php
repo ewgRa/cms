@@ -16,6 +16,35 @@
 			return parent::getInstance(__CLASS__);
 		}
 
+		public function restoreTicketData(
+			\ewgraFramework\CacheTicket $cacheTicket,
+			CacheableRequesterInterface $requester
+		)
+		{
+			$result = $cacheTicket->restoreData();
+
+			$this->catchTicketVersion($requester, $cacheTicket, $result);
+
+			return
+				$cacheTicket->isExpired()
+					? null
+					: $result['data'];
+		}
+
+		public function storeTicketData(
+			\ewgraFramework\CacheTicket $cacheTicket,
+			$data,
+			CacheableRequesterInterface $requester
+		)
+		{
+			$data = array(
+				'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+				'data' => $data
+			);
+
+			return $cacheTicket->storeData($data);
+		}
+
 		public function getCustomCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
@@ -139,6 +168,19 @@
 
 			return $this;
 		}
+
+		/**
+		 * @return CacheWorkerTicket
+		 */
+		public function createWorkerTicket(CacheableRequesterInterface $requester)
+		{
+			return CacheWorkerTicket::create(
+				$this,
+				$requester,
+				$this->createTicket($requester)
+			);
+		}
+
 
 		/**
 		 * @return CacheTicket
