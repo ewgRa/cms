@@ -191,13 +191,8 @@
 
 			$data = $tagTicket->setKey('tag')->restoreData();
 
-			if ($tagTicket->isExpired())
-				$data = array('keys' => array());
-
-			foreach ($data['keys'] as $cacheKey => $value)
-				$tagTicket->getCacheInstance()->dropByKey($cacheKey);
-
-			$tagTicket->drop();
+			if (!$tagTicket->isExpired())
+				$tagTicket->drop();
 
 			return $this;
 		}
@@ -256,13 +251,8 @@
 			$data = $tagTicket->restoreData();
 
 			if ($tagTicket->isExpired())
-				$data = array('version' => microtime(true), 'keys' => array());
+				$data = array('version' => microtime(true));
 
-			$key = $cacheTicket->getCacheInstance()->compileKey($cacheTicket);
-
-			$data['keys'][$key] = 1;
-
-			// FIXME: life time for tag ticket must be equal max lifetime for it keys
 			$tagTicket->storeData($data);
 
 			return $data['version'];
