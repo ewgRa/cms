@@ -16,21 +16,6 @@
 			return parent::getInstance(__CLASS__);
 		}
 
-		/**
-		 * @return CacheTicket
-		 */
-		public function createTicket(CacheableRequesterInterface $requester)
-		{
-			\ewgraFramework\Assert::isTrue(
-				\ewgraFramework\Cache::me()->hasPool($requester->getPoolAlias()),
-				'define pool for '.$requester->getPoolAlias()
-			);
-
-			$pool = \ewgraFramework\Cache::me()->getPool($requester->getPoolAlias());
-
-			return $pool->createTicket()->setPrefix(get_class($requester));
-		}
-
 		public function getCustomCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
@@ -43,14 +28,18 @@
 				setKey(__FUNCTION__, $dbQuery)->
 				restoreData();
 
+			$this->catchTicketVersion($requester, $cacheTicket, $result);
+
 			if ($cacheTicket->isExpired()) {
-				$result = $requester->getCustomByQuery($dbQuery);
+				$result = array(
+					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'data' => $requester->getCustomByQuery($dbQuery)
+				);
 
 				$cacheTicket->storeData($result);
-				$this->addTicketToTag($cacheTicket, $requester);
 			}
 
-			return $result;
+			return $result['data'];
 		}
 
 		public function getCachedByQuery(
@@ -65,14 +54,18 @@
 				setKey(__FUNCTION__, $dbQuery)->
 				restoreData();
 
+			$this->catchTicketVersion($requester, $cacheTicket, $result);
+
 			if ($cacheTicket->isExpired()) {
-				$result = $requester->getByQuery($dbQuery);
+				$result = array(
+					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'data' => $requester->getByQuery($dbQuery)
+				);
 
 				$cacheTicket->storeData($result);
-				$this->addTicketToTag($cacheTicket, $requester);
 			}
 
-			return $result;
+			return $result['data'];
 		}
 
 		public function getCustomListCachedByQuery(
@@ -87,14 +80,18 @@
 					setKey(__FUNCTION__, get_class($requester), $dbQuery)->
 					restoreData();
 
+			$this->catchTicketVersion($requester, $cacheTicket, $result);
+
 			if ($cacheTicket->isExpired()) {
-				$result = $requester->getCustomListByQuery($dbQuery);
+				$result = array(
+					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'data' => $requester->getCustomListByQuery($dbQuery)
+				);
 
 				$cacheTicket->storeData($result);
-				$this->addTicketToTag($cacheTicket, $requester);
 			}
 
-			return $result;
+			return $result['data'];
 		}
 
 		public function getListCachedByQuery(
@@ -109,38 +106,18 @@
 					setKey(__FUNCTION__, get_class($requester), $dbQuery)->
 					restoreData();
 
+			$this->catchTicketVersion($requester, $cacheTicket, $result);
+
 			if ($cacheTicket->isExpired()) {
-				$result = $requester->getListByQuery($dbQuery);
+				$result = array(
+					'tagVersion' => $this->addTicketToTag($cacheTicket, $requester),
+					'data' => $requester->getListByQuery($dbQuery)
+				);
 
 				$cacheTicket->storeData($result);
-				$this->addTicketToTag($cacheTicket, $requester);
 			}
 
-			return $result;
-		}
-
-		/**
-		 * @return DefaultCacheWorker
-		 */
-		public function addTicketToTag(
-			\ewgraFramework\CacheTicket $cacheTicket,
-			CacheableRequesterInterface $requester
-		)
-		{
-			$tagTicket = $this->createTicket($requester);
-			$tagTicket->setKey('tag');
-
-			$data = $tagTicket->restoreData();
-
-			if ($tagTicket->isExpired())
-				$data = array();
-
-			$data[] = $cacheTicket->getCacheInstance()->compileKey($cacheTicket);
-
-			// FIXME: life time for tag ticket must be equal max lifetime for it keys
-			$tagTicket->storeData($data);
-
-			return $this;
+			return $result['data'];
 		}
 
 		/**
@@ -153,12 +130,89 @@
 			$data = $tagTicket->setKey('tag')->restoreData();
 
 			if ($tagTicket->isExpired())
-				$data = array();
+				$data = array('keys' => array());
 
-			foreach ($data as $cacheKey)
+			foreach ($data['keys'] as $cacheKey => $value)
 				$tagTicket->getCacheInstance()->dropByKey($cacheKey);
 
 			$tagTicket->drop();
+
+			return $this;
+		}
+
+		/**
+		 * @return CacheTicket
+		 */
+		private function createTicket(CacheableRequesterInterface $requester)
+		{
+			\ewgraFramework\Assert::isTrue(
+				\ewgraFramework\Cache::me()->hasPool($requester->getPoolAlias()),
+				'define pool for '.$requester->getPoolAlias()
+			);
+
+			$pool = \ewgraFramework\Cache::me()->getPool($requester->getPoolAlias());
+
+			return $pool->createTicket()->setPrefix(get_class($requester));
+		}
+
+		/**
+		 * @return DefaultCacheWorker
+		 */
+		private function addTicketToTag(
+			\ewgraFramework\CacheTicket $cacheTicket,
+			CacheableRequesterInterface $requester
+		)
+		{
+			$tagTicket = $this->createTicket($requester);
+			$tagTicket->setKey('tag');
+
+			$data = $tagTicket->restoreData();
+
+			if ($tagTicket->isExpired())
+				$data = array('version' => microtime(true), 'keys' => array());
+
+			$key = $cacheTicket->getCacheInstance()->compileKey($cacheTicket);
+
+			$data['keys'][$key] = 1;
+
+			// FIXME: life time for tag ticket must be equal max lifetime for it keys
+			$tagTicket->storeData($data);
+
+			return $data['version'];
+		}
+
+		/**
+		 * @return DefaultCacheWorker
+		 */
+		private function getTagVersion(CacheableRequesterInterface $requester)
+		{
+			$tagTicket = $this->createTicket($requester);
+			$tagTicket->setKey('tag');
+
+			$data = $tagTicket->restoreData();
+
+			return
+				$tagTicket->isExpired()
+					? null
+					: $data['version'];
+		}
+
+		private function catchTicketVersion(
+			CacheableRequesterInterface $requester,
+			\ewgraFramework\CacheTicket $cacheTicket,
+			$result
+		)
+		{
+			if ($cacheTicket->isExpired())
+				return $this;
+
+			$tagVersion = $this->getTagVersion($requester);
+
+			if (
+				!isset($result['tagVersion'])
+				|| $tagVersion != $result['tagVersion']
+			)
+				$cacheTicket->drop();
 
 			return $this;
 		}

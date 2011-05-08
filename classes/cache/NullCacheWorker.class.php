@@ -26,16 +26,6 @@
 			return parent::getInstance(__CLASS__);
 		}
 
-		/**
-		 * @return CacheTicket
-		 */
-		public function createTicket(CacheableRequesterInterface $requester)
-		{
-			return
-				\ewgraFramework\CacheTicket::create()->
-				setCacheInstance($this->cacheInstance);
-		}
-
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
 			CacheableRequesterInterface $requester
@@ -50,17 +40,6 @@
 		)
 		{
 			return $requester->getListByQuery($dbQuery);
-		}
-
-		/**
-		 * @return NullCacheWorker
-		 */
-		public function addTicketToTag(
-			\ewgraFramework\CacheTicket $cacheTicket,
-			CacheableRequesterInterface $requester
-		)
-		{
-			return $this;
 		}
 
 		/**

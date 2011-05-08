@@ -157,14 +157,6 @@
 			return $worker;
 		}
 
-		/**
-		 * @return \ewgraFramework\CacheTicket
-		 */
-		public function createCacheTicket()
-		{
-			return $this->getCacheWorker()->createTicket($this);
-		}
-
 		protected function buildList(array $arrayList)
 		{
 			$result = array();
