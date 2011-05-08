@@ -165,13 +165,6 @@
 			return $this->getCacheWorker()->createTicket($this);
 		}
 
-
-		public function addCacheTicketToTag(\ewgraFramework\CacheTicket $ticket)
-		{
-			$this->getCacheWorker()->addTicketToTag($ticket, $this);
-			return $this;
-		}
-
 		protected function buildList(array $arrayList)
 		{
 			$result = array();
