@@ -1,0 +1,14 @@
+div#page_items
+{
+	border: 1px solid #BCD4F4;
+	min-height: 200px;
+	min-height: expression( mw( 200 ) );
+}
+
+input.text
+{
+	width: 100%;
+	border: 1px solid gray;
+	font-family: Arial;
+	font-size: 100%;
+}

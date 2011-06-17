@@ -1,0 +1,29 @@
+div.navigation_admin_main
+{
+	margin-top: 5px;
+	margin-left: 5px;
+	border-left: 1px solid gray;
+}
+	div.navigation_admin_main ul
+	{
+		list-style-type: none;
+		margin: 0px 0px 0px 0px; 
+		padding: 0px 0px 0px 0px;	
+	}
+		div.navigation_admin_main ul li
+		{
+			white-space: nowrap;
+			padding: 2px 7px 2px 7px;
+			font-family: Georgia;
+			font-weight: bold;
+			font-size: 75%;
+		}
+			div.navigation_admin_main ul li li
+			{
+				font-weight: normal;
+				font-size: 90%;
+			}
+			div.navigation_admin_main ul li a
+			{
+				color: #0000AA;
+			}
