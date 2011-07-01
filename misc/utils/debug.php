@@ -30,7 +30,7 @@
 			}
 
 			if (!isset($_COOKIE['enableDebug']))
-				\ewgraFramework\CookieManager::me()->setCookie('enableDebug', true);
+				\ewgraFramework\CookieManager::me()->set('enableDebug', true);
 		}
 
 		if(!\ewgraFramework\Session::me()->isStarted())

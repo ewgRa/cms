@@ -32,7 +32,7 @@
 			$localizer->defineLanguage($request->getUrl());
 
 			\ewgraFramework\CookieManager::me()->
-				setCookie(
+				set(
 					'languageId',
 					$localizer->getRequestLanguage()->getId()
 				);
