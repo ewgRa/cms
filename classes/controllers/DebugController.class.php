@@ -67,8 +67,11 @@
 			return parent::handleRequest($request, $mav);
 		}
 
-		public function pageDefined(\ewgraFramework\Model $model)
-		{
+		public function pageDefined(
+			\ewgraFramework\Model $model,
+			\ewgraFramework\ObservableInterface $observable,
+			$observerHash
+		) {
 			$page = $model->get('page');
 
 			$debugItem =
@@ -88,8 +91,11 @@
 			return $this;
 		}
 
-		public function databaseQuery(\ewgraFramework\Model $model)
-		{
+		public function databaseQuery(
+			\ewgraFramework\Model $model,
+			\ewgraFramework\ObservableInterface $observable,
+			$observerHash
+		) {
 			$debugItem =
 				DebugItem::create()->
 				setAlias('databaseQuery')->
@@ -103,8 +109,11 @@
 			return $this;
 		}
 
-		public function cacheTicketGot(\ewgraFramework\Model $model)
-		{
+		public function cacheTicketGot(
+			\ewgraFramework\Model $model,
+			\ewgraFramework\ObservableInterface $observable,
+			$observerHash
+		) {
 			$ticket = $model->get('ticket');
 
 			$debugItem =
