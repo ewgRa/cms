@@ -23,11 +23,8 @@
 		if (!\ewgraFramework\Session::me()->isStarted() && isset($_GET['startSession'])) {
 			\ewgraFramework\Session::me()->start();
 
-			if (!\ewgraFramework\Session::me()->has('enableDebug')) {
-				\ewgraFramework\Session::me()->
-					set('enableDebug', true)->
-					save();
-			}
+			if (!\ewgraFramework\Session::me()->has('enableDebug'))
+				\ewgraFramework\Session::me()->set('enableDebug', true);
 
 			if (!isset($_COOKIE['enableDebug']))
 				\ewgraFramework\CookieManager::me()->set('enableDebug', true);
