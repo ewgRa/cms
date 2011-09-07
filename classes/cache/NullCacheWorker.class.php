@@ -43,6 +43,22 @@
 			return $requester->getListByQuery($dbQuery);
 		}
 
+		public function getCustomCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			CacheableRequesterInterface $requester
+		)
+		{
+			return $requester->getCustomByQuery($dbQuery);
+		}
+
+		public function getCustomListCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			CacheableRequesterInterface $requester
+		)
+		{
+			return $requester->getCustomListByQuery($dbQuery);
+		}
+
 		/**
 		 * @return NullCacheWorker
 		 */
