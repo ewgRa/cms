@@ -8,6 +8,7 @@
 	abstract class ActionChainController extends \ewgraFramework\ActionChainController
 	{
 		private $settingsAction = null;
+		private $immutableSettingsAction = null;
 
 		/**
 		 * @return ActionChainController
@@ -19,12 +20,20 @@
 					? $settings['action']
 					: null;
 
+			$this->immutableSettingsAction =
+				isset($settings['immutableAction'])
+					? $settings['immutableAction']
+					: null;
+
 			return $this;
 		}
 
 		protected function defineActionFromRequest(\ewgraFramework\HttpRequest $request)
 		{
-			$action = parent::defineActionFromRequest($request);
+			$action = $this->immutableSettingsAction;
+
+			if (!$action)
+				$action = parent::defineActionFromRequest($request);
 
 			if (!$action)
 				$action = $this->settingsAction;
