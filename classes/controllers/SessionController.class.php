@@ -26,7 +26,7 @@
 					\ewgraFramework\Session::me()->get('securityHash')
 						!= $this->compileSecurityHash($request)
 				) {
-					\ewgraFramework\Session::me()->destroy();
+					\ewgraFramework\Session::me()->startAsNew();
 
 					\ewgraFramework\LogManager::me()->store(
 						'Security hash not equal! IP: '.$request->getRemoteIp()
