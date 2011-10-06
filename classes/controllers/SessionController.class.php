@@ -25,8 +25,13 @@
 				} else if (
 					\ewgraFramework\Session::me()->get('securityHash')
 						!= $this->compileSecurityHash($request)
-				)
+				) {
 					\ewgraFramework\Session::me()->destroy();
+
+					\ewgraFramework\LogManager::me()->store(
+						'Security hash not equal! IP: '.$request->getRemoteIp()
+					);
+				}
 			}
 
 			return parent::handleRequest($request, $mav);
