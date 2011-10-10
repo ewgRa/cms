@@ -7,6 +7,8 @@
 	*/
 	final class SessionController extends \ewgraFramework\ChainController
 	{
+		private $checkSecurityHash = true;
+
 		/**
 		 * @return \ewgraFramework\ModelAndView
 		 */
@@ -16,7 +18,10 @@
 		) {
 			\ewgraFramework\Session::me()->relativeStart();
 
-			if (\ewgraFramework\Session::me()->isStarted()) {
+			if (
+				$this->checkSecurityHash
+				&& \ewgraFramework\Session::me()->isStarted()
+			) {
 				if (!\ewgraFramework\Session::me()->has('securityHash')) {
 					\ewgraFramework\Session::me()->set(
 						'securityHash',
@@ -29,7 +34,9 @@
 					\ewgraFramework\Session::me()->startAsNew();
 
 					\ewgraFramework\LogManager::me()->store(
-						'Security hash not equal! IP: '.$request->getRemoteIp()
+						'Security hash not equal! "'
+						.\ewgraFramework\Session::me()->get('securityHash')
+						.'" not equal to "'.$this->compileSecurityHash($request).'"'
 					);
 				}
 			}
@@ -37,9 +44,15 @@
 			return parent::handleRequest($request, $mav);
 		}
 
+		public function setCheckSecurityHash($checkSecurityHash = true)
+		{
+			$this->checkSecurityHash = ($checkSecurityHash === true);
+			return $this;
+		}
+
 		private function compileSecurityHash(\ewgraFramework\HttpRequest $request)
 		{
-			return sha1($request->getRemoteIp().'-'.$request->getUserAgent());
+			return $request->getRemoteIp().'|'.$request->getUserAgent();
 		}
 	}
 ?>
