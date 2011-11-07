@@ -22,6 +22,14 @@
 		}
 
 		/**
+		 * @return FileSourceProto
+		 */
+		public static function proto()
+		{
+			return FileSourceProto::me();
+		}
+
+		/**
 		 * @return AutoFileSource
 		 */
 		public function setId($id)

@@ -22,6 +22,14 @@
 		}
 
 		/**
+		 * @return LanguageProto
+		 */
+		public static function proto()
+		{
+			return LanguageProto::me();
+		}
+
+		/**
 		 * @return AutoLanguage
 		 */
 		public function setId($id)

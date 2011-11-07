@@ -19,10 +19,13 @@
 
 		public function getByPage(Page $page)
 		{
+			$dialect = $this->db()->getDialect();
+
 			$dbQuery = "
 				SELECT * FROM ".$this->getTable()." WHERE page_id = ?
-				ORDER BY priority, priority IS NULL, position
-			";
+				ORDER BY "
+					.$dialect->createOrder('priority')->toString($dialect).", "
+					.$dialect->createOrder('position')->toString($dialect);
 
 			return $this->getListCachedByQuery(
 				\ewgraFramework\DatabaseQuery::create()->

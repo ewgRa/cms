@@ -9,61 +9,82 @@
 	 */
 	abstract class AutoPageControllerDA extends DatabaseRequester
 	{
-		protected $tableAlias = 'PageController';
+		protected $tableAlias = 'page_controller';
 
 		/**
 		 * @return PageController
 		 */
 		public function insert(PageController $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
 
-			if (!is_null($object->getPageId())) {
-				$queryParts[] = '`page_id` = ?';
-				$queryParams[] = $object->getPageId();
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
+			$fields[] = $dialect->escapeField('page_id');
+			$fieldValues[] = '?';
+			$values[] = $object->getPageId();
+			$fields[] = $dialect->escapeField('controller_id');
+			$fieldValues[] = '?';
+			$values[] = $object->getControllerId();
+			$fields[] = $dialect->escapeField('section');
+			$fieldValues[] = '?';
+
+			if ($object->getSection() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getSection();
 			}
 
-			if (!is_null($object->getControllerId())) {
-				$queryParts[] = '`controller_id` = ?';
-				$queryParams[] = $object->getControllerId();
+			$fields[] = $dialect->escapeField('position');
+			$fieldValues[] = '?';
+
+			if ($object->getPosition() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getPosition();
 			}
 
-			if (!is_null($object->getSection())) {
-				$queryParts[] = '`section` = ?';
-				$queryParams[] = $object->getSection();
+			$fields[] = $dialect->escapeField('priority');
+			$fieldValues[] = '?';
+
+			if ($object->getPriority() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getPriority();
 			}
 
-			if (!is_null($object->getPosition())) {
-				$queryParts[] = '`position` = ?';
-				$queryParams[] = $object->getPosition();
+			$fields[] = $dialect->escapeField('settings');
+			$fieldValues[] = '?';
+
+			if ($object->getSettings() === null)
+				$values[] = null;
+			else {
+				$values[] = serialize($object->getSettings());
 			}
 
-			if (!is_null($object->getPriority())) {
-				$queryParts[] = '`priority` = ?';
-				$queryParams[] = $object->getPriority();
+			$fields[] = $dialect->escapeField('view_file_id');
+			$fieldValues[] = '?';
+
+			if ($object->getViewFileId() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getViewFileId();
 			}
 
-			if (!is_null($object->getSettings())) {
-				$queryParts[] = '`settings` = ?';
-				$queryParams[] = serialize($object->getSettings());
-			}
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			if (!is_null($object->getViewFileId())) {
-				$queryParts[] = '`view_file_id` = ?';
-				$queryParams[] = $object->getViewFileId();
-			}
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setPrimaryField('id')->
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
-			$dbQuery .= join(', ', $queryParts);
-
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
-
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 
 			$this->dropCache();
 
@@ -75,53 +96,54 @@
 		 */
 		public function save(PageController $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
 
-			$queryParts[] = '`page_id` = ?';
+			$queryParts[] = $dialect->escapeField('page_id').' = ?';
 			$queryParams[] = $object->getPageId();
-			$queryParts[] = '`controller_id` = ?';
+			$queryParts[] = $dialect->escapeField('controller_id').' = ?';
 			$queryParams[] = $object->getControllerId();
 
 			if ($object->getSection() === null)
-				$queryParts[] = '`section` = NULL';
+				$queryParts[] = $dialect->escapeField('section').' = NULL';
 			else {
-				$queryParts[] = '`section` = ?';
+				$queryParts[] = $dialect->escapeField('section').' = ?';
 				$queryParams[] = $object->getSection();
 			}
 
 
 			if ($object->getPosition() === null)
-				$queryParts[] = '`position` = NULL';
+				$queryParts[] = $dialect->escapeField('position').' = NULL';
 			else {
-				$queryParts[] = '`position` = ?';
+				$queryParts[] = $dialect->escapeField('position').' = ?';
 				$queryParams[] = $object->getPosition();
 			}
 
 
 			if ($object->getPriority() === null)
-				$queryParts[] = '`priority` = NULL';
+				$queryParts[] = $dialect->escapeField('priority').' = NULL';
 			else {
-				$queryParts[] = '`priority` = ?';
+				$queryParts[] = $dialect->escapeField('priority').' = ?';
 				$queryParams[] = $object->getPriority();
 			}
 
 
 			if ($object->getSettings() === null)
-				$queryParts[] = '`settings` = NULL';
+				$queryParts[] = $dialect->escapeField('settings').' = NULL';
 			else {
-				$queryParts[] = '`settings` = ?';
+				$queryParts[] = $dialect->escapeField('settings').' = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}
 
 
 			if ($object->getViewFileId() === null)
-				$queryParts[] = '`view_file_id` = NULL';
+				$queryParts[] = $dialect->escapeField('view_file_id').' = NULL';
 			else {
-				$queryParts[] = '`view_file_id` = ?';
+				$queryParts[] = $dialect->escapeField('view_file_id').' = ?';
 				$queryParams[] = $object->getViewFileId();
 			}
 

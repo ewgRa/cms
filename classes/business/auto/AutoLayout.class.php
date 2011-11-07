@@ -27,6 +27,14 @@
 		}
 
 		/**
+		 * @return LayoutProto
+		 */
+		public static function proto()
+		{
+			return LayoutProto::me();
+		}
+
+		/**
 		 * @return AutoLayout
 		 */
 		public function setId($id)

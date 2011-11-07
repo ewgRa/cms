@@ -42,30 +42,20 @@
 
 		public function getInheritanceByIds(array $ids)
 		{
+			$dialect = $this->db()->getDialect();
+
 			$dbQuery = "
 				SELECT t1.* FROM ".$this->getTable()." t1
-				INNER JOIN ".$this->quoteTable('ViewFile_inheritance')." t2
+				INNER JOIN ".$this->escapeTable('view_file_inheritance')." t2
 					ON(t2.child_view_file_id = t1.id)
 				WHERE t2.view_file_id IN (?)
-				ORDER BY position
+				ORDER BY ".$dialect->createOrder('position')->toString($dialect)."
 			";
 
 			return $this->getListCachedByQuery(
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->
 				setValues(array($ids))
-			);
-		}
-
-		/**
-		 * @return ViewFile
-		 */
-		public function getById($id)
-		{
-			return $this->getCachedByQuery(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery("SELECT * FROM ".$this->getTable()." WHERE id = ?")->
-				setValues(array($id))
 			);
 		}
 	}

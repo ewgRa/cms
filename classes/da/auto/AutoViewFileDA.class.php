@@ -9,46 +9,49 @@
 	 */
 	abstract class AutoViewFileDA extends DatabaseRequester
 	{
-		protected $tableAlias = 'ViewFile';
+		protected $tableAlias = 'view_file';
 
 		/**
 		 * @return ViewFile
 		 */
 		public function insert(ViewFile $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
 
-			if (!is_null($object->getContentType())) {
-				$queryParts[] = '`content_type` = ?';
-				$queryParams[] = $object->getContentType()->getId();
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
+			$fields[] = $dialect->escapeField('content_type');
+			$fieldValues[] = '?';
+			$values[] = $object->getContentType()->getId();
+			$fields[] = $dialect->escapeField('path');
+			$fieldValues[] = '?';
+			$values[] = $object->getPath();
+			$fields[] = $dialect->escapeField('joinable');
+			$fieldValues[] = '?';
+
+			if ($object->getJoinable() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getJoinable();
 			}
 
-			if (!is_null($object->getPath())) {
-				$queryParts[] = '`path` = ?';
-				$queryParams[] = $object->getPath();
-			}
+			$fields[] = $dialect->escapeField('source_id');
+			$fieldValues[] = '?';
+			$values[] = $object->getSourceId();
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			if (!is_null($object->getJoinable())) {
-				$queryParts[] = '`joinable` = ?';
-				$queryParams[] = $object->getJoinable();
-			}
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setPrimaryField('id')->
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
-			if (!is_null($object->getSourceId())) {
-				$queryParts[] = '`source_id` = ?';
-				$queryParams[] = $object->getSourceId();
-			}
-
-			$dbQuery .= join(', ', $queryParts);
-
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
-
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 
 			$this->dropCache();
 
@@ -60,25 +63,26 @@
 		 */
 		public function save(ViewFile $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
 
-			$queryParts[] = '`content_type` = ?';
+			$queryParts[] = $dialect->escapeField('content_type').' = ?';
 			$queryParams[] = $object->getContentType()->getId();
-			$queryParts[] = '`path` = ?';
+			$queryParts[] = $dialect->escapeField('path').' = ?';
 			$queryParams[] = $object->getPath();
 
 			if ($object->getJoinable() === null)
-				$queryParts[] = '`joinable` = NULL';
+				$queryParts[] = $dialect->escapeField('joinable').' = NULL';
 			else {
-				$queryParts[] = '`joinable` = ?';
+				$queryParts[] = $dialect->escapeField('joinable').' = ?';
 				$queryParams[] = $object->getJoinable();
 			}
 
-			$queryParts[] = '`source_id` = ?';
+			$queryParts[] = $dialect->escapeField('source_id').' = ?';
 			$queryParams[] = $object->getSourceId();
 
 			$whereParts[] = 'id = ?';
@@ -145,7 +149,7 @@
 				setId($array['id'])->
 				setContentType(\ewgraFramework\ContentType::create($array['content_type']))->
 				setPath($array['path'])->
-				setJoinable($array['joinable'] == null ? null : $array['joinable'] == true)->
+				setJoinable($array['joinable'] === null ? null : $array['joinable'] == true)->
 				setSourceId($array['source_id']);
 		}
 

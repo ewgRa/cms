@@ -46,6 +46,14 @@
 		}
 
 		/**
+		 * @return PageProto
+		 */
+		public static function proto()
+		{
+			return PageProto::me();
+		}
+
+		/**
 		 * @return AutoPage
 		 */
 		public function setId($id)

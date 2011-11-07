@@ -9,31 +9,34 @@
 	 */
 	abstract class AutoLayoutDA extends DatabaseRequester
 	{
-		protected $tableAlias = 'Layout';
+		protected $tableAlias = 'layout';
 
 		/**
 		 * @return Layout
 		 */
 		public function insert(Layout $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
 
-			if (!is_null($object->getViewFileId())) {
-				$queryParts[] = '`view_file_id` = ?';
-				$queryParams[] = $object->getViewFileId();
-			}
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
+			$fields[] = $dialect->escapeField('view_file_id');
+			$fieldValues[] = '?';
+			$values[] = $object->getViewFileId();
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			$dbQuery .= join(', ', $queryParts);
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setPrimaryField('id')->
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
-
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 
 			$this->dropCache();
 
@@ -45,13 +48,14 @@
 		 */
 		public function save(Layout $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
 
-			$queryParts[] = '`view_file_id` = ?';
+			$queryParts[] = $dialect->escapeField('view_file_id').' = ?';
 			$queryParams[] = $object->getViewFileId();
 
 			$whereParts[] = 'id = ?';

@@ -54,7 +54,7 @@
 		$pointer = isset($_GET['pointer']) ? $_GET['pointer'] : 0;
 
 		$dbQuery = "SELECT SQL_CALC_FOUND_ROWS * FROM "
-			.$databasePool->getDialect()->quoteTable('DebugData')
+			.$databasePool->getDialect()->escapeTable('DebugData')
 			." WHERE session = ? ORDER BY id DESC LIMIT "
 			.(int)$pointer.", 1";
 

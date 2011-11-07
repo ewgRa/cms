@@ -9,36 +9,43 @@
 	 */
 	abstract class AutoControllerDA extends DatabaseRequester
 	{
-		protected $tableAlias = 'Controller';
+		protected $tableAlias = 'controller';
 
 		/**
 		 * @return Controller
 		 */
 		public function insert(Controller $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
 
-			if (!is_null($object->getName())) {
-				$queryParts[] = '`name` = ?';
-				$queryParams[] = $object->getName();
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
+			$fields[] = $dialect->escapeField('name');
+			$fieldValues[] = '?';
+			$values[] = $object->getName();
+			$fields[] = $dialect->escapeField('settings');
+			$fieldValues[] = '?';
+
+			if ($object->getSettings() === null)
+				$values[] = null;
+			else {
+				$values[] = serialize($object->getSettings());
 			}
 
-			if (!is_null($object->getSettings())) {
-				$queryParts[] = '`settings` = ?';
-				$queryParams[] = serialize($object->getSettings());
-			}
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			$dbQuery .= join(', ', $queryParts);
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setPrimaryField('id')->
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
-
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 
 			$this->dropCache();
 
@@ -50,19 +57,20 @@
 		 */
 		public function save(Controller $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
 
-			$queryParts[] = '`name` = ?';
+			$queryParts[] = $dialect->escapeField('name').' = ?';
 			$queryParams[] = $object->getName();
 
 			if ($object->getSettings() === null)
-				$queryParts[] = '`settings` = NULL';
+				$queryParts[] = $dialect->escapeField('settings').' = NULL';
 			else {
-				$queryParts[] = '`settings` = ?';
+				$queryParts[] = $dialect->escapeField('settings').' = ?';
 				$queryParams[] = serialize($object->getSettings());
 			}
 

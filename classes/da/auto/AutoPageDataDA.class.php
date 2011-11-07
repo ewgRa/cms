@@ -9,51 +9,64 @@
 	 */
 	abstract class AutoPageDataDA extends DatabaseRequester
 	{
-		protected $tableAlias = 'PageData';
+		protected $tableAlias = 'page_data';
 
 		/**
 		 * @return PageData
 		 */
 		public function insert(PageData $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
 
-			if (!is_null($object->getPageId())) {
-				$queryParts[] = '`page_id` = ?';
-				$queryParams[] = $object->getPageId();
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
+			$fields[] = $dialect->escapeField('page_id');
+			$fieldValues[] = '?';
+			$values[] = $object->getPageId();
+			$fields[] = $dialect->escapeField('language_id');
+			$fieldValues[] = '?';
+			$values[] = $object->getLanguageId();
+			$fields[] = $dialect->escapeField('title');
+			$fieldValues[] = '?';
+
+			if ($object->getTitle() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getTitle();
 			}
 
-			if (!is_null($object->getLanguageId())) {
-				$queryParts[] = '`language_id` = ?';
-				$queryParams[] = $object->getLanguageId();
+			$fields[] = $dialect->escapeField('description');
+			$fieldValues[] = '?';
+
+			if ($object->getDescription() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getDescription();
 			}
 
-			if (!is_null($object->getTitle())) {
-				$queryParts[] = '`title` = ?';
-				$queryParams[] = $object->getTitle();
+			$fields[] = $dialect->escapeField('keywords');
+			$fieldValues[] = '?';
+
+			if ($object->getKeywords() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getKeywords();
 			}
 
-			if (!is_null($object->getDescription())) {
-				$queryParts[] = '`description` = ?';
-				$queryParams[] = $object->getDescription();
-			}
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			if (!is_null($object->getKeywords())) {
-				$queryParts[] = '`keywords` = ?';
-				$queryParams[] = $object->getKeywords();
-			}
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setPrimaryField('id')->
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
-			$dbQuery .= join(', ', $queryParts);
-
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
-
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 
 			$this->dropCache();
 
@@ -65,37 +78,38 @@
 		 */
 		public function save(PageData $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
 
-			$queryParts[] = '`page_id` = ?';
+			$queryParts[] = $dialect->escapeField('page_id').' = ?';
 			$queryParams[] = $object->getPageId();
-			$queryParts[] = '`language_id` = ?';
+			$queryParts[] = $dialect->escapeField('language_id').' = ?';
 			$queryParams[] = $object->getLanguageId();
 
 			if ($object->getTitle() === null)
-				$queryParts[] = '`title` = NULL';
+				$queryParts[] = $dialect->escapeField('title').' = NULL';
 			else {
-				$queryParts[] = '`title` = ?';
+				$queryParts[] = $dialect->escapeField('title').' = ?';
 				$queryParams[] = $object->getTitle();
 			}
 
 
 			if ($object->getDescription() === null)
-				$queryParts[] = '`description` = NULL';
+				$queryParts[] = $dialect->escapeField('description').' = NULL';
 			else {
-				$queryParts[] = '`description` = ?';
+				$queryParts[] = $dialect->escapeField('description').' = ?';
 				$queryParams[] = $object->getDescription();
 			}
 
 
 			if ($object->getKeywords() === null)
-				$queryParts[] = '`keywords` = NULL';
+				$queryParts[] = $dialect->escapeField('keywords').' = NULL';
 			else {
-				$queryParts[] = '`keywords` = ?';
+				$queryParts[] = $dialect->escapeField('keywords').' = ?';
 				$queryParams[] = $object->getKeywords();
 			}
 

@@ -6,10 +6,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 */
-	final class ControllerDA extends AutoControllerDA
+	final class PageDataProto extends AutoPageDataProto
 	{
 		/**
-		 * @return ControllerDA
+		 * @return PageDataProto
 		 * method needed for methods hinting
 		 */
 		public static function me()

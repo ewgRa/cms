@@ -27,6 +27,14 @@
 		}
 
 		/**
+		 * @return ControllerProto
+		 */
+		public static function proto()
+		{
+			return ControllerProto::me();
+		}
+
+		/**
 		 * @return AutoController
 		 */
 		public function setId($id)

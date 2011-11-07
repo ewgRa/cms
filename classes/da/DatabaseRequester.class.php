@@ -19,14 +19,14 @@
 		{
 			\ewgraFramework\Assert::isNotNull($this->tableAlias);
 
-			return $this->quoteTable($this->tableAlias);
+			return $this->escapeTable($this->tableAlias);
 		}
 
-		public function quoteTable($table)
+		public function escapeTable($table)
 		{
 			return
 				$this->db()->getDialect()->
-				quoteTable($table, $this->db());
+				escapeTable($table, $this->db());
 		}
 
 		/**

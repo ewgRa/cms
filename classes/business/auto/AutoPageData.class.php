@@ -40,6 +40,14 @@
 		}
 
 		/**
+		 * @return PageDataProto
+		 */
+		public static function proto()
+		{
+			return PageDataProto::me();
+		}
+
+		/**
 		 * @return AutoPageData
 		 */
 		public function setId($id)

@@ -16,17 +16,5 @@
 		{
 			return parent::me();
 		}
-
-		/**
-		 * @return FileSource
-		 */
-		public function getById($id)
-		{
-			return $this->getCachedByQuery(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery("SELECT * FROM ".$this->getTable()." WHERE id = ?")->
-				setValues(array($id))
-			);
-		}
 	}
 ?>

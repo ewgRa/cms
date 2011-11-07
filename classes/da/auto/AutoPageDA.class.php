@@ -9,56 +9,61 @@
 	 */
 	abstract class AutoPageDA extends DatabaseRequester
 	{
-		protected $tableAlias = 'Page';
+		protected $tableAlias = 'page';
 
 		/**
 		 * @return Page
 		 */
 		public function insert(Page $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
 
-			if (!is_null($object->getPath())) {
-				$queryParts[] = '`path` = ?';
-				$queryParams[] = $object->getPath();
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
+			$fields[] = $dialect->escapeField('path');
+			$fieldValues[] = '?';
+			$values[] = $object->getPath();
+			$fields[] = $dialect->escapeField('preg');
+			$fieldValues[] = '?';
+
+			if ($object->getPreg() === null)
+				$values[] = null;
+			else {
+				$values[] = $object->getPreg();
 			}
 
-			if (!is_null($object->getPreg())) {
-				$queryParts[] = '`preg` = ?';
-				$queryParams[] = $object->getPreg();
+			$fields[] = $dialect->escapeField('layout_id');
+			$fieldValues[] = '?';
+			$values[] = $object->getLayoutId();
+			$fields[] = $dialect->escapeField('layout_settings');
+			$fieldValues[] = '?';
+
+			if ($object->getLayoutSettings() === null)
+				$values[] = null;
+			else {
+				$values[] = serialize($object->getLayoutSettings());
 			}
 
-			if (!is_null($object->getLayoutId())) {
-				$queryParts[] = '`layout_id` = ?';
-				$queryParams[] = $object->getLayoutId();
-			}
+			$fields[] = $dialect->escapeField('status');
+			$fieldValues[] = '?';
+			$values[] = $object->getStatus()->getId();
+			$fields[] = $dialect->escapeField('modified');
+			$fieldValues[] = '?';
+			$values[] = $object->getModified();
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			if (!is_null($object->getLayoutSettings())) {
-				$queryParts[] = '`layout_settings` = ?';
-				$queryParams[] = serialize($object->getLayoutSettings());
-			}
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setPrimaryField('id')->
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
-			if (!is_null($object->getStatus())) {
-				$queryParts[] = '`status` = ?';
-				$queryParams[] = $object->getStatus()->getId();
-			}
-
-			if (!is_null($object->getModified())) {
-				$queryParts[] = '`modified` = ?';
-				$queryParams[] = $object->getModified();
-			}
-
-			$dbQuery .= join(', ', $queryParts);
-
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
-
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 
 			$this->dropCache();
 
@@ -70,35 +75,36 @@
 		 */
 		public function save(Page $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
 
-			$queryParts[] = '`path` = ?';
+			$queryParts[] = $dialect->escapeField('path').' = ?';
 			$queryParams[] = $object->getPath();
 
 			if ($object->getPreg() === null)
-				$queryParts[] = '`preg` = NULL';
+				$queryParts[] = $dialect->escapeField('preg').' = NULL';
 			else {
-				$queryParts[] = '`preg` = ?';
+				$queryParts[] = $dialect->escapeField('preg').' = ?';
 				$queryParams[] = $object->getPreg();
 			}
 
-			$queryParts[] = '`layout_id` = ?';
+			$queryParts[] = $dialect->escapeField('layout_id').' = ?';
 			$queryParams[] = $object->getLayoutId();
 
 			if ($object->getLayoutSettings() === null)
-				$queryParts[] = '`layout_settings` = NULL';
+				$queryParts[] = $dialect->escapeField('layout_settings').' = NULL';
 			else {
-				$queryParts[] = '`layout_settings` = ?';
+				$queryParts[] = $dialect->escapeField('layout_settings').' = ?';
 				$queryParams[] = serialize($object->getLayoutSettings());
 			}
 
-			$queryParts[] = '`status` = ?';
+			$queryParts[] = $dialect->escapeField('status').' = ?';
 			$queryParams[] = $object->getStatus()->getId();
-			$queryParts[] = '`modified` = ?';
+			$queryParts[] = $dialect->escapeField('modified').' = ?';
 			$queryParams[] = $object->getModified();
 
 			$whereParts[] = 'id = ?';
@@ -164,7 +170,7 @@
 				Page::create()->
 				setId($array['id'])->
 				setPath($array['path'])->
-				setPreg($array['preg'] == null ? null : $array['preg'] == true)->
+				setPreg($array['preg'] === null ? null : $array['preg'] == true)->
 				setLayoutId($array['layout_id'])->
 				setLayoutSettings($array['layout_settings'] ? unserialize($array['layout_settings']) : null)->
 				setStatus(PageStatus::create($array['status']))->

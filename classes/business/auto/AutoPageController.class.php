@@ -52,6 +52,14 @@
 		}
 
 		/**
+		 * @return PageControllerProto
+		 */
+		public static function proto()
+		{
+			return PageControllerProto::me();
+		}
+
+		/**
 		 * @return AutoPageController
 		 */
 		public function setId($id)

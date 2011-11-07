@@ -22,6 +22,14 @@
 		}
 
 		/**
+		 * @return SiteProto
+		 */
+		public static function proto()
+		{
+			return SiteProto::me();
+		}
+
+		/**
 		 * @return AutoSite
 		 */
 		public function setId($id)

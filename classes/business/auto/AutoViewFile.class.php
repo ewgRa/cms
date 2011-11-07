@@ -39,6 +39,14 @@
 		}
 
 		/**
+		 * @return ViewFileProto
+		 */
+		public static function proto()
+		{
+			return ViewFileProto::me();
+		}
+
+		/**
 		 * @return AutoViewFile
 		 */
 		public function setId($id)

@@ -9,31 +9,34 @@
 	 */
 	abstract class AutoLanguageDA extends DatabaseRequester
 	{
-		protected $tableAlias = 'Language';
+		protected $tableAlias = 'language';
 
 		/**
 		 * @return Language
 		 */
 		public function insert(Language $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
 
-			if (!is_null($object->getAbbr())) {
-				$queryParts[] = '`abbr` = ?';
-				$queryParams[] = $object->getAbbr();
-			}
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
+			$fields[] = $dialect->escapeField('abbr');
+			$fieldValues[] = '?';
+			$values[] = $object->getAbbr();
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			$dbQuery .= join(', ', $queryParts);
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setPrimaryField('id')->
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
-
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 
 			$this->dropCache();
 
@@ -45,13 +48,14 @@
 		 */
 		public function save(Language $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
 
-			$queryParts[] = '`abbr` = ?';
+			$queryParts[] = $dialect->escapeField('abbr').' = ?';
 			$queryParams[] = $object->getAbbr();
 
 			$whereParts[] = 'id = ?';
