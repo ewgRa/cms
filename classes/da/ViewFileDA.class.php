@@ -42,6 +42,9 @@
 
 		public function getInheritanceByIds(array $ids)
 		{
+			if (!$ids)
+				return array();
+
 			$dialect = $this->db()->getDialect();
 
 			$dbQuery = "
@@ -49,7 +52,7 @@
 				INNER JOIN ".$this->escapeTable('view_file_inheritance')." t2
 					ON(t2.child_view_file_id = t1.id)
 				WHERE t2.view_file_id IN (?)
-				ORDER BY ".$dialect->createOrder('position')->toString($dialect)."
+				ORDER BY ".$dialect->createOrder('position')->toString($dialect).", t1.id
 			";
 
 			return $this->getListCachedByQuery(
