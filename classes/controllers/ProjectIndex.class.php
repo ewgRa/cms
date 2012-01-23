@@ -104,7 +104,7 @@
 			return
 				PHP_SAPI != 'cli'
 					? $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']
-					: 'file://'.gethostname().$_SERVER['PWD'].'/'.$_SERVER['argv'][0];
+					: 'file://'.gethostname().getcwd().'/'.$_SERVER['argv'][0];
 		}
 	}
 ?>
