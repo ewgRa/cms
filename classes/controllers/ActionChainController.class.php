@@ -33,12 +33,17 @@
 			$action = $this->immutableSettingsAction;
 
 			if (!$action)
-				$action = parent::defineActionFromRequest($request);
+				$action = $this->defineRequestAction($request);
 
 			if (!$action)
 				$action = $this->settingsAction;
 
 			return $action;
+		}
+
+		public function defineRequestAction(\ewgraFramework\HttpRequest $request)
+		{
+			return parent::defineActionFromRequest($request);
 		}
 	}
 ?>
