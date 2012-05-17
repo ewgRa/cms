@@ -11,9 +11,22 @@
 		protected $poolAlias	= 'cms';
 		protected $tableAlias	= null;
 
+		private $cacheWorkerManager = null;
+		private $database = null;
 		private $linkedCachers = array();
 
 		abstract protected function build(array $array);
+
+		/**
+		 * @return DatabaseRequester
+		 */
+		protected function __construct()
+		{
+			$this->cacheWorkerManager = CacheWorkerManager::me();
+			$this->database = \ewgraFramework\Database::me();
+
+			parent::__construct();
+		}
 
 		public function getTable()
 		{
@@ -65,7 +78,7 @@
 		 */
 		public function getPool()
 		{
-			return \ewgraFramework\Database::me()->getPool($this->getPoolAlias());
+			return $this->database->getPool($this->getPoolAlias());
 		}
 
 		/**
@@ -149,10 +162,10 @@
 
 		public function getCacheWorker()
 		{
-			$worker = CacheWorkerManager::me()->getFor($this);
+			$worker = $this->cacheWorkerManager->getFor($this);
 
 			if (!$worker)
-				$worker = CacheWorkerManager::me()->getDefault();
+				$worker = $this->cacheWorkerManager->getDefault();
 
 			return $worker;
 		}

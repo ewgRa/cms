@@ -8,6 +8,8 @@
 	final class DefaultCacheWorker extends \ewgraFramework\Singleton
 		implements CacheWorkerInterface
 	{
+		private $cache = null;
+
 		/**
 		 * @return DefaultCacheWorker
 		 * method needed for methods hinting
@@ -15,6 +17,15 @@
 		public static function me()
 		{
 			return parent::me();
+		}
+
+		/**
+		 * @return DatabaseRequester
+		 */
+		protected function __construct()
+		{
+			$this->cache = \ewgraFramework\Cache::me();
+			parent::__construct();
 		}
 
 		public function restoreTicketData(
@@ -223,19 +234,21 @@
 			array $relatedRequesters = array()
 		)
 		{
+			$poolAlias = $requester->getPoolAlias();
+
 			\ewgraFramework\Assert::isTrue(
-				\ewgraFramework\Cache::me()->hasPool($requester->getPoolAlias()),
-				'define pool for '.$requester->getPoolAlias()
+				$this->cache->hasPool($poolAlias),
+				'define pool for '.$poolAlias
 			);
 
-			$pool = \ewgraFramework\Cache::me()->getPool($requester->getPoolAlias());
+			$pool = $this->cache->getPool($poolAlias);
 
-			$prefix = array(get_class($requester));
+			$prefix = get_class($requester);
 
 			foreach ($relatedRequesters as $relatedRequester)
-				$prefix[] = get_class($relatedRequester);
+				$prefix .= '-'.get_class($relatedRequester);
 
-			return $pool->createTicket()->setPrefix(join('-', $prefix));
+			return $pool->createTicket()->setPrefix($prefix);
 		}
 
 		/**
