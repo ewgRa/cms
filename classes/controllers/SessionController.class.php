@@ -31,13 +31,13 @@
 					\ewgraFramework\Session::me()->get('securityHash')
 						!= $this->compileSecurityHash($request)
 				) {
-					\ewgraFramework\Session::me()->startAsNew();
-
 					\ewgraFramework\LogManager::me()->store(
 						'Security hash not equal! "'
 						.\ewgraFramework\Session::me()->get('securityHash')
 						.'" not equal to "'.$this->compileSecurityHash($request).'"'
 					);
+
+					\ewgraFramework\Session::me()->startAsNew();
 				}
 			}
 
