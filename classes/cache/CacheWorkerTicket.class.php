@@ -4,6 +4,7 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * FIXME: not used anymore? Can be dropped also with stuff in other parts?
 	*/
 	final class CacheWorkerTicket
 	{
