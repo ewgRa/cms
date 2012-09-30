@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'page';
 
+		public function getTag()
+		{
+			return '\ewgraCms\Page';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag(), '\ewgraCms\Layout');
+		}
+
 		/**
 		 * @return Page
 		 */
 		public function insert(Page $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return Page
+		 */
+		public function rawInsert(Page $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('path');
 			$fieldValues[] = '?';
 			$values[] = $object->getPath();
@@ -31,7 +61,7 @@
 			if ($object->getPreg() === null)
 				$values[] = null;
 			else {
-				$values[] = $object->getPreg();
+				$values[] = ($object->getPreg() ? 1 : 0);
 			}
 
 			$fields[] = $dialect->escapeField('layout_id');
@@ -63,9 +93,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -74,6 +103,16 @@
 		 * @return AutoPageDA
 		 */
 		public function save(Page $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoPageDA
+		 */
+		public function rawSave(Page $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -89,7 +128,7 @@
 				$queryParts[] = $dialect->escapeField('preg').' = NULL';
 			else {
 				$queryParts[] = $dialect->escapeField('preg').' = ?';
-				$queryParams[] = $object->getPreg();
+				$queryParams[] = ($object->getPreg() ? 1 : 0);
 			}
 
 			$queryParts[] = $dialect->escapeField('layout_id').' = ?';
@@ -119,8 +158,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -128,6 +165,16 @@
 		 * @return AutoPageDA
 		 */
 		public function delete(Page $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoPageDA
+		 */
+		public function rawDelete(Page $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -137,8 +184,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}
@@ -178,13 +223,6 @@
 				setLayoutSettings($array['layout_settings'] ? unserialize($array['layout_settings']) : null)->
 				setStatus(PageStatus::create($array['status']))->
 				setModified($array['modified']);
-		}
-
-		public function dropCache()
-		{
-			PageData::da()->dropCache();
-			PageController::da()->dropCache();
-			return parent::dropCache();
 		}
 	}
 ?>

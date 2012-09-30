@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'controller';
 
+		public function getTag()
+		{
+			return '\ewgraCms\Controller';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag());
+		}
+
 		/**
 		 * @return Controller
 		 */
 		public function insert(Controller $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return Controller
+		 */
+		public function rawInsert(Controller $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('name');
 			$fieldValues[] = '?';
 			$values[] = $object->getName();
@@ -45,9 +75,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -56,6 +85,16 @@
 		 * @return AutoControllerDA
 		 */
 		public function save(Controller $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoControllerDA
+		 */
+		public function rawSave(Controller $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -87,8 +126,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -96,6 +133,16 @@
 		 * @return AutoControllerDA
 		 */
 		public function delete(Controller $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoControllerDA
+		 */
+		public function rawDelete(Controller $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -105,8 +152,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}
@@ -142,12 +187,6 @@
 				setId($array['id'])->
 				setName($array['name'])->
 				setSettings($array['settings'] ? unserialize($array['settings']) : null);
-		}
-
-		public function dropCache()
-		{
-			PageController::da()->dropCache();
-			return parent::dropCache();
 		}
 	}
 ?>

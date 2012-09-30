@@ -6,14 +6,13 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
 	abstract class DatabaseRequester extends \ewgraFramework\Singleton
-		implements CacherInterface, CacheableRequesterInterface
+		implements CacheableRequesterInterface
 	{
 		protected $poolAlias	= 'cms';
 		protected $tableAlias	= null;
 
 		private $cacheWorkerManager = null;
 		private $database = null;
-		private $linkedCachers = array();
 
 		abstract protected function build(array $array);
 
@@ -56,23 +55,6 @@
 			return $this->poolAlias;
 		}
 
-		public function getLinkedCachers()
-		{
-			return $this->linkedCachers;
-		}
-
-		public function addLinkedCacher(CacherInterface $cacher)
-		{
-			\ewgraFramework\Assert::isFalse($cacher->hasLinkedCacher($this), 'recursion detected');
-
-			$this->linkedCachers[get_class($cacher)] = $cacher;
-		}
-
-		public function hasLinkedCacher(CacherInterface $cacher)
-		{
-			return isset($this->linkedCachers[get_class($cacher)]);
-		}
-
 		/**
 		 * @return \ewgraFramework\BaseDatabase
 		 */
@@ -89,8 +71,9 @@
 			return $this->getPool();
 		}
 
-		public function getCustomByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
+		public function getCustomByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery
+		) {
 			$result = null;
 
 			$dbResult = $this->db()->query($dbQuery);
@@ -108,8 +91,9 @@
 			return $result;
 		}
 
-		public function getByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
+		public function getByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery
+		) {
 			$result = $this->getCustomByQuery($dbQuery);
 
 			if ($result)
@@ -118,44 +102,74 @@
 			return $result;
 		}
 
-		public function getCustomCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
-			return $this->getCacheWorker()->getCustomCachedByQuery($dbQuery, $this);
+		public function getCustomCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			array $tags = null
+		) {
+			if (!$tags)
+				$tags = $this->getTagList();
+
+			return
+				$this->getCacheWorker()->
+				getCustomCachedByQuery($dbQuery, $this, $tags);
 		}
 
-		public function getCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
-			return $this->getCacheWorker()->getCachedByQuery($dbQuery, $this);
+		public function getCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			array $tags = null
+		) {
+			if (!$tags)
+				$tags = $this->getTagList();
+
+			return
+				$this->getCacheWorker()->
+				getCachedByQuery($dbQuery, $this, $tags);
 		}
 
-		public function getCustomListByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
+		public function getCustomListByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery
+		) {
 			$dbResult = $this->db()->query($dbQuery);
 
 			return $dbResult->fetchList();
 		}
 
-		public function getListByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
+		public function getListByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery
+		) {
 			return $this->buildList($this->getCustomListByQuery($dbQuery));
 		}
 
-		public function getListCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
-			return $this->getCacheWorker()->getListCachedByQuery($dbQuery, $this);
+		public function getListCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			array $tags = null
+		) {
+			if (!$tags)
+				$tags = $this->getTagList();
+
+			return
+				$this->getCacheWorker()->
+				getListCachedByQuery($dbQuery, $this, $tags);
 		}
 
-		public function getCustomListCachedByQuery(\ewgraFramework\DatabaseQueryInterface $dbQuery)
-		{
-			return $this->getCacheWorker()->getCustomListCachedByQuery($dbQuery, $this);
+		public function getCustomListCachedByQuery(
+			\ewgraFramework\DatabaseQueryInterface $dbQuery,
+			array $tags = null
+		) {
+			if (!$tags)
+				$tags = $this->getTagList();
+
+			return
+				$this->getCacheWorker()->
+				getCustomListCachedByQuery($dbQuery, $this, $tags);
 		}
 
-		public function dropCache()
+		public function dropCache(array $tags = null)
 		{
-			$this->getCacheWorker()->dropCache($this);
+			if (!$tags)
+				$tags = $this->getTagList();
 
-			foreach ($this->getLinkedCachers() as $cacher)
-				$cacher->dropCache();
+			$this->getCacheWorker()->dropCache($this, $tags);
 
 			return $this;
 		}

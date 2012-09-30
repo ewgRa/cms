@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'page_data';
 
+		public function getTag()
+		{
+			return '\ewgraCms\PageData';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag(), '\ewgraCms\Page', '\ewgraCms\Language');
+		}
+
 		/**
 		 * @return PageData
 		 */
 		public function insert(PageData $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return PageData
+		 */
+		public function rawInsert(PageData $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('page_id');
 			$fieldValues[] = '?';
 			$values[] = $object->getPageId();
@@ -66,9 +96,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -77,6 +106,16 @@
 		 * @return AutoPageDataDA
 		 */
 		public function save(PageData $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoPageDataDA
+		 */
+		public function rawSave(PageData $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -126,8 +165,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -135,6 +172,16 @@
 		 * @return AutoPageDataDA
 		 */
 		public function delete(PageData $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoPageDataDA
+		 */
+		public function rawDelete(PageData $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -144,8 +191,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}

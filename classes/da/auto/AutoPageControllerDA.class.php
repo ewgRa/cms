@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'page_controller';
 
+		public function getTag()
+		{
+			return '\ewgraCms\PageController';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag(), '\ewgraCms\Page', '\ewgraCms\Controller', '\ewgraCms\ViewFile');
+		}
+
 		/**
 		 * @return PageController
 		 */
 		public function insert(PageController $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return PageController
+		 */
+		public function rawInsert(PageController $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('page_id');
 			$fieldValues[] = '?';
 			$values[] = $object->getPageId();
@@ -84,9 +114,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -95,6 +124,16 @@
 		 * @return AutoPageControllerDA
 		 */
 		public function save(PageController $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoPageControllerDA
+		 */
+		public function rawSave(PageController $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -160,8 +199,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -169,6 +206,16 @@
 		 * @return AutoPageControllerDA
 		 */
 		public function delete(PageController $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoPageControllerDA
+		 */
+		public function rawDelete(PageController $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -178,8 +225,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}

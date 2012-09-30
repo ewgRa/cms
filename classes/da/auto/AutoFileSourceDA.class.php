@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'file_source';
 
+		public function getTag()
+		{
+			return '\ewgraCms\FileSource';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag());
+		}
+
 		/**
 		 * @return FileSource
 		 */
 		public function insert(FileSource $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return FileSource
+		 */
+		public function rawInsert(FileSource $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('alias');
 			$fieldValues[] = '?';
 			$values[] = $object->getAlias();
@@ -36,9 +66,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -47,6 +76,16 @@
 		 * @return AutoFileSourceDA
 		 */
 		public function save(FileSource $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoFileSourceDA
+		 */
+		public function rawSave(FileSource $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -70,8 +109,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -79,6 +116,16 @@
 		 * @return AutoFileSourceDA
 		 */
 		public function delete(FileSource $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoFileSourceDA
+		 */
+		public function rawDelete(FileSource $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -88,8 +135,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}
@@ -124,12 +169,6 @@
 				FileSource::create()->
 				setId($array['id'])->
 				setAlias($array['alias']);
-		}
-
-		public function dropCache()
-		{
-			ViewFile::da()->dropCache();
-			return parent::dropCache();
 		}
 	}
 ?>

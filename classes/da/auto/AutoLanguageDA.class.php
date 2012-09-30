@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'language';
 
+		public function getTag()
+		{
+			return '\ewgraCms\Language';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag());
+		}
+
 		/**
 		 * @return Language
 		 */
 		public function insert(Language $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return Language
+		 */
+		public function rawInsert(Language $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('abbr');
 			$fieldValues[] = '?';
 			$values[] = $object->getAbbr();
@@ -36,9 +66,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -47,6 +76,16 @@
 		 * @return AutoLanguageDA
 		 */
 		public function save(Language $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoLanguageDA
+		 */
+		public function rawSave(Language $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -70,8 +109,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -79,6 +116,16 @@
 		 * @return AutoLanguageDA
 		 */
 		public function delete(Language $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoLanguageDA
+		 */
+		public function rawDelete(Language $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -88,8 +135,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}
@@ -124,12 +169,6 @@
 				Language::create()->
 				setId($array['id'])->
 				setAbbr($array['abbr']);
-		}
-
-		public function dropCache()
-		{
-			PageData::da()->dropCache();
-			return parent::dropCache();
 		}
 	}
 ?>

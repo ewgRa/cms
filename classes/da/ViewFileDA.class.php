@@ -36,7 +36,13 @@
 			return $this->getListCachedByQuery(
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->
-				setValues(array($page->getId(), $page->getId()))
+				setValues(array($page->getId(), $page->getId())),
+				array_merge(
+					$this->getTagList(),
+					array(PageController::da()->getTag()),
+					array(Page::da()->getTag()),
+					array(Layout::da()->getTag())
+				)
 			);
 		}
 

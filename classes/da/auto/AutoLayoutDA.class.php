@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'layout';
 
+		public function getTag()
+		{
+			return '\ewgraCms\Layout';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag(), '\ewgraCms\ViewFile');
+		}
+
 		/**
 		 * @return Layout
 		 */
 		public function insert(Layout $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return Layout
+		 */
+		public function rawInsert(Layout $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('view_file_id');
 			$fieldValues[] = '?';
 			$values[] = $object->getViewFileId();
@@ -36,9 +66,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -47,6 +76,16 @@
 		 * @return AutoLayoutDA
 		 */
 		public function save(Layout $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoLayoutDA
+		 */
+		public function rawSave(Layout $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -70,8 +109,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -79,6 +116,16 @@
 		 * @return AutoLayoutDA
 		 */
 		public function delete(Layout $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoLayoutDA
+		 */
+		public function rawDelete(Layout $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -88,8 +135,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}
@@ -124,12 +169,6 @@
 				Layout::create()->
 				setId($array['id'])->
 				setViewFileId($array['view_file_id']);
-		}
-
-		public function dropCache()
-		{
-			Page::da()->dropCache();
-			return parent::dropCache();
 		}
 	}
 ?>

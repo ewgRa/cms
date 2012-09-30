@@ -75,6 +75,11 @@
 			return $this->id;
 		}
 
+		public function hasId()
+		{
+			return ($this->id !== null);
+		}
+
 		/**
 		 * @return AutoPageController
 		 */
@@ -235,7 +240,11 @@
 		 */
 		public function setViewFile(ViewFile $viewFile = null)
 		{
-			$this->viewFileId = $viewFile->getId();
+			$this->viewFileId =
+				$viewFile === null
+					? null
+					: $viewFile->getId();
+
 			$this->viewFile = $viewFile;
 
 			return $this;

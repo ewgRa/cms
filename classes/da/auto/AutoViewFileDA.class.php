@@ -11,10 +11,33 @@
 	{
 		protected $tableAlias = 'view_file';
 
+		public function getTag()
+		{
+			return '\ewgraCms\ViewFile';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+			return array($this->getTag(), '\ewgraCms\FileSource');
+		}
+
 		/**
 		 * @return ViewFile
 		 */
 		public function insert(ViewFile $object)
+		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return ViewFile
+		 */
+		public function rawInsert(ViewFile $object)
 		{
 			$dialect = $this->db()->getDialect();
 
@@ -22,6 +45,13 @@
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
 			$fields[] = $dialect->escapeField('content_type');
 			$fieldValues[] = '?';
 			$values[] = $object->getContentType()->getId();
@@ -34,7 +64,7 @@
 			if ($object->getJoinable() === null)
 				$values[] = null;
 			else {
-				$values[] = $object->getJoinable();
+				$values[] = ($object->getJoinable() ? 1 : 0);
 			}
 
 			$fields[] = $dialect->escapeField('source_id');
@@ -51,9 +81,8 @@
 					setValues($values)
 				);
 
-			$object->setId($dbResult->getInsertedId());
-
-			$this->dropCache();
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 
 			return $object;
 		}
@@ -62,6 +91,16 @@
 		 * @return AutoViewFileDA
 		 */
 		public function save(ViewFile $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoViewFileDA
+		 */
+		public function rawSave(ViewFile $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -79,7 +118,7 @@
 				$queryParts[] = $dialect->escapeField('joinable').' = NULL';
 			else {
 				$queryParts[] = $dialect->escapeField('joinable').' = ?';
-				$queryParams[] = $object->getJoinable();
+				$queryParams[] = ($object->getJoinable() ? 1 : 0);
 			}
 
 			$queryParts[] = $dialect->escapeField('source_id').' = ?';
@@ -97,8 +136,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -106,6 +143,16 @@
 		 * @return AutoViewFileDA
 		 */
 		public function delete(ViewFile $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return AutoViewFileDA
+		 */
+		public function rawDelete(ViewFile $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -115,8 +162,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}
@@ -154,13 +199,6 @@
 				setPath($array['path'])->
 				setJoinable($array['joinable'] === null ? null : $array['joinable'] == true)->
 				setSourceId($array['source_id']);
-		}
-
-		public function dropCache()
-		{
-			Layout::da()->dropCache();
-			PageController::da()->dropCache();
-			return parent::dropCache();
 		}
 	}
 ?>

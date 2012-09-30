@@ -9,27 +9,34 @@
 	{
 		public function getCustomCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		);
 
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		);
 
 		public function getCustomListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		);
 
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		);
 
 		/**
 		 * @return CacheWorkerInterface
 		 */
-		public function dropCache(CacheableRequesterInterface $requester);
+		public function dropCache(
+			CacheableRequesterInterface $requester,
+			array $tags
+		);
 	}
 ?>
