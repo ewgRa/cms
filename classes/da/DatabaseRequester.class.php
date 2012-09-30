@@ -167,7 +167,7 @@
 		public function dropCache(array $tags = null)
 		{
 			if (!$tags)
-				$tags = $this->getTagList();
+				$tags = array($this->getTag());
 
 			$this->getCacheWorker()->dropCache($this, $tags);
 
