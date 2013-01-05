@@ -44,5 +44,19 @@
 				setValues(array($id))
 			);
 		}
+
+		/**
+		 * @return Page
+		 */
+		public function getJustById($id)
+		{
+			$dbQuery = 'SELECT * FROM '.$this->getTable().' WHERE id=?';
+
+			return $this->getCachedByQuery(
+				\ewgraFramework\DatabaseQuery::create()->
+				setQuery($dbQuery)->
+				setValues(array($id))
+			);
+		}
 	}
 ?>
