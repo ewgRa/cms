@@ -20,7 +20,7 @@
 		{
 			preg_match(
 				'@'.str_replace('@', '\@', $this->getPath()).'@',
-				$url->getPath(),
+				urldecode($url->getPath()),
 				$matches
 			);
 
