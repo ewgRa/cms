@@ -38,6 +38,8 @@
 
 		public function getPageByPath($path)
 		{
+			$path = urldecode($path);
+
 			$result = null;
 
 			foreach ($this->map[self::NON_PREG] as $page) {
