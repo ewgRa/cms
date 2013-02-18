@@ -37,7 +37,7 @@
 		public function output()
 		{
 			foreach ($this->getHeaders() as $alias => $value)
-				header($alias.($value ? ': '.$value : null));
+				header($alias.($value !== null ? ': '.$value : null));
 
 			return $this;
 		}
