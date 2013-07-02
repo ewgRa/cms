@@ -29,7 +29,8 @@
 
 		public function getCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		)
 		{
 			return $requester->getByQuery($dbQuery);
@@ -37,7 +38,8 @@
 
 		public function getListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		)
 		{
 			return $requester->getListByQuery($dbQuery);
@@ -45,7 +47,8 @@
 
 		public function getCustomCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		)
 		{
 			return $requester->getCustomByQuery($dbQuery);
@@ -53,7 +56,8 @@
 
 		public function getCustomListCachedByQuery(
 			\ewgraFramework\DatabaseQueryInterface $dbQuery,
-			CacheableRequesterInterface $requester
+			CacheableRequesterInterface $requester,
+			array $tags
 		)
 		{
 			return $requester->getCustomListByQuery($dbQuery);
@@ -62,7 +66,7 @@
 		/**
 		 * @return NullCacheWorker
 		 */
-		public function dropCache(CacheableRequesterInterface $requester)
+		public function dropCache(CacheableRequesterInterface $requester, array $tags)
 		{
 			return $this;
 		}
